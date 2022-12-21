@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2015",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "outDir": "./build",                                   /* Specify an output folder for all emitted files. */
+    /* Interop Constraints */
+    /* Type Checking */
+    "strict": true,                                      /* Enable all strict type-checking options. */
+    "noUnusedLocals": true,                           /* Enable error reporting when local variables aren't read. */
+    "noUnusedParameters": true,                       /* Raise an error when a function parameter isn't read. */
+    "noImplicitReturns": true,                        /* Enable error reporting for codepaths that do not explicitly return in a function. */
+    /* Completeness */
+    //
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@contexts/*": ["contexts/*"],
+      "@hooks/*": ["hooks/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@pages/*": ["pages/*"],
+      "@services/*": ["services/*"],
+      "@theme/*": ["theme/*"]
+    },
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+  ],
+  "exclude": ["node_modules"]
+}
