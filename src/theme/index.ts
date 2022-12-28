@@ -30,7 +30,10 @@ export default {
     extra: "IBM Plex Sans",
   },
   fontSizes: {
-    m: "16px",
+    xl: "36px",
+    l: "30px",
+    m: "20px",
+    s: "16px",
   },
   fontWeights: {
     black: 900,
