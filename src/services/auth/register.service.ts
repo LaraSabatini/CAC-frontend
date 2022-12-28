@@ -1,11 +1,11 @@
 import defaultPost from "services/defaultPost"
 import AdminInterface from "interfaces/users/Admin"
 import ClientInterface from "interfaces/users/Client"
-
-const apiURL = "/users/"
+import { UserType } from "interfaces/users/General"
+import apiURL from "./route"
 
 const register = async (
-  type: "admin" | "client",
+  type: UserType,
   body: AdminInterface | ClientInterface,
 ) => {
   const res = await defaultPost(`${apiURL}${type}/register`, body)

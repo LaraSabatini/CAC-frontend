@@ -1,11 +1,8 @@
 import defaultPost from "services/defaultPost"
+import { UserType, LoginInterface } from "interfaces/users/General"
+import apiURL from "./route"
 
-const apiURL = "/users/"
-
-const login = async (
-  type: "admin" | "client",
-  body: { email: string; password: string },
-) => {
+const login = async (type: UserType, body: LoginInterface) => {
   const res = await defaultPost(`${apiURL}${type}/login`, body)
   return res
 }
