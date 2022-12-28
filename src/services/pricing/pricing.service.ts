@@ -3,10 +3,10 @@ import axiosHeader from "services/axiosHeader"
 import ProductsInterface from "interfaces/content/Pricing"
 import defaultPost from "../defaultPost"
 
-const apiURL = "/pricing"
+const apiURL = "http://localhost:3001/pricing"
 
 const getPricing = async () => {
-  const res = await axios.get(`${apiURL}/`, axiosHeader)
+  const res = await axios.get(`${apiURL}`, axiosHeader)
   return res.data
 }
 
