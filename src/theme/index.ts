@@ -51,6 +51,7 @@ export default {
       width: "768px",
       height: "1024px",
     },
+    transition: "950px",
     mobile: "414px",
   },
 }

@@ -7,8 +7,13 @@ const Container = styled.div`
   width: 90%;
   height: 80vh;
   margin: 0 auto;
-  gap: 100px;
-  padding-top: 150px;
+  gap: 15%;
+  padding-top: 9%;
+
+  @media (max-width: ${theme.screenSize.tablet.height}) {
+    padding-top: 3%;
+    gap: 5%;
+  }
 `
 
 const Title = styled.h1`
@@ -28,7 +33,15 @@ const SubTitle = styled.span`
 
 const CardsContainer = styled.div`
   display: flex;
-  gap: 36px;
+  gap: 1.6%;
+  @media (max-width: ${theme.screenSize.tablet.height}) {
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+
+  @media (max-width: ${theme.screenSize.mobile}) {
+    gap: 10px;
+  }
 `
 
 export { Container, Title, CardsContainer, SubTitle }
