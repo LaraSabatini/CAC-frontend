@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import Icon from "components/UI/Assets/Icon"
+import { ErrorMessage, Label, InputContainer } from "components/UI/sharedStyles"
 import {
-  InputContainer,
-  Label,
   Select,
   Option,
   OptionsContainer,
@@ -16,6 +15,8 @@ interface InputSelectInterface {
   width?: number
   required?: boolean
   onClick?: (value?: { id?: number; display_name?: string }) => void
+  error?: boolean
+  errorMessage?: string
 }
 
 function InputSelect({
@@ -24,6 +25,8 @@ function InputSelect({
   width,
   required,
   onClick,
+  error,
+  errorMessage,
 }: InputSelectInterface) {
   const [openSelect, setOpenSelect] = useState<boolean>(false)
   const [optionSelected, setOptionSelected] = useState<{
@@ -33,11 +36,11 @@ function InputSelect({
 
   return (
     <InputContainer width={width}>
-      <Label htmlFor="input">
+      <Label htmlFor="input" error={error}>
         {label}
         {required && "*"}
       </Label>
-      <Select width={width}>
+      <Select width={width} error={error}>
         <Input>
           {optionSelected.value}
           <IconContainer onClick={() => setOpenSelect(!openSelect)}>
@@ -65,6 +68,9 @@ function InputSelect({
           </OptionsContainer>
         )}
       </Select>
+      {error && errorMessage !== "" && (
+        <ErrorMessage width={width}>{errorMessage}</ErrorMessage>
+      )}
     </InputContainer>
   )
 }

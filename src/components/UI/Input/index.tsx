@@ -2,11 +2,9 @@ import React, { useState } from "react"
 import InputInterface from "interfaces/components/InputInterface"
 import response from "strings/inputMessages.json"
 import Icon from "components/UI/Assets/Icon"
+import { ErrorMessage, Label, InputContainer } from "components/UI/sharedStyles"
 import {
-  InputContainer,
   InputStyled,
-  Label,
-  ErrorMessage,
   InputPassword,
   IconContainer,
   TextareaContainer,

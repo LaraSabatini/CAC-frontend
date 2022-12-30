@@ -1,26 +1,6 @@
 import styled, { css } from "styled-components"
 import theme from "theme/index"
-
-const TextStyled = () => css`
-  font-family: ${theme.fonts.content};
-  color: ${theme.colors.blue};
-`
-
-const InputContainer = styled.div<{ width?: number }>`
-  ${TextStyled}
-  display: flex;
-  flex-direction: column;
-  width: ${({ width }) => (width as number) - 25 || 200}px !important;
-  height: 75px;
-`
-
-const Label = styled.label<{ error?: boolean }>`
-  ${props =>
-    props.error &&
-    css`
-      color: ${theme.colors.red};
-    `}
-`
+import { TextStyled } from "components/UI/sharedStyles"
 
 const InputStyled = styled.input<{
   width?: number
@@ -52,13 +32,6 @@ const InputStyled = styled.input<{
     css<{ width?: number }>`
       width: ${({ width }) => (width as number) - 60 || 200}px !important;
     `}
-`
-
-const ErrorMessage = styled.span<{ width?: number }>`
-  font-size: ${theme.fontSizes.xs};
-  color: ${theme.colors.red};
-  padding: 5px 0 0 2px;
-  width: ${({ width }) => (width as number) - 25 || 200}px !important;
 `
 
 const InputPassword = styled.div<{ width?: number }>`
@@ -111,10 +84,7 @@ const InputTextarea = styled.textarea<{
 `
 
 export {
-  InputContainer,
   InputStyled,
-  Label,
-  ErrorMessage,
   InputPassword,
   IconContainer,
   TextareaContainer,

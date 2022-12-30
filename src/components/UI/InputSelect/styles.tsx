@@ -1,26 +1,6 @@
 import styled, { css } from "styled-components"
 import theme from "theme/index"
-
-const TextStyled = () => css`
-  font-family: ${theme.fonts.content};
-  color: ${theme.colors.blue};
-`
-
-const Button = () => css`
-  border: none;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`
-
-const InputContainer = styled.div<{ width?: number }>`
-  ${TextStyled}
-  width: ${({ width }) => (width as number) - 25 || 200}px !important;
-  /* border: 1px solid red; */
-`
-
-const Label = styled.label``
+import { Button, TextStyled } from "components/UI/sharedStyles"
 
 const Input = styled.div`
   display: flex;
@@ -32,12 +12,17 @@ const IconContainer = styled.button`
   ${Button}
 `
 
-const Select = styled.div<{ width?: number }>`
+const Select = styled.div<{ width?: number; error?: boolean }>`
   width: ${({ width }) => (width as number) - 25 || 200}px !important;
   position: relative;
-  padding-top: 10px;
-  padding-bottom: 5px;
   border-bottom: 1px solid ${theme.colors.blue_alpha};
+  padding: 8px 0 5px 3px;
+
+  ${props =>
+    props.error &&
+    css`
+      border-bottom: 1px solid ${theme.colors.red};
+    `}
 `
 
 const Option = styled.button`
@@ -60,12 +45,11 @@ const OptionsContainer = styled.div<{ width?: number }>`
   z-index: 100;
 `
 
-export {
-  InputContainer,
-  Label,
-  Select,
-  Option,
-  OptionsContainer,
-  Input,
-  IconContainer,
-}
+const ErrorMessage = styled.span<{ width?: number }>`
+  font-size: ${theme.fontSizes.xs};
+  color: ${theme.colors.red};
+  padding: 5px 0 0 2px;
+  width: ${({ width }) => (width as number) - 25 || 200}px !important;
+`
+
+export { Select, Option, OptionsContainer, Input, IconContainer, ErrorMessage }
