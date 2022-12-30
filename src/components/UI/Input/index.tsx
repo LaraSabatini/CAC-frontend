@@ -92,7 +92,6 @@ function Input({
 
   return (
     <>
-      {/* {type === "text" && ( */}
       <InputContainer width={width}>
         <Label htmlFor="input" error={error || backError}>
           {label}
@@ -124,7 +123,6 @@ function Input({
           </ErrorMessage>
         )}
       </InputContainer>
-      {/* )} */}
       {type === "password" && (
         <InputPassword width={width}>
           <Label htmlFor="input" error={error || backError}>

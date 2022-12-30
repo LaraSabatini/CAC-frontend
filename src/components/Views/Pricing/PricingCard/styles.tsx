@@ -68,7 +68,6 @@ const Detail = styled.p`
 
 const Description = styled.p`
   font-family: ${theme.fonts.content};
-  /* width: 300px; */
 `
 
 const Button = styled.button`
