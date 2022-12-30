@@ -4,7 +4,7 @@ import { TitleStyles } from "theme/styles"
 
 const FormContainer = styled.div`
   background-color: #f2f8ff;
-  width: 410px;
+  width: 450px;
   border-radius: 15px;
   padding: 25px 25px;
   display: flex;
@@ -28,6 +28,7 @@ const HorizontalGroup = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 30px;
 
   button {
     font-family: ${theme.fonts.titles};

@@ -3,6 +3,7 @@ import Modal from "components/UI/Modal"
 import { PaymentContext } from "contexts/Payment"
 import identificationTypes from "const/identificationTypes"
 import texts from "strings/payment.json"
+import inputTexts from "strings/inputMessages.json"
 import Input from "components/UI/Input"
 import InputSelect from "components/UI/InputSelect"
 import cleanPartnerData from "helpers/formatting/capitalizeFirstLetter"
@@ -20,7 +21,64 @@ interface ClientDataFormInterface {
 }
 
 function ClientDataForm({ closeModal }: ClientDataFormInterface) {
-  const { setPayment, payment } = useContext(PaymentContext)
+  const { setPayment, payment, inputErrors, setInputErrors } = useContext(
+    PaymentContext,
+  )
+
+  const frontValidation = () => {
+    if (payment.payer.name === "") {
+      setInputErrors({ ...inputErrors, name: true })
+    }
+    if (payment.payer.surname === "") {
+      setInputErrors({ ...inputErrors, surname: true })
+    }
+    if (payment.payer.email === "") {
+      setInputErrors({ ...inputErrors, email: true })
+    }
+    if (payment.payer.phone.area_code === "") {
+      setInputErrors({
+        ...inputErrors,
+        phone: {
+          area_code: true,
+          number: inputErrors.phone.number,
+        },
+      })
+    }
+    if (payment.payer.phone.number === "") {
+      setInputErrors({
+        ...inputErrors,
+        phone: {
+          area_code: inputErrors.phone.area_code,
+          number: true,
+        },
+      })
+    }
+    if (payment.payer.identification.number === "") {
+      setInputErrors({
+        ...inputErrors,
+        identification: {
+          number: true,
+        },
+      })
+    }
+
+    return (
+      inputErrors.name &&
+      inputErrors.surname &&
+      inputErrors.email &&
+      inputErrors.phone.area_code &&
+      inputErrors.phone.number &&
+      inputErrors.identification.number
+    )
+  }
+
+  const validateInputs = () => {
+    const validate = frontValidation()
+
+    if (validate) {
+      // validar DNI con BDD de clientes
+    }
+  }
 
   return (
     <Modal>
@@ -39,9 +97,11 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 payer: { ...payment.payer, name },
               })
             }}
+            backError={inputErrors.name}
+            backErrorMessage={inputTexts.isRequired}
           />
           <Input
-            width={235}
+            width={270}
             label={texts.form.surname}
             required
             type="text"
@@ -52,6 +112,8 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 payer: { ...payment.payer, surname },
               })
             }}
+            backError={inputErrors.surname}
+            backErrorMessage={inputTexts.isRequired}
           />
         </HorizontalGroup>
         <HorizontalGroup>
@@ -74,7 +136,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
             }}
           />
           <Input
-            width={235}
+            width={270}
             label={texts.form.identificationNumber}
             required
             type="text"
@@ -90,6 +152,8 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 },
               })
             }
+            backError={inputErrors.identification.number}
+            backErrorMessage={inputTexts.isRequired}
           />
         </HorizontalGroup>
         <HorizontalGroup>
@@ -104,6 +168,8 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 payer: { ...payment.payer, email: e.target.value },
               })
             }}
+            backError={inputErrors.email}
+            backErrorMessage={inputTexts.isRequired}
           />
           <Input
             width={100}
@@ -122,9 +188,11 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 },
               })
             }}
+            backError={inputErrors.phone.area_code}
+            backErrorMessage={inputTexts.isRequired}
           />
           <Input
-            width={140}
+            width={175}
             label={texts.form.phone}
             required
             type="number"
@@ -140,6 +208,8 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 },
               })
             }}
+            backError={inputErrors.phone.number}
+            backErrorMessage={inputTexts.isRequired}
           />
         </HorizontalGroup>
 
@@ -147,7 +217,9 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           <CancelButton type="button" onClick={closeModal}>
             {texts.form.cancel}
           </CancelButton>
-          <ContinueButton type="button">{texts.form.next}</ContinueButton>
+          <ContinueButton onClick={validateInputs} type="button">
+            {texts.form.next}
+          </ContinueButton>
         </ButtonContainer>
       </FormContainer>
     </Modal>
