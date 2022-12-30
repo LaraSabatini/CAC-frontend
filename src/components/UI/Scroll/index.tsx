@@ -1,12 +1,6 @@
 import React from "react"
+import ScrollInterface from "interfaces/components/ScrollInterface"
 import ScrollView from "./styles"
-
-interface ScrollInterface {
-  height: number
-  horizontal?: boolean
-  children: JSX.Element | JSX.Element[]
-  id?: string
-}
 
 function Scroll({ height, horizontal, children, id }: ScrollInterface) {
   return (

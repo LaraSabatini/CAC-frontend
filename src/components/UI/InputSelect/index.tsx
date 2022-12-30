@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import Icon from "components/UI/Assets/Icon"
 import { ErrorMessage, Label, InputContainer } from "components/UI/sharedStyles"
+import InputSelectInterface from "interfaces/components/InputSelectInterface"
 import {
   Select,
   Option,
@@ -8,16 +9,6 @@ import {
   Input,
   IconContainer,
 } from "./styles"
-
-interface InputSelectInterface {
-  label: string
-  options: { id: number; value: string }[]
-  width?: number
-  required?: boolean
-  onClick?: (value: { id: number; value: string }) => void
-  error?: boolean
-  errorMessage?: string
-}
 
 function InputSelect({
   label,

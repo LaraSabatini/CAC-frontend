@@ -43,6 +43,7 @@ const OptionsContainer = styled.div<{ width?: number }>`
   top: 35px;
   width: ${({ width }) => (width as number) - 25 || 200}px !important;
   z-index: 100;
+  background-color: #f2f8ff;
 `
 
 const ErrorMessage = styled.span<{ width?: number }>`
