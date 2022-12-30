@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { getPricing } from "services/pricing/pricing.service"
+import { PaymentContext } from "contexts/Payment"
 import texts from "strings/pricing.json"
 import PricingInterface from "interfaces/content/Pricing"
 import PricingCard from "./PricingCard"
+import ClientDataForm from "../Payment/ClientDataForm"
 import { Container, Title, CardsContainer, SubTitle } from "./styles"
 
 function PricingView() {
-  const [pricingList, setPricingList] = useState<PricingInterface[]>([])
+  const { setPlanSelected, planSelected } = useContext(PaymentContext)
 
-  const subscribe = (id: number) => {
-    // eslint-disable-next-line no-console
-    console.log(id)
-  }
+  const [pricingList, setPricingList] = useState<PricingInterface[]>([])
 
   const fillData = async () => {
     const getPricingList = await getPricing()
@@ -38,10 +37,13 @@ function PricingView() {
               description={item.description}
               id={item.id}
               time={item.time}
-              selectPlan={() => subscribe(item.id)}
+              selectPlan={() => setPlanSelected(item)}
             />
           ))}
       </CardsContainer>
+      {planSelected !== null && (
+        <ClientDataForm closeModal={() => setPlanSelected(null)} />
+      )}
     </Container>
   )
 }

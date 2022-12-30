@@ -1,5 +1,10 @@
 {
     "actions": {
         "pay": "Pagar"
+    },
+    "form": {
+        "title": "Completa tus datos personales:",
+        "cancel": "Cancelar",
+        "next": "Subscribirme"
     }
 }

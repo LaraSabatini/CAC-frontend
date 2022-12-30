@@ -92,39 +92,39 @@ function Input({
 
   return (
     <>
-      {type === "text" && (
-        <InputContainer width={width}>
-          <Label htmlFor="input" error={error}>
-            {label}
-            {required && "*"}
-          </Label>
-          <InputStyled
-            width={width}
-            onChange={onChange}
-            onKeyDown={handleKeyDown}
-            disabled={disabled}
-            value={value}
-            placeholder={placeholder}
-            error={error}
-            data-error={error}
-            type="text"
-            autoComplete="off"
-            onBlur={e => {
-              checkInputs(e.currentTarget.value)
-              if (onBlur) {
-                onBlur(e)
-              }
-            }}
-            ref={ref}
-            pattern={pattern}
-          />
-          {(frontValidation || backValidation) && (
-            <ErrorMessage width={width}>
-              {frontValidation ? errorMessage : backErrorMessage}
-            </ErrorMessage>
-          )}
-        </InputContainer>
-      )}
+      {/* {type === "text" && ( */}
+      <InputContainer width={width}>
+        <Label htmlFor="input" error={error}>
+          {label}
+          {required && "*"}
+        </Label>
+        <InputStyled
+          width={width}
+          onChange={onChange}
+          onKeyDown={handleKeyDown}
+          disabled={disabled}
+          value={value}
+          placeholder={placeholder}
+          error={error}
+          data-error={error}
+          type="text"
+          autoComplete="off"
+          onBlur={e => {
+            checkInputs(e.currentTarget.value)
+            if (onBlur) {
+              onBlur(e)
+            }
+          }}
+          ref={ref}
+          pattern={pattern}
+        />
+        {(frontValidation || backValidation) && (
+          <ErrorMessage width={width}>
+            {frontValidation ? errorMessage : backErrorMessage}
+          </ErrorMessage>
+        )}
+      </InputContainer>
+      {/* )} */}
       {type === "password" && (
         <InputPassword width={width}>
           <Label htmlFor="input" error={error}>
