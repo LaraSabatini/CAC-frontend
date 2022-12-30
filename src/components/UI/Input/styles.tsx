@@ -11,6 +11,7 @@ const InputContainer = styled.div<{ width?: number }>`
   display: flex;
   flex-direction: column;
   width: ${({ width }) => (width as number) - 25 || 200}px !important;
+  height: 75px;
 `
 
 const Label = styled.label<{ error?: boolean }>`
@@ -30,7 +31,7 @@ const InputStyled = styled.input<{
   height: 30px;
   border: none;
   background-color: transparent;
-  border-bottom: 1px solid #466a956d;
+  border-bottom: 1px solid ${theme.colors.blue_alpha};
 
   ${TextStyled}
   font-size: ${theme.fontSizes.s};
@@ -91,7 +92,7 @@ const InputTextarea = styled.textarea<{
   resize: none;
   margin-top: 5px;
   border-radius: 5px;
-  border: 1px solid #466a956d;
+  border: 1px solid ${theme.colors.blue_alpha};
   background-color: transparent;
   padding: 8px 10px;
   ${TextStyled}

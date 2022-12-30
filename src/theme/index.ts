@@ -23,6 +23,7 @@ export default {
     purple_darl: "#33225e",
     white: "#f2f4f7",
     black: "#191919",
+    blue_alpha: "#466a956d",
   },
   fonts: {
     titles: "Sora",
