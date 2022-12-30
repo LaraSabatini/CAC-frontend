@@ -5,6 +5,13 @@
     "form": {
         "title": "Completa tus datos personales:",
         "cancel": "Cancelar",
-        "next": "Subscribirme"
+        "next": "Subscribirme",
+        "name": "Nombre",
+        "surname": "Apellido",
+        "identificationType": "Tipo de documento",
+        "identificationNumber": "Nº de documento",
+        "email": "Email",
+        "areaCode": "Cód. área",
+        "phone": "Nº de telefono"
     }
 }

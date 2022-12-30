@@ -1,12 +1,10 @@
 import { createContext, useState, useMemo } from "react"
 import { ItemInterface, PayerInterface } from "interfaces/payments/Preference"
-import PricingInterface from "interfaces/content/Pricing"
 import PaymentContextInterface from "interfaces/contexts/PaymentContextInterface"
+import defaultPaymet from "const/defaultPayment"
 
 export const PaymentContext = createContext<PaymentContextInterface>({
-  planSelected: null,
-  setPlanSelected: () => {},
-  payment: { item: null, payer: null },
+  payment: defaultPaymet,
   setPayment: () => {},
 })
 
@@ -14,20 +12,14 @@ function PaymentProvider({ children }: any) {
   const [payment, setPayment] = useState<{
     item: ItemInterface
     payer: PayerInterface
-  } | null>(null)
-
-  const [planSelected, setPlanSelected] = useState<PricingInterface | null>(
-    null,
-  )
+  }>(defaultPaymet)
 
   const value: any = useMemo(
     () => ({
       payment,
       setPayment,
-      planSelected,
-      setPlanSelected,
     }),
-    [payment, planSelected],
+    [payment],
   )
 
   return (

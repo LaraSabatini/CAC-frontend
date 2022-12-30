@@ -3,12 +3,14 @@ import { getPricing } from "services/pricing/pricing.service"
 import { PaymentContext } from "contexts/Payment"
 import texts from "strings/pricing.json"
 import PricingInterface from "interfaces/content/Pricing"
+import defaultPaymet from "const/defaultPayment"
 import PricingCard from "./PricingCard"
 import ClientDataForm from "../Payment/ClientDataForm"
+
 import { Container, Title, CardsContainer, SubTitle } from "./styles"
 
 function PricingView() {
-  const { setPlanSelected, planSelected } = useContext(PaymentContext)
+  const { setPayment, payment } = useContext(PaymentContext)
 
   const [pricingList, setPricingList] = useState<PricingInterface[]>([])
 
@@ -37,12 +39,22 @@ function PricingView() {
               description={item.description}
               id={item.id}
               time={item.time}
-              selectPlan={() => setPlanSelected(item)}
+              selectPlan={() =>
+                setPayment({
+                  item: {
+                    id: `${item.id}`,
+                    title: item.name,
+                    quantity: 1,
+                    unit_price: item.price,
+                  },
+                  payer: payment.payer,
+                })
+              }
             />
           ))}
       </CardsContainer>
-      {planSelected !== null && (
-        <ClientDataForm closeModal={() => setPlanSelected(null)} />
+      {payment.item.id !== "" && (
+        <ClientDataForm closeModal={() => setPayment(defaultPaymet)} />
       )}
     </Container>
   )

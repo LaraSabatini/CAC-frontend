@@ -14,7 +14,7 @@ interface InputSelectInterface {
   options: { id: number; value: string }[]
   width?: number
   required?: boolean
-  onClick?: (value?: { id?: number; display_name?: string }) => void
+  onClick?: (value: { id: number; value: string }) => void
   error?: boolean
   errorMessage?: string
 }
