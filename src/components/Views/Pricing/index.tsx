@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useContext } from "react"
+import React, { useEffect, useContext } from "react"
 import { getPricing } from "services/pricing/pricing.service"
 import { PaymentContext } from "contexts/Payment"
 import texts from "strings/pricing.json"
 import PricingInterface from "interfaces/content/Pricing"
-import defaultPaymet from "const/defaultPayment"
+import { defaultPaymet } from "const/defaultValuesForContext"
 import PricingCard from "./PricingCard"
 import ClientDataForm from "../Payment/ClientDataForm"
 
 import { Container, Title, CardsContainer, SubTitle } from "./styles"
 
 function PricingView() {
-  const { setPayment, payment } = useContext(PaymentContext)
-
-  const [pricingList, setPricingList] = useState<PricingInterface[]>([])
+  const { setPayment, payment, pricingList, setPricingList } = useContext(
+    PaymentContext,
+  )
 
   const fillData = async () => {
     const getPricingList = await getPricing()
@@ -21,6 +21,7 @@ function PricingView() {
 
   useEffect(() => {
     fillData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

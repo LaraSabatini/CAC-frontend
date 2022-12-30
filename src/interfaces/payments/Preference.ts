@@ -25,11 +25,6 @@ export interface PayerInterface {
     type: string
     number: string
   }
-  // address: {
-  //   street_name: string
-  //   street_number: string
-  //   zip_code: string
-  // }
 }
 
 export interface PaymentMethodsInterface {
