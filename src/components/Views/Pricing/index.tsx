@@ -10,9 +10,13 @@ import ClientDataForm from "../Payment/ClientDataForm"
 import { Container, Title, CardsContainer, SubTitle } from "./styles"
 
 function PricingView() {
-  const { setPayment, payment, pricingList, setPricingList } = useContext(
-    PaymentContext,
-  )
+  const {
+    setPayment,
+    payment,
+    pricingList,
+    setPricingList,
+    setInputErrors,
+  } = useContext(PaymentContext)
 
   const fillData = async () => {
     const getPricingList = await getPricing()
@@ -55,7 +59,12 @@ function PricingView() {
           ))}
       </CardsContainer>
       {payment.item.id !== "" && (
-        <ClientDataForm closeModal={() => setPayment(defaultPaymet)} />
+        <ClientDataForm
+          closeModal={() => {
+            setPayment(defaultPaymet)
+            setInputErrors(false)
+          }}
+        />
       )}
     </Container>
   )

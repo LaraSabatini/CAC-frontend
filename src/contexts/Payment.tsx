@@ -1,20 +1,17 @@
 import { createContext, useState, useMemo } from "react"
 import PricingInterface from "interfaces/content/Pricing"
-import InputValidation from "@interfaces/components/InputValidation"
 import { ItemInterface, PayerInterface } from "interfaces/payments/Preference"
 import PaymentContextInterface from "interfaces/contexts/PaymentContextInterface"
-import {
-  defaultPaymet,
-  inputErrorsDefault,
-} from "const/defaultValuesForContext"
+import { defaultPaymet } from "const/defaultValuesForContext"
 
 export const PaymentContext = createContext<PaymentContextInterface>({
   payment: defaultPaymet,
   setPayment: () => {},
   pricingList: [],
   setPricingList: () => {},
-  inputErrors: inputErrorsDefault,
+  inputErrors: false,
   setInputErrors: () => {},
+  frontValidation: () => {},
 })
 
 function PaymentProvider({ children }: any) {
@@ -25,9 +22,23 @@ function PaymentProvider({ children }: any) {
 
   const [pricingList, setPricingList] = useState<PricingInterface[]>([])
 
-  const [inputErrors, setInputErrors] = useState<InputValidation>(
-    inputErrorsDefault,
-  )
+  const [inputErrors, setInputErrors] = useState<boolean>(false)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const frontValidation = () => {
+    if (
+      payment.payer.name === "" ||
+      payment.payer.surname === "" ||
+      payment.payer.email === "" ||
+      payment.payer.phone.area_code === "" ||
+      payment.payer.phone.number === "" ||
+      payment.payer.identification.number === ""
+    ) {
+      setInputErrors(true)
+    } else {
+      setInputErrors(false)
+    }
+  }
 
   const value: any = useMemo(
     () => ({
@@ -37,8 +48,9 @@ function PaymentProvider({ children }: any) {
       setPricingList,
       inputErrors,
       setInputErrors,
+      frontValidation,
     }),
-    [payment, pricingList, inputErrors],
+    [payment, pricingList, inputErrors, frontValidation],
   )
 
   return (

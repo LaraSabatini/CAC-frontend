@@ -1,11 +1,11 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import Modal from "components/UI/Modal"
 import { PaymentContext } from "contexts/Payment"
 import identificationTypes from "const/identificationTypes"
 import texts from "strings/payment.json"
-import inputTexts from "strings/inputMessages.json"
 import Input from "components/UI/Input"
 import InputSelect from "components/UI/InputSelect"
+import MercadoPagoForm from "components/Views/Payment/MercadoPagoButton"
 import cleanPartnerData from "helpers/formatting/capitalizeFirstLetter"
 import {
   FormContainer,
@@ -14,6 +14,7 @@ import {
   ContinueButton,
   CancelButton,
   HorizontalGroup,
+  Error,
 } from "./styles"
 
 interface ClientDataFormInterface {
@@ -21,62 +22,20 @@ interface ClientDataFormInterface {
 }
 
 function ClientDataForm({ closeModal }: ClientDataFormInterface) {
-  const { setPayment, payment, inputErrors, setInputErrors } = useContext(
+  const { setPayment, payment, inputErrors, frontValidation } = useContext(
     PaymentContext,
   )
 
-  const frontValidation = () => {
-    if (payment.payer.name === "") {
-      setInputErrors({ ...inputErrors, name: true })
-    }
-    if (payment.payer.surname === "") {
-      setInputErrors({ ...inputErrors, surname: true })
-    }
-    if (payment.payer.email === "") {
-      setInputErrors({ ...inputErrors, email: true })
-    }
-    if (payment.payer.phone.area_code === "") {
-      setInputErrors({
-        ...inputErrors,
-        phone: {
-          area_code: true,
-          number: inputErrors.phone.number,
-        },
-      })
-    }
-    if (payment.payer.phone.number === "") {
-      setInputErrors({
-        ...inputErrors,
-        phone: {
-          area_code: inputErrors.phone.area_code,
-          number: true,
-        },
-      })
-    }
-    if (payment.payer.identification.number === "") {
-      setInputErrors({
-        ...inputErrors,
-        identification: {
-          number: true,
-        },
-      })
-    }
-
-    return (
-      inputErrors.name &&
-      inputErrors.surname &&
-      inputErrors.email &&
-      inputErrors.phone.area_code &&
-      inputErrors.phone.number &&
-      inputErrors.identification.number
-    )
-  }
+  const [renderMPButton, setRenderMPButton] = useState<boolean>(false)
 
   const validateInputs = () => {
-    const validate = frontValidation()
+    frontValidation()
 
-    if (validate) {
+    if (!inputErrors) {
       // validar DNI con BDD de clientes
+      // si la validacion de DNI pasa => pasar a MP
+
+      setRenderMPButton(true)
     }
   }
 
@@ -84,6 +43,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
     <Modal>
       <FormContainer>
         <Title>{texts.form.title}</Title>
+        {inputErrors && <Error>*Completa los campos requeridos</Error>}
         <HorizontalGroup>
           <Input
             width={200}
@@ -97,8 +57,6 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 payer: { ...payment.payer, name },
               })
             }}
-            backError={inputErrors.name}
-            backErrorMessage={inputTexts.isRequired}
           />
           <Input
             width={270}
@@ -112,8 +70,6 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 payer: { ...payment.payer, surname },
               })
             }}
-            backError={inputErrors.surname}
-            backErrorMessage={inputTexts.isRequired}
           />
         </HorizontalGroup>
         <HorizontalGroup>
@@ -152,8 +108,6 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 },
               })
             }
-            backError={inputErrors.identification.number}
-            backErrorMessage={inputTexts.isRequired}
           />
         </HorizontalGroup>
         <HorizontalGroup>
@@ -168,8 +122,6 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 payer: { ...payment.payer, email: e.target.value },
               })
             }}
-            backError={inputErrors.email}
-            backErrorMessage={inputTexts.isRequired}
           />
           <Input
             width={100}
@@ -188,8 +140,6 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 },
               })
             }}
-            backError={inputErrors.phone.area_code}
-            backErrorMessage={inputTexts.isRequired}
           />
           <Input
             width={175}
@@ -208,8 +158,6 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
                 },
               })
             }}
-            backError={inputErrors.phone.number}
-            backErrorMessage={inputTexts.isRequired}
           />
         </HorizontalGroup>
 
@@ -217,9 +165,13 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           <CancelButton type="button" onClick={closeModal}>
             {texts.form.cancel}
           </CancelButton>
-          <ContinueButton onClick={validateInputs} type="button">
-            {texts.form.next}
-          </ContinueButton>
+          {!renderMPButton ? (
+            <ContinueButton onClick={validateInputs} type="button">
+              {texts.form.next}
+            </ContinueButton>
+          ) : (
+            <MercadoPagoForm />
+          )}
         </ButtonContainer>
       </FormContainer>
     </Modal>

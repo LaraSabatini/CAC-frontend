@@ -19,7 +19,7 @@ const Title = styled.h3`
   ${TitleStyles}
   margin: 0;
   font-size: ${theme.fontSizes.m};
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 
   @media (max-width: ${theme.screenSize.mobile}) {
     font-size: ${theme.fontSizes.s};
@@ -61,6 +61,14 @@ const CancelButton = styled.button`
   border: 1px solid ${theme.colors.blue};
 `
 
+const Error = styled.p`
+  font-family: ${theme.fonts.content};
+  color: ${theme.colors.red};
+  font-weight: 500;
+  margin: 0;
+  padding-bottom: 15px;
+`
+
 export {
   FormContainer,
   Title,
@@ -68,4 +76,5 @@ export {
   ContinueButton,
   CancelButton,
   HorizontalGroup,
+  Error,
 }
