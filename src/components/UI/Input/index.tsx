@@ -94,7 +94,7 @@ function Input({
     <>
       {/* {type === "text" && ( */}
       <InputContainer width={width}>
-        <Label htmlFor="input" error={error}>
+        <Label htmlFor="input" error={error || backError}>
           {label}
           {required && "*"}
         </Label>
@@ -105,7 +105,7 @@ function Input({
           disabled={disabled}
           value={value}
           placeholder={placeholder}
-          error={error}
+          error={error || backError}
           data-error={error}
           type="text"
           autoComplete="off"
@@ -127,7 +127,7 @@ function Input({
       {/* )} */}
       {type === "password" && (
         <InputPassword width={width}>
-          <Label htmlFor="input" error={error}>
+          <Label htmlFor="input" error={error || backError}>
             {label}
             {required && "*"}
           </Label>
@@ -137,7 +137,7 @@ function Input({
               data-error={error}
               type={visibility ? "password" : "text"}
               autoComplete="off"
-              error={error}
+              error={error || backError}
               value={value}
               disabled={disabled}
               width={width}
