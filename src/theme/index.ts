@@ -34,6 +34,7 @@ export default {
     l: "30px",
     m: "20px",
     s: "16px",
+    xs: "14px",
   },
   fontWeights: {
     black: 900,
