@@ -2,7 +2,7 @@ import { createContext, useState, useMemo } from "react"
 import PricingInterface from "interfaces/content/Pricing"
 import { ItemInterface, PayerInterface } from "interfaces/payments/Preference"
 import PaymentContextInterface from "interfaces/contexts/PaymentContextInterface"
-import { defaultPaymet } from "const/defaultValuesForContext"
+import { defaultPaymet } from "const/defaultValuesForPaymentContext"
 
 export const PaymentContext = createContext<PaymentContextInterface>({
   payment: defaultPaymet,
