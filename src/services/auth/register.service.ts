@@ -8,7 +8,7 @@ const register = async (
   type: UserType,
   body: AdminInterface | ClientInterface,
 ) => {
-  const res = await defaultPost(`${apiURL}${type}/register`, body)
+  const res = await defaultPost(`${apiURL}/${type}/register`, body)
   return res
 }
 

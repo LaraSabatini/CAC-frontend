@@ -8,7 +8,7 @@ const changePassword = async (
   body: ChangePasswordInterface,
 ) => {
   const res = await axios.put(
-    `${apiURL}${type}/change-password`,
+    `${apiURL}/${type}/change-password`,
     body,
     axiosHeader,
   )
