@@ -3,20 +3,18 @@ interface ClientInterface {
   userName: string
   email: string
   password: string
-  contactInfo: {
-    // JSON
-    phone: number
-    address: {
-      street: string
-      streetNumber: number
-      neighbourhood: string
-      state: string
-      country: string
-    }
+  phone: {
+    area_code: string
+    number: string
   }
-  preferences: number[] // JSON
-  accountBlocked: boolean // 0 || 1
-  subscription: boolean // active | inactive
+  identification: {
+    type: string
+    number: string
+  }
+  dateCreated: string
+  preferences: number[]
+  accountBlocked: 0 | 1
+  subscription: 0 | 1
 }
 
 export default ClientInterface
