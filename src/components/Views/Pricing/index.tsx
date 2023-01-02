@@ -23,6 +23,18 @@ function PricingView() {
     setPricingList(getPricingList.data)
   }
 
+  const selectPlan = (item: PricingInterface) => {
+    setPayment({
+      item: {
+        id: `${item.id}`,
+        title: item.name,
+        quantity: 1,
+        unit_price: item.price,
+      },
+      payer: payment.payer,
+    })
+  }
+
   useEffect(() => {
     fillData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -35,7 +47,7 @@ function PricingView() {
         <SubTitle>{texts.description}</SubTitle>
       </div>
       <CardsContainer>
-        {pricingList.length &&
+        {pricingList.length > 0 &&
           pricingList.map((item: PricingInterface) => (
             <PricingCard
               key={item.id}
@@ -44,17 +56,7 @@ function PricingView() {
               description={item.description}
               id={item.id}
               time={item.time}
-              selectPlan={() =>
-                setPayment({
-                  item: {
-                    id: `${item.id}`,
-                    title: item.name,
-                    quantity: 1,
-                    unit_price: item.price,
-                  },
-                  payer: payment.payer,
-                })
-              }
+              selectPlan={() => selectPlan(item)}
             />
           ))}
       </CardsContainer>
