@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react"
-import { getPricing } from "services/pricing/pricing.service"
+import getPlans from "services/pricing/getPlans.service"
 import { PaymentContext } from "contexts/Payment"
 import texts from "strings/pricing.json"
 import PricingInterface from "interfaces/content/Pricing"
@@ -15,7 +15,7 @@ function PricingView() {
   )
 
   const fillData = async () => {
-    const getPricingList = await getPricing()
+    const getPricingList = await getPlans()
     setPricingList(getPricingList.data)
   }
 
