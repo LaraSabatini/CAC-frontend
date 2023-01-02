@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react"
 import Modal from "components/UI/Modal"
+import validateClient from "services/auth/validateClient.service"
 import { PaymentContext } from "contexts/Payment"
 import identificationTypes from "const/identificationTypes"
 import texts from "strings/payment.json"
@@ -22,20 +23,34 @@ interface ClientDataFormInterface {
 }
 
 function ClientDataForm({ closeModal }: ClientDataFormInterface) {
-  const { setPayment, payment, inputErrors, frontValidation } = useContext(
-    PaymentContext,
-  )
+  const { setPayment, payment, frontValidation } = useContext(PaymentContext)
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [renderMPButton, setRenderMPButton] = useState<boolean>(false)
+  const [formErrors, setFormErrors] = useState<boolean>(false)
 
-  const validateInputs = () => {
-    frontValidation()
+  const validateInputs = async () => {
+    const validate = frontValidation()
+    setFormErrors(!validate)
 
-    if (!inputErrors) {
+    if (validate) {
       // validar DNI con BDD de clientes
       // si la validacion de DNI pasa => pasar a MP
+      const validationBody = {
+        email: payment.payer.email,
+        identificationNumber: payment.payer.identification.number,
+      }
+      const validateDuplicated = await validateClient(validationBody)
 
-      setRenderMPButton(true)
+      // eslint-disable-next-line no-console
+      console.log("validateDuplicated", validateDuplicated)
+
+      // setRenderMPButton(true)
+
+      // despues del pago => registro usuario
+    } else {
+      // eslint-disable-next-line no-console
+      console.log("no se puede crear")
     }
   }
 
@@ -43,7 +58,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
     <Modal>
       <FormContainer>
         <Title>{texts.form.title}</Title>
-        {inputErrors && <Error>*Completa los campos requeridos</Error>}
+        {formErrors && <Error>*Completa los campos requeridos</Error>}
         <HorizontalGroup>
           <Input
             width={200}

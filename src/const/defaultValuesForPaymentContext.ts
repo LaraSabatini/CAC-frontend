@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/prefer-default-export
 export const defaultPaymet = {
   item: {
     id: "",
@@ -14,21 +15,8 @@ export const defaultPaymet = {
       number: "",
     },
     identification: {
-      type: "",
+      type: "DNI",
       number: "",
     },
-  },
-}
-
-export const inputErrorsDefault = {
-  name: false,
-  surname: false,
-  email: false,
-  phone: {
-    area_code: false,
-    number: false,
-  },
-  identification: {
-    number: false,
   },
 }

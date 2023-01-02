@@ -1,20 +1,17 @@
 interface ClientInterface {
   id: number
-  userName: string
+  name: string
+  lastName: string
   email: string
   password: string
-  phone: {
-    area_code: string
-    number: string
-  }
-  identification: {
-    type: string
-    number: string
-  }
-  dateCreated: string
+  identificationType: string
+  identificationNumber: string
+  phoneAreaCode: string
+  phoneNumber: string
   preferences: number[]
-  accountBlocked: number
-  subscription: number
+  accountBlocked: boolean
+  subscription: boolean
+  dateCreated: string
 }
 
 export default ClientInterface

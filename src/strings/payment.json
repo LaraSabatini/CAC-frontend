@@ -5,7 +5,7 @@
     "form": {
         "title": "Completa tus datos personales:",
         "cancel": "Cancelar",
-        "next": "Subscribirme",
+        "next": "Validar datos",
         "name": "Nombre",
         "surname": "Apellido",
         "identificationType": "Tipo de documento",

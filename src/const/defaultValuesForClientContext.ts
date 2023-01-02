@@ -1,20 +1,19 @@
-const defaultClient = {
+import ClientInterface from "interfaces/users/Client"
+
+const defaultClient: ClientInterface = {
   id: 0,
-  userName: "",
+  name: "",
+  lastName: "",
   email: "",
   password: "",
-  phone: {
-    area_code: "",
-    number: "",
-  },
-  identification: {
-    type: "",
-    number: "",
-  },
+  identificationType: "",
+  identificationNumber: "",
+  phoneAreaCode: "",
+  phoneNumber: "",
+  preferences: [],
+  accountBlocked: false,
+  subscription: true,
   dateCreated: "",
-  preferences: [0],
-  accountBlocked: 0,
-  subscription: 1,
 }
 
 export default defaultClient

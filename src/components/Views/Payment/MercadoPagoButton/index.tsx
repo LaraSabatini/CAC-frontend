@@ -23,7 +23,7 @@ function MercadoPagoForm() {
         },
         render: {
           container: ".cho-container",
-          label: "Siguiente",
+          label: "Pagar",
         },
       })
       setRendered(true)
