@@ -6,8 +6,6 @@ interface PaymentContextInterface {
   setPayment(payment: { item: ItemInterface; payer: PayerInterface }): void
   pricingList: PricingInterface[]
   setPricingList(pricingList: PricingInterface[]): void
-  inputErrors: boolean
-  setInputErrors(inputErrors: boolean): void
-  frontValidation: () => void
+  frontValidation: () => boolean
 }
 export default PaymentContextInterface

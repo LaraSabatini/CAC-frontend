@@ -9,9 +9,7 @@ export const PaymentContext = createContext<PaymentContextInterface>({
   setPayment: () => {},
   pricingList: [],
   setPricingList: () => {},
-  inputErrors: false,
-  setInputErrors: () => {},
-  frontValidation: () => {},
+  frontValidation: () => false,
 })
 
 function PaymentProvider({ children }: any) {
@@ -21,8 +19,6 @@ function PaymentProvider({ children }: any) {
   }>(defaultPaymet)
 
   const [pricingList, setPricingList] = useState<PricingInterface[]>([])
-
-  const [inputErrors, setInputErrors] = useState<boolean>(false)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const frontValidation = () => {
@@ -34,10 +30,9 @@ function PaymentProvider({ children }: any) {
       payment.payer.phone.number === "" ||
       payment.payer.identification.number === ""
     ) {
-      setInputErrors(true)
-    } else {
-      setInputErrors(false)
+      return false
     }
+    return true
   }
 
   const value: any = useMemo(
@@ -46,11 +41,9 @@ function PaymentProvider({ children }: any) {
       setPayment,
       pricingList,
       setPricingList,
-      inputErrors,
-      setInputErrors,
       frontValidation,
     }),
-    [payment, pricingList, inputErrors, frontValidation],
+    [payment, pricingList, frontValidation],
   )
 
   return (
