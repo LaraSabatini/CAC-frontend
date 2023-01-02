@@ -7,5 +7,7 @@ interface PaymentContextInterface {
   pricingList: PricingInterface[]
   setPricingList(pricingList: PricingInterface[]): void
   frontValidation: () => boolean
+  preferenceId: string
+  setPreferenceId: (preferenceId: string) => void
 }
 export default PaymentContextInterface

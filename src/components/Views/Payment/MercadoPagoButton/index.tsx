@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react"
 // import paymentTexts from "strings/payment.json"
 import { useMercadopago } from "react-sdk-mercadopago"
 
-function MercadoPagoForm() {
+interface MercadoPagoFormInterface {
+  preference: string
+}
+
+function MercadoPagoForm({ preference }: MercadoPagoFormInterface) {
   // GENERAR PREFERENCIA CON LOS PRODUCTOS Y LOS DATOS DEL COMPRADOR
   // RECORDATORIO: UNA VEZ CON LAS CREDENCIALES DE PROD NO VA A ESTAR LA MARCA DE AGUA
 
@@ -19,7 +23,7 @@ function MercadoPagoForm() {
     if (mercadopago && !rendered) {
       mercadopago.checkout({
         preference: {
-          id: "770826081-6174eaec-958a-495c-9ce5-02279182527c",
+          id: preference,
         },
         render: {
           container: ".cho-container",
@@ -28,6 +32,7 @@ function MercadoPagoForm() {
       })
       setRendered(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mercadopago, rendered])
 
   return <div className="cho-container" />

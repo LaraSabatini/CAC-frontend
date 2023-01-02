@@ -10,6 +10,8 @@ export const PaymentContext = createContext<PaymentContextInterface>({
   pricingList: [],
   setPricingList: () => {},
   frontValidation: () => false,
+  preferenceId: "",
+  setPreferenceId: () => {},
 })
 
 function PaymentProvider({ children }: any) {
@@ -19,6 +21,8 @@ function PaymentProvider({ children }: any) {
   }>(defaultPaymet)
 
   const [pricingList, setPricingList] = useState<PricingInterface[]>([])
+
+  const [preferenceId, setPreferenceId] = useState<string>("")
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const frontValidation = () => {
@@ -42,8 +46,10 @@ function PaymentProvider({ children }: any) {
       pricingList,
       setPricingList,
       frontValidation,
+      preferenceId,
+      setPreferenceId,
     }),
-    [payment, pricingList, frontValidation],
+    [payment, pricingList, frontValidation, preferenceId],
   )
 
   return (
