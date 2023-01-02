@@ -3,7 +3,7 @@ import { getPricing } from "services/pricing/pricing.service"
 import { PaymentContext } from "contexts/Payment"
 import texts from "strings/pricing.json"
 import PricingInterface from "interfaces/content/Pricing"
-import { defaultPaymet } from "const/defaultValuesForContext"
+import { defaultPaymet } from "const/defaultValuesForPaymentContext"
 import PricingCard from "./PricingCard"
 import ClientDataForm from "../Payment/ClientDataForm"
 

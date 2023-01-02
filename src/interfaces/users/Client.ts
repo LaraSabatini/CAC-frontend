@@ -13,8 +13,8 @@ interface ClientInterface {
   }
   dateCreated: string
   preferences: number[]
-  accountBlocked: 0 | 1
-  subscription: 0 | 1
+  accountBlocked: number
+  subscription: number
 }
 
 export default ClientInterface
