@@ -67,7 +67,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
             paymentExpireDate: addMonths(payment.item.time as number),
           }
 
-          sessionStorage.setItem("client", JSON.stringify({ newClient }))
+          sessionStorage.setItem("client", JSON.stringify(newClient))
           sessionStorage.setItem("payment", JSON.stringify(paymentData))
 
           setPreferenceId(createPreferenceId.id)

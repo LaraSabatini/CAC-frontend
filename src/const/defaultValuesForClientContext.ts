@@ -10,7 +10,7 @@ const defaultClient: ClientInterface = {
   identificationNumber: "",
   phoneAreaCode: "",
   phoneNumber: "",
-  preferences: [],
+  preferences: "[]",
   accountBlocked: false,
   subscription: true,
   dateCreated: "",

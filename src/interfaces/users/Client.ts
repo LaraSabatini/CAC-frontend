@@ -8,7 +8,7 @@ interface ClientInterface {
   identificationNumber: string
   phoneAreaCode: string
   phoneNumber: string
-  preferences: number[]
+  preferences: string
   accountBlocked: boolean
   subscription: boolean
   dateCreated: string

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import register from "services/auth/register.service"
 import registerPaymentInDB from "services/payment/registerPaymentInDB.service"
+import validateClient from "services/auth/validateClient.service"
 import GenericError from "components/Views/Error/GenericError"
 import SuccessView from "components/Views/Payment/SuccessView"
 import texts from "strings/errors.json"
@@ -31,30 +32,40 @@ function Payment() {
 
     const newPassword = generatePassword()
 
-    const registerNewClient = await register("client", {
-      ...client,
+    const newClientInfo = {
+      ...client.newClient,
       password: newPassword,
       accountBlocked: 0,
       subscription: 1,
       dateCreated: dateFormated,
+      preferences: "[]",
+    }
+
+    const validateClientDuplication = await validateClient({
+      email: newClientInfo.email,
+      identificationNumber: newClientInfo.identificationNumber,
     })
 
-    if (registerNewClient.status === 200) {
-      const registerPayment = await registerPaymentInDB({
-        ...payment,
-        paymentId: router.query.payment_id,
-        collectionId: router.query.collection_id,
-        collectionStatus: router.query.collection_status,
-        status: router.query.status,
-        paymentType: router.query.payment_type,
-        merchantOrderId: router.query.merchant_order_id,
-        clientId: registerNewClient.clientId,
-      })
+    if (validateClientDuplication.status === "available") {
+      const registerNewClient = await register("client", newClientInfo)
 
-      success =
-        registerPayment.status === 200 && registerNewClient.status === 200
+      if (registerNewClient.status === 200) {
+        const registerPayment = await registerPaymentInDB({
+          ...payment,
+          paymentId: router.query.payment_id,
+          collectionId: router.query.collection_id,
+          collectionStatus: router.query.collection_status,
+          status: router.query.status,
+          paymentType: router.query.payment_type,
+          merchantOrderId: router.query.merchant_order_id,
+          clientId: registerNewClient.clientId,
+        })
 
-      setRegistrationSuccess(success)
+        success =
+          registerPayment.status === 200 && registerNewClient.status === 200
+
+        setRegistrationSuccess(success)
+      }
     }
 
     if (success) {
