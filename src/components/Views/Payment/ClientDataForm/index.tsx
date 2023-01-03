@@ -5,6 +5,7 @@ import createPreference from "services/payment/createPreference.service"
 import { ClientsContext } from "contexts/Clients"
 import { PaymentContext } from "contexts/Payment"
 import addMonths from "helpers/dates/addMonths"
+import frontValidation from "helpers/forms/validateFrontRegistration"
 import texts from "strings/payment.json"
 import Modal from "components/UI/Modal"
 import MercadoPagoForm from "components/Views/Payment/MercadoPagoButton"
@@ -26,13 +27,20 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   const router = useRouter()
 
   const { payment, preferenceId, setPreferenceId } = useContext(PaymentContext)
-  const { newClient, frontValidation } = useContext(ClientsContext)
+  const { newClient } = useContext(ClientsContext)
 
   const [renderMPButton, setRenderMPButton] = useState<boolean>(false)
   const [formError, setFormError] = useState<string>("")
 
   const validateInputs = async () => {
-    const validate = frontValidation()
+    const validate = frontValidation(
+      newClient.name,
+      newClient.lastName,
+      newClient.email,
+      newClient.phoneAreaCode,
+      newClient.phoneNumber,
+      newClient.identificationNumber,
+    )
 
     if (validate) {
       setFormError("")
