@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import register from "services/auth/register.service"
 import registerPaymentInDB from "services/payment/registerPaymentInDB.service"
 import GenericError from "components/Views/Error/GenericError"
+import SuccessView from "components/Views/Payment/SuccessView"
 import texts from "strings/errors.json"
 import { dateFormated } from "helpers/dates/getToday"
 import generatePassword from "helpers/users/generatePassword"
@@ -14,6 +15,8 @@ function Payment() {
     "success" | "failure" | "peding" | "preferenceError" | string
   >()
 
+  const [registrationSuccess, setRegistrationSuccess] = useState<boolean>(false)
+
   useEffect(() => {
     setPaymentStatus(
       (router.query.payment_status as string) ?? "preferenceError",
@@ -22,8 +25,7 @@ function Payment() {
   }, [router])
 
   const registerData = async () => {
-    let success: boolean | string = false
-
+    let success: boolean = false
     const client = JSON.parse(sessionStorage.getItem("client") as string)
     const payment = JSON.parse(sessionStorage.getItem("payment") as string)
 
@@ -51,14 +53,13 @@ function Payment() {
 
       success =
         registerPayment.status === 200 && registerNewClient.status === 200
-          ? true
-          : "Ocurrio un error al registrar el cliente o el pago"
+
+      setRegistrationSuccess(success)
     }
 
     if (success) {
       sessionStorage.removeItem("client")
       sessionStorage.removeItem("payment")
-      router.push("/payment?payment_status=success&information_view=true")
     }
   }
 
@@ -71,7 +72,7 @@ function Payment() {
 
   return (
     <div>
-      {paymentStatus === "success" && "success"}
+      {paymentStatus === "success" && registrationSuccess && <SuccessView />}
       {paymentStatus === "pending" && (
         <GenericError
           title={texts.paymentPending.title}
