@@ -3,7 +3,7 @@ import { ItemInterface, PayerInterface } from "interfaces/payments/Preference"
 import apiURL from "./route"
 
 const createPreference = async (body: {
-  items: ItemInterface[]
+  item: ItemInterface[]
   payer: PayerInterface
 }) => {
   const res = await defaultPost(`${apiURL}/create-preference`, body)

@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { PaymentContext } from "contexts/Payment"
+import { ClientsContext } from "contexts/Clients"
 import cleanPartnerData from "helpers/formatting/capitalizeFirstLetter"
 import identificationTypes from "const/identificationTypes"
 import texts from "strings/payment.json"
@@ -8,7 +8,8 @@ import InputSelect from "components/UI/InputSelect"
 import { HorizontalGroup } from "../styles"
 
 function Inputs() {
-  const { setPayment, payment } = useContext(PaymentContext)
+  const { newClient, setNewClient } = useContext(ClientsContext)
+
   return (
     <>
       <HorizontalGroup>
@@ -19,9 +20,9 @@ function Inputs() {
           type="text"
           onChange={e => {
             const name = cleanPartnerData(e.target.value)
-            setPayment({
-              item: payment.item,
-              payer: { ...payment.payer, name },
+            setNewClient({
+              ...newClient,
+              name,
             })
           }}
         />
@@ -31,10 +32,10 @@ function Inputs() {
           required
           type="text"
           onChange={e => {
-            const surname = cleanPartnerData(e.target.value)
-            setPayment({
-              item: payment.item,
-              payer: { ...payment.payer, surname },
+            const lastName = cleanPartnerData(e.target.value)
+            setNewClient({
+              ...newClient,
+              lastName,
             })
           }}
         />
@@ -46,15 +47,9 @@ function Inputs() {
           options={identificationTypes}
           required
           onClick={(e: { id: number; value: string }) => {
-            setPayment({
-              item: payment.item,
-              payer: {
-                ...payment.payer,
-                identification: {
-                  type: e.value,
-                  number: payment.payer.identification.number,
-                },
-              },
+            setNewClient({
+              ...newClient,
+              identificationType: e.value,
             })
           }}
         />
@@ -64,15 +59,9 @@ function Inputs() {
           required
           type="text"
           onChange={e =>
-            setPayment({
-              item: payment.item,
-              payer: {
-                ...payment.payer,
-                identification: {
-                  type: payment.payer.identification.type,
-                  number: e.target.value,
-                },
-              },
+            setNewClient({
+              ...newClient,
+              identificationNumber: e.target.value,
             })
           }
         />
@@ -84,9 +73,9 @@ function Inputs() {
           required
           type="email"
           onChange={e => {
-            setPayment({
-              item: payment.item,
-              payer: { ...payment.payer, email: e.target.value },
+            setNewClient({
+              ...newClient,
+              email: e.target.value,
             })
           }}
         />
@@ -96,15 +85,9 @@ function Inputs() {
           required
           type="number"
           onChange={e => {
-            setPayment({
-              item: payment.item,
-              payer: {
-                ...payment.payer,
-                phone: {
-                  area_code: e.target.value,
-                  number: payment.payer.phone.number,
-                },
-              },
+            setNewClient({
+              ...newClient,
+              phoneAreaCode: e.target.value,
             })
           }}
         />
@@ -114,15 +97,9 @@ function Inputs() {
           required
           type="number"
           onChange={e => {
-            setPayment({
-              item: payment.item,
-              payer: {
-                ...payment.payer,
-                phone: {
-                  area_code: payment.payer.phone.area_code,
-                  number: e.target.value,
-                },
-              },
+            setNewClient({
+              ...newClient,
+              phoneNumber: e.target.value,
             })
           }}
         />

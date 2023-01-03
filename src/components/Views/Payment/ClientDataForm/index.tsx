@@ -1,8 +1,11 @@
 import React, { useContext, useState } from "react"
-import Modal from "components/UI/Modal"
+import { useRouter } from "next/router"
 import validateClient from "services/auth/validateClient.service"
+import createPreference from "services/payment/createPreference.service"
+import { ClientsContext } from "contexts/Clients"
 import { PaymentContext } from "contexts/Payment"
 import texts from "strings/payment.json"
+import Modal from "components/UI/Modal"
 import MercadoPagoForm from "components/Views/Payment/MercadoPagoButton"
 import Inputs from "./Inputs"
 import {
@@ -19,9 +22,11 @@ interface ClientDataFormInterface {
 }
 
 function ClientDataForm({ closeModal }: ClientDataFormInterface) {
-  const { payment, frontValidation, preferenceId } = useContext(PaymentContext)
+  const router = useRouter()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { payment, preferenceId, setPreferenceId } = useContext(PaymentContext)
+  const { newClient, frontValidation } = useContext(ClientsContext)
+
   const [renderMPButton, setRenderMPButton] = useState<boolean>(false)
   const [formError, setFormError] = useState<string>("")
 
@@ -31,16 +36,29 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
     if (validate) {
       setFormError("")
       const validationBody = {
-        email: payment.payer.email,
-        identificationNumber: payment.payer.identification.number,
+        email: newClient.email,
+        identificationNumber: newClient.identificationNumber,
       }
       const validateDuplicated = await validateClient(validationBody)
 
       if (validateDuplicated.status !== "duplicated") {
-        // eslint-disable-next-line no-console
-        console.log("se puede")
+        const createPreferenceId = await createPreference({
+          item: [payment.item],
+          payer: {
+            name: newClient.name,
+            surname: newClient.lastName,
+            email: newClient.email,
+          },
+        })
 
-        // setRenderMPButton(true)
+        if (createPreferenceId.status === 200) {
+          setPreferenceId(createPreferenceId.id)
+          setRenderMPButton(true)
+        } else {
+          // HANDLE ERROR
+          // pantalla error al generar preferencia
+          router.push("/payment?payment_status=failure")
+        }
       } else {
         setFormError(texts.form.duplicatedError)
       }

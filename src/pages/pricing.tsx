@@ -1,11 +1,14 @@
 import React from "react"
 import PaymentProvider from "contexts/Payment"
+import ClientsProvider from "contexts/Clients"
 import PricingView from "components/Views/Pricing"
 
 function Pricing() {
   return (
     <PaymentProvider>
-      <PricingView />
+      <ClientsProvider>
+        <PricingView />
+      </ClientsProvider>
     </PaymentProvider>
   )
 }

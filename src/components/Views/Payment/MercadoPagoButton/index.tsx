@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-// import paymentTexts from "strings/payment.json"
+import paymentTexts from "strings/payment.json"
 import { useMercadopago } from "react-sdk-mercadopago"
 
 interface MercadoPagoFormInterface {
@@ -7,11 +7,9 @@ interface MercadoPagoFormInterface {
 }
 
 function MercadoPagoForm({ preference }: MercadoPagoFormInterface) {
-  // GENERAR PREFERENCIA CON LOS PRODUCTOS Y LOS DATOS DEL COMPRADOR
-  // RECORDATORIO: UNA VEZ CON LAS CREDENCIALES DE PROD NO VA A ESTAR LA MARCA DE AGUA
-
   const mercadopago = useMercadopago.v2(
-    "TEST-ac3e4ad5-9e58-4286-b691-b9b27aba567b",
+    // "TEST-ac3e4ad5-9e58-4286-b691-b9b27aba567b",
+    "TEST-c16abe0b-30df-476b-8215-2c66eeb66da2",
     {
       locale: "es-AR",
     },
@@ -27,7 +25,7 @@ function MercadoPagoForm({ preference }: MercadoPagoFormInterface) {
         },
         render: {
           container: ".cho-container",
-          label: "Pagar",
+          label: `${paymentTexts.actions.pay}`,
         },
       })
       setRendered(true)
