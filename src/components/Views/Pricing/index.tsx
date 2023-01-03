@@ -6,7 +6,6 @@ import PricingInterface from "interfaces/content/Pricing"
 import defaultPaymet from "const/defaultValuesForPaymentContext"
 import PricingCard from "./PricingCard"
 import ClientDataForm from "../Payment/ClientDataForm"
-
 import { Container, Title, CardsContainer, SubTitle } from "./styles"
 
 function PricingView() {
@@ -14,26 +13,26 @@ function PricingView() {
     PaymentContext,
   )
 
-  const fillData = async () => {
-    const getPricingList = await getPlans()
-    setPricingList(getPricingList.data)
-  }
-
-  const selectPlan = (item: PricingInterface) => {
+  const selectPlan = (pricingPlan: PricingInterface) => {
     setPayment({
       item: {
-        id: `${item.id}`,
-        title: item.name,
+        id: `${pricingPlan.id}`,
+        title: pricingPlan.name,
         quantity: 1,
-        unit_price: item.price,
-        time: item.time,
+        unit_price: pricingPlan.price,
+        time: pricingPlan.time,
       },
       payer: payment.payer,
     })
   }
 
+  const getPricingPlans = async () => {
+    const getPricingList = await getPlans()
+    setPricingList(getPricingList.data)
+  }
+
   useEffect(() => {
-    fillData()
+    getPricingPlans()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -45,15 +44,15 @@ function PricingView() {
       </div>
       <CardsContainer>
         {pricingList.length > 0 &&
-          pricingList.map((item: PricingInterface) => (
+          pricingList.map((pricingPlan: PricingInterface) => (
             <PricingCard
-              key={item.id}
-              name={item.name}
-              price={item.price}
-              description={item.description}
-              id={item.id}
-              time={item.time}
-              selectPlan={() => selectPlan(item)}
+              key={pricingPlan.id}
+              name={pricingPlan.name}
+              price={pricingPlan.price}
+              description={pricingPlan.description}
+              id={pricingPlan.id}
+              time={pricingPlan.time}
+              selectPlan={() => selectPlan(pricingPlan)}
             />
           ))}
       </CardsContainer>
