@@ -15,5 +15,11 @@
         "phone": "Nº de telefono",
         "requiredError": "* Completa los campos requeridos",
         "duplicatedError": "* Ya existe un usuario registrado con el DNI o email ingresados"
+    },
+    "success": {
+        "title": "Excelente!",
+        "message": "Tu pago se proceso con exito.",
+        "description": "Recibiras un email con tus credenciales para iniciar sesion.",
+        "button": "Iniciar sesion"
     }
 }
