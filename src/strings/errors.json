@@ -1,0 +1,7 @@
+{
+    "paymentError": {
+        "title": "Error de pago - UPS!",
+        "description": "Ocurrio un error al procesar tu pago, por favor intentalo nuevamente mas tarde.",
+        "button": "Volver"
+    }
+}
