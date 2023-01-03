@@ -3,5 +3,14 @@
         "title": "Error de pago - UPS!",
         "description": "Ocurrio un error al procesar tu pago, por favor intentalo nuevamente mas tarde.",
         "button": "Volver"
+    },
+    "paymentPending": {
+        "title": "Pago pendiente",
+        "description": "Tu pago esta en proceso."
+    },
+    "preferenceError": {
+        "title": "UPS!",
+        "description": "Ocurrio un error en el proceso de la compra, por favor intentalo nuevamente mas tarde.",
+        "span": "500 - Internal Server Error"
     }
 }

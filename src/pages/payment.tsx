@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
-import PaymentErrorView from "components/Views/Error/PaymentError"
-import PreferenceError from "components/Views/Error/PreferenceError"
+import GenericError from "components/Views/Error/GenericError"
+import texts from "strings/errors.json"
 import { useRouter } from "next/router"
 
 function Payment() {
@@ -20,9 +20,31 @@ function Payment() {
   return (
     <div>
       {paymentStatus === "success" && "success"}
-      {paymentStatus === "pending" && "pending"}
-      {paymentStatus === "failure" && <PaymentErrorView />}
-      {paymentStatus === "preferenceError" && <PreferenceError />}
+      {paymentStatus === "pending" && (
+        <GenericError
+          title={texts.paymentPending.title}
+          description={texts.paymentPending.description}
+          actionButton={() => router.push("/pricing")}
+          type="pending"
+        />
+      )}
+      {paymentStatus === "failure" && (
+        <GenericError
+          title={texts.paymentError.title}
+          description={texts.paymentError.description}
+          actionButton={() => router.push("/pricing")}
+          type="error"
+        />
+      )}
+      {paymentStatus === "preferenceError" && (
+        <GenericError
+          title={texts.preferenceError.title}
+          description={texts.preferenceError.description}
+          actionButton={() => router.push("/pricing")}
+          type="preference"
+          span={texts.preferenceError.span}
+        />
+      )}
     </div>
   )
 }
