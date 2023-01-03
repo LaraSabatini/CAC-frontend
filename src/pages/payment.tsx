@@ -11,8 +11,9 @@ function Payment() {
 
   useEffect(() => {
     setPaymentStatus(router.query.payment_status as string)
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [router])
 
   return (
     <div>

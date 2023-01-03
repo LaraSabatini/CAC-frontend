@@ -3,7 +3,7 @@ import { TitleStyles } from "theme/styles"
 import theme from "theme/index"
 
 const Container = styled.div`
-  width: 532px;
+  width: 70%;
   margin: 0 auto;
   padding-top: 10%;
   display: flex;
