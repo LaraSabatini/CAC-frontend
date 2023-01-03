@@ -4,6 +4,7 @@ const defaultPaymet = {
     title: "",
     quantity: 0,
     unit_price: 0,
+    time: 0,
   },
   payer: {
     name: "",

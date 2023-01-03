@@ -4,6 +4,7 @@ import validateClient from "services/auth/validateClient.service"
 import createPreference from "services/payment/createPreference.service"
 import { ClientsContext } from "contexts/Clients"
 import { PaymentContext } from "contexts/Payment"
+import addMonths from "helpers/dates/addMonths"
 import texts from "strings/payment.json"
 import Modal from "components/UI/Modal"
 import MercadoPagoForm from "components/Views/Payment/MercadoPagoButton"
@@ -43,7 +44,14 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
 
       if (validateDuplicated.status !== "duplicated") {
         const createPreferenceId = await createPreference({
-          item: [payment.item],
+          item: [
+            {
+              id: payment.item.id,
+              title: payment.item.title,
+              quantity: 1,
+              unit_price: payment.item.unit_price,
+            },
+          ],
           payer: {
             name: newClient.name,
             surname: newClient.lastName,
@@ -52,6 +60,16 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
         })
 
         if (createPreferenceId.status === 200) {
+          const paymentData = {
+            preferenceId: createPreferenceId.id,
+            pricePaid: payment.item.unit_price,
+            itemId: payment.item.id,
+            paymentExpireDate: addMonths(payment.item.time as number),
+          }
+
+          sessionStorage.setItem("client", JSON.stringify({ newClient }))
+          sessionStorage.setItem("payment", JSON.stringify(paymentData))
+
           setPreferenceId(createPreferenceId.id)
           setRenderMPButton(true)
         } else {

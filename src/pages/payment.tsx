@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react"
+import register from "services/auth/register.service"
+import registerPaymentInDB from "services/payment/registerPaymentInDB.service"
 import GenericError from "components/Views/Error/GenericError"
 import texts from "strings/errors.json"
+import { dateFormated } from "helpers/dates/getToday"
+import generatePassword from "helpers/users/generatePassword"
 import { useRouter } from "next/router"
 
 function Payment() {
@@ -16,6 +20,54 @@ function Payment() {
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
+
+  const registerData = async () => {
+    let success: boolean | string = false
+
+    const client = JSON.parse(sessionStorage.getItem("client") as string)
+    const payment = JSON.parse(sessionStorage.getItem("payment") as string)
+
+    const newPassword = generatePassword()
+
+    const registerNewClient = await register("client", {
+      ...client,
+      password: newPassword,
+      accountBlocked: 0,
+      subscription: 1,
+      dateCreated: dateFormated,
+    })
+
+    if (registerNewClient.status === 200) {
+      const registerPayment = await registerPaymentInDB({
+        ...payment,
+        paymentId: router.query.payment_id,
+        collectionId: router.query.collection_id,
+        collectionStatus: router.query.collection_status,
+        status: router.query.status,
+        paymentType: router.query.payment_type,
+        merchantOrderId: router.query.merchant_order_id,
+        clientId: registerNewClient.clientId,
+      })
+
+      success =
+        registerPayment.status === 200 && registerNewClient.status === 200
+          ? true
+          : "Ocurrio un error al registrar el cliente o el pago"
+    }
+
+    if (success) {
+      sessionStorage.removeItem("client")
+      sessionStorage.removeItem("payment")
+      router.push("/payment?payment_status=success&information_view=true")
+    }
+  }
+
+  useEffect(() => {
+    if (paymentStatus === "success") {
+      registerData()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentStatus])
 
   return (
     <div>

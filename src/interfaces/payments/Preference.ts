@@ -7,6 +7,7 @@ export interface ItemInterface {
   currency_id?: string
   unit_price: number
   picture_url?: string
+  time?: number
 }
 
 export interface PayerInterface {

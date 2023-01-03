@@ -26,6 +26,7 @@ function PricingView() {
         title: item.name,
         quantity: 1,
         unit_price: item.price,
+        time: item.time,
       },
       payer: payment.payer,
     })
