@@ -1,4 +1,6 @@
-const defaultPaymet = {
+import { ItemInterface, PayerInterface } from "interfaces/payments/Preference"
+
+const defaultPaymet: { item: ItemInterface; payer: PayerInterface } = {
   item: {
     id: "",
     title: "",

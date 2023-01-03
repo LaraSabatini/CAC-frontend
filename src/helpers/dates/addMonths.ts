@@ -6,7 +6,7 @@ const addMonths = (months: number, date = new Date()): string => {
     date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`
   const year = date.getFullYear()
 
-  return `${day}/${month}/${year}`
+  return `${day}-${month}-${year}`
 }
 
 export default addMonths

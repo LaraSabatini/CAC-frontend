@@ -73,9 +73,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           setPreferenceId(createPreferenceId.id)
           setRenderMPButton(true)
         } else {
-          // HANDLE ERROR
-          // pantalla error al generar preferencia
-          router.push("/payment?payment_status=failure")
+          router.push("/payment?preference_error=true")
         }
       } else {
         setFormError(texts.form.duplicatedError)
