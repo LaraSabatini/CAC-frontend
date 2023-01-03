@@ -1,12 +1,12 @@
 {
     "isRequired": "Este campo es requerido",
-    "hasMinLength": "La cantidad minima de caracteres es:",
-    "hasMaxLength": "La cantidad maxima de caracteres es:",
+    "hasMinLength": "La cantidad mínima de caracteres es:",
+    "hasMaxLength": "La cantidad máxima de caracteres es:",
     "hasRegEx": "Los caracteres aceptados son: ",
-    "email": "Formato de mail invalido",
-    "alphanumeric": "Solo se aceptan caracteres alfanumericos",
-    "alphabetic": "Solo se aceptan caracteres alfabeticos",
-    "numeric": "Solo se aceptan caracteres numericos",
+    "email": "Formato de email inválido",
+    "alphanumeric": "Solo se aceptan caracteres alfanuméricos",
+    "alphabetic": "Solo se aceptan caracteres alfabéticos",
+    "numeric": "Solo se aceptan caracteres numéricos",
     "special_characters": "No se aceptan caracteres especiales",
     "no_coincidences": "No hay coincidencias",
     "calendar": {
