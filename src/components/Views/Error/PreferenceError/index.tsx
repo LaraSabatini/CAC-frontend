@@ -3,13 +3,17 @@ import texts from "strings/errors.json"
 import { useRouter } from "next/router"
 import { Container, Title, Description, Button } from "../sharedStyles"
 
-function PaymentErrorView() {
+function PreferenceError() {
   const router = useRouter()
 
   return (
     <Container>
-      <Title>{texts.paymentError.title}</Title>
-      <Description>{texts.paymentError.description}</Description>
+      <Title>UPS!</Title>
+      <span>500 - Internal Server Error</span>
+      <Description>
+        Ocurrio un error en el proceso de la compra, por favor intentalo
+        nuevamente mas tarde.
+      </Description>
       <Button type="button" onClick={() => router.push("/pricing")}>
         {texts.paymentError.button}
       </Button>
@@ -17,4 +21,4 @@ function PaymentErrorView() {
   )
 }
 
-export default PaymentErrorView
+export default PreferenceError

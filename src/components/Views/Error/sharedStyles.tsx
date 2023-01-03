@@ -8,6 +8,13 @@ const Container = styled.div`
   padding-top: 10%;
   display: flex;
   flex-direction: column;
+
+  span {
+    font-family: ${theme.fonts.titles};
+    color: ${theme.colors.blue};
+    font-size: ${theme.fontSizes.xs};
+    font-weight: 300;
+  }
 `
 
 const Title = styled.h1`
