@@ -15,7 +15,6 @@
     },
     "userError": {
         "title": "¡UPS!",
-        "description": "Ocurrio un error al crear el usuario.",
-        "button": "Ir al inicio"
+        "description": "Ocurrio un error al crear el usuario."
     }
 }

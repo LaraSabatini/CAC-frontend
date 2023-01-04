@@ -4,7 +4,6 @@ import registerPaymentInDB from "services/payment/registerPaymentInDB.service"
 import validateClient from "services/auth/validateClient.service"
 import GenericError from "components/Views/Error/GenericError"
 import SuccessView from "components/Views/Payment/SuccessView"
-import ModalStatus from "components/UI/ModalStatus"
 import texts from "strings/errors.json"
 import { dateFormated } from "helpers/dates/getToday"
 import generatePassword from "helpers/users/generatePassword"
@@ -85,14 +84,11 @@ function Payment() {
   return (
     <div>
       {!registrationSuccess && (
-        <ModalStatus
+        <GenericError
           title={texts.userError.title}
           description={texts.userError.description}
-          status="error"
-          ctaButton={{
-            content: `${texts.userError.button}`,
-            action: () => router.push("/pricing"),
-          }}
+          actionButton={() => router.push("/pricing")}
+          type="error"
         />
       )}
       {paymentStatus === "success" && registrationSuccess && <SuccessView />}
