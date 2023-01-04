@@ -4,6 +4,7 @@ import registerPaymentInDB from "services/payment/registerPaymentInDB.service"
 import validateClient from "services/auth/validateClient.service"
 import GenericError from "components/Views/Error/GenericError"
 import SuccessView from "components/Views/Payment/SuccessView"
+import ModalStatus from "components/UI/ModalStatus"
 import texts from "strings/errors.json"
 import { dateFormated } from "helpers/dates/getToday"
 import generatePassword from "helpers/users/generatePassword"
@@ -83,7 +84,14 @@ function Payment() {
 
   return (
     <div>
-      {paymentStatus === "success" && registrationSuccess && <SuccessView />}
+      {!registrationSuccess && (
+        <ModalStatus
+          title="UPS"
+          description="Ocurrio un error al crear el usuario."
+          status="error"
+        />
+      )}
+      {paymentStatus === "success" && <SuccessView />}
       {paymentStatus === "pending" && (
         <GenericError
           title={texts.paymentPending.title}

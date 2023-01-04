@@ -8,8 +8,7 @@ interface MercadoPagoFormInterface {
 
 function MercadoPagoForm({ preference }: MercadoPagoFormInterface) {
   const mercadopago = useMercadopago.v2(
-    // "TEST-ac3e4ad5-9e58-4286-b691-b9b27aba567b",
-    "TEST-c16abe0b-30df-476b-8215-2c66eeb66da2",
+    `${process.env.NEXT_PUBLIC_MP_PUBLIC_KEY_TEST}`,
     {
       locale: "es-AR",
     },
