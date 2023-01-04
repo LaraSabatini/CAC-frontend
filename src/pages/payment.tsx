@@ -28,13 +28,13 @@ function Payment() {
 
   const registerData = async () => {
     let success: boolean = false
-    const client = JSON.parse(sessionStorage.getItem("client") as string)
-    const payment = JSON.parse(sessionStorage.getItem("payment") as string)
+    const client = JSON.parse(localStorage.getItem("client") as string)
+    const payment = JSON.parse(localStorage.getItem("payment") as string)
 
     const newPassword = generatePassword()
 
     const newClientInfo = {
-      ...client.newClient,
+      ...client,
       password: newPassword,
       accountBlocked: 0,
       subscription: 1,
@@ -70,8 +70,8 @@ function Payment() {
     }
 
     if (success) {
-      sessionStorage.removeItem("client")
-      sessionStorage.removeItem("payment")
+      localStorage.removeItem("client")
+      localStorage.removeItem("payment")
     }
   }
 
@@ -86,12 +86,16 @@ function Payment() {
     <div>
       {!registrationSuccess && (
         <ModalStatus
-          title="UPS"
-          description="Ocurrio un error al crear el usuario."
+          title={texts.userError.title}
+          description={texts.userError.description}
           status="error"
+          ctaButton={{
+            content: `${texts.userError.button}`,
+            action: () => router.push("/pricing"),
+          }}
         />
       )}
-      {paymentStatus === "success" && <SuccessView />}
+      {paymentStatus === "success" && registrationSuccess && <SuccessView />}
       {paymentStatus === "pending" && (
         <GenericError
           title={texts.paymentPending.title}

@@ -12,5 +12,10 @@
         "title": "¡UPS!",
         "description": "Ocurrió un error en el proceso de la compra, por favor inténtalo nuevamente más tarde.",
         "span": "500 - Internal Server Error"
+    },
+    "userError": {
+        "title": "¡UPS!",
+        "description": "Ocurrio un error al crear el usuario.",
+        "button": "Ir al inicio"
     }
 }

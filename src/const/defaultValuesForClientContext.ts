@@ -6,7 +6,7 @@ const defaultClient: ClientInterface = {
   lastName: "",
   email: "",
   password: "",
-  identificationType: "",
+  identificationType: "DNI",
   identificationNumber: "",
   phoneAreaCode: "",
   phoneNumber: "",

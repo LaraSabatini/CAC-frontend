@@ -7,7 +7,7 @@ const ModalContainer = styled.div`
   width: 350px;
   border-radius: 10px;
   margin: 100px 100px;
-  padding: 15px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -75,10 +75,8 @@ const StatusIconContainer = styled.div<{
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-
-  width: 90%;
   margin-top: 10px;
+  gap: 100px;
 
   button {
     font-family: ${theme.fonts.titles};
