@@ -1,7 +1,8 @@
+/* eslint-disable prettier/prettier */
 import * as React from "react"
-import IconInterface from "interfaces/components/IconInterface"
+import IconInterface from 'interfaces/components/IconInterface'
 
-function Close({ width, height, color }: IconInterface) {
+function MenuOff({width, height, color}: IconInterface) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -27,4 +28,4 @@ function Close({ width, height, color }: IconInterface) {
   )
 }
 
-export default Close
+export default MenuOff
