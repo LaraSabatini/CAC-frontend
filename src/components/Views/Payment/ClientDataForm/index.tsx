@@ -50,7 +50,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
       }
       const validateDuplicated = await validateClient(validationBody)
 
-      if (validateDuplicated.status !== "duplicated") {
+      if (validateDuplicated.status === 201) {
         const createPreferenceId = await createPreference({
           item: [
             {

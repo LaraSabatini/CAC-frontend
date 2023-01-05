@@ -1,5 +1,5 @@
 export interface PaymentInterface {
-  id: number
+  id?: number
   paymentId: string
   collectionId: string
   collectionStatus: string

@@ -11,8 +11,8 @@ const defaultClient: ClientInterface = {
   phoneAreaCode: "",
   phoneNumber: "",
   preferences: "[]",
-  accountBlocked: false,
-  subscription: true,
+  accountBlocked: 0,
+  subscription: 1,
   dateCreated: "",
 }
 

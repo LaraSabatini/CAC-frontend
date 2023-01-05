@@ -1,5 +1,5 @@
 interface ClientInterface {
-  id: number
+  id?: number
   name: string
   lastName: string
   email: string
@@ -9,8 +9,8 @@ interface ClientInterface {
   phoneAreaCode: string
   phoneNumber: string
   preferences: string
-  accountBlocked: boolean
-  subscription: boolean
+  accountBlocked: number
+  subscription: number
   dateCreated: string
 }
 
