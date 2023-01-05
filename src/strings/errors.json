@@ -16,5 +16,10 @@
     "userError": {
         "title": "¡UPS!",
         "description": "Ocurrio un error al crear el usuario."
+    },
+    "pageNotFound": {
+        "title": "¡UPS!",
+        "description": "La página que estás buscando no existe, fue eliminada o no está disponible temporalmente.",
+        "span": "404 - Page Not Found"
     }
 }
