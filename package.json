@@ -24,12 +24,10 @@
     "mailtrap": "^3.0.1",
     "next": "10.0.5",
     "next-transpile-modules": "6.4.0",
-    "postcss": "^8.4.21",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-router-dom": "^6.6.0",
     "react-sdk-mercadopago": "^1.1.1",
-    "sharp": "^0.31.3",
     "styled-components": "5.3.1"
   },
   "devDependencies": {
