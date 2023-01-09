@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { ClientsContext } from "contexts/Clients"
-import cleanPartnerData from "helpers/formatting/capitalizeFirstLetter"
+import capitalizeFirstLetter from "helpers/formatting/capitalizeFirstLetter"
 import identificationTypes from "const/identificationTypes"
 import texts from "strings/payment.json"
 import Input from "components/UI/Input"
@@ -19,7 +19,7 @@ function Inputs() {
           required
           type="text"
           onChange={e => {
-            const name = cleanPartnerData(e.target.value)
+            const name = capitalizeFirstLetter(e.target.value)
             setNewClient({
               ...newClient,
               name,
@@ -32,7 +32,7 @@ function Inputs() {
           required
           type="text"
           onChange={e => {
-            const lastName = cleanPartnerData(e.target.value)
+            const lastName = capitalizeFirstLetter(e.target.value)
             setNewClient({
               ...newClient,
               lastName,
