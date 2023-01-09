@@ -1,25 +1,39 @@
-import React, { useEffect, useState } from "react"
-import { getPricing } from "services/pricing/pricing.service"
+import React, { useEffect, useContext } from "react"
+import getPlans from "services/pricing/getPlans.service"
+import { PaymentContext } from "contexts/Payment"
 import texts from "strings/pricing.json"
 import PricingInterface from "interfaces/content/Pricing"
+import defaultPaymet from "const/defaultValuesForPaymentContext"
 import PricingCard from "./PricingCard"
+import ClientDataForm from "../Payment/ClientDataForm"
 import { Container, Title, CardsContainer, SubTitle } from "./styles"
 
 function PricingView() {
-  const [pricingList, setPricingList] = useState<PricingInterface[]>([])
+  const { setPayment, payment, pricingList, setPricingList } = useContext(
+    PaymentContext,
+  )
 
-  const subscribe = (id: number) => {
-    // eslint-disable-next-line no-console
-    console.log(id)
+  const selectPlan = (pricingPlan: PricingInterface) => {
+    setPayment({
+      item: {
+        id: `${pricingPlan.id}`,
+        title: pricingPlan.name,
+        quantity: 1,
+        unit_price: pricingPlan.price,
+        time: pricingPlan.time,
+      },
+      payer: payment.payer,
+    })
   }
 
-  const fillData = async () => {
-    const getPricingList = await getPricing()
+  const getPricingPlans = async () => {
+    const getPricingList = await getPlans()
     setPricingList(getPricingList.data)
   }
 
   useEffect(() => {
-    fillData()
+    getPricingPlans()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -29,19 +43,22 @@ function PricingView() {
         <SubTitle>{texts.description}</SubTitle>
       </div>
       <CardsContainer>
-        {pricingList.length &&
-          pricingList.map((item: PricingInterface) => (
+        {pricingList.length > 0 &&
+          pricingList.map((pricingPlan: PricingInterface) => (
             <PricingCard
-              key={item.id}
-              name={item.name}
-              price={item.price}
-              description={item.description}
-              id={item.id}
-              time={item.time}
-              selectPlan={() => subscribe(item.id)}
+              key={pricingPlan.id}
+              name={pricingPlan.name}
+              price={pricingPlan.price}
+              description={pricingPlan.description}
+              id={pricingPlan.id}
+              time={pricingPlan.time}
+              selectPlan={() => selectPlan(pricingPlan)}
             />
           ))}
       </CardsContainer>
+      {payment.item.id !== "" && (
+        <ClientDataForm closeModal={() => setPayment(defaultPaymet)} />
+      )}
     </Container>
   )
 }

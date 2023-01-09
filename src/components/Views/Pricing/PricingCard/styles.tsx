@@ -13,7 +13,7 @@ const Card = styled.div`
   border: 1px solid #466a957d;
   border-radius: 15px;
   padding: 25px 30px;
-  width: 20%;
+  width: 100%;
   gap: 26px;
 
   @media (max-width: ${theme.screenSize.tablet.height}) {
