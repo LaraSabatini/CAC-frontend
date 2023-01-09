@@ -132,7 +132,7 @@ function Input({
             {label}
             {required && "*"}
           </Label>
-          <div className="input">
+          <div>
             <InputStyled
               pass="pass"
               data-error={error}
@@ -157,10 +157,16 @@ function Input({
             <IconContainer
               type="button"
               onClick={() => setVisibility(!visibility)}
+              error={error || backError}
             >
               <Icon icon={visibility ? "PasswordHidden" : "PasswordVisible"} />
             </IconContainer>
           </div>
+          {(frontValidation || backValidation) && (
+            <ErrorMessage width={width}>
+              {frontValidation ? errorMessage : backErrorMessage}
+            </ErrorMessage>
+          )}
         </InputPassword>
       )}
       {type === "textarea" && (

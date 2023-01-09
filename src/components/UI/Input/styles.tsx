@@ -41,13 +41,19 @@ const InputPassword = styled.div<{ width?: number }>`
   ${TextStyled}
 `
 
-const IconContainer = styled.button`
+const IconContainer = styled.button<{ error?: boolean }>`
   border: none;
   background-color: transparent;
   cursor: pointer;
   position: absolute;
   bottom: 3px;
   right: 0;
+
+  ${props =>
+    props.error &&
+    css`
+      bottom: 22px;
+    `}
 `
 
 const TextareaContainer = styled.div<{ width?: number; height?: number }>`
