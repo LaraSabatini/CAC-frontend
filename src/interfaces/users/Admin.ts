@@ -1,9 +1,9 @@
 interface AdminInterface {
-  id: number
+  id?: number
   userName: string
   email: string
   password: string
-  accessPermits: JSON
+  accessPermits: string // JSON
 }
 
 export default AdminInterface

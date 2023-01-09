@@ -9,7 +9,7 @@ const defaultPost = async (apiURL: string, body: any) => {
       return res
     })
     .catch(err => {
-      const res = err.response
+      const res = err.response.data
       return res
     })
   return data

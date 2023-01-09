@@ -1,0 +1,16 @@
+{
+    "isRequired": "Este campo es requerido",
+    "hasMinLength": "La cantidad mínima de caracteres es:",
+    "hasMaxLength": "La cantidad máxima de caracteres es:",
+    "hasRegEx": "Los caracteres aceptados son: ",
+    "email": "Formato de email inválido",
+    "alphanumeric": "Solo se aceptan caracteres alfanuméricos",
+    "alphabetic": "Solo se aceptan caracteres alfabéticos",
+    "numeric": "Solo se aceptan caracteres numéricos",
+    "special_characters": "No se aceptan caracteres especiales",
+    "no_coincidences": "No hay coincidencias",
+    "calendar": {
+        "maxLimit": "Debes elegir una fecha anterior",
+        "minLimit": "Debes elegir una fecha posterior"
+    }
+}
