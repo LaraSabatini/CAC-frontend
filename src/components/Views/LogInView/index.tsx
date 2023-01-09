@@ -4,6 +4,7 @@ import login from "services/auth/login.service"
 import texts from "strings/auth.json"
 import { LoginInterface } from "interfaces/users/General"
 import Input from "components/UI/Input"
+import GenericError from "components/Views/Error/GenericError"
 import {
   Container,
   Title,
@@ -23,7 +24,7 @@ function LoginView() {
   const [loginError, setLoginError] = useState<boolean>(false)
   const [requiredError, setRequiredError] = useState<boolean>(false)
   const [loginAttempts, setLoginAttempts] = useState<number>(0)
-  const [accountBlocked, setAccountBlocked] = useState<boolean>(false)
+  const [accountBlocked, setAccountBlocked] = useState<boolean>(true)
 
   const userQuery = isClient ? "client=true" : "admin=true"
 
@@ -126,7 +127,13 @@ function LoginView() {
           )}
         </Container>
       ) : (
-        <h1>se bloqueo la cuenta</h1>
+        <GenericError
+          title="Cuenta bloqueada"
+          span="Has superado el limite de intentos de inicio de sesion."
+          description="Hemos bloqueado tu cuenta. Te enviaremos un mail con instrucciones para recuperar tu cuenta."
+          actionButton={() => router.push("/pricing")}
+          type="preference"
+        />
       )}
     </>
   )
