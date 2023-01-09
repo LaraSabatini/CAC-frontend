@@ -4,6 +4,7 @@ interface AdminInterface {
   email: string
   password: string
   accessPermits: string // JSON
+  loginAttempts: number
 }
 
 export default AdminInterface

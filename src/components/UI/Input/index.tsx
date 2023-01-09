@@ -157,7 +157,7 @@ function Input({
             <IconContainer
               type="button"
               onClick={() => setVisibility(!visibility)}
-              error={error || backError}
+              error={frontValidation || backValidation}
             >
               <Icon icon={visibility ? "PasswordHidden" : "PasswordVisible"} />
             </IconContainer>

@@ -71,6 +71,15 @@ const ErrorMessage = styled.p`
   height: 17px;
 `
 
+const RequiredError = styled.p`
+  font-family: ${theme.fonts.content};
+  font-size: ${theme.fontSizes.xs};
+  margin: 0;
+  color: ${theme.colors.red};
+  font-weight: ${theme.fontWeights.light};
+  padding-top: 10px;
+`
+
 export {
   Container,
   Title,
@@ -79,4 +88,5 @@ export {
   LoginButton,
   ActionDiv,
   ErrorMessage,
+  RequiredError,
 }
