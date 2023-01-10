@@ -1,10 +1,8 @@
-interface AdminInterface {
-  id?: number
+import { UserInterface } from "./General"
+
+interface AdminInterface extends UserInterface {
   userName: string
-  email: string
-  password: string
   accessPermits: string // JSON
-  loginAttempts: number
 }
 
 export default AdminInterface
