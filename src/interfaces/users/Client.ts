@@ -12,6 +12,7 @@ interface ClientInterface {
   accountBlocked: number
   subscription: number
   dateCreated: string
+  loginAttempts: number
 }
 
 export default ClientInterface

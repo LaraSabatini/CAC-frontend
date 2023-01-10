@@ -21,6 +21,10 @@ const Label = styled.label<{ error?: boolean }>`
     css`
       color: ${theme.colors.red};
     `}
+  color: ${theme.colors.blue_dark};
+  font-family: ${theme.fonts.content};
+  font-weight: ${theme.fontWeights.regular};
+  font-size: ${theme.fontSizes.xs};
 `
 
 const TextStyled = () => css`
