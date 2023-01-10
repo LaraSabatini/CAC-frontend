@@ -11,3 +11,11 @@ export interface LoginInterface {
   email: string
   password: string
 }
+
+export interface UserInterface {
+  id?: number
+  email: string
+  password: string
+  loginAttempts: number
+  accountBlocked: number
+}
