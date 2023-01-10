@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/router"
+import validateReCaptcha from "services/reCaptcha/validateReCaptcha.service"
+import ReCAPTCHA from "react-google-recaptcha"
 import login from "services/auth/login.service"
 import texts from "strings/auth.json"
+import errorTexts from "strings/errors.json"
 import { LoginInterface } from "interfaces/users/General"
 import Input from "components/UI/Input"
 import GenericError from "components/Views/Error/GenericError"
@@ -24,27 +27,48 @@ function LoginView() {
   const [loginError, setLoginError] = useState<boolean>(false)
   const [requiredError, setRequiredError] = useState<boolean>(false)
   const [loginAttempts, setLoginAttempts] = useState<number>(0)
-  const [accountBlocked, setAccountBlocked] = useState<boolean>(true)
+  const [accountBlocked, setAccountBlocked] = useState<boolean>(false)
 
   const userQuery = isClient ? "client=true" : "admin=true"
+
+  const captchaRef = useRef<ReCAPTCHA>(null)
 
   const [formData, setFormData] = useState<LoginInterface>({
     email: "",
     password: "",
   })
 
+  const tryLogin = async () => {
+    const validate = await login(isClient ? "client" : "admin", formData)
+
+    if (validate.status === 401 || validate.status === 404) {
+      setLoginError(true)
+      setLoginAttempts(validate.loginAttempts ?? loginAttempts)
+      setAccountBlocked(validate.message === "Account blocked")
+    } else {
+      sessionStorage.setItem("user", formData.email)
+      sessionStorage.setItem("type", isClient ? "client" : "admin")
+      sessionStorage.setItem("logged", "true")
+      router.push(`/dashboard?${userQuery}`)
+    }
+  }
+
   const loginFunction = async (e: any) => {
     e.preventDefault()
-    if (formData.email !== "" && formData.password !== "") {
-      const validate = await login(isClient ? "client" : "admin", formData)
 
-      if (validate.status === 401 || validate.status === 404) {
-        setLoginError(true)
-        setLoginAttempts(validate.loginAttempts ?? loginAttempts)
-        setAccountBlocked(validate.message === "Account blocked")
+    let token: string | null
+
+    if (formData.email !== "" && formData.password !== "") {
+      if (loginAttempts >= 3 && captchaRef.current !== null) {
+        token = captchaRef.current.getValue()
+        captchaRef.current.reset()
+
+        const validateHuman = await validateReCaptcha({ token })
+        if (validateHuman.status === 201) {
+          await tryLogin()
+        }
       } else {
-        // setear localStorage - sessionStorage para diferenciar el tipo de usuario
-        router.push(`/dashboard${userQuery}`)
+        await tryLogin()
       }
     } else {
       setRequiredError(true)
@@ -102,8 +126,12 @@ function LoginView() {
                 />
                 <ErrorMessage>{loginError && texts.login.error}</ErrorMessage>
               </InputContainer>
-              {/* reCaptcha ********************************* */}
-              {loginAttempts >= 3 && <p>reCaptcha</p>}
+              {loginAttempts >= 3 && (
+                <ReCAPTCHA
+                  sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}`}
+                  ref={captchaRef}
+                />
+              )}
               <ActionDiv>
                 <LoginButton type="button" onClick={loginFunction}>
                   {texts.login.action}
@@ -128,9 +156,9 @@ function LoginView() {
         </Container>
       ) : (
         <GenericError
-          title="Cuenta bloqueada"
-          span="Has superado el limite de intentos de inicio de sesion."
-          description="Hemos bloqueado tu cuenta. Te enviaremos un mail con instrucciones para recuperar tu cuenta."
+          title={errorTexts.accountBlocked.title}
+          span={errorTexts.accountBlocked.span}
+          description={errorTexts.accountBlocked.description}
           actionButton={() => router.push("/pricing")}
           type="preference"
         />
