@@ -21,5 +21,10 @@
         "title": "¡UPS!",
         "description": "La página que estás buscando no existe, fue eliminada o no está disponible temporalmente.",
         "span": "404 - Page Not Found"
+    },
+    "accountBlocked": {
+        "title":"Cuenta bloqueada",
+        "span": "Has superado el limite de intentos de inicio de sesion.",
+        "description": "Hemos bloqueado tu cuenta. Te enviaremos un mail con instrucciones para recuperar tu cuenta."
     }
 }

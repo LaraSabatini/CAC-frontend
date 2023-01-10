@@ -2,7 +2,7 @@
 import * as React from "react"
 import IconInterface from 'interfaces/components/IconInterface'
 
-function IconError({width, height, color}: IconInterface) {
+function Error({width, height, color}: IconInterface) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -28,4 +28,4 @@ function IconError({width, height, color}: IconInterface) {
   )
 }
 
-export default IconError
+export default Error

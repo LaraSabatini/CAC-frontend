@@ -14,6 +14,7 @@ const defaultClient: ClientInterface = {
   accountBlocked: 0,
   subscription: 1,
   dateCreated: "",
+  loginAttempts: 0,
 }
 
 export default defaultClient

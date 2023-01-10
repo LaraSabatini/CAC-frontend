@@ -92,44 +92,47 @@ function Input({
 
   return (
     <>
-      <InputContainer width={width}>
-        <Label htmlFor="input" error={error || backError}>
-          {label}
-          {required && "*"}
-        </Label>
-        <InputStyled
-          width={width}
-          onChange={onChange}
-          onKeyDown={handleKeyDown}
-          disabled={disabled}
-          value={value}
-          placeholder={placeholder}
-          error={error || backError}
-          data-error={error}
-          type="text"
-          autoComplete="off"
-          onBlur={e => {
-            checkInputs(e.currentTarget.value)
-            if (onBlur) {
-              onBlur(e)
-            }
-          }}
-          ref={ref}
-          pattern={pattern}
-        />
-        {(frontValidation || backValidation) && (
-          <ErrorMessage width={width}>
-            {frontValidation ? errorMessage : backErrorMessage}
-          </ErrorMessage>
-        )}
-      </InputContainer>
+      {type !== "password" && type !== "textarea" && (
+        <InputContainer width={width}>
+          <Label htmlFor="input" error={error || backError}>
+            {label}
+            {required && "*"}
+          </Label>
+          <InputStyled
+            width={width}
+            onChange={onChange}
+            onKeyDown={handleKeyDown}
+            disabled={disabled}
+            value={value}
+            placeholder={placeholder}
+            error={error || backError}
+            data-error={error}
+            type="text"
+            autoComplete="off"
+            onBlur={e => {
+              checkInputs(e.currentTarget.value)
+              if (onBlur) {
+                onBlur(e)
+              }
+            }}
+            ref={ref}
+            pattern={pattern}
+          />
+          {(frontValidation || backValidation) && (
+            <ErrorMessage width={width}>
+              {frontValidation ? errorMessage : backErrorMessage}
+            </ErrorMessage>
+          )}
+        </InputContainer>
+      )}
+
       {type === "password" && (
         <InputPassword width={width}>
           <Label htmlFor="input" error={error || backError}>
             {label}
             {required && "*"}
           </Label>
-          <div className="input">
+          <div>
             <InputStyled
               pass="pass"
               data-error={error}
@@ -154,10 +157,16 @@ function Input({
             <IconContainer
               type="button"
               onClick={() => setVisibility(!visibility)}
+              error={frontValidation || backValidation}
             >
               <Icon icon={visibility ? "PasswordHidden" : "PasswordVisible"} />
             </IconContainer>
           </div>
+          {(frontValidation || backValidation) && (
+            <ErrorMessage width={width}>
+              {frontValidation ? errorMessage : backErrorMessage}
+            </ErrorMessage>
+          )}
         </InputPassword>
       )}
       {type === "textarea" && (

@@ -13,8 +13,9 @@ const InputStyled = styled.input<{
   background-color: transparent;
   border-bottom: 1px solid ${theme.colors.blue_alpha};
 
-  ${TextStyled}
-  font-size: ${theme.fontSizes.s};
+  font-family: ${theme.fonts.extra};
+  font-size: ${theme.fontSizes.xs};
+  color: ${theme.colors.blue};
 
   &:focus {
     border-bottom: 1px solid ${theme.colors.blue};
@@ -22,31 +23,37 @@ const InputStyled = styled.input<{
   }
 
   ${props =>
-    props.error &&
-    css`
-      border-bottom: 1px solid ${theme.colors.red};
-    `}
-
-  ${props =>
     props.pass === "pass" &&
     css<{ width?: number }>`
       width: ${({ width }) => (width as number) - 60 || 200}px !important;
     `}
+
+  ${props =>
+    props.error &&
+    css`
+      border-bottom: 1px solid ${theme.colors.red};
+    `}
 `
 
 const InputPassword = styled.div<{ width?: number }>`
-  width: ${({ width }) => (width as number) - 25 || 200}px !important;
+  width: ${({ width }) => (width as number) - 55 || 200}px !important;
   position: relative;
   ${TextStyled}
 `
 
-const IconContainer = styled.button`
+const IconContainer = styled.button<{ error?: boolean }>`
   border: none;
   background-color: transparent;
   cursor: pointer;
   position: absolute;
   bottom: 3px;
   right: 0;
+
+  ${props =>
+    props.error &&
+    css`
+      bottom: 22px;
+    `}
 `
 
 const TextareaContainer = styled.div<{ width?: number; height?: number }>`
