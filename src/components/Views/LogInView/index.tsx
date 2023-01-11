@@ -28,6 +28,7 @@ function LoginView() {
   const [requiredError, setRequiredError] = useState<boolean>(false)
   const [loginAttempts, setLoginAttempts] = useState<number>(0)
   const [accountBlocked, setAccountBlocked] = useState<boolean>(false)
+  const [revalidate, setRevalidate] = useState<number>(0)
 
   const userQuery = isClient ? "client=true" : "admin=true"
 
@@ -38,23 +39,49 @@ function LoginView() {
     password: "",
   })
 
+  const [isMobile, setIsMobile] = useState(false)
+
+  const handleResize = () => {
+    if (window.innerWidth < 414) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
+
   const tryLogin = async () => {
     const validate = await login(isClient ? "client" : "admin", formData)
 
     if (validate.status === 401 || validate.status === 404) {
-      setLoginError(true)
-      setLoginAttempts(validate.loginAttempts ?? loginAttempts)
-      setAccountBlocked(validate.message === "Account blocked")
+      if (validate.error === "User is admin") {
+        router.push(`/login?admin=true`)
+        setIsClient(false)
+        setRevalidate(1)
+      } else if (validate.error === "User is client") {
+        router.push(`/login?client=true`)
+        setIsClient(true)
+        setRevalidate(1)
+      } else {
+        setLoginError(true)
+        setLoginAttempts(validate.loginAttempts ?? loginAttempts)
+        setAccountBlocked(validate.message === "Account blocked")
+      }
     } else {
-      sessionStorage.setItem("user", formData.email)
-      sessionStorage.setItem("type", isClient ? "client" : "admin")
-      sessionStorage.setItem("logged", "true")
+      const userData = {
+        user: formData.email,
+        type: isClient ? "client" : "admin",
+        logged: true,
+        id: validate.clientId,
+      }
+
+      sessionStorage.setItem("userData", JSON.stringify(userData))
+
       router.push(`/dashboard?${userQuery}`)
     }
   }
 
-  const loginFunction = async (e: any) => {
-    e.preventDefault()
+  const validateUser = async (e?: any) => {
+    e?.preventDefault()
 
     let token: string | null
 
@@ -87,6 +114,17 @@ function LoginView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountBlocked])
 
+  useEffect(() => {
+    if (revalidate > 0) {
+      validateUser()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [revalidate])
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize)
+  })
+
   return (
     <>
       {!accountBlocked ? (
@@ -105,7 +143,7 @@ function LoginView() {
             <>
               <InputContainer>
                 <Input
-                  width={321}
+                  width={isMobile ? 280 : 321}
                   label={texts.login.email}
                   required
                   type="email"
@@ -115,7 +153,7 @@ function LoginView() {
                   backError={requiredError || loginError}
                 />
                 <Input
-                  width={356}
+                  width={isMobile ? 315 : 356}
                   label={texts.login.password}
                   required
                   type="password"
@@ -123,6 +161,7 @@ function LoginView() {
                     setFormData({ ...formData, password: e.target.value })
                   }
                   backError={requiredError || loginError}
+                  keyDown={validateUser}
                 />
                 <ErrorMessage>{loginError && texts.login.error}</ErrorMessage>
               </InputContainer>
@@ -133,7 +172,7 @@ function LoginView() {
                 />
               )}
               <ActionDiv>
-                <LoginButton type="button" onClick={loginFunction}>
+                <LoginButton type="button" onClick={validateUser}>
                   {texts.login.action}
                 </LoginButton>
                 <URLContainer>
