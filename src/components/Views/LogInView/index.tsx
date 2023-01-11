@@ -57,9 +57,15 @@ function LoginView() {
         setAccountBlocked(validate.message === "Account blocked")
       }
     } else {
-      sessionStorage.setItem("user", formData.email)
-      sessionStorage.setItem("type", isClient ? "client" : "admin")
-      sessionStorage.setItem("logged", "true")
+      const userData = {
+        user: formData.email,
+        type: isClient ? "client" : "admin",
+        logged: true,
+        id: validate.clientId,
+      }
+
+      sessionStorage.setItem("userData", JSON.stringify(userData))
+
       router.push(`/dashboard?${userQuery}`)
     }
   }
@@ -141,6 +147,7 @@ function LoginView() {
                     setFormData({ ...formData, password: e.target.value })
                   }
                   backError={requiredError || loginError}
+                  keyDown={validateUser}
                 />
                 <ErrorMessage>{loginError && texts.login.error}</ErrorMessage>
               </InputContainer>
