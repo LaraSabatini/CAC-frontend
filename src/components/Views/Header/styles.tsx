@@ -9,25 +9,33 @@ const Container = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid ${theme.colors.blue_alpha};
   padding: 0 10px 15px 10px;
-`
 
-const FilterButton = styled.button`
-  ${Button}
-  background-color: ${theme.colors.blue};
-  color: ${theme.colors.white};
-  font-family: ${theme.fonts.content};
-  font-weight: 400;
-  font-size: ${theme.fontSizes.xs};
-  padding: 11.5px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  align-self: flex-end;
+  @media (max-width: ${theme.screenSize.transition_mobile}) {
+    align-items: flex-start;
+    border-bottom: none;
+    padding: 0;
+    margin: 15px 20px;
+  }
 `
 
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;
+
+  .subContainer {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  @media (max-width: ${theme.screenSize.transition_mobile}) {
+    flex-wrap: wrap;
+
+    .subContainer {
+      margin-top: 10px;
+    }
+  }
 `
 
 const ProfileContainer = styled.div`
@@ -113,13 +121,22 @@ const AddButton = styled.button`
   }
 `
 
+const MenuButton = styled.button`
+  ${Button}
+  svg {
+    color: ${theme.colors.blue};
+    width: 25px;
+    height: 25px;
+  }
+`
+
 export {
   Container,
-  FilterButton,
   SearchContainer,
   ProfilePic,
   ProfileOptions,
   GoHomeButton,
   AddButton,
   ProfileContainer,
+  MenuButton,
 }
