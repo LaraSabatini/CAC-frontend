@@ -28,6 +28,7 @@ function LoginView() {
   const [requiredError, setRequiredError] = useState<boolean>(false)
   const [loginAttempts, setLoginAttempts] = useState<number>(0)
   const [accountBlocked, setAccountBlocked] = useState<boolean>(false)
+  const [revalidate, setRevalidate] = useState<number>(0)
 
   const userQuery = isClient ? "client=true" : "admin=true"
 
@@ -42,9 +43,19 @@ function LoginView() {
     const validate = await login(isClient ? "client" : "admin", formData)
 
     if (validate.status === 401 || validate.status === 404) {
-      setLoginError(true)
-      setLoginAttempts(validate.loginAttempts ?? loginAttempts)
-      setAccountBlocked(validate.message === "Account blocked")
+      if (validate.error === "User is admin") {
+        router.push(`/login?admin=true`)
+        setIsClient(false)
+        setRevalidate(1)
+      } else if (validate.error === "User is client") {
+        router.push(`/login?client=true`)
+        setIsClient(true)
+        setRevalidate(1)
+      } else {
+        setLoginError(true)
+        setLoginAttempts(validate.loginAttempts ?? loginAttempts)
+        setAccountBlocked(validate.message === "Account blocked")
+      }
     } else {
       sessionStorage.setItem("user", formData.email)
       sessionStorage.setItem("type", isClient ? "client" : "admin")
@@ -53,8 +64,8 @@ function LoginView() {
     }
   }
 
-  const loginFunction = async (e: any) => {
-    e.preventDefault()
+  const validateUser = async (e?: any) => {
+    e?.preventDefault()
 
     let token: string | null
 
@@ -86,6 +97,13 @@ function LoginView() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountBlocked])
+
+  useEffect(() => {
+    if (revalidate > 0) {
+      validateUser()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [revalidate])
 
   return (
     <>
@@ -133,7 +151,7 @@ function LoginView() {
                 />
               )}
               <ActionDiv>
-                <LoginButton type="button" onClick={loginFunction}>
+                <LoginButton type="button" onClick={validateUser}>
                   {texts.login.action}
                 </LoginButton>
                 <URLContainer>
