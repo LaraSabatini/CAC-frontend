@@ -58,7 +58,7 @@ function Header() {
         </div>
       </SearchContainer>
       <ProfileContainer>
-        {userData.type === "client" && (
+        {userData.type === "admin" && (
           <>
             <Button cta={false} content="Socios" action={() => {}} />
             <CreateArticleButton />

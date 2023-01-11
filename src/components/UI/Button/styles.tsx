@@ -11,14 +11,14 @@ const ButtonStyled = styled.button<{ cta: boolean }>`
   ${props =>
     props.cta
       ? css`
-          background-color: ${theme.colors.white};
-          color: ${theme.colors.blue};
-          border: 1px solid ${theme.colors.blue};
-        `
-      : css`
           background-color: ${theme.colors.blue};
           color: ${theme.colors.white};
           border: 1px solid transparent;
+        `
+      : css`
+          background-color: ${theme.colors.white};
+          color: ${theme.colors.blue};
+          border: 1px solid ${theme.colors.blue};
         `}
 `
 
