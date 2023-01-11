@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import InputInterface from "interfaces/components/InputInterface"
+import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai"
 import response from "strings/inputMessages.json"
-import Icon from "components/UI/Assets/Icon"
 import { ErrorMessage, Label, InputContainer } from "components/UI/sharedStyles"
 import {
   InputStyled,
@@ -159,7 +159,7 @@ function Input({
               onClick={() => setVisibility(!visibility)}
               error={frontValidation || backValidation}
             >
-              <Icon icon={visibility ? "PasswordHidden" : "PasswordVisible"} />
+              {visibility ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
             </IconContainer>
           </div>
           {(frontValidation || backValidation) && (

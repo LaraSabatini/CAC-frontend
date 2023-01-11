@@ -1,6 +1,6 @@
 import React from "react"
+import { AiOutlineSearch } from "react-icons/ai"
 import { SearchStyled, InputStyled, IconAbsolute } from "./styles"
-import Icon from "../Assets/Icon"
 
 interface SearchInterface {
   searchValue?: string
@@ -55,7 +55,7 @@ const SearchBar: React.FC<SearchInterface> = ({
         isClickable={lensSearch && true}
         onClick={e => handleLensSearch(e)}
       >
-        <Icon icon="Search" color="#466995" />
+        <AiOutlineSearch />
       </IconAbsolute>
       <InputStyled
         placeholder={searchText}

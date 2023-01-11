@@ -27,6 +27,12 @@ export const IconAbsolute = styled.div<{ isClickable?: boolean }>`
     css`
       cursor: pointer;
     `}
+
+  svg {
+    color: ${theme.colors.blue};
+    width: 20px;
+    height: 20px;
+  }
 `
 
 export const InputStyled = styled.input`

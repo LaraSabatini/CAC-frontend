@@ -54,6 +54,12 @@ const IconContainer = styled.button<{ error?: boolean }>`
     css`
       bottom: 22px;
     `}
+
+  svg {
+    color: ${theme.colors.blue};
+    width: 25px;
+    height: 25px;
+  }
 `
 
 const TextareaContainer = styled.div<{ width?: number; height?: number }>`
