@@ -17,6 +17,7 @@ const Title = styled.h3`
   ${TitleStyles}
   margin: 0;
   padding-top: 15px;
+  text-align: center;
 `
 
 const Description = styled.p`

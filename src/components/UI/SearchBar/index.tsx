@@ -1,4 +1,5 @@
 import React from "react"
+import headerTexts from "strings/header.json"
 import { AiOutlineSearch } from "react-icons/ai"
 import { SearchStyled, InputStyled, IconAbsolute } from "./styles"
 
@@ -22,8 +23,6 @@ const SearchBar: React.FC<SearchInterface> = ({
   width,
   id,
 }) => {
-  const searchText = "Buscar..."
-
   const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && enterSearch) {
       enterSearch(e)
@@ -58,7 +57,7 @@ const SearchBar: React.FC<SearchInterface> = ({
         <AiOutlineSearch />
       </IconAbsolute>
       <InputStyled
-        placeholder={searchText}
+        placeholder={headerTexts.search}
         onChange={e => handleChange(e)}
         type="text"
         onKeyPress={e => handleKeyPress(e)}

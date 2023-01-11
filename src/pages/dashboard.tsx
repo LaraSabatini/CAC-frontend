@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import getPaymentsByClient from "services/payment/getPaymentsByClient.service"
+import DashboardView from "components/Views/Dashboard"
 
 function Dashboard() {
   const router = useRouter()
@@ -40,7 +41,7 @@ function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return <div>{isLoggedIn && <p>dashboard</p>}</div>
+  return <div>{isLoggedIn && <DashboardView />}</div>
 }
 
 export default Dashboard
