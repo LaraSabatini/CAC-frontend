@@ -8,16 +8,10 @@ import addMonths from "helpers/dates/addMonths"
 import frontValidation from "helpers/forms/validateFrontRegistration"
 import texts from "strings/payment.json"
 import Modal from "components/UI/Modal"
+import Button from "components/UI/Button"
 import MercadoPagoForm from "components/Views/Payment/MercadoPagoButton"
 import Inputs from "./Inputs"
-import {
-  FormContainer,
-  Title,
-  ButtonContainer,
-  ContinueButton,
-  CancelButton,
-  Error,
-} from "./styles"
+import { FormContainer, Title, ButtonContainer, Error } from "./styles"
 
 interface ClientDataFormInterface {
   closeModal: (arg?: any) => void
@@ -99,13 +93,9 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
         <Inputs />
 
         <ButtonContainer>
-          <CancelButton type="button" onClick={closeModal}>
-            {texts.form.cancel}
-          </CancelButton>
+          <Button content={texts.form.cancel} cta={false} action={closeModal} />
           {!renderMPButton ? (
-            <ContinueButton onClick={validateInputs} type="button">
-              {texts.form.next}
-            </ContinueButton>
+            <Button content={texts.form.next} cta action={validateInputs} />
           ) : (
             <MercadoPagoForm preference={preferenceId} />
           )}

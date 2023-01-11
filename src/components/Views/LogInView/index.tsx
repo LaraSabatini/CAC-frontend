@@ -7,13 +7,13 @@ import texts from "strings/auth.json"
 import errorTexts from "strings/errors.json"
 import { LoginInterface } from "interfaces/users/General"
 import Input from "components/UI/Input"
+import Button from "components/UI/Button"
 import GenericError from "components/Views/Error/GenericError"
 import {
   Container,
   Title,
   InputContainer,
   URLContainer,
-  LoginButton,
   ActionDiv,
   ErrorMessage,
   RequiredError,
@@ -172,9 +172,11 @@ function LoginView() {
                 />
               )}
               <ActionDiv>
-                <LoginButton type="button" onClick={validateUser}>
-                  {texts.login.action}
-                </LoginButton>
+                <Button
+                  content={texts.login.action}
+                  action={validateUser}
+                  cta
+                />
                 <URLContainer>
                   <a
                     href={`http://localhost:3000/login?${userQuery}&reset-password=true`}

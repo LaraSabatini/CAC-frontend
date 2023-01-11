@@ -52,16 +52,6 @@ const URLContainer = styled.div`
   }
 `
 
-const LoginButton = styled.button`
-  ${TitleStyles}
-  background-color: ${theme.colors.blue};
-  color: ${theme.colors.white};
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: 1px solid transparent;
-`
-
 const ActionDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -92,7 +82,6 @@ export {
   Title,
   InputContainer,
   URLContainer,
-  LoginButton,
   ActionDiv,
   ErrorMessage,
   RequiredError,
