@@ -1,0 +1,8 @@
+{
+    "title": "Perfil",
+    "logout": "Cerrar sesión",
+    "logoutModal": {
+        "title": "¿Estás seguro de que deseas cerrar sesión?",
+        "cancel": "Cancelar"
+    }
+}
