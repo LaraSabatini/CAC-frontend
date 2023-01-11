@@ -8,6 +8,8 @@ import MenuOff from "./Icons/MenuOff"
 import Notice from "./Icons/Notice"
 import PasswordHidden from "./Icons/PasswordHidden"
 import PasswordVisible from "./Icons/PasswordVisible"
+import Profile from "./Icons/Profile"
+import Search from "./Icons/Search"
 import SingleArrow from "./Icons/SingleArrow"
 
 interface IconComponentInterface extends IconInterface {
@@ -33,6 +35,10 @@ const Icon = ({ icon, width, height, color }: IconComponentInterface) => {
         return <PasswordHidden width={width} height={height} color={color} />
       case "PasswordVisible":
         return <PasswordVisible width={width} height={height} color={color} />
+      case "Profile":
+        return <Profile width={width} height={height} color={color} />
+      case "Search":
+        return <Search width={width} height={height} color={color} />
       case "SingleArrow":
         return <SingleArrow width={width} height={height} color={color} />
       default:
