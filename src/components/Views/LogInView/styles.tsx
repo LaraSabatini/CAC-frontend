@@ -12,6 +12,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media (max-width: ${theme.screenSize.mobile}) {
+    width: 260px;
+  }
 `
 
 const Title = styled.h4`
@@ -41,6 +45,9 @@ const URLContainer = styled.div`
     text-decoration: none;
     color: ${theme.colors.blue};
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
     gap: 3px;
   }
 `

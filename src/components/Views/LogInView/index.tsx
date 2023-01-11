@@ -39,6 +39,16 @@ function LoginView() {
     password: "",
   })
 
+  const [isMobile, setIsMobile] = useState(false)
+
+  const handleResize = () => {
+    if (window.innerWidth < 414) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
+
   const tryLogin = async () => {
     const validate = await login(isClient ? "client" : "admin", formData)
 
@@ -111,6 +121,10 @@ function LoginView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [revalidate])
 
+  useEffect(() => {
+    window.addEventListener("resize", handleResize)
+  })
+
   return (
     <>
       {!accountBlocked ? (
@@ -129,7 +143,9 @@ function LoginView() {
             <>
               <InputContainer>
                 <Input
-                  width={321}
+                  // width={321}
+                  // width={280}
+                  width={isMobile ? 280 : 321}
                   label={texts.login.email}
                   required
                   type="email"
@@ -139,7 +155,9 @@ function LoginView() {
                   backError={requiredError || loginError}
                 />
                 <Input
-                  width={356}
+                  // width={356}
+                  // width={315}
+                  width={isMobile ? 315 : 356}
                   label={texts.login.password}
                   required
                   type="password"
