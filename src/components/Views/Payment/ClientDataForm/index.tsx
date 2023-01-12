@@ -44,7 +44,10 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
       }
       const validateDuplicated = await validateClient(validationBody)
 
-      if (validateDuplicated.status === 201) {
+      if (
+        validateDuplicated.status === 200 &&
+        validateDuplicated.info === "available"
+      ) {
         const createPreferenceId = await createPreference({
           item: [
             {
@@ -61,7 +64,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           },
         })
 
-        if (createPreferenceId.status === 200) {
+        if (createPreferenceId.status === 201) {
           const paymentData = {
             preferenceId: createPreferenceId.id,
             pricePaid: payment.item.unit_price,
@@ -97,7 +100,10 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           {!renderMPButton ? (
             <Button content={texts.form.next} cta action={validateInputs} />
           ) : (
-            <MercadoPagoForm preference={preferenceId} />
+            <MercadoPagoForm
+              label={texts.actions.pay}
+              preference={preferenceId}
+            />
           )}
         </ButtonContainer>
       </FormContainer>

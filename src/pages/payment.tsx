@@ -46,10 +46,13 @@ function Payment() {
       identificationNumber: newClientInfo.identificationNumber,
     })
 
-    if (validateClientDuplication.status === "available") {
+    if (
+      validateClientDuplication.status === 200 &&
+      validateClientDuplication.info === "available"
+    ) {
       const registerNewClient = await register("client", newClientInfo)
 
-      if (registerNewClient.status === 200) {
+      if (registerNewClient.status === 201) {
         const registerPayment = await registerPaymentInDB({
           ...payment,
           paymentId: router.query.payment_id,
@@ -62,7 +65,7 @@ function Payment() {
         })
 
         success =
-          registerPayment.status === 200 && registerNewClient.status === 200
+          registerPayment.status === 201 && registerNewClient.status === 201
 
         setRegistrationSuccess(success)
       }

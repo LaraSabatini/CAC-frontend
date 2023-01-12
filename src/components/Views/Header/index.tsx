@@ -69,12 +69,16 @@ function Header() {
           {profileMenu && (
             <ProfileOptions>
               <Button
-                cta={false}
+                cta
                 action={() => router.replace(`/profile`)}
                 content={texts.title}
               />
               <Tooltip title={texts.logout} placement="bottom-end">
-                <button type="button" onClick={() => setModalWarning(true)}>
+                <button
+                  className="svg-button"
+                  type="button"
+                  onClick={() => setModalWarning(true)}
+                >
                   <AiOutlineLogout />
                 </button>
               </Tooltip>

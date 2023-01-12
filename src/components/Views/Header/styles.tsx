@@ -71,7 +71,7 @@ const ProfileOptions = styled.div`
   gap: 5px;
   box-shadow: 0px 8px 24px rgba(70, 106, 149, 0.055);
 
-  button {
+  .svg-button {
     ${Button}
     font-family: ${theme.fonts.content};
     color: ${theme.colors.blue};

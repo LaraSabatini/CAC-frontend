@@ -75,11 +75,7 @@ function ModalStatus({
             />
           )}
           {ctaButton && (
-            <Button
-              cta={false}
-              content={ctaButton.content}
-              action={ctaButton.action}
-            />
+            <Button cta content={ctaButton.content} action={ctaButton.action} />
           )}
         </ButtonContainer>
       </ModalContainer>
