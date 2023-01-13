@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useRouter } from "next/router"
+import ProfileProvider from "contexts/Profile"
 import ProfileView from "components/Views/Profile"
 
 function Profile() {
@@ -17,7 +18,15 @@ function Profile() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  return <div>{isLoggedIn && <ProfileView />}</div>
+  return (
+    <div>
+      {isLoggedIn && (
+        <ProfileProvider>
+          <ProfileView />
+        </ProfileProvider>
+      )}
+    </div>
+  )
 }
 
 export default Profile
