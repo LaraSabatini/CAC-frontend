@@ -23,18 +23,8 @@ const SearchContainer = styled.div`
   align-items: center;
   gap: 15px;
 
-  .subContainer {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-
   @media (max-width: ${theme.screenSize.transition_mobile}) {
     flex-wrap: wrap;
-
-    .subContainer {
-      margin-top: 10px;
-    }
   }
 `
 
@@ -70,19 +60,6 @@ const ProfileOptions = styled.div`
   justify-content: space-between;
   gap: 5px;
   box-shadow: 0px 8px 24px rgba(70, 106, 149, 0.055);
-
-  .svg-button {
-    ${Button}
-    font-family: ${theme.fonts.content};
-    color: ${theme.colors.blue};
-    cursor: pointer;
-  }
-
-  svg {
-    color: ${theme.colors.blue};
-    width: 25px;
-    height: 25px;
-  }
 
   .cta {
     background-color: ${theme.colors.blue};
@@ -121,8 +98,21 @@ const AddButton = styled.button`
   }
 `
 
-const MenuButton = styled.button`
+const SearchDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  @media (max-width: ${theme.screenSize.transition_mobile}) {
+    margin-top: 10px;
+  }
+`
+
+const SVGButton = styled.button`
   ${Button}
+  font-family: ${theme.fonts.content};
+  color: ${theme.colors.blue};
+  cursor: pointer;
+
   svg {
     color: ${theme.colors.blue};
     width: 25px;
@@ -138,5 +128,6 @@ export {
   GoHomeButton,
   AddButton,
   ProfileContainer,
-  MenuButton,
+  SearchDiv,
+  SVGButton,
 }

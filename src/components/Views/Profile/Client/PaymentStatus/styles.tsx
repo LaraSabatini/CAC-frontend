@@ -9,12 +9,12 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`
 
-  .cardHeader {
-    display: flex;
-    align-items: center;
-    gap: 43px;
-  }
+const CardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 43px;
 `
 
 const State = styled.p<{ state: boolean }>`
@@ -64,4 +64,4 @@ const ExpireDate = styled.div`
   }
 `
 
-export { Card, State, ExpireDate }
+export { Card, State, ExpireDate, CardHeader }

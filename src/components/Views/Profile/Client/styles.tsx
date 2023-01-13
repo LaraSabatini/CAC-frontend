@@ -11,18 +11,6 @@ const FirstRowData = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 20px;
-
-  .subdiv {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
 `
 
 const Title = styled.h4`
@@ -30,4 +18,16 @@ const Title = styled.h4`
   margin: 0;
 `
 
-export { Container, FirstRowData, Title }
+const RightColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
+export { Container, FirstRowData, Title, RightColumn, ButtonContainer }

@@ -2,7 +2,7 @@ import React from "react"
 import Button from "components/UI/Button"
 import PersonalInfo from "./PersonalInfo"
 import PaymentStatus from "./PaymentStatus"
-import { Container, FirstRowData } from "./styles"
+import { Container, FirstRowData, RightColumn, ButtonContainer } from "./styles"
 
 function ClientProfile() {
   const changePassword = () => {}
@@ -12,9 +12,9 @@ function ClientProfile() {
     <Container>
       <FirstRowData>
         <PersonalInfo />
-        <div className="subdiv">
+        <RightColumn>
           <PaymentStatus />
-          <div className="buttons">
+          <ButtonContainer>
             <Button content="Cambiar contraseña" cta action={changePassword} />
             <Button
               content="Eliminar perfil"
@@ -22,8 +22,8 @@ function ClientProfile() {
               cta={false}
               action={deleteProfile}
             />
-          </div>
-        </div>
+          </ButtonContainer>
+        </RightColumn>
       </FirstRowData>
     </Container>
   )

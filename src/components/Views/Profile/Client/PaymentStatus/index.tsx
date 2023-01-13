@@ -4,7 +4,7 @@ import compareDates from "helpers/dates/compareDates"
 import texts from "strings/profile.json"
 import MercadoPagoForm from "components/Views/Payment/MercadoPagoButton"
 import { Title } from "../styles"
-import { Card, State, ExpireDate } from "./styles"
+import { Card, State, ExpireDate, CardHeader } from "./styles"
 
 function PaymentStatus() {
   const userData = JSON.parse(sessionStorage.getItem("userData") as string)
@@ -18,14 +18,14 @@ function PaymentStatus() {
 
   return (
     <Card>
-      <div className="cardHeader">
+      <CardHeader>
         <Title>{texts.paymentData.title}</Title>
         <State state={paymentExpired}>
           {paymentExpired
             ? `${texts.paymentData.expired}`
             : `${texts.paymentData.active}`}
         </State>
-      </div>
+      </CardHeader>
       <ExpireDate>
         <AiOutlineCalendar />
         <span>{texts.paymentData.expiration}</span>

@@ -16,6 +16,8 @@ import {
   ProfileOptions,
   GoHomeButton,
   ProfileContainer,
+  SearchDiv,
+  SVGButton,
 } from "./styles"
 
 function Header() {
@@ -52,10 +54,10 @@ function Header() {
         >
           <AiFillHome />
         </GoHomeButton>
-        <div className="subContainer">
+        <SearchDiv>
           <SearchBar width={isMobile ? 200 : 300} />
           <Button cta content={headerTexts.filter} action={() => {}} />
-        </div>
+        </SearchDiv>
       </SearchContainer>
       <ProfileContainer>
         {userData.type === "admin" && (
@@ -74,13 +76,9 @@ function Header() {
                 content={texts.title}
               />
               <Tooltip title={texts.logout} placement="bottom-end">
-                <button
-                  className="svg-button"
-                  type="button"
-                  onClick={() => setModalWarning(true)}
-                >
+                <SVGButton onClick={() => setModalWarning(true)}>
                   <AiOutlineLogout />
-                </button>
+                </SVGButton>
               </Tooltip>
             </ProfileOptions>
           )}
