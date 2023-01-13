@@ -14,7 +14,7 @@ function DataSet({ icon, title, value }: DataSetInterface) {
       {Array.isArray(title) ? (
         <RowContent>
           {title.map((text, i) => (
-            <p>
+            <p key={text}>
               <span>{text}</span>
               {value[i]}
             </p>
