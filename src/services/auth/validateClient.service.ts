@@ -1,12 +1,17 @@
 import defaultPost from "services/defaultPost"
 import apiURL from "./route"
 
-const validateClient = async (body: {
-  email: string
-  identificationNumber: string
-}) => {
-  const res = await defaultPost(`${apiURL}/client/validate`, body)
+export const validateEmail = async (body: { email: string }) => {
+  const res = await defaultPost(`${apiURL}/client/validate-email`, body)
   return res
 }
 
-export default validateClient
+export const validateIdentificationNumber = async (body: {
+  identificationNumber: string
+}) => {
+  const res = await defaultPost(
+    `${apiURL}/client/validate-identification_number`,
+    body,
+  )
+  return res
+}

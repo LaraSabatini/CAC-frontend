@@ -1,6 +1,9 @@
 import React, { useContext, useState } from "react"
 import { useRouter } from "next/router"
-import validateClient from "services/auth/validateClient.service"
+import {
+  validateEmail,
+  validateIdentificationNumber,
+} from "services/auth/validateClient.service"
 import createPreference from "services/payment/createPreference.service"
 import { ClientsContext } from "contexts/Clients"
 import { PaymentContext } from "contexts/Payment"
@@ -38,15 +41,17 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
 
     if (validate) {
       setFormError("")
-      const validationBody = {
-        email: newClient.email,
-        identificationNumber: newClient.identificationNumber,
-      }
-      const validateDuplicated = await validateClient(validationBody)
+
+      const validateEmailReq = await validateEmail({ email: newClient.email })
+      const validateIdentificationNumberReq = await validateIdentificationNumber(
+        { identificationNumber: newClient.identificationNumber },
+      )
 
       if (
-        validateDuplicated.status === 200 &&
-        validateDuplicated.info === "available"
+        validateEmailReq.status === 200 &&
+        validateEmailReq.info === "available" &&
+        validateIdentificationNumberReq.status === 200 &&
+        validateIdentificationNumberReq.info === "available"
       ) {
         const createPreferenceId = await createPreference({
           item: [
