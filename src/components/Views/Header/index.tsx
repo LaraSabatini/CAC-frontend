@@ -49,9 +49,7 @@ function Header() {
   return (
     <Container>
       <SearchContainer>
-        <GoHomeButton
-          onClick={() => router.replace(`/dashboard?${userData.type}=true`)}
-        >
+        <GoHomeButton onClick={() => router.replace(`/dashboard`)}>
           <AiFillHome />
         </GoHomeButton>
         <SearchDiv>

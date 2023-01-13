@@ -76,7 +76,7 @@ function LoginView() {
 
       sessionStorage.setItem("userData", JSON.stringify(userData))
 
-      router.push(`/dashboard?${userQuery}`)
+      router.push("/dashboard")
     }
   }
 
