@@ -1,4 +1,6 @@
-import React from "react"
+import React, { useState, useContext } from "react"
+import { ProfileContext } from "contexts/Profile"
+import ClientInterface from "interfaces/users/Client"
 import {
   AiOutlineUser,
   AiOutlineMail,
@@ -7,75 +9,64 @@ import {
 } from "react-icons/ai"
 import { BiPencil } from "react-icons/bi"
 import texts from "strings/profile.json"
-import ClientInterface from "interfaces/users/Client"
 import Tooltip from "components/UI/Tooltip"
+import EditPersonalInfo from "./EditPersonalInfo"
+import DataSet from "./DataSet"
 import { Title } from "../styles"
-import {
-  PersonalDataCard,
-  DataSet,
-  RowContent,
-  Data,
-  CardHeader,
-  EditButton,
-} from "./styles"
+import { PersonalDataCard, Data, CardHeader, EditButton } from "./styles"
 
-interface ProfileDataInterface {
-  profile: ClientInterface
-}
+function PersonalInfo() {
+  const { profileData } = useContext(ProfileContext)
 
-function PersonalInfo({ profile }: ProfileDataInterface) {
+  const data = profileData as ClientInterface
+
+  const [activeEdition, setActiveEdition] = useState<boolean>(false)
+
   return (
     <PersonalDataCard>
       <CardHeader>
         <Title>{texts.personalData.title}</Title>
         <Tooltip title={texts.personalData.edit}>
-          <EditButton>
+          <EditButton type="button" onClick={() => setActiveEdition(true)}>
             <BiPencil />
           </EditButton>
         </Tooltip>
       </CardHeader>
-      <Data>
-        <DataSet>
-          <AiOutlineUser />
-          <RowContent>
-            <p>
-              <span>{texts.personalData.fullName}</span>
-              {profile?.name} {profile?.lastName}
-            </p>
-            <p>
-              <span>{profile?.identificationType}:</span>
-              {profile?.identificationNumber}
-            </p>
-          </RowContent>
-        </DataSet>
-        <DataSet>
-          <AiOutlineMail />
-          <p>
-            <span>{texts.personalData.email}</span>
-            {profile?.email}
-          </p>
-        </DataSet>
-        <DataSet>
-          <AiOutlinePhone />
-          <RowContent>
-            <p>
-              <span>{texts.personalData.phoneAreaCode}</span>
-              {profile?.phoneAreaCode}
-            </p>
-            <p>
-              <span>{texts.personalData.phoneNumber}</span>
-              {profile?.phoneNumber}
-            </p>
-          </RowContent>
-        </DataSet>
-        <DataSet>
-          <AiOutlineCalendar />
-          <p>
-            <span>{texts.personalData.creationDate}</span>
-            {profile?.dateCreated}
-          </p>
-        </DataSet>
-      </Data>
+      {!activeEdition ? (
+        <Data>
+          <DataSet
+            icon={<AiOutlineUser />}
+            title={[
+              `${texts.personalData.fullName}`,
+              `${data?.identificationType}`,
+            ]}
+            value={[
+              `${data?.name} ${data?.lastName}`,
+              `${data?.identificationNumber}`,
+            ]}
+          />
+          <DataSet
+            icon={<AiOutlineMail />}
+            title={texts.personalData.email}
+            value={data?.email}
+          />
+          <DataSet
+            icon={<AiOutlinePhone />}
+            title={[
+              `${texts.personalData.phoneAreaCode}`,
+              `${texts.personalData.phoneNumber}`,
+            ]}
+            value={[`${data?.phoneAreaCode}`, `${data?.phoneNumber}`]}
+          />
+          <DataSet
+            icon={<AiOutlineCalendar />}
+            title={texts.personalData.creationDate}
+            value={data?.dateCreated}
+          />
+        </Data>
+      ) : (
+        <EditPersonalInfo cancelChanges={() => setActiveEdition(false)} />
+      )}
     </PersonalDataCard>
   )
 }

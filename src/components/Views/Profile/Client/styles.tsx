@@ -1,7 +1,5 @@
 import styled from "styled-components"
-// import theme from "theme/index"
 import { TitleStyles } from "theme/styles"
-// import { Button } from "components/UI/sharedStyles"
 
 const Container = styled.div`
   width: 90%;
@@ -20,10 +18,4 @@ const Title = styled.h4`
   margin: 0;
 `
 
-const VerticalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`
-
-export { Container, FirstRowData, Title, VerticalContainer }
+export { Container, FirstRowData, Title }
