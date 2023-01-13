@@ -8,17 +8,22 @@ const checkLastPayment = async (user: {
   id: number
   paymentExpireDate?: string
 }) => {
-  const payment = await getPaymentsByClient(user.id)
+  const getPaymentsByClientReq = await getPaymentsByClient(user.id)
 
   const userData = {
     ...user,
-    paymentExpireDate: payment.data[payment.data.length - 1].paymentExpireDate,
+    paymentExpireDate:
+      getPaymentsByClientReq.data[getPaymentsByClientReq.data.length - 1]
+        .paymentExpireDate,
   }
 
   sessionStorage.removeItem("userData")
   sessionStorage.setItem("userData", JSON.stringify(userData))
 
-  return compareDates(payment.data[payment.data.length - 1].paymentExpireDate)
+  return compareDates(
+    getPaymentsByClientReq.data[getPaymentsByClientReq.data.length - 1]
+      .paymentExpireDate,
+  )
     ? "current"
     : "expired"
 }

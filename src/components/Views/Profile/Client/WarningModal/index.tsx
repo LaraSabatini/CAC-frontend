@@ -39,12 +39,12 @@ function WarningModal({ cancel }: WarningModalInterface) {
       const validate = formData.password === formData.confirmPassword
 
       if (validate) {
-        const req = await login("client", {
+        const loginReq = await login("client", {
           email: userData.user,
           password: formData.password,
         })
 
-        if (req.status === 201) {
+        if (loginReq.status === 201) {
           const blockAccountReq = await blockAccount(userData.id)
 
           if (blockAccountReq.status === 201) {

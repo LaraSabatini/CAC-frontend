@@ -15,8 +15,8 @@ function Dashboard() {
       setIsLoggedIn(userData.logged)
       if (userData.type === "client") {
         const checkPayment = async () => {
-          const req = await checkLastPayment(userData)
-          if (req === "expired") {
+          const checkLastPaymentReq = await checkLastPayment(userData)
+          if (checkLastPaymentReq === "expired") {
             router.replace("/profile")
           }
         }

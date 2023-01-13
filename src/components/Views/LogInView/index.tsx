@@ -50,28 +50,28 @@ function LoginView() {
   }
 
   const tryLogin = async () => {
-    const validate = await login(isClient ? "client" : "admin", formData)
+    const loginReq = await login(isClient ? "client" : "admin", formData)
 
-    if (validate.status === 401 || validate.status === 404) {
-      if (validate.error === "User is admin") {
+    if (loginReq.status === 401 || loginReq.status === 404) {
+      if (loginReq.error === "User is admin") {
         router.push(`/login?admin=true`)
         setIsClient(false)
         setRevalidate(1)
-      } else if (validate.error === "User is client") {
+      } else if (loginReq.error === "User is client") {
         router.push(`/login?client=true`)
         setIsClient(true)
         setRevalidate(1)
       } else {
         setLoginError(true)
-        setLoginAttempts(validate.loginAttempts ?? loginAttempts)
-        setAccountBlocked(validate.message === "Account blocked")
+        setLoginAttempts(loginReq.loginAttempts ?? loginAttempts)
+        setAccountBlocked(loginReq.message === "Account blocked")
       }
     } else {
       const userData = {
         user: formData.email,
         type: isClient ? "client" : "admin",
         logged: true,
-        id: validate.clientId,
+        id: loginReq.clientId,
       }
 
       sessionStorage.setItem("userData", JSON.stringify(userData))
@@ -90,8 +90,8 @@ function LoginView() {
         token = captchaRef.current.getValue()
         captchaRef.current.reset()
 
-        const validateHuman = await validateReCaptcha({ token })
-        if (validateHuman.status === 201) {
+        const validateReCaptchaReq = await validateReCaptcha({ token })
+        if (validateReCaptchaReq.status === 201) {
           await tryLogin()
         }
       } else {

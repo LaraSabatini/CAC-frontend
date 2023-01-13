@@ -14,10 +14,10 @@ function ProfileView() {
   const userData = JSON.parse(sessionStorage.getItem("userData") as string)
 
   const getData = async () => {
-    const req = await getProfileData(userData.type, userData.id)
+    const getProfileDataReq = await getProfileData(userData.type, userData.id)
 
-    if (req.status === 200 && req.data.length) {
-      setProfileData(req.data[0])
+    if (getProfileDataReq.status === 200 && getProfileDataReq.data.length) {
+      setProfileData(getProfileDataReq.data[0])
     } else {
       router.replace("/404") // cambiar
     }

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react"
 import register from "services/auth/register.service"
 import registerPaymentInDB from "services/payment/registerPaymentInDB.service"
-import validateClient from "services/auth/validateClient.service"
+import {
+  validateEmail,
+  validateIdentificationNumber,
+} from "services/auth/validateClient.service"
 import GenericError from "components/Views/Error/GenericError"
 import SuccessView from "components/Views/Payment/SuccessView"
 import texts from "strings/errors.json"
@@ -41,19 +44,21 @@ function Payment() {
       preferences: "[]",
     }
 
-    const validateClientDuplication = await validateClient({
-      email: newClientInfo.email,
+    const validateEmailReq = await validateEmail({ email: newClientInfo.email })
+    const validateIdentificationNumberReq = await validateIdentificationNumber({
       identificationNumber: newClientInfo.identificationNumber,
     })
 
     if (
-      validateClientDuplication.status === 200 &&
-      validateClientDuplication.info === "available"
+      validateEmailReq.status === 200 &&
+      validateEmailReq.info === "available" &&
+      validateIdentificationNumberReq.status === 200 &&
+      validateIdentificationNumberReq.info === "available"
     ) {
-      const registerNewClient = await register("client", newClientInfo)
+      const registerReq = await register("client", newClientInfo)
 
-      if (registerNewClient.status === 201) {
-        const registerPayment = await registerPaymentInDB({
+      if (registerReq.status === 201) {
+        const registerPaymentInDBReq = await registerPaymentInDB({
           ...payment,
           paymentId: router.query.payment_id,
           collectionId: router.query.collection_id,
@@ -61,11 +66,11 @@ function Payment() {
           status: router.query.status,
           paymentType: router.query.payment_type,
           merchantOrderId: router.query.merchant_order_id,
-          clientId: registerNewClient.clientId,
+          clientId: registerReq.clientId,
         })
 
         success =
-          registerPayment.status === 201 && registerNewClient.status === 201
+          registerPaymentInDBReq.status === 201 && registerReq.status === 201
 
         setRegistrationSuccess(success)
       }

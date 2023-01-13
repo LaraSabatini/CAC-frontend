@@ -53,7 +53,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
         validateIdentificationNumberReq.status === 200 &&
         validateIdentificationNumberReq.info === "available"
       ) {
-        const createPreferenceId = await createPreference({
+        const createPreferenceReq = await createPreference({
           item: [
             {
               id: payment.item.id,
@@ -69,9 +69,9 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           },
         })
 
-        if (createPreferenceId.status === 201) {
+        if (createPreferenceReq.status === 201) {
           const paymentData = {
-            preferenceId: createPreferenceId.id,
+            preferenceId: createPreferenceReq.id,
             pricePaid: payment.item.unit_price,
             itemId: payment.item.id,
             paymentExpireDate: addMonths(payment.item.time as number),
@@ -80,7 +80,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           localStorage.setItem("client", JSON.stringify(newClient))
           localStorage.setItem("payment", JSON.stringify(paymentData))
 
-          setPreferenceId(createPreferenceId.id)
+          setPreferenceId(createPreferenceReq.id)
           setRenderMPButton(true)
         } else {
           router.push("/payment?preference_error=true")
