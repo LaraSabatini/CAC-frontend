@@ -1,15 +1,22 @@
-import React from "react"
+import React, { useState } from "react"
 import Button from "components/UI/Button"
 import PersonalInfo from "./PersonalInfo"
 import PaymentStatus from "./PaymentStatus"
+import WarningModal from "./WarningModal"
 import { Container, FirstRowData, RightColumn, ButtonContainer } from "./styles"
 
 function ClientProfile() {
+  const [deleteProfileWarning, setDeleteProfileWarning] = useState<boolean>(
+    false,
+  )
+
   const changePassword = () => {}
-  const deleteProfile = () => {}
 
   return (
     <Container>
+      {deleteProfileWarning && (
+        <WarningModal cancel={() => setDeleteProfileWarning(false)} />
+      )}
       <FirstRowData>
         <PersonalInfo />
         <RightColumn>
@@ -20,7 +27,7 @@ function ClientProfile() {
               content="Eliminar perfil"
               danger
               cta={false}
-              action={deleteProfile}
+              action={() => setDeleteProfileWarning(true)}
             />
           </ButtonContainer>
         </RightColumn>
