@@ -3,11 +3,18 @@ import theme from "theme/index"
 
 const Card = styled.div`
   background-color: ${theme.colors.white};
-  padding: 15px 30px;
+  padding: 20px 25px;
   border-radius: 10px;
   gap: 20px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+
+  .cardHeader {
+    display: flex;
+    align-items: center;
+    gap: 43px;
+  }
 `
 
 const State = styled.p<{ state: boolean }>`
@@ -36,7 +43,7 @@ const ExpireDate = styled.div`
   align-items: center;
   font-family: ${theme.fonts.content};
   color: ${theme.colors.blue};
-  gap: 10px;
+  gap: 5px;
 
   svg {
     width: 19px;

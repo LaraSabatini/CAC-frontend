@@ -18,12 +18,14 @@ function PaymentStatus() {
 
   return (
     <Card>
-      <Title>{texts.paymentData.title}</Title>
-      <State state={paymentExpired}>
-        {paymentExpired
-          ? `${texts.paymentData.expired}`
-          : `${texts.paymentData.active}`}
-      </State>
+      <div className="cardHeader">
+        <Title>{texts.paymentData.title}</Title>
+        <State state={paymentExpired}>
+          {paymentExpired
+            ? `${texts.paymentData.expired}`
+            : `${texts.paymentData.active}`}
+        </State>
+      </div>
       <ExpireDate>
         <AiOutlineCalendar />
         <span>{texts.paymentData.expiration}</span>
