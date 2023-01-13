@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components"
 import theme from "theme/index"
 
-const ButtonStyled = styled.button<{ cta: boolean }>`
+const ButtonStyled = styled.button<{ cta: boolean; danger?: boolean }>`
   font-family: ${theme.fonts.titles};
   font-weight: 400;
   font-size: ${theme.fontSizes.xs};
@@ -20,6 +20,14 @@ const ButtonStyled = styled.button<{ cta: boolean }>`
           color: ${theme.colors.blue};
           border: 1px solid ${theme.colors.blue};
         `}
+
+  ${props =>
+    props.danger &&
+    css`
+      background-color: ${theme.colors.red};
+      color: ${theme.colors.white};
+      border: 1px solid transparent;
+    `}
 `
 
 export default ButtonStyled
