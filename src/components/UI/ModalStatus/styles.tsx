@@ -77,7 +77,8 @@ const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 10px;
-  gap: 100px;
+  justify-content: space-between;
+  width: 100%;
 `
 
 export {

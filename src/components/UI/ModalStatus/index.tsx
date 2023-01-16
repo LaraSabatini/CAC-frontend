@@ -1,4 +1,5 @@
 import React from "react"
+import ModalStatusInterface from "interfaces/components/ModalStatusInterface"
 import Button from "components/UI/Button"
 import Modal from "components/UI/Modal"
 import Icon from "components/UI/Assets/Icon"
@@ -10,22 +11,6 @@ import {
   Description,
   ButtonContainer,
 } from "./styles"
-
-interface ModalStatusInterface {
-  title: string
-  description: string
-  status: "error" | "success" | "warning" | "notice"
-  ctaButton?: {
-    content: string
-    action: (arg?: any) => void
-  }
-  secondaryButton?: {
-    content: string
-    action: (arg?: any) => void
-  }
-  selfClose?: boolean
-  selfCloseAction?: (arg?: any) => void
-}
 
 function ModalStatus({
   title,
