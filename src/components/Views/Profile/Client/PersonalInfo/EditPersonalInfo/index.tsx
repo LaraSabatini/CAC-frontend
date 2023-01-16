@@ -5,7 +5,12 @@ import {
   validateEmail,
   validateIdentificationNumber,
 } from "services/auth/validateClient.service"
+import {
+  DataInterface,
+  EditPersonalInfoInterface,
+} from "interfaces/components/PersonalInfoInterface"
 import texts from "strings/payment.json"
+import profileTexts from "strings/profile.json"
 import ClientInterface from "interfaces/users/Client"
 import frontValidation from "helpers/forms/validateFrontRegistration"
 import identificationTypes from "const/identificationTypes"
@@ -13,20 +18,6 @@ import Input from "components/UI/Input"
 import InputSelect from "components/UI/InputSelect"
 import Button from "components/UI/Button"
 import { Form, HorizontalGroup, ButtonContainer, Error } from "./styles"
-
-interface DataInterface {
-  name: string
-  lastName: string
-  identificationType: string
-  identificationNumber: string
-  phoneAreaCode: string
-  phoneNumber: string
-  email: string
-}
-
-interface EditPersonalInfoInterface {
-  cancelChanges: (arg?: any) => void
-}
 
 function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
   const { profileData, triggerUpdate, setTriggerUpdate } = useContext(
@@ -173,8 +164,16 @@ function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
         onChange={e => setNewData({ ...newData, email: e.target.value })}
       />
       <ButtonContainer>
-        <Button content="Cancelar" cta={false} action={cancelChanges} />
-        <Button content="Guardar" cta action={saveChanges} />
+        <Button
+          content={profileTexts.changePassword.cancel}
+          cta={false}
+          action={cancelChanges}
+        />
+        <Button
+          content={profileTexts.personalData.save}
+          cta
+          action={saveChanges}
+        />
       </ButtonContainer>
     </Form>
   )

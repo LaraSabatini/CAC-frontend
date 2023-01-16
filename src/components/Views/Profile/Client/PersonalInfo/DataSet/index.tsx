@@ -1,11 +1,6 @@
 import React from "react"
+import DataSetInterface from "interfaces/components/DataSetInterface"
 import { DataSetStyled, RowContent } from "./styles"
-
-interface DataSetInterface {
-  icon: JSX.Element | JSX.Element[]
-  title: string[] | string
-  value: string[] | string
-}
 
 function DataSet({ icon, title, value }: DataSetInterface) {
   return (

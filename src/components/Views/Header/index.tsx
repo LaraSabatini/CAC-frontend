@@ -23,9 +23,9 @@ import {
 function Header() {
   const router = useRouter()
 
-  const [profileMenu, setProfileMenu] = useState<boolean>(false)
-  const [modalWarning, setModalWarning] = useState<boolean>(false)
-  const [isMobile, setIsMobile] = useState(false)
+  const [openProfileMenu, setOpenProfileMenu] = useState<boolean>(false)
+  const [openWarning, setOpenWarning] = useState<boolean>(false)
+  const [deviceIsMobile, setDeviceIsMobile] = useState<boolean>(false)
 
   const userData = JSON.parse(sessionStorage.getItem("userData") as string)
 
@@ -36,9 +36,9 @@ function Header() {
 
   const handleResize = () => {
     if (window.innerWidth < 560) {
-      setIsMobile(true)
+      setDeviceIsMobile(true)
     } else {
-      setIsMobile(false)
+      setDeviceIsMobile(false)
     }
   }
 
@@ -53,20 +53,24 @@ function Header() {
           <AiFillHome />
         </GoHomeButton>
         <SearchDiv>
-          <SearchBar width={isMobile ? 200 : 300} />
+          <SearchBar width={deviceIsMobile ? 200 : 300} />
           <Button cta content={headerTexts.filter} action={() => {}} />
         </SearchDiv>
       </SearchContainer>
       <ProfileContainer>
         {userData.type === "admin" && (
           <>
-            <Button cta={false} content="Socios" action={() => {}} />
+            <Button
+              cta={false}
+              content={headerTexts.clients}
+              action={() => {}}
+            />
             <CreateArticleButton />
           </>
         )}
-        <ProfilePic onClick={() => setProfileMenu(!profileMenu)}>
+        <ProfilePic onClick={() => setOpenProfileMenu(!openProfileMenu)}>
           <Icon icon="Profile" width="25" height="25" />
-          {profileMenu && (
+          {openProfileMenu && (
             <ProfileOptions>
               <Button
                 cta
@@ -74,7 +78,7 @@ function Header() {
                 content={texts.title}
               />
               <Tooltip title={texts.logout} placement="bottom-end">
-                <SVGButton onClick={() => setModalWarning(true)}>
+                <SVGButton onClick={() => setOpenWarning(true)}>
                   <AiOutlineLogout />
                 </SVGButton>
               </Tooltip>
@@ -82,7 +86,7 @@ function Header() {
           )}
         </ProfilePic>
       </ProfileContainer>
-      {modalWarning && (
+      {openWarning && (
         <ModalStatus
           title={texts.logoutModal.title}
           description=""
@@ -93,7 +97,7 @@ function Header() {
           }}
           secondaryButton={{
             content: `${texts.logoutModal.cancel}`,
-            action: () => setModalWarning(false),
+            action: () => setOpenWarning(false),
           }}
         />
       )}

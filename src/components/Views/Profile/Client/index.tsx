@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import texts from "strings/profile.json"
 import Button from "components/UI/Button"
 import PersonalInfo from "./PersonalInfo"
 import PaymentStatus from "./PaymentStatus"
@@ -22,9 +23,13 @@ function ClientProfile() {
         <RightColumn>
           <PaymentStatus />
           <ButtonContainer>
-            <Button content="Cambiar contraseña" cta action={changePassword} />
             <Button
-              content="Eliminar perfil"
+              content={texts.changePassword.title}
+              cta
+              action={changePassword}
+            />
+            <Button
+              content={texts.deleteProfile}
               danger
               cta={false}
               action={() => setDeleteProfileWarning(true)}

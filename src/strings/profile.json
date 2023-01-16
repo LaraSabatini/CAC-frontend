@@ -1,6 +1,16 @@
 {
     "title": "Perfil",
     "logout": "Cerrar sesión",
+    "changePassword": {
+        "title": "Cambiar contraseña",
+        "matchingError": "* Las contraseñas no coinciden",
+        "requiredError": "* Completa los campos requeridos",
+        "password": "Contraseña",
+        "confirmPassword": "Confirmar contraseña",
+        "cancel":"Cancelar",
+        "confirm": "Confirmar"
+    },
+    "deleteProfile": "Eliminar perfil",
     "logoutModal": {
         "title": "¿Estás seguro de que deseas cerrar sesión?",
         "cancel": "Cancelar"
@@ -12,7 +22,8 @@
         "email": "Email:",
         "phoneAreaCode": "Cód. área:",
         "phoneNumber": "Nº de teléfono:",
-        "creationDate": "Creación del perfil:"
+        "creationDate": "Creación del perfil:",
+        "save": "Guardar"
     },
     "paymentData": {
         "title": "Pago:",

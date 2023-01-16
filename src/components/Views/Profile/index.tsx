@@ -19,7 +19,7 @@ function ProfileView() {
     if (getProfileDataReq.status === 200 && getProfileDataReq.data.length) {
       setProfileData(getProfileDataReq.data[0])
     } else {
-      router.replace("/404") // cambiar
+      router.replace("/404")
     }
   }
 

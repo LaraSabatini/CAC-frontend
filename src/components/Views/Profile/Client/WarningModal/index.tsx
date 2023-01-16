@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { useRouter } from "next/router"
 import login from "services/auth/login.service"
 import blockAccount from "services/auth/blockAccount.service"
+import texts from "strings/profile.json"
 import Modal from "components/UI/Modal"
 import Icon from "components/UI/Assets/Icon"
 import Button from "components/UI/Button"
@@ -53,10 +54,10 @@ function WarningModal({ cancel }: WarningModalInterface) {
           }
         }
       } else {
-        setFormError("*Las contraseñas no coinciden")
+        setFormError(`${texts.changePassword.matchingError}`)
       }
     } else {
-      setFormError("*Completa los campos requeridos")
+      setFormError(`${texts.changePassword.requiredError}`)
     }
   }
 
@@ -71,7 +72,7 @@ function WarningModal({ cancel }: WarningModalInterface) {
           {formError !== "" && <Error>{formError}</Error>}
 
           <Input
-            label="Contraseña"
+            label={texts.changePassword.password}
             width={320}
             required
             type="password"
@@ -81,7 +82,7 @@ function WarningModal({ cancel }: WarningModalInterface) {
             }
           />
           <Input
-            label="Confirmar contraseña"
+            label={texts.changePassword.confirmPassword}
             width={320}
             required
             type="password"
@@ -92,8 +93,16 @@ function WarningModal({ cancel }: WarningModalInterface) {
           />
         </InputContainer>
         <ButtonContainer>
-          <Button content="Cancelar" cta={false} action={cancel} />
-          <Button content="Confirmar" cta action={deleteProfile} />
+          <Button
+            content={texts.changePassword.cancel}
+            cta={false}
+            action={cancel}
+          />
+          <Button
+            content={texts.changePassword.confirm}
+            cta
+            action={deleteProfile}
+          />
         </ButtonContainer>
       </ModalContainer>
     </Modal>

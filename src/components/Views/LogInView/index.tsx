@@ -22,24 +22,21 @@ import {
 function LoginView() {
   const router = useRouter()
 
-  const [isClient, setIsClient] = useState<boolean>(true)
-  const [loginForm, setLoginForm] = useState<boolean>(true)
+  const [userIsClient, setUserIsClient] = useState<boolean>(true)
+  const [openLoginForm, setOpenLoginForm] = useState<boolean>(true)
   const [loginError, setLoginError] = useState<boolean>(false)
   const [requiredError, setRequiredError] = useState<boolean>(false)
   const [loginAttempts, setLoginAttempts] = useState<number>(0)
   const [accountBlocked, setAccountBlocked] = useState<boolean>(false)
   const [revalidate, setRevalidate] = useState<number>(0)
-
-  const userQuery = isClient ? "client=true" : "admin=true"
-
-  const captchaRef = useRef<ReCAPTCHA>(null)
-
+  const [isMobile, setIsMobile] = useState(false)
   const [formData, setFormData] = useState<LoginInterface>({
     email: "",
     password: "",
   })
+  const captchaRef = useRef<ReCAPTCHA>(null)
 
-  const [isMobile, setIsMobile] = useState(false)
+  const userQuery = userIsClient ? "client=true" : "admin=true"
 
   const handleResize = () => {
     if (window.innerWidth < 414) {
@@ -50,16 +47,20 @@ function LoginView() {
   }
 
   const tryLogin = async () => {
-    const loginReq = await login(isClient ? "client" : "admin", formData)
+    const loginReq = await login(
+      userQuery.split("=")[0] as "admin" | "client",
+      formData,
+    )
 
     if (loginReq.status === 401 || loginReq.status === 404) {
+      // *** Validacion de error para evaluar si la ruta es la correcta
       if (loginReq.error === "User is admin") {
         router.push(`/login?admin=true`)
-        setIsClient(false)
+        setUserIsClient(false)
         setRevalidate(1)
       } else if (loginReq.error === "User is client") {
         router.push(`/login?client=true`)
-        setIsClient(true)
+        setUserIsClient(true)
         setRevalidate(1)
       } else {
         setLoginError(true)
@@ -69,7 +70,7 @@ function LoginView() {
     } else {
       const userData = {
         user: formData.email,
-        type: isClient ? "client" : "admin",
+        type: userQuery.split("=")[0],
         logged: true,
         id: loginReq.clientId,
       }
@@ -86,11 +87,13 @@ function LoginView() {
     let token: string | null
 
     if (formData.email !== "" && formData.password !== "") {
+      // *** Si ya intento iniciar sesion 3 veces, validar que sea humano
       if (loginAttempts >= 3 && captchaRef.current !== null) {
         token = captchaRef.current.getValue()
         captchaRef.current.reset()
 
         const validateReCaptchaReq = await validateReCaptcha({ token })
+
         if (validateReCaptchaReq.status === 201) {
           await tryLogin()
         }
@@ -103,8 +106,8 @@ function LoginView() {
   }
 
   useEffect(() => {
-    setIsClient(!!(router.query.client as string))
-    setLoginForm(!(router.query.reset_password as string))
+    setUserIsClient(!!(router.query.client as string))
+    setOpenLoginForm(!(router.query.reset_password as string))
   }, [router])
 
   useEffect(() => {
@@ -115,6 +118,7 @@ function LoginView() {
   }, [accountBlocked])
 
   useEffect(() => {
+    // *** Se dispara cuando se cambia la ruta, ej: ingreso al login de clientes pero es amdmin
     if (revalidate > 0) {
       validateUser()
     }
@@ -131,7 +135,7 @@ function LoginView() {
         <Container>
           <div>
             <Title>
-              {loginForm
+              {openLoginForm
                 ? `${texts.login.title}`
                 : `${texts.restorePassword.title}`}
             </Title>
@@ -139,7 +143,7 @@ function LoginView() {
               <RequiredError>{texts.requiredError}</RequiredError>
             )}
           </div>
-          {loginForm && (
+          {openLoginForm && (
             <>
               <InputContainer>
                 <Input
@@ -184,7 +188,7 @@ function LoginView() {
                     {texts.login.restorePassword}
                     <b>{texts.login.restorePasswordBold}</b>
                   </a>
-                  {isClient && (
+                  {userIsClient && (
                     <a href="http://localhost:3000/pricing">
                       {texts.login.subscribe}
                       <b>{texts.login.subscribeBold}</b>

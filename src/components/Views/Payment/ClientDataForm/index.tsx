@@ -42,6 +42,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
     if (validate) {
       setFormError("")
 
+      // *** Validar que no haya un usuario ya creado con el mismo mail o numero de documento
       const validateEmailReq = await validateEmail({ email: newClient.email })
       const validateIdentificationNumberReq = await validateIdentificationNumber(
         { identificationNumber: newClient.identificationNumber },
@@ -53,6 +54,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
         validateIdentificationNumberReq.status === 200 &&
         validateIdentificationNumberReq.info === "available"
       ) {
+        // *** Crear objeto de compra para que MercadoPago genere un id de preferencia
         const createPreferenceReq = await createPreference({
           item: [
             {
