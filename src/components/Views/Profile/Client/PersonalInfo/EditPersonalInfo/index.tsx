@@ -10,6 +10,7 @@ import {
   DataInterface,
   EditPersonalInfoInterface,
 } from "interfaces/components/PersonalInfoInterface"
+import capitalizeFirstLetter from "helpers/formatting/capitalizeFirstLetter"
 import texts from "strings/payment.json"
 import profileTexts from "strings/profile.json"
 import ClientInterface from "interfaces/users/Client"
@@ -98,7 +99,12 @@ function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
           label={texts.form.name}
           required
           type="text"
-          onChange={e => setNewData({ ...newData, name: e.target.value })}
+          onChange={e =>
+            setNewData({
+              ...newData,
+              name: capitalizeFirstLetter(e.target.value),
+            })
+          }
         />
         <Input
           width={200}
@@ -106,7 +112,12 @@ function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
           label={texts.form.surname}
           required
           type="text"
-          onChange={e => setNewData({ ...newData, lastName: e.target.value })}
+          onChange={e =>
+            setNewData({
+              ...newData,
+              lastName: capitalizeFirstLetter(e.target.value),
+            })
+          }
         />
       </HorizontalGroup>
       <HorizontalGroup>
