@@ -72,12 +72,12 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
   }
 
   const tryLogin = async () => {
-    const validatePassword = await login(userData.type, {
+    const loginReq = await login(userData.type, {
       email: userData.user,
       password: formData.password,
     })
 
-    await tryChangePassword(validatePassword)
+    await tryChangePassword(loginReq)
   }
 
   const validateChange = async (e: any) => {
