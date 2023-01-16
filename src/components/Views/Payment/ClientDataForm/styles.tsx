@@ -38,27 +38,6 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 30px;
-
-  button {
-    font-family: ${theme.fonts.titles};
-    font-weight: 400;
-    font-size: ${theme.fontSizes.xs};
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-`
-
-const ContinueButton = styled.button`
-  background-color: ${theme.colors.blue};
-  color: ${theme.colors.white};
-  border: 1px solid transparent;
-`
-
-const CancelButton = styled.button`
-  background-color: ${theme.colors.white};
-  color: ${theme.colors.blue};
-  border: 1px solid ${theme.colors.blue};
 `
 
 const Error = styled.p`
@@ -69,12 +48,4 @@ const Error = styled.p`
   padding-bottom: 15px;
 `
 
-export {
-  FormContainer,
-  Title,
-  ButtonContainer,
-  ContinueButton,
-  CancelButton,
-  HorizontalGroup,
-  Error,
-}
+export { FormContainer, Title, ButtonContainer, HorizontalGroup, Error }

@@ -13,7 +13,7 @@ function SuccessView() {
         <Description>{texts.success.message}</Description>
         <Description>{texts.success.description}</Description>
       </div>
-      <Button type="button" onClick={() => router.push("/login/clients")}>
+      <Button type="button" onClick={() => router.push("/login?client=true")}>
         {texts.success.button}
       </Button>
     </Container>

@@ -7,13 +7,12 @@ import texts from "strings/auth.json"
 import errorTexts from "strings/errors.json"
 import { LoginInterface } from "interfaces/users/General"
 import Input from "components/UI/Input"
-import GenericError from "components/Views/Error/GenericError"
+import Button from "components/UI/Button"
 import {
   Container,
   Title,
   InputContainer,
   URLContainer,
-  LoginButton,
   ActionDiv,
   ErrorMessage,
   RequiredError,
@@ -22,24 +21,21 @@ import {
 function LoginView() {
   const router = useRouter()
 
-  const [isClient, setIsClient] = useState<boolean>(true)
-  const [loginForm, setLoginForm] = useState<boolean>(true)
+  const [userIsClient, setUserIsClient] = useState<boolean>(true)
+  const [openLoginForm, setOpenLoginForm] = useState<boolean>(true)
   const [loginError, setLoginError] = useState<boolean>(false)
   const [requiredError, setRequiredError] = useState<boolean>(false)
   const [loginAttempts, setLoginAttempts] = useState<number>(0)
   const [accountBlocked, setAccountBlocked] = useState<boolean>(false)
   const [revalidate, setRevalidate] = useState<number>(0)
-
-  const userQuery = isClient ? "client=true" : "admin=true"
-
-  const captchaRef = useRef<ReCAPTCHA>(null)
-
+  const [isMobile, setIsMobile] = useState(false)
   const [formData, setFormData] = useState<LoginInterface>({
     email: "",
     password: "",
   })
+  const captchaRef = useRef<ReCAPTCHA>(null)
 
-  const [isMobile, setIsMobile] = useState(false)
+  const userQuery = userIsClient ? "client=true" : "admin=true"
 
   const handleResize = () => {
     if (window.innerWidth < 414) {
@@ -50,33 +46,37 @@ function LoginView() {
   }
 
   const tryLogin = async () => {
-    const validate = await login(isClient ? "client" : "admin", formData)
+    const loginReq = await login(
+      userQuery.split("=")[0] as "admin" | "client",
+      formData,
+    )
 
-    if (validate.status === 401 || validate.status === 404) {
-      if (validate.error === "User is admin") {
+    if (loginReq.status === 401 || loginReq.status === 404) {
+      // *** Validacion de error para evaluar si la ruta es la correcta
+      if (loginReq.error === "User is admin") {
         router.push(`/login?admin=true`)
-        setIsClient(false)
+        setUserIsClient(false)
         setRevalidate(1)
-      } else if (validate.error === "User is client") {
+      } else if (loginReq.error === "User is client") {
         router.push(`/login?client=true`)
-        setIsClient(true)
+        setUserIsClient(true)
         setRevalidate(1)
       } else {
         setLoginError(true)
-        setLoginAttempts(validate.loginAttempts ?? loginAttempts)
-        setAccountBlocked(validate.message === "Account blocked")
+        setLoginAttempts(loginReq.loginAttempts ?? loginAttempts)
+        setAccountBlocked(loginReq.message === "Account blocked")
       }
     } else {
       const userData = {
         user: formData.email,
-        type: isClient ? "client" : "admin",
+        type: userQuery.split("=")[0],
         logged: true,
-        id: validate.clientId,
+        id: loginReq.clientId,
       }
 
       sessionStorage.setItem("userData", JSON.stringify(userData))
 
-      router.push(`/dashboard?${userQuery}`)
+      router.push("/dashboard")
     }
   }
 
@@ -86,12 +86,14 @@ function LoginView() {
     let token: string | null
 
     if (formData.email !== "" && formData.password !== "") {
+      // *** Si ya intento iniciar sesion 3 veces, validar que sea humano
       if (loginAttempts >= 3 && captchaRef.current !== null) {
         token = captchaRef.current.getValue()
         captchaRef.current.reset()
 
-        const validateHuman = await validateReCaptcha({ token })
-        if (validateHuman.status === 201) {
+        const validateReCaptchaReq = await validateReCaptcha({ token })
+
+        if (validateReCaptchaReq.status === 201) {
           await tryLogin()
         }
       } else {
@@ -103,18 +105,21 @@ function LoginView() {
   }
 
   useEffect(() => {
-    setIsClient(!!(router.query.client as string))
-    setLoginForm(!(router.query.reset_password as string))
+    setUserIsClient(!!(router.query.client as string))
+    setOpenLoginForm(!(router.query.reset_password as string))
   }, [router])
 
   useEffect(() => {
     if (accountBlocked) {
-      router.push(`/login?${userQuery}&account_blocked=true`)
+      router.push(
+        `/error?title=${errorTexts.accountBlocked.title}&type=preference&span=${errorTexts.accountBlocked.span}&description=${errorTexts.accountBlocked.description}`,
+      )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountBlocked])
 
   useEffect(() => {
+    // *** Se dispara cuando se cambia la ruta, ej: ingreso al login de clientes pero es amdmin
     if (revalidate > 0) {
       validateUser()
     }
@@ -127,81 +132,69 @@ function LoginView() {
 
   return (
     <>
-      {!accountBlocked ? (
-        <Container>
-          <div>
-            <Title>
-              {loginForm
-                ? `${texts.login.title}`
-                : `${texts.restorePassword.title}`}
-            </Title>
-            {requiredError && (
-              <RequiredError>{texts.requiredError}</RequiredError>
-            )}
-          </div>
-          {loginForm && (
-            <>
-              <InputContainer>
-                <Input
-                  width={isMobile ? 280 : 321}
-                  label={texts.login.email}
-                  required
-                  type="email"
-                  onChange={e =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  backError={requiredError || loginError}
-                />
-                <Input
-                  width={isMobile ? 315 : 356}
-                  label={texts.login.password}
-                  required
-                  type="password"
-                  onChange={e =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                  backError={requiredError || loginError}
-                  keyDown={validateUser}
-                />
-                <ErrorMessage>{loginError && texts.login.error}</ErrorMessage>
-              </InputContainer>
-              {loginAttempts >= 3 && (
-                <ReCAPTCHA
-                  sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}`}
-                  ref={captchaRef}
-                />
-              )}
-              <ActionDiv>
-                <LoginButton type="button" onClick={validateUser}>
-                  {texts.login.action}
-                </LoginButton>
-                <URLContainer>
-                  <a
-                    href={`http://localhost:3000/login?${userQuery}&reset-password=true`}
-                  >
-                    {texts.login.restorePassword}
-                    <b>{texts.login.restorePasswordBold}</b>
-                  </a>
-                  {isClient && (
-                    <a href="http://localhost:3000/pricing">
-                      {texts.login.subscribe}
-                      <b>{texts.login.subscribeBold}</b>
-                    </a>
-                  )}
-                </URLContainer>
-              </ActionDiv>
-            </>
+      <Container>
+        <div>
+          <Title>
+            {openLoginForm
+              ? `${texts.login.title}`
+              : `${texts.restorePassword.title}`}
+          </Title>
+          {requiredError && (
+            <RequiredError>{texts.requiredError}</RequiredError>
           )}
-        </Container>
-      ) : (
-        <GenericError
-          title={errorTexts.accountBlocked.title}
-          span={errorTexts.accountBlocked.span}
-          description={errorTexts.accountBlocked.description}
-          actionButton={() => router.push("/pricing")}
-          type="preference"
-        />
-      )}
+        </div>
+        {openLoginForm && (
+          <>
+            <InputContainer>
+              <Input
+                width={isMobile ? 280 : 321}
+                label={texts.login.email}
+                required
+                type="email"
+                onChange={e =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                backError={requiredError || loginError}
+              />
+              <Input
+                width={isMobile ? 315 : 356}
+                label={texts.login.password}
+                required
+                type="password"
+                onChange={e =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                backError={requiredError || loginError}
+                keyDown={validateUser}
+              />
+              <ErrorMessage>{loginError && texts.login.error}</ErrorMessage>
+            </InputContainer>
+            {loginAttempts >= 3 && (
+              <ReCAPTCHA
+                sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}`}
+                ref={captchaRef}
+              />
+            )}
+            <ActionDiv>
+              <Button content={texts.login.action} action={validateUser} cta />
+              <URLContainer>
+                <a
+                  href={`http://localhost:3000/login?${userQuery}&reset-password=true`}
+                >
+                  {texts.login.restorePassword}
+                  <b>{texts.login.restorePasswordBold}</b>
+                </a>
+                {userIsClient && (
+                  <a href="http://localhost:3000/pricing">
+                    {texts.login.subscribe}
+                    <b>{texts.login.subscribeBold}</b>
+                  </a>
+                )}
+              </URLContainer>
+            </ActionDiv>
+          </>
+        )}
+      </Container>
     </>
   )
 }

@@ -7,6 +7,7 @@ const Button = () => css`
   display: flex;
   align-items: center;
   cursor: pointer;
+  outline: none;
 `
 const ErrorMessage = styled.span<{ width?: number }>`
   font-size: ${theme.fontSizes.xs};

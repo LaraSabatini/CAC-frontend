@@ -1,0 +1,41 @@
+{
+    "title": "Perfil",
+    "logout": "Cerrar sesión",
+    "changePassword": {
+        "title": "Cambiar contraseña:",
+        "matchingError": "* Las contraseñas no coinciden",
+        "requiredError": "* Completa los campos requeridos",
+        "wrongPassword": "La contraseña ingresada es incorrecta",
+        "password": "Contraseña",
+        "newPassword": "Nueva contraseña",
+        "confirmPassword": "Confirmar contraseña",
+        "cancel":"Cancelar",
+        "confirm": "Confirmar",
+        "success": {
+            "title": "Excelente!",
+            "description": "La constraseña ha sido modificada con exito"
+        }
+    },
+    "deleteProfile": "Eliminar perfil",
+    "logoutModal": {
+        "title": "¿Estás seguro de que deseas cerrar sesión?",
+        "cancel": "Cancelar"
+    },
+    "personalData": {
+        "title": "Datos personales:",
+        "edit": "Editar",
+        "fullName": "Nombre completo:",
+        "email": "Email:",
+        "phoneAreaCode": "Cód. área:",
+        "phoneNumber": "Nº de teléfono:",
+        "creationDate": "Creación del perfil:",
+        "save": "Guardar"
+    },
+    "paymentData": {
+        "title": "Pago:",
+        "expiration": "Vencimiento:",
+        "updatePayment": "Actualizar pago",
+        "expired": "vencido",
+        "active": "activo"
+    }
+}

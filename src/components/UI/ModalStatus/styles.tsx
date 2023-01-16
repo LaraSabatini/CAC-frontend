@@ -17,6 +17,7 @@ const Title = styled.h3`
   ${TitleStyles}
   margin: 0;
   padding-top: 15px;
+  text-align: center;
 `
 
 const Description = styled.p`
@@ -77,30 +78,6 @@ const ButtonContainer = styled.div`
   align-items: center;
   margin-top: 10px;
   gap: 100px;
-
-  button {
-    font-family: ${theme.fonts.titles};
-    font-weight: 400;
-    font-size: ${theme.fontSizes.xs};
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-`
-
-const MainButton = styled.button`
-  background-color: ${theme.colors.blue};
-  color: ${theme.colors.white};
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: 1px solid transparent;
-`
-
-const SecondaryButton = styled.button`
-  background-color: ${theme.colors.white};
-  color: ${theme.colors.blue};
-  border: 1px solid ${theme.colors.blue};
 `
 
 export {
@@ -110,6 +87,4 @@ export {
   StatusIconContainer,
   Description,
   ButtonContainer,
-  MainButton,
-  SecondaryButton,
 }

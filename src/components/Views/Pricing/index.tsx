@@ -27,8 +27,8 @@ function PricingView() {
   }
 
   const getPricingPlans = async () => {
-    const getPricingList = await getPlans()
-    setPricingList(getPricingList.data)
+    const getPlansReq = await getPlans()
+    setPricingList(getPlansReq.data)
   }
 
   useEffect(() => {

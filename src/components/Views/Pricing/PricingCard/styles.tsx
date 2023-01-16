@@ -70,17 +70,4 @@ const Description = styled.p`
   font-family: ${theme.fonts.content};
 `
 
-const Button = styled.button`
-  font-family: ${theme.fonts.titles};
-  background-color: ${theme.colors.blue};
-  color: #f2f8ff;
-  border: none;
-  font-weight: 400;
-  font-size: ${theme.fontSizes.s};
-  padding: 10px 15px;
-  border-radius: 10px;
-  align-self: flex-end;
-  cursor: pointer;
-`
-
-export { Card, Title, Price, Detail, Description, Button }
+export { Card, Title, Price, Detail, Description }

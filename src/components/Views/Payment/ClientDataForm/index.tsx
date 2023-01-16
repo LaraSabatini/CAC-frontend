@@ -1,6 +1,9 @@
 import React, { useContext, useState } from "react"
 import { useRouter } from "next/router"
-import validateClient from "services/auth/validateClient.service"
+import {
+  validateEmail,
+  validateIdentificationNumber,
+} from "services/auth/validateClient.service"
 import createPreference from "services/payment/createPreference.service"
 import { ClientsContext } from "contexts/Clients"
 import { PaymentContext } from "contexts/Payment"
@@ -8,16 +11,10 @@ import addMonths from "helpers/dates/addMonths"
 import frontValidation from "helpers/forms/validateFrontRegistration"
 import texts from "strings/payment.json"
 import Modal from "components/UI/Modal"
+import Button from "components/UI/Button"
 import MercadoPagoForm from "components/Views/Payment/MercadoPagoButton"
 import Inputs from "./Inputs"
-import {
-  FormContainer,
-  Title,
-  ButtonContainer,
-  ContinueButton,
-  CancelButton,
-  Error,
-} from "./styles"
+import { FormContainer, Title, ButtonContainer, Error } from "./styles"
 
 interface ClientDataFormInterface {
   closeModal: (arg?: any) => void
@@ -44,14 +41,21 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
 
     if (validate) {
       setFormError("")
-      const validationBody = {
-        email: newClient.email,
-        identificationNumber: newClient.identificationNumber,
-      }
-      const validateDuplicated = await validateClient(validationBody)
 
-      if (validateDuplicated.status === 201) {
-        const createPreferenceId = await createPreference({
+      // *** Validar que no haya un usuario ya creado con el mismo mail o numero de documento
+      const validateEmailReq = await validateEmail({ email: newClient.email })
+      const validateIdentificationNumberReq = await validateIdentificationNumber(
+        { identificationNumber: newClient.identificationNumber },
+      )
+
+      if (
+        validateEmailReq.status === 200 &&
+        validateEmailReq.info === "available" &&
+        validateIdentificationNumberReq.status === 200 &&
+        validateIdentificationNumberReq.info === "available"
+      ) {
+        // *** Crear objeto de compra para que MercadoPago genere un id de preferencia
+        const createPreferenceReq = await createPreference({
           item: [
             {
               id: payment.item.id,
@@ -67,9 +71,9 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           },
         })
 
-        if (createPreferenceId.status === 200) {
+        if (createPreferenceReq.status === 201) {
           const paymentData = {
-            preferenceId: createPreferenceId.id,
+            preferenceId: createPreferenceReq.id,
             pricePaid: payment.item.unit_price,
             itemId: payment.item.id,
             paymentExpireDate: addMonths(payment.item.time as number),
@@ -78,7 +82,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           localStorage.setItem("client", JSON.stringify(newClient))
           localStorage.setItem("payment", JSON.stringify(paymentData))
 
-          setPreferenceId(createPreferenceId.id)
+          setPreferenceId(createPreferenceReq.id)
           setRenderMPButton(true)
         } else {
           router.push("/payment?preference_error=true")
@@ -99,15 +103,14 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
         <Inputs />
 
         <ButtonContainer>
-          <CancelButton type="button" onClick={closeModal}>
-            {texts.form.cancel}
-          </CancelButton>
+          <Button content={texts.form.cancel} cta={false} action={closeModal} />
           {!renderMPButton ? (
-            <ContinueButton onClick={validateInputs} type="button">
-              {texts.form.next}
-            </ContinueButton>
+            <Button content={texts.form.next} cta action={validateInputs} />
           ) : (
-            <MercadoPagoForm preference={preferenceId} />
+            <MercadoPagoForm
+              label={texts.actions.pay}
+              preference={preferenceId}
+            />
           )}
         </ButtonContainer>
       </FormContainer>

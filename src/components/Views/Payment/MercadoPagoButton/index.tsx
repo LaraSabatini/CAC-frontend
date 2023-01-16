@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react"
-import paymentTexts from "strings/payment.json"
 import { useMercadopago } from "react-sdk-mercadopago"
 
 interface MercadoPagoFormInterface {
   preference: string
+  label: string
 }
 
-function MercadoPagoForm({ preference }: MercadoPagoFormInterface) {
+function MercadoPagoForm({ preference, label }: MercadoPagoFormInterface) {
   const mercadopago = useMercadopago.v2(
     `${process.env.NEXT_PUBLIC_MP_PUBLIC_KEY_TEST}`,
     {
@@ -24,7 +24,7 @@ function MercadoPagoForm({ preference }: MercadoPagoFormInterface) {
         },
         render: {
           container: ".cho-container",
-          label: `${paymentTexts.actions.pay}`,
+          label: `${label}`,
         },
       })
       setRendered(true)

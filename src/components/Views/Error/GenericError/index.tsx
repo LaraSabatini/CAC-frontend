@@ -1,7 +1,8 @@
 import React from "react"
 import PaymentErrorInterface from "interfaces/components/GenericErrorPage"
 import texts from "strings/errors.json"
-import { Container, Title, Description, Button } from "../sharedStyles"
+import Button from "components/UI/Button"
+import { Container, Title, Description } from "../sharedStyles"
 
 function GenericError({
   title,
@@ -15,9 +16,7 @@ function GenericError({
       <Title>{title}</Title>
       {type === "preference" && <span>{span}</span>}
       <Description>{description}</Description>
-      <Button type="button" onClick={actionButton}>
-        {texts.paymentError.button}
-      </Button>
+      <Button cta action={actionButton} content={texts.paymentError.button} />
     </Container>
   )
 }

@@ -26,10 +26,11 @@
     "next-transpile-modules": "6.4.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-google-recaptcha": "^2.1.0",
+    "react-icons": "^4.7.1",
     "react-router-dom": "^6.6.0",
     "react-sdk-mercadopago": "^1.1.1",
-    "styled-components": "5.3.1",
-    "react-google-recaptcha": "^2.1.0"
+    "styled-components": "5.3.1"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.2.5",

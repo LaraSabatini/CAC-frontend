@@ -1,4 +1,5 @@
 import React from "react"
+import Button from "components/UI/Button"
 import Modal from "components/UI/Modal"
 import Icon from "components/UI/Assets/Icon"
 import {
@@ -8,8 +9,6 @@ import {
   StatusIconContainer,
   Description,
   ButtonContainer,
-  MainButton,
-  SecondaryButton,
 } from "./styles"
 
 interface ModalStatusInterface {
@@ -69,14 +68,14 @@ function ModalStatus({
         <Description>{description}</Description>
         <ButtonContainer>
           {secondaryButton && (
-            <SecondaryButton type="button" onClick={secondaryButton.action}>
-              {secondaryButton.content}
-            </SecondaryButton>
+            <Button
+              cta={false}
+              content={secondaryButton.content}
+              action={secondaryButton.action}
+            />
           )}
           {ctaButton && (
-            <MainButton type="button" onClick={ctaButton.action}>
-              {ctaButton.content}
-            </MainButton>
+            <Button cta content={ctaButton.content} action={ctaButton.action} />
           )}
         </ButtonContainer>
       </ModalContainer>
