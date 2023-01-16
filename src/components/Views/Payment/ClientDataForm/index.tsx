@@ -12,6 +12,7 @@ import frontValidation from "helpers/forms/validateFrontRegistration"
 import texts from "strings/payment.json"
 import Modal from "components/UI/Modal"
 import Button from "components/UI/Button"
+import ModalStatus from "components/UI/ModalStatus"
 import MercadoPagoForm from "components/Views/Payment/MercadoPagoButton"
 import Inputs from "./Inputs"
 import { FormContainer, Title, ButtonContainer, Error } from "./styles"
@@ -28,6 +29,8 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
 
   const [renderMPButton, setRenderMPButton] = useState<boolean>(false)
   const [formError, setFormError] = useState<string>("")
+  const [duplicatedUser, setDuplicatedUser] = useState<boolean>(false)
+  const [loginModal, setLoginModal] = useState<boolean>(false)
 
   const validateInputs = async () => {
     const validate = frontValidation(
@@ -89,6 +92,8 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
         }
       } else {
         setFormError(texts.form.duplicatedError)
+        setDuplicatedUser(true)
+        setLoginModal(true)
       }
     } else {
       setFormError(texts.form.requiredError)
@@ -98,6 +103,21 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   return (
     <Modal>
       <FormContainer>
+        {duplicatedUser && loginModal && (
+          <ModalStatus
+            title={texts.form.loginModal.title}
+            description={texts.form.duplicatedError}
+            status="notice"
+            ctaButton={{
+              content: `${texts.form.loginModal.mainButton}`,
+              action: () => router.push("/login?client=true"),
+            }}
+            secondaryButton={{
+              content: `${texts.form.loginModal.secondaryButton}`,
+              action: () => setLoginModal(false),
+            }}
+          />
+        )}
         <Title>{texts.form.title}</Title>
         {formError !== "" && <Error>{formError}</Error>}
         <Inputs />
