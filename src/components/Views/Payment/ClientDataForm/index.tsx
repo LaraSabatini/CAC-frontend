@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import {
   validateEmail,
@@ -99,6 +99,10 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
       setFormError(texts.form.requiredError)
     }
   }
+
+  useEffect(() => {
+    setRenderMPButton(false)
+  }, [newClient])
 
   return (
     <Modal>
