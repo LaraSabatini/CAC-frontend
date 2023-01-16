@@ -24,7 +24,7 @@
     },
     "accountBlocked": {
         "title":"Cuenta bloqueada",
-        "span": "Has superado el limite de intentos de inicio de sesion.",
+        "span": "Has superado el limite de intentos de inicio de sesion o has eliminado tu cuenta.",
         "description": "Hemos bloqueado tu cuenta. Te enviaremos un mail con instrucciones para recuperar tu cuenta."
     }
 }

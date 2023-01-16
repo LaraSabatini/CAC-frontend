@@ -4,7 +4,7 @@ import apiURL from "./route"
 
 const blockAccount = async (id: number) => {
   const res = await axios.put(
-    `${apiURL}/client/id=${id}?block_account=true`,
+    `${apiURL}/client/block_account=true&id=${id}`,
     axiosHeader,
   )
   return res.data

@@ -90,6 +90,7 @@ function WarningModal({ cancel }: WarningModalInterface) {
             onChange={e =>
               setFormData({ ...formData, confirmPassword: e.target.value })
             }
+            keyDown={deleteProfile}
           />
         </InputContainer>
         <ButtonContainer>
