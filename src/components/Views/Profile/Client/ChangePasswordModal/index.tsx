@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
+import { LoginContext } from "contexts/Login"
 import login from "services/auth/login.service"
 import changePassword from "services/auth/changePassword.service"
 import validateReCaptcha from "services/reCaptcha/validateReCaptcha.service"
@@ -25,6 +26,15 @@ interface ChangePasswordModalInterface {
 function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
   const router = useRouter()
 
+  const {
+    loginError,
+    setLoginError,
+    loginAttempts,
+    setLoginAttempts,
+    accountBlocked,
+    setAccountBlocked,
+  } = useContext(LoginContext)
+
   const [formData, setFormData] = useState<{
     password: string
     newPassword: string
@@ -35,12 +45,9 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
     confirmNewPassword: "",
   })
   const [formError, setFormError] = useState<string>("")
-  const [loginError, setLoginError] = useState<boolean>(false)
   const [changePasswordSuccess, setChangePasswordSuccess] = useState<boolean>(
     false,
   )
-  const [loginAttempts, setLoginAttempts] = useState<number>(0)
-  const [accountBlocked, setAccountBlocked] = useState<boolean>(false)
 
   const captchaRef = useRef<ReCAPTCHA>(null)
 
