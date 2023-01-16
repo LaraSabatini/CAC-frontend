@@ -89,16 +89,17 @@ function Payment() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paymentStatus])
 
+  useEffect(() => {
+    if (!registrationSuccess && paymentStatus !== "success") {
+      router.push(
+        `/error?title=${texts.userError.title}&type=error&description=${texts.userError.description}`,
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [registrationSuccess])
+
   return (
     <div>
-      {!registrationSuccess && (
-        <GenericError
-          title={texts.userError.title}
-          description={texts.userError.description}
-          actionButton={() => router.push("/pricing")}
-          type="error"
-        />
-      )}
       {paymentStatus === "success" && registrationSuccess && <SuccessView />}
       {paymentStatus === "pending" && (
         <GenericError

@@ -8,7 +8,6 @@ import errorTexts from "strings/errors.json"
 import { LoginInterface } from "interfaces/users/General"
 import Input from "components/UI/Input"
 import Button from "components/UI/Button"
-import GenericError from "components/Views/Error/GenericError"
 import {
   Container,
   Title,
@@ -112,7 +111,9 @@ function LoginView() {
 
   useEffect(() => {
     if (accountBlocked) {
-      router.push(`/login?${userQuery}&account_blocked=true`)
+      router.push(
+        `/error?title=${errorTexts.accountBlocked.title}&type=preference&span=${errorTexts.accountBlocked.span}&description=${errorTexts.accountBlocked.description}`,
+      )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountBlocked])
@@ -131,83 +132,69 @@ function LoginView() {
 
   return (
     <>
-      {!accountBlocked ? (
-        <Container>
-          <div>
-            <Title>
-              {openLoginForm
-                ? `${texts.login.title}`
-                : `${texts.restorePassword.title}`}
-            </Title>
-            {requiredError && (
-              <RequiredError>{texts.requiredError}</RequiredError>
-            )}
-          </div>
-          {openLoginForm && (
-            <>
-              <InputContainer>
-                <Input
-                  width={isMobile ? 280 : 321}
-                  label={texts.login.email}
-                  required
-                  type="email"
-                  onChange={e =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  backError={requiredError || loginError}
-                />
-                <Input
-                  width={isMobile ? 315 : 356}
-                  label={texts.login.password}
-                  required
-                  type="password"
-                  onChange={e =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                  backError={requiredError || loginError}
-                  keyDown={validateUser}
-                />
-                <ErrorMessage>{loginError && texts.login.error}</ErrorMessage>
-              </InputContainer>
-              {loginAttempts >= 3 && (
-                <ReCAPTCHA
-                  sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}`}
-                  ref={captchaRef}
-                />
-              )}
-              <ActionDiv>
-                <Button
-                  content={texts.login.action}
-                  action={validateUser}
-                  cta
-                />
-                <URLContainer>
-                  <a
-                    href={`http://localhost:3000/login?${userQuery}&reset-password=true`}
-                  >
-                    {texts.login.restorePassword}
-                    <b>{texts.login.restorePasswordBold}</b>
-                  </a>
-                  {userIsClient && (
-                    <a href="http://localhost:3000/pricing">
-                      {texts.login.subscribe}
-                      <b>{texts.login.subscribeBold}</b>
-                    </a>
-                  )}
-                </URLContainer>
-              </ActionDiv>
-            </>
+      <Container>
+        <div>
+          <Title>
+            {openLoginForm
+              ? `${texts.login.title}`
+              : `${texts.restorePassword.title}`}
+          </Title>
+          {requiredError && (
+            <RequiredError>{texts.requiredError}</RequiredError>
           )}
-        </Container>
-      ) : (
-        <GenericError
-          title={errorTexts.accountBlocked.title}
-          span={errorTexts.accountBlocked.span}
-          description={errorTexts.accountBlocked.description}
-          actionButton={() => router.push("/pricing")}
-          type="preference"
-        />
-      )}
+        </div>
+        {openLoginForm && (
+          <>
+            <InputContainer>
+              <Input
+                width={isMobile ? 280 : 321}
+                label={texts.login.email}
+                required
+                type="email"
+                onChange={e =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                backError={requiredError || loginError}
+              />
+              <Input
+                width={isMobile ? 315 : 356}
+                label={texts.login.password}
+                required
+                type="password"
+                onChange={e =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                backError={requiredError || loginError}
+                keyDown={validateUser}
+              />
+              <ErrorMessage>{loginError && texts.login.error}</ErrorMessage>
+            </InputContainer>
+            {loginAttempts >= 3 && (
+              <ReCAPTCHA
+                sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}`}
+                ref={captchaRef}
+              />
+            )}
+            <ActionDiv>
+              <Button content={texts.login.action} action={validateUser} cta />
+              <URLContainer>
+                <a
+                  href={`http://localhost:3000/login?${userQuery}&reset-password=true`}
+                >
+                  {texts.login.restorePassword}
+                  <b>{texts.login.restorePasswordBold}</b>
+                </a>
+                {userIsClient && (
+                  <a href="http://localhost:3000/pricing">
+                    {texts.login.subscribe}
+                    <b>{texts.login.subscribeBold}</b>
+                  </a>
+                )}
+              </URLContainer>
+            </ActionDiv>
+          </>
+        )}
+      </Container>
     </>
   )
 }
