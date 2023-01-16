@@ -77,6 +77,15 @@ const RequiredError = styled.p`
   padding-top: 10px;
 `
 
+const RemainingAttempts = styled.p`
+  margin: 0;
+  font-size: ${theme.fontSizes.xs};
+  color: #466a95c4;
+  font-family: ${theme.fonts.extra};
+  font-style: italic;
+  margin: 0;
+`
+
 export {
   Container,
   Title,
@@ -85,4 +94,5 @@ export {
   ActionDiv,
   ErrorMessage,
   RequiredError,
+  RemainingAttempts,
 }

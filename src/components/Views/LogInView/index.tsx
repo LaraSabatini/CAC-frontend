@@ -16,6 +16,7 @@ import {
   ActionDiv,
   ErrorMessage,
   RequiredError,
+  RemainingAttempts,
 } from "./styles"
 
 function LoginView() {
@@ -176,6 +177,11 @@ function LoginView() {
               />
             )}
             <ActionDiv>
+              {loginAttempts > 4 && (
+                <RemainingAttempts>
+                  {texts.login.remainingAttempts} {5 - loginAttempts}
+                </RemainingAttempts>
+              )}
               <Button content={texts.login.action} action={validateUser} cta />
               <URLContainer>
                 <a
