@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { useRouter } from "next/router"
+import useUserStatus from "hooks/isLoggedIn"
+import userData from "const/userData"
 
 function Home() {
   const router = useRouter()
 
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(false)
-
-  useEffect(() => {
-    const userData = JSON.parse(sessionStorage.getItem("userData") as string)
-
-    if (userData !== null) {
-      setIsLoggedIn(userData.logged)
-    } else {
-      router.replace(`/login?client=true`)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const isLoggedIn = useUserStatus(userData)
 
   useEffect(() => {
     if (isLoggedIn) {

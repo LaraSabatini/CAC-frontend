@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from "react"
 import { useRouter } from "next/router"
+import userData from "const/userData"
 import getProfileData from "services/auth/getProfileData.service"
 import { ProfileContext } from "contexts/Profile"
 import Header from "components/Views/Header"
@@ -10,8 +11,6 @@ function ProfileView() {
   const router = useRouter()
 
   const { setProfileData, triggerUpdate } = useContext(ProfileContext)
-
-  const userData = JSON.parse(sessionStorage.getItem("userData") as string)
 
   const getData = async () => {
     const getProfileDataReq = await getProfileData(userData.type, userData.id)

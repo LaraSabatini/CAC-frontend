@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { useRouter } from "next/router"
 import login from "services/auth/login.service"
 import blockAccount from "services/auth/blockAccount.service"
+import userData from "const/userData"
 import texts from "strings/profile.json"
 import Modal from "components/UI/Modal"
 import Icon from "components/UI/Assets/Icon"
@@ -21,8 +22,6 @@ interface WarningModalInterface {
 
 function WarningModal({ cancel }: WarningModalInterface) {
   const router = useRouter()
-
-  const userData = JSON.parse(sessionStorage.getItem("userData") as string)
 
   const [formError, setFormError] = useState<string>("")
   const [formData, setFormData] = useState<{

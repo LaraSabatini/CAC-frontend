@@ -4,6 +4,7 @@ import login from "services/auth/login.service"
 import changePassword from "services/auth/changePassword.service"
 import validateReCaptcha from "services/reCaptcha/validateReCaptcha.service"
 import ReCAPTCHA from "react-google-recaptcha"
+import userData from "const/userData"
 import errorTexts from "strings/errors.json"
 import texts from "strings/profile.json"
 import Modal from "components/UI/Modal"
@@ -23,8 +24,6 @@ interface ChangePasswordModalInterface {
 
 function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
   const router = useRouter()
-
-  const userData = JSON.parse(sessionStorage.getItem("userData") as string)
 
   const [formData, setFormData] = useState<{
     password: string

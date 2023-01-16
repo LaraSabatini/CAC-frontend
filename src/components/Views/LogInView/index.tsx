@@ -5,7 +5,7 @@ import ReCAPTCHA from "react-google-recaptcha"
 import login from "services/auth/login.service"
 import texts from "strings/auth.json"
 import errorTexts from "strings/errors.json"
-import { LoginInterface } from "interfaces/users/General"
+import { LoginInterface, UserType } from "interfaces/users/General"
 import Input from "components/UI/Input"
 import Button from "components/UI/Button"
 import {
@@ -47,10 +47,7 @@ function LoginView() {
   }
 
   const tryLogin = async () => {
-    const loginReq = await login(
-      userQuery.split("=")[0] as "admin" | "client",
-      formData,
-    )
+    const loginReq = await login(userQuery.split("=")[0] as UserType, formData)
 
     if (loginReq.status === 401 || loginReq.status === 404) {
       // *** Validacion de error para evaluar si la ruta es la correcta

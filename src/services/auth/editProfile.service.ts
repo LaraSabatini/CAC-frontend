@@ -1,12 +1,13 @@
 import axios from "axios"
 import axiosHeader from "services/axiosHeader"
+import { UserType } from "interfaces/users/General"
 import apiURL from "./route"
 
 const editProfile = async (
-  type: "client" | "admin",
+  type: UserType,
   id: number,
   body:
-    | { email: string; accessPermits: JSON } // admin
+    | { email: string; accessPermits: JSON }
     | {
         email: string
         name: string
@@ -15,7 +16,7 @@ const editProfile = async (
         identificationNumber: string
         phoneAreaCode: string
         phoneNumber: string
-      }, // client
+      },
 ) => {
   const res = await axios.put(`${apiURL}/${type}/id=${id}`, body, axiosHeader)
   return res.data

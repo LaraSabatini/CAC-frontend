@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { AiOutlineLogout, AiFillHome } from "react-icons/ai"
 import { useRouter } from "next/router"
 import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
+import userData from "const/userData"
 import texts from "strings/profile.json"
 import headerTexts from "strings/header.json"
 import SearchBar from "components/UI/SearchBar"
@@ -26,8 +27,6 @@ function Header() {
   const [openProfileMenu, setOpenProfileMenu] = useState<boolean>(false)
   const [openWarning, setOpenWarning] = useState<boolean>(false)
   const [deviceIsMobile, setDeviceIsMobile] = useState<boolean>(false)
-
-  const userData = JSON.parse(sessionStorage.getItem("userData") as string)
 
   const logout = () => {
     sessionStorage.removeItem("userData")

@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react"
 import { ProfileContext } from "contexts/Profile"
 import editProfile from "services/auth/editProfile.service"
+import userData from "const/userData"
 import {
   validateEmail,
   validateIdentificationNumber,
@@ -25,7 +26,6 @@ function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
   )
 
   const data = profileData as ClientInterface
-  const userData = JSON.parse(sessionStorage.getItem("userData") as string)
 
   const [newData, setNewData] = useState<DataInterface>({
     name: `${data.name}`,
