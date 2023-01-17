@@ -75,7 +75,10 @@ function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
       }
 
       if (emailValidation && identificationNumberValidation) {
-        const editProfileReq = await editProfile("client", userData.id, newData)
+        const editProfileReq = await editProfile("client", userData.id, {
+          ...newData,
+          firstLogin: 0,
+        })
         if (editProfileReq.status === 201) {
           cancelChanges()
           setTriggerUpdate(triggerUpdate + 1)

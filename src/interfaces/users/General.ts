@@ -16,6 +16,7 @@ export interface UserInterface {
   password: string
   loginAttempts: number
   accountBlocked: number
+  firstLogin: 0 | 1
 }
 
 export type UserDataType = {

@@ -42,6 +42,7 @@ function Payment() {
       subscription: 1,
       dateCreated: dateFormated,
       preferences: "[]",
+      firstLogin: 1,
     }
 
     const validateEmailReq = await validateEmail({ email: newClientInfo.email })

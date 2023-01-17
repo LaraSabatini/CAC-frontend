@@ -84,6 +84,7 @@ function LoginView() {
         type: userQuery.split("=")[0],
         logged: true,
         id: loginReq.clientId,
+        firstLogin: loginReq.firstLogin === 1,
       }
 
       sessionStorage.setItem("userData", JSON.stringify(userData))

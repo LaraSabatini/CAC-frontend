@@ -16,6 +16,7 @@ const editProfile = async (
         identificationNumber: string
         phoneAreaCode: string
         phoneNumber: string
+        firstLogin: 0 | 1
       },
 ) => {
   const res = await axios.put(`${apiURL}/${type}/id=${id}`, body, axiosHeader)
