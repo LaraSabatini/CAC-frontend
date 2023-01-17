@@ -25,4 +25,5 @@ export type UserDataType = {
   user: string
   paymentExpireDate: string
   type: UserType
+  firstLogin: boolean
 }

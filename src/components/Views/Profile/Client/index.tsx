@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { useRouter } from "next/router"
 import texts from "strings/profile.json"
 import LoginProvider from "contexts/Login"
 import Button from "components/UI/Button"
@@ -9,10 +10,19 @@ import ChangePasswordModal from "./ChangePasswordModal"
 import { Container, FirstRowData, RightColumn, ButtonContainer } from "./styles"
 
 function ClientProfile() {
+  const router = useRouter()
+
   const [deleteProfileWarning, setDeleteProfileWarning] = useState<boolean>(
     false,
   )
   const [changePasswordView, setChangePasswordView] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (router.query.change_password === "true") {
+      setChangePasswordView(true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router])
 
   return (
     <Container>
@@ -20,7 +30,10 @@ function ClientProfile() {
         <WarningModal cancel={() => setDeleteProfileWarning(false)} />
       )}
       {changePasswordView && (
-        <ChangePasswordModal cancel={() => setChangePasswordView(false)} />
+        <ChangePasswordModal
+          cancel={() => setChangePasswordView(false)}
+          cantCancel={router.query.change_password === "true"}
+        />
       )}
       <FirstRowData>
         <PersonalInfo />

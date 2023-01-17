@@ -7,11 +7,15 @@ function usePaymentStatus(userData: UserDataType) {
   const router = useRouter()
 
   useEffect(() => {
-    if (userData.type === "client") {
+    if (userData?.type === "client") {
       const checkPayment = async () => {
         const checkLastPaymentReq = await checkLastPayment(userData)
         if (checkLastPaymentReq === "expired") {
-          router.replace("/profile")
+          if (userData.firstLogin) {
+            router.replace("/profile?change_password=true")
+          } else {
+            router.replace("/profile")
+          }
         }
       }
 

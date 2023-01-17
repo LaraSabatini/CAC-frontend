@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 import { LoginContext } from "contexts/Login"
+import { ProfileContext } from "contexts/Profile"
 import login from "services/auth/login.service"
 import changePassword from "services/auth/changePassword.service"
 import validateReCaptcha from "services/reCaptcha/validateReCaptcha.service"
@@ -22,10 +23,16 @@ import {
 
 interface ChangePasswordModalInterface {
   cancel: (arg?: any) => void
+  cantCancel: boolean
 }
 
-function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
+function ChangePasswordModal({
+  cancel,
+  cantCancel,
+}: ChangePasswordModalInterface) {
   const router = useRouter()
+
+  const { setTriggerUpdate, triggerUpdate } = useContext(ProfileContext)
 
   const {
     loginError,
@@ -63,6 +70,13 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
 
       if (changePasswordReq.status === 201) {
         setChangePasswordSuccess(true)
+
+        const newUserData = {
+          ...userData,
+          firstLogin: false,
+        }
+
+        sessionStorage.setItem("userData", JSON.stringify(newUserData))
       } else {
         setServerErrorModal(true)
       }
@@ -86,7 +100,7 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
   }
 
   const validateChange = async (e: any) => {
-    e.preventDefault()
+    e?.preventDefault()
 
     let token: string | null
 
@@ -178,11 +192,15 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
           />
         )}
         <ButtonContainer>
-          <Button
-            content={texts.changePassword.cancel}
-            cta={false}
-            action={cancel}
-          />
+          {cantCancel ? (
+            <></>
+          ) : (
+            <Button
+              content={texts.changePassword.cancel}
+              cta={false}
+              action={cancel}
+            />
+          )}
           <Button
             content={texts.changePassword.confirm}
             cta
@@ -196,8 +214,10 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
             status="success"
             selfClose
             selfCloseAction={() => {
-              sessionStorage.removeItem("userData")
-              router.push("/login?client=true")
+              setTriggerUpdate(triggerUpdate + 1)
+              setChangePasswordSuccess(false)
+              cancel()
+              router.push("/profile")
             }}
           />
         )}

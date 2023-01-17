@@ -28,7 +28,7 @@ const checkLastPayment = async (user: {
       ? "current"
       : "expired"
   }
-  return {}
+  return "expired"
 }
 
 export default checkLastPayment
