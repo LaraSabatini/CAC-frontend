@@ -11,6 +11,7 @@ import addMonths from "helpers/dates/addMonths"
 import frontValidation from "helpers/forms/validateFrontRegistration"
 import texts from "strings/payment.json"
 import Modal from "components/UI/Modal"
+import InternalServerError from "components/Views/Error/InternalServerError"
 import Button from "components/UI/Button"
 import ModalStatus from "components/UI/ModalStatus"
 import MercadoPagoForm from "components/Views/Payment/MercadoPagoButton"
@@ -31,6 +32,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   const [formError, setFormError] = useState<string>("")
   const [duplicatedUser, setDuplicatedUser] = useState<boolean>(false)
   const [loginModal, setLoginModal] = useState<boolean>(false)
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const validateInputs = async () => {
     const validate = frontValidation(
@@ -90,6 +92,8 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
         } else {
           router.push("/payment?preference_error=true")
         }
+      } else if (validateEmailReq.status === 500) {
+        setServerErrorModal(true)
       } else {
         setFormError(texts.form.duplicatedError)
         setDuplicatedUser(true)
@@ -107,6 +111,10 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   return (
     <Modal>
       <FormContainer>
+        <InternalServerError
+          visible={serverErrorModal}
+          changeVisibility={() => setServerErrorModal(false)}
+        />
         {duplicatedUser && loginModal && (
           <ModalStatus
             title={texts.form.loginModal.title}

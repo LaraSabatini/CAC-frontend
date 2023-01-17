@@ -12,6 +12,8 @@ function usePaymentStatus(userData: UserDataType) {
         const checkLastPaymentReq = await checkLastPayment(userData)
         if (checkLastPaymentReq === "expired") {
           router.replace("/profile")
+        } else {
+          // HANDLE ERROR
         }
       }
 

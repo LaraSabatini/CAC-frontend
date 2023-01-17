@@ -10,22 +10,25 @@ const checkLastPayment = async (user: {
 }) => {
   const getPaymentsByClientReq = await getPaymentsByClient(user.id)
 
-  const userData = {
-    ...user,
-    paymentExpireDate:
+  if (getPaymentsByClientReq.status === 200) {
+    const userData = {
+      ...user,
+      paymentExpireDate:
+        getPaymentsByClientReq.data[getPaymentsByClientReq.data.length - 1]
+          .paymentExpireDate,
+    }
+
+    sessionStorage.removeItem("userData")
+    sessionStorage.setItem("userData", JSON.stringify(userData))
+
+    return compareDates(
       getPaymentsByClientReq.data[getPaymentsByClientReq.data.length - 1]
         .paymentExpireDate,
+    )
+      ? "current"
+      : "expired"
   }
-
-  sessionStorage.removeItem("userData")
-  sessionStorage.setItem("userData", JSON.stringify(userData))
-
-  return compareDates(
-    getPaymentsByClientReq.data[getPaymentsByClientReq.data.length - 1]
-      .paymentExpireDate,
-  )
-    ? "current"
-    : "expired"
+  return { error: getPaymentsByClientReq.status }
 }
 
 export default checkLastPayment

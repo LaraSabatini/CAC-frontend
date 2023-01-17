@@ -7,6 +7,7 @@ import texts from "strings/profile.json"
 import Modal from "components/UI/Modal"
 import Icon from "components/UI/Assets/Icon"
 import Button from "components/UI/Button"
+import InternalServerError from "components/Views/Error/InternalServerError"
 import Input from "components/UI/Input"
 import {
   ModalContainer,
@@ -32,6 +33,8 @@ function WarningModal({ cancel }: WarningModalInterface) {
     confirmPassword: "",
   })
 
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
+
   const deleteProfile = async () => {
     if (formData.password !== "" && formData.confirmPassword !== "") {
       setFormError("")
@@ -51,6 +54,10 @@ function WarningModal({ cancel }: WarningModalInterface) {
             sessionStorage.removeItem("userData")
             router.reload()
           }
+        } else if (loginReq.status === 401) {
+          setFormError("* La contraseña es incorrecta")
+        } else {
+          setServerErrorModal(true)
         }
       } else {
         setFormError(`${texts.changePassword.matchingError}`)
@@ -63,6 +70,10 @@ function WarningModal({ cancel }: WarningModalInterface) {
   return (
     <Modal>
       <ModalContainer>
+        <InternalServerError
+          visible={serverErrorModal}
+          changeVisibility={() => setServerErrorModal(false)}
+        />
         <IconContainer>
           <Icon icon="Alert" color="#fff" width="45" height="45" />
         </IconContainer>

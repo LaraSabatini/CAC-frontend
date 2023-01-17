@@ -10,6 +10,7 @@ import errorTexts from "strings/errors.json"
 import texts from "strings/profile.json"
 import Modal from "components/UI/Modal"
 import ModalStatus from "components/UI/ModalStatus"
+import InternalServerError from "components/Views/Error/InternalServerError"
 import Input from "components/UI/Input"
 import Button from "components/UI/Button"
 import {
@@ -48,6 +49,7 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
   const [changePasswordSuccess, setChangePasswordSuccess] = useState<boolean>(
     false,
   )
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const captchaRef = useRef<ReCAPTCHA>(null)
 
@@ -61,13 +63,16 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
 
       if (changePasswordReq.status === 201) {
         setChangePasswordSuccess(true)
+      } else {
+        setServerErrorModal(true)
       }
-    } else {
-      // *** Mostrar error
+    } else if (response.status === 401) {
       setFormError(`${texts.changePassword.wrongPassword}`)
       setLoginError(true)
       setLoginAttempts(response.loginAttempts ?? loginAttempts)
       setAccountBlocked(response.message === "Account blocked")
+    } else {
+      setServerErrorModal(true)
     }
   }
 
@@ -106,6 +111,8 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
 
         if (validateReCaptchaReq.status === 201) {
           await tryLogin()
+        } else {
+          setServerErrorModal(true)
         }
       } else {
         await tryLogin()
@@ -125,6 +132,10 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
   return (
     <Modal>
       <ModalContainer>
+        <InternalServerError
+          visible={serverErrorModal}
+          changeVisibility={() => setServerErrorModal(false)}
+        />
         <h3>{texts.changePassword.title}</h3>
         {formError !== "" && <Error>{formError}</Error>}
         <InputContainer>

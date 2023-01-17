@@ -7,6 +7,7 @@ import login from "services/auth/login.service"
 import texts from "strings/auth.json"
 import errorTexts from "strings/errors.json"
 import { UserType } from "interfaces/users/General"
+import InternalServerError from "components/Views/Error/InternalServerError"
 import Input from "components/UI/Input"
 import Button from "components/UI/Button"
 import {
@@ -43,6 +44,8 @@ function LoginView() {
     userQuery,
   } = useContext(LoginContext)
 
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
+
   const [isMobile, setIsMobile] = useState(false)
 
   const captchaRef = useRef<ReCAPTCHA>(null)
@@ -73,6 +76,8 @@ function LoginView() {
         setLoginAttempts(loginReq.loginAttempts ?? loginAttempts)
         setAccountBlocked(loginReq.message === "Account blocked")
       }
+    } else if (loginReq.status === 500) {
+      setServerErrorModal(true)
     } else {
       const userData = {
         user: formData.email,
@@ -102,6 +107,11 @@ function LoginView() {
 
         if (validateReCaptchaReq.status === 201) {
           await tryLogin()
+        } else {
+          // ERROR ReCaptcha
+          router.push(
+            `/error?title=${errorTexts.robotDetected.title}&type=preference&span=${errorTexts.robotDetected.span}&description=${errorTexts.robotDetected.descripcion}`,
+          )
         }
       } else {
         await tryLogin()
@@ -141,6 +151,10 @@ function LoginView() {
   return (
     <>
       <Container>
+        <InternalServerError
+          visible={serverErrorModal}
+          changeVisibility={() => setServerErrorModal(false)}
+        />
         <div>
           <Title>
             {openLoginForm
