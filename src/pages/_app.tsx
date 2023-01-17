@@ -1,10 +1,11 @@
 import type { AppProps } from "next/app"
+import { GlobalStyle } from "theme/styles"
 
 function MyApp({ Component, pageProps }: AppProps) {
-
   return (
     <div>
-          <Component {...pageProps} />
+      <GlobalStyle />
+      <Component {...pageProps} />
     </div>
   )
 }

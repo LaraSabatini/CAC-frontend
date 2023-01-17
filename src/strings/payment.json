@@ -1,0 +1,30 @@
+{
+    "actions": {
+        "pay": "Pagar"
+    },
+    "form": {
+        "title": "Completa tus datos personales:",
+        "cancel": "Cancelar",
+        "next": "Validar datos",
+        "name": "Nombre",
+        "surname": "Apellido",
+        "identificationType": "Tipo de documento",
+        "identificationNumber": "Nº de documento",
+        "email": "Email",
+        "areaCode": "Cód. área",
+        "phone": "Nº de teléfono",
+        "requiredError": "* Completa los campos requeridos",
+        "duplicatedError": "* Ya existe un usuario registrado con el DNI o email ingresados",
+        "loginModal": {
+            "title": "Usuario duplicado",
+            "mainButton": "Iniciar sesion",
+            "secondaryButton": "Cancelar"
+        }
+    },
+    "success": {
+        "title": "¡Excelente!",
+        "message": "Tu pago se procesó con éxito.",
+        "description": "Recibirás un email con tus credenciales para iniciar sesión.",
+        "button": "Iniciar sesión"
+    }
+}
