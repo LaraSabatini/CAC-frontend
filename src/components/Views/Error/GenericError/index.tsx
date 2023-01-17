@@ -16,7 +16,9 @@ function GenericError({
       <Title>{title}</Title>
       {type === "preference" && <span>{span}</span>}
       <Description>{description}</Description>
-      <Button cta action={actionButton} content={texts.paymentError.button} />
+      <div>
+        <Button cta action={actionButton} content={texts.paymentError.button} />
+      </div>
     </Container>
   )
 }
