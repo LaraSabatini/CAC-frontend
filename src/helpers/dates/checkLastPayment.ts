@@ -28,7 +28,7 @@ const checkLastPayment = async (user: {
       ? "current"
       : "expired"
   }
-  return { error: getPaymentsByClientReq.status }
+  return {}
 }
 
 export default checkLastPayment
