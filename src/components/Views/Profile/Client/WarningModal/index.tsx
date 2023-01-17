@@ -2,10 +2,12 @@ import React, { useState } from "react"
 import { useRouter } from "next/router"
 import login from "services/auth/login.service"
 import blockAccount from "services/auth/blockAccount.service"
+import userData from "const/userData"
 import texts from "strings/profile.json"
 import Modal from "components/UI/Modal"
 import Icon from "components/UI/Assets/Icon"
 import Button from "components/UI/Button"
+import InternalServerError from "components/Views/Error/InternalServerError"
 import Input from "components/UI/Input"
 import {
   ModalContainer,
@@ -22,8 +24,6 @@ interface WarningModalInterface {
 function WarningModal({ cancel }: WarningModalInterface) {
   const router = useRouter()
 
-  const userData = JSON.parse(sessionStorage.getItem("userData") as string)
-
   const [formError, setFormError] = useState<string>("")
   const [formData, setFormData] = useState<{
     password: string
@@ -32,6 +32,8 @@ function WarningModal({ cancel }: WarningModalInterface) {
     password: "",
     confirmPassword: "",
   })
+
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const deleteProfile = async () => {
     if (formData.password !== "" && formData.confirmPassword !== "") {
@@ -52,6 +54,10 @@ function WarningModal({ cancel }: WarningModalInterface) {
             sessionStorage.removeItem("userData")
             router.reload()
           }
+        } else if (loginReq.status === 401) {
+          setFormError("* La contraseña es incorrecta")
+        } else {
+          setServerErrorModal(true)
         }
       } else {
         setFormError(`${texts.changePassword.matchingError}`)
@@ -64,6 +70,10 @@ function WarningModal({ cancel }: WarningModalInterface) {
   return (
     <Modal>
       <ModalContainer>
+        <InternalServerError
+          visible={serverErrorModal}
+          changeVisibility={() => setServerErrorModal(false)}
+        />
         <IconContainer>
           <Icon icon="Alert" color="#fff" width="45" height="45" />
         </IconContainer>

@@ -1,9 +1,10 @@
-import React, { useEffect, useContext } from "react"
+import React, { useEffect, useContext, useState } from "react"
 import getPlans from "services/pricing/getPlans.service"
 import { PaymentContext } from "contexts/Payment"
 import texts from "strings/pricing.json"
 import PricingInterface from "interfaces/content/Pricing"
 import defaultPaymet from "const/defaultValuesForPaymentContext"
+import InternalServerError from "components/Views/Error/InternalServerError"
 import PricingCard from "./PricingCard"
 import ClientDataForm from "../Payment/ClientDataForm"
 import { Container, Title, CardsContainer, SubTitle } from "./styles"
@@ -12,6 +13,7 @@ function PricingView() {
   const { setPayment, payment, pricingList, setPricingList } = useContext(
     PaymentContext,
   )
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const selectPlan = (pricingPlan: PricingInterface) => {
     setPayment({
@@ -28,7 +30,11 @@ function PricingView() {
 
   const getPricingPlans = async () => {
     const getPlansReq = await getPlans()
-    setPricingList(getPlansReq.data)
+    if (getPlansReq.status === 200) {
+      setPricingList(getPlansReq.data)
+    } else {
+      setServerErrorModal(true)
+    }
   }
 
   useEffect(() => {
@@ -38,6 +44,10 @@ function PricingView() {
 
   return (
     <Container>
+      <InternalServerError
+        visible={serverErrorModal}
+        changeVisibility={() => setServerErrorModal(false)}
+      />
       <div>
         <Title>{texts.title}</Title>
         <SubTitle>{texts.description}</SubTitle>

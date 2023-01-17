@@ -74,6 +74,10 @@ function Payment() {
 
         setRegistrationSuccess(success)
       }
+    } else {
+      router.push(
+        `/error?title=${texts.userError.title}&type=error&description=${texts.userError.description}`,
+      )
     }
 
     if (success) {
@@ -88,15 +92,6 @@ function Payment() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paymentStatus])
-
-  useEffect(() => {
-    if (!registrationSuccess && paymentStatus !== "success") {
-      router.push(
-        `/error?title=${texts.userError.title}&type=error&description=${texts.userError.description}`,
-      )
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [registrationSuccess])
 
   return (
     <div>

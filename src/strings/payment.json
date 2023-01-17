@@ -14,7 +14,12 @@
         "areaCode": "Cód. área",
         "phone": "Nº de teléfono",
         "requiredError": "* Completa los campos requeridos",
-        "duplicatedError": "* Ya existe un usuario registrado con el DNI o email ingresados"
+        "duplicatedError": "* Ya existe un usuario registrado con el DNI o email ingresados",
+        "loginModal": {
+            "title": "Usuario duplicado",
+            "mainButton": "Iniciar sesion",
+            "secondaryButton": "Cancelar"
+        }
     },
     "success": {
         "title": "¡Excelente!",

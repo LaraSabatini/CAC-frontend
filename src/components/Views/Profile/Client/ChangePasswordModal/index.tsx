@@ -1,13 +1,16 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
+import { LoginContext } from "contexts/Login"
 import login from "services/auth/login.service"
 import changePassword from "services/auth/changePassword.service"
 import validateReCaptcha from "services/reCaptcha/validateReCaptcha.service"
 import ReCAPTCHA from "react-google-recaptcha"
+import userData from "const/userData"
 import errorTexts from "strings/errors.json"
 import texts from "strings/profile.json"
 import Modal from "components/UI/Modal"
 import ModalStatus from "components/UI/ModalStatus"
+import InternalServerError from "components/Views/Error/InternalServerError"
 import Input from "components/UI/Input"
 import Button from "components/UI/Button"
 import {
@@ -24,7 +27,14 @@ interface ChangePasswordModalInterface {
 function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
   const router = useRouter()
 
-  const userData = JSON.parse(sessionStorage.getItem("userData") as string)
+  const {
+    loginError,
+    setLoginError,
+    loginAttempts,
+    setLoginAttempts,
+    accountBlocked,
+    setAccountBlocked,
+  } = useContext(LoginContext)
 
   const [formData, setFormData] = useState<{
     password: string
@@ -36,12 +46,10 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
     confirmNewPassword: "",
   })
   const [formError, setFormError] = useState<string>("")
-  const [loginError, setLoginError] = useState<boolean>(false)
   const [changePasswordSuccess, setChangePasswordSuccess] = useState<boolean>(
     false,
   )
-  const [loginAttempts, setLoginAttempts] = useState<number>(0)
-  const [accountBlocked, setAccountBlocked] = useState<boolean>(false)
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const captchaRef = useRef<ReCAPTCHA>(null)
 
@@ -55,23 +63,26 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
 
       if (changePasswordReq.status === 201) {
         setChangePasswordSuccess(true)
+      } else {
+        setServerErrorModal(true)
       }
-    } else {
-      // *** Mostrar error
+    } else if (response.status === 401) {
       setFormError(`${texts.changePassword.wrongPassword}`)
       setLoginError(true)
       setLoginAttempts(response.loginAttempts ?? loginAttempts)
       setAccountBlocked(response.message === "Account blocked")
+    } else {
+      setServerErrorModal(true)
     }
   }
 
   const tryLogin = async () => {
-    const validatePassword = await login(userData.type, {
+    const loginReq = await login(userData.type, {
       email: userData.user,
       password: formData.password,
     })
 
-    await tryChangePassword(validatePassword)
+    await tryChangePassword(loginReq)
   }
 
   const validateChange = async (e: any) => {
@@ -100,6 +111,8 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
 
         if (validateReCaptchaReq.status === 201) {
           await tryLogin()
+        } else {
+          setServerErrorModal(true)
         }
       } else {
         await tryLogin()
@@ -119,6 +132,10 @@ function ChangePasswordModal({ cancel }: ChangePasswordModalInterface) {
   return (
     <Modal>
       <ModalContainer>
+        <InternalServerError
+          visible={serverErrorModal}
+          changeVisibility={() => setServerErrorModal(false)}
+        />
         <h3>{texts.changePassword.title}</h3>
         {formError !== "" && <Error>{formError}</Error>}
         <InputContainer>

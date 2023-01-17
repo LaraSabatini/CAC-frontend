@@ -1,6 +1,4 @@
-export interface UserType {
-  type: "admin" | "client"
-}
+export type UserType = "admin" | "client"
 
 export interface ChangePasswordInterface {
   id: number
@@ -18,4 +16,12 @@ export interface UserInterface {
   password: string
   loginAttempts: number
   accountBlocked: number
+}
+
+export type UserDataType = {
+  id: number
+  logged: boolean
+  user: string
+  paymentExpireDate: string
+  type: UserType
 }

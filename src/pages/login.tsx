@@ -1,5 +1,6 @@
 import React, { useEffect } from "react"
 import { useRouter } from "next/router"
+import LoginProvider from "contexts/Login"
 import LoginView from "components/Views/LogInView"
 
 function Login() {
@@ -15,7 +16,11 @@ function Login() {
     }
   }, [router])
 
-  return <LoginView />
+  return (
+    <LoginProvider>
+      <LoginView />
+    </LoginProvider>
+  )
 }
 
 export default Login

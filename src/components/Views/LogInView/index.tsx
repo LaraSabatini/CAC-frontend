@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useContext, useRef } from "react"
 import { useRouter } from "next/router"
+import { LoginContext } from "contexts/Login"
 import validateReCaptcha from "services/reCaptcha/validateReCaptcha.service"
 import ReCAPTCHA from "react-google-recaptcha"
 import login from "services/auth/login.service"
 import texts from "strings/auth.json"
 import errorTexts from "strings/errors.json"
-import { LoginInterface } from "interfaces/users/General"
+import { UserType } from "interfaces/users/General"
+import InternalServerError from "components/Views/Error/InternalServerError"
 import Input from "components/UI/Input"
 import Button from "components/UI/Button"
 import {
@@ -16,26 +18,37 @@ import {
   ActionDiv,
   ErrorMessage,
   RequiredError,
+  RemainingAttempts,
 } from "./styles"
 
 function LoginView() {
   const router = useRouter()
 
-  const [userIsClient, setUserIsClient] = useState<boolean>(true)
-  const [openLoginForm, setOpenLoginForm] = useState<boolean>(true)
-  const [loginError, setLoginError] = useState<boolean>(false)
-  const [requiredError, setRequiredError] = useState<boolean>(false)
-  const [loginAttempts, setLoginAttempts] = useState<number>(0)
-  const [accountBlocked, setAccountBlocked] = useState<boolean>(false)
-  const [revalidate, setRevalidate] = useState<number>(0)
-  const [isMobile, setIsMobile] = useState(false)
-  const [formData, setFormData] = useState<LoginInterface>({
-    email: "",
-    password: "",
-  })
-  const captchaRef = useRef<ReCAPTCHA>(null)
+  const {
+    userIsClient,
+    setUserIsClient,
+    openLoginForm,
+    setOpenLoginForm,
+    loginError,
+    setLoginError,
+    requiredError,
+    setRequiredError,
+    loginAttempts,
+    setLoginAttempts,
+    accountBlocked,
+    setAccountBlocked,
+    revalidate,
+    setRevalidate,
+    formData,
+    setFormData,
+    userQuery,
+  } = useContext(LoginContext)
 
-  const userQuery = userIsClient ? "client=true" : "admin=true"
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
+
+  const [isMobile, setIsMobile] = useState(false)
+
+  const captchaRef = useRef<ReCAPTCHA>(null)
 
   const handleResize = () => {
     if (window.innerWidth < 414) {
@@ -46,10 +59,7 @@ function LoginView() {
   }
 
   const tryLogin = async () => {
-    const loginReq = await login(
-      userQuery.split("=")[0] as "admin" | "client",
-      formData,
-    )
+    const loginReq = await login(userQuery.split("=")[0] as UserType, formData)
 
     if (loginReq.status === 401 || loginReq.status === 404) {
       // *** Validacion de error para evaluar si la ruta es la correcta
@@ -66,6 +76,8 @@ function LoginView() {
         setLoginAttempts(loginReq.loginAttempts ?? loginAttempts)
         setAccountBlocked(loginReq.message === "Account blocked")
       }
+    } else if (loginReq.status === 500) {
+      setServerErrorModal(true)
     } else {
       const userData = {
         user: formData.email,
@@ -95,6 +107,11 @@ function LoginView() {
 
         if (validateReCaptchaReq.status === 201) {
           await tryLogin()
+        } else {
+          // ERROR ReCaptcha
+          router.push(
+            `/error?title=${errorTexts.robotDetected.title}&type=preference&span=${errorTexts.robotDetected.span}&description=${errorTexts.robotDetected.descripcion}`,
+          )
         }
       } else {
         await tryLogin()
@@ -107,6 +124,7 @@ function LoginView() {
   useEffect(() => {
     setUserIsClient(!!(router.query.client as string))
     setOpenLoginForm(!(router.query.reset_password as string))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
   useEffect(() => {
@@ -133,6 +151,10 @@ function LoginView() {
   return (
     <>
       <Container>
+        <InternalServerError
+          visible={serverErrorModal}
+          changeVisibility={() => setServerErrorModal(false)}
+        />
         <div>
           <Title>
             {openLoginForm
@@ -176,6 +198,11 @@ function LoginView() {
               />
             )}
             <ActionDiv>
+              {loginAttempts > 4 && (
+                <RemainingAttempts>
+                  {texts.login.remainingAttempts} {5 - loginAttempts}
+                </RemainingAttempts>
+              )}
               <Button content={texts.login.action} action={validateUser} cta />
               <URLContainer>
                 <a

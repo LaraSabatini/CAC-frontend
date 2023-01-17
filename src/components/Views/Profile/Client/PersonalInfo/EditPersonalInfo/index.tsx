@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react"
 import { ProfileContext } from "contexts/Profile"
 import editProfile from "services/auth/editProfile.service"
+import userData from "const/userData"
 import {
   validateEmail,
   validateIdentificationNumber,
@@ -9,6 +10,7 @@ import {
   DataInterface,
   EditPersonalInfoInterface,
 } from "interfaces/components/PersonalInfoInterface"
+import capitalizeFirstLetter from "helpers/formatting/capitalizeFirstLetter"
 import texts from "strings/payment.json"
 import profileTexts from "strings/profile.json"
 import ClientInterface from "interfaces/users/Client"
@@ -25,7 +27,6 @@ function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
   )
 
   const data = profileData as ClientInterface
-  const userData = JSON.parse(sessionStorage.getItem("userData") as string)
 
   const [newData, setNewData] = useState<DataInterface>({
     name: `${data.name}`,
@@ -98,7 +99,12 @@ function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
           label={texts.form.name}
           required
           type="text"
-          onChange={e => setNewData({ ...newData, name: e.target.value })}
+          onChange={e =>
+            setNewData({
+              ...newData,
+              name: capitalizeFirstLetter(e.target.value),
+            })
+          }
         />
         <Input
           width={200}
@@ -106,7 +112,12 @@ function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
           label={texts.form.surname}
           required
           type="text"
-          onChange={e => setNewData({ ...newData, lastName: e.target.value })}
+          onChange={e =>
+            setNewData({
+              ...newData,
+              lastName: capitalizeFirstLetter(e.target.value),
+            })
+          }
         />
       </HorizontalGroup>
       <HorizontalGroup>

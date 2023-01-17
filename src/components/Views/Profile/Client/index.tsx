@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import texts from "strings/profile.json"
+import LoginProvider from "contexts/Login"
 import Button from "components/UI/Button"
 import PersonalInfo from "./PersonalInfo"
 import PaymentStatus from "./PaymentStatus"
@@ -26,11 +27,13 @@ function ClientProfile() {
         <RightColumn>
           <PaymentStatus />
           <ButtonContainer>
-            <Button
-              content={texts.changePassword.title}
-              cta
-              action={() => setChangePasswordView(true)}
-            />
+            <LoginProvider>
+              <Button
+                content={texts.changePassword.title}
+                cta
+                action={() => setChangePasswordView(true)}
+              />
+            </LoginProvider>
             <Button
               content={texts.deleteProfile}
               danger
