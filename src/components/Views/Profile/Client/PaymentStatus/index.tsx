@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { AiOutlineCalendar } from "react-icons/ai"
 import compareDates from "helpers/dates/compareDates"
 import texts from "strings/profile.json"
@@ -9,12 +9,7 @@ import { Card, State, ExpireDate, CardHeader } from "./styles"
 function PaymentStatus() {
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
-  const [paymentExpired, setPaymentExpired] = useState<boolean>(false)
-
-  useEffect(() => {
-    setPaymentExpired(!compareDates(userData.paymentExpireDate))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const paymentExpired = !compareDates(userData.paymentExpireDate)
 
   return (
     <Card>
