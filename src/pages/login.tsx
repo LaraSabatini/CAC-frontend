@@ -7,6 +7,8 @@ function Login() {
   const router = useRouter()
 
   useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData") as string)
+
     if (Object.keys(router.query).length === 0) {
       router.replace({
         query: {
@@ -14,7 +16,12 @@ function Login() {
         },
       })
     }
-  }, [router])
+
+    if (userData?.logged) {
+      router.replace("/dashboard")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <LoginProvider>

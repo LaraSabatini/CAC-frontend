@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import { AiOutlineCalendar } from "react-icons/ai"
-import userData from "const/userData"
 import compareDates from "helpers/dates/compareDates"
 import texts from "strings/profile.json"
 import MercadoPagoForm from "components/Views/Payment/MercadoPagoButton"
@@ -8,6 +7,8 @@ import { Title } from "../styles"
 import { Card, State, ExpireDate, CardHeader } from "./styles"
 
 function PaymentStatus() {
+  const userData = JSON.parse(localStorage.getItem("userData") as string)
+
   const [paymentExpired, setPaymentExpired] = useState<boolean>(false)
 
   useEffect(() => {

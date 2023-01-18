@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import { AiOutlineLogout, AiFillHome } from "react-icons/ai"
 import { useRouter } from "next/router"
 import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
-import userData from "const/userData"
 import texts from "strings/profile.json"
 import headerTexts from "strings/header.json"
 import SearchBar from "components/UI/SearchBar"
@@ -24,12 +23,14 @@ import {
 function Header() {
   const router = useRouter()
 
+  const userData = JSON.parse(localStorage.getItem("userData") as string)
+
   const [openProfileMenu, setOpenProfileMenu] = useState<boolean>(false)
   const [openWarning, setOpenWarning] = useState<boolean>(false)
   const [deviceIsMobile, setDeviceIsMobile] = useState<boolean>(false)
 
   const logout = () => {
-    sessionStorage.removeItem("userData")
+    localStorage.removeItem("userData")
     router.replace(`/login?client=true`)
   }
 
@@ -57,7 +58,7 @@ function Header() {
         </SearchDiv>
       </SearchContainer>
       <ProfileContainer>
-        {userData.type === "admin" && (
+        {userData?.type === "admin" && (
           <>
             <Button
               cta={false}
