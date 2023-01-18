@@ -80,14 +80,14 @@ function LoginView() {
       setServerErrorModal(true)
     } else {
       const userData = {
+        id: loginReq.clientId,
+        logged: true,
         user: formData.email,
         type: userQuery.split("=")[0],
-        logged: true,
-        id: loginReq.clientId,
         firstLogin: loginReq.firstLogin === 1,
+        paymentExpireDate: "",
       }
-
-      sessionStorage.setItem("userData", JSON.stringify(userData))
+      localStorage.setItem("userData", JSON.stringify(userData))
 
       router.push("/dashboard")
     }

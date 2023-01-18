@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from "react"
-import userData from "const/userData"
 import getProfileData from "services/auth/getProfileData.service"
 import { ProfileContext } from "contexts/Profile"
 import InternalServerError from "components/Views/Error/InternalServerError"
@@ -8,6 +7,8 @@ import AdminProfile from "./Admin"
 import ClientProfile from "./Client"
 
 function ProfileView() {
+  const userData = JSON.parse(localStorage.getItem("userData") as string)
+
   const { setProfileData, triggerUpdate } = useContext(ProfileContext)
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 

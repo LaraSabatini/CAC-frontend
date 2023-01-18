@@ -18,8 +18,8 @@ const checkLastPayment = async (user: {
           .paymentExpireDate,
     }
 
-    sessionStorage.removeItem("userData")
-    sessionStorage.setItem("userData", JSON.stringify(userData))
+    localStorage.removeItem("userData")
+    localStorage.setItem("userData", JSON.stringify(userData))
 
     return compareDates(
       getPaymentsByClientReq.data[getPaymentsByClientReq.data.length - 1]

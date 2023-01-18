@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react"
 import { ProfileContext } from "contexts/Profile"
 import editProfile from "services/auth/editProfile.service"
-import userData from "const/userData"
 import {
   validateEmail,
   validateIdentificationNumber,
@@ -22,6 +21,8 @@ import Button from "components/UI/Button"
 import { Form, HorizontalGroup, ButtonContainer, Error } from "./styles"
 
 function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
+  const userData = JSON.parse(localStorage.getItem("userData") as string)
+
   const { profileData, triggerUpdate, setTriggerUpdate } = useContext(
     ProfileContext,
   )

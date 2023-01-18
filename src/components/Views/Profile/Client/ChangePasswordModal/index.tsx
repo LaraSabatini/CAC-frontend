@@ -6,7 +6,6 @@ import login from "services/auth/login.service"
 import changePassword from "services/auth/changePassword.service"
 import validateReCaptcha from "services/reCaptcha/validateReCaptcha.service"
 import ReCAPTCHA from "react-google-recaptcha"
-import userData from "const/userData"
 import errorTexts from "strings/errors.json"
 import texts from "strings/profile.json"
 import Modal from "components/UI/Modal"
@@ -31,6 +30,8 @@ function ChangePasswordModal({
   cantCancel,
 }: ChangePasswordModalInterface) {
   const router = useRouter()
+
+  const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const { setTriggerUpdate, triggerUpdate } = useContext(ProfileContext)
 
@@ -76,7 +77,7 @@ function ChangePasswordModal({
           firstLogin: false,
         }
 
-        sessionStorage.setItem("userData", JSON.stringify(newUserData))
+        localStorage.setItem("userData", JSON.stringify(newUserData))
       } else {
         setServerErrorModal(true)
       }
