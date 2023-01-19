@@ -1,4 +1,5 @@
 import React, { useEffect } from "react"
+import routes from "routes"
 import { useRouter } from "next/router"
 
 function Home() {
@@ -8,9 +9,9 @@ function Home() {
     const userData = JSON.parse(localStorage.getItem("userData") as string)
 
     if (userData === null) {
-      router.replace("/login?client=true")
+      router.replace(`${routes.login.name}?${routes.login.queries.client}`)
     } else if (userData.logged) {
-      router.replace("/dashboard")
+      router.replace(routes.dashboard.name)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

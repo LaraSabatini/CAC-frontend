@@ -1,5 +1,6 @@
 import React, { useEffect } from "react"
 import { useRouter } from "next/router"
+import routes from "routes"
 import LoginProvider from "contexts/Login"
 import LoginView from "components/Views/LogInView"
 
@@ -18,7 +19,7 @@ function Login() {
     }
 
     if (userData?.logged) {
-      router.replace("/dashboard")
+      router.replace(routes.dashboard.name)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

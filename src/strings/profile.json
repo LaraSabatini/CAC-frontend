@@ -5,15 +5,15 @@
         "title": "Cambiar contraseña:",
         "matchingError": "* Las contraseñas no coinciden",
         "requiredError": "* Completa los campos requeridos",
-        "wrongPassword": "La contraseña ingresada es incorrecta",
+        "wrongPassword": "* La contraseña ingresada es incorrecta",
         "password": "Contraseña",
         "newPassword": "Nueva contraseña",
         "confirmPassword": "Confirmar contraseña",
         "cancel":"Cancelar",
         "confirm": "Confirmar",
         "success": {
-            "title": "Excelente!",
-            "description": "La constraseña ha sido modificada con exito"
+            "title": "¡Excelente!",
+            "description": "La constraseña ha sido modificada con éxito."
         }
     },
     "deleteProfile": "Eliminar perfil",
