@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
+import routes from "routes"
 import ProfileProvider from "contexts/Profile"
 import ProfileView from "components/Views/Profile"
 import { UserDataType } from "interfaces/users/General"
@@ -13,7 +14,9 @@ function Profile() {
   const checkPayment = async (userData: UserDataType) => {
     const checkLastPaymentReq = await checkLastPayment(userData)
     if (checkLastPaymentReq === "expired") {
-      router.replace("/profile?make_payment=true")
+      router.replace(
+        `${routes.profile.name}?${routes.profile.queries.makePayment}`,
+      )
     }
   }
 
@@ -21,7 +24,7 @@ function Profile() {
     const userData = JSON.parse(localStorage.getItem("userData") as string)
 
     if (userData === null) {
-      router.replace("/login?client=true")
+      router.replace(`${routes.login.name}?${routes.login.queries.client}`)
     } else if (userData?.logged) {
       setIsLogged(userData.logged)
       checkPayment(userData)

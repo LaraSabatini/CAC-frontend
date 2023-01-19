@@ -12,7 +12,7 @@ function ProfileView() {
   const { setProfileData, triggerUpdate } = useContext(ProfileContext)
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
-  const getData = async () => {
+  const getUserData = async () => {
     const getProfileDataReq = await getProfileData(userData.type, userData.id)
 
     if (getProfileDataReq.status === 200 && getProfileDataReq.data.length) {
@@ -23,7 +23,7 @@ function ProfileView() {
   }
 
   useEffect(() => {
-    getData()
+    getUserData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerUpdate])
 

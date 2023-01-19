@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
+import routes from "routes"
 import { LoginContext } from "contexts/Login"
 import { ProfileContext } from "contexts/Profile"
 import changePassword from "services/auth/changePassword.service"
@@ -95,8 +96,9 @@ function ChangePasswordModal({
 
   useEffect(() => {
     if (accountBlocked) {
-      router.push(
-        `/error?title=${errorTexts.accountBlocked.title}&type=preference&span=${errorTexts.accountBlocked.span}&description=${errorTexts.accountBlocked.description}`,
+      router.replace(
+        // `/error?title=${errorTexts.accountBlocked.title}&type=preference&span=${errorTexts.accountBlocked.span}&description=${errorTexts.accountBlocked.description}`,
+        `${routes.error.name}?${routes.error.queries.title}${errorTexts.accountBlocked.title}&${routes.error.queries.type}preference&${routes.error.queries.span}${errorTexts.accountBlocked.span}&${routes.error.queries.description}${errorTexts.accountBlocked.description}`,
       )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -171,7 +173,7 @@ function ChangePasswordModal({
               setTriggerUpdate(triggerUpdate + 1)
               setChangePasswordSuccess(false)
               cancel()
-              router.push("/profile")
+              router.replace(routes.profile.name)
             }}
           />
         )}

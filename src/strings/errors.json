@@ -30,7 +30,7 @@
     "robotDetected": {
         "title": "¡UPS!",
         "span": "Hemos detectado actividad sospechosa en tu inicio de sesion",
-        "descripcion": "Por favor intentalo mas tarde o comunicate con un administrador."
+        "description": "Por favor intentalo mas tarde o comunicate con un administrador."
     },
     "internalServerError": {
         "title": "¡UPS! - 500",

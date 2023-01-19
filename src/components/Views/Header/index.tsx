@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { AiOutlineLogout, AiFillHome } from "react-icons/ai"
 import { useRouter } from "next/router"
+import routes from "routes"
 import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
 import texts from "strings/profile.json"
 import headerTexts from "strings/header.json"
@@ -31,7 +32,7 @@ function Header() {
 
   const logout = () => {
     localStorage.removeItem("userData")
-    router.replace(`/login?client=true`)
+    router.replace(`${routes.login.name}?${routes.login.queries.client}`)
   }
 
   const handleResize = () => {
@@ -49,7 +50,7 @@ function Header() {
   return (
     <Container>
       <SearchContainer>
-        <GoHomeButton onClick={() => router.replace(`/dashboard`)}>
+        <GoHomeButton onClick={() => router.replace(routes.dashboard.name)}>
           <AiFillHome />
         </GoHomeButton>
         <SearchDiv>
@@ -74,7 +75,7 @@ function Header() {
             <ProfileOptions>
               <Button
                 cta
-                action={() => router.replace(`/profile`)}
+                action={() => router.replace(routes.profile.name)}
                 content={texts.title}
               />
               <Tooltip title={texts.logout} placement="bottom-end">

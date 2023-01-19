@@ -1,5 +1,6 @@
 import React from "react"
 import { useRouter } from "next/router"
+import routes from "routes"
 import { ErrorType } from "interfaces/components/GenericErrorPage"
 import GenericError from "components/Views/Error/GenericError"
 
@@ -13,9 +14,9 @@ function Error() {
       span={(router.query.span as string) ?? ""}
       actionButton={() => {
         if ((router.query.type as ErrorType) === "error") {
-          router.push("/pricing")
+          router.replace(routes.pricing.name)
         } else {
-          router.push("/login?client=true")
+          router.replace(`${routes.login}?${routes.login.queries.client}`)
         }
       }}
       type={(router.query.type as ErrorType) ?? ""}

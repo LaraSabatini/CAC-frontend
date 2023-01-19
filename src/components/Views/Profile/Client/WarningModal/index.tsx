@@ -40,9 +40,7 @@ function WarningModal({ cancel }: WarningModalInterface) {
     if (formData.password !== "" && formData.confirmPassword !== "") {
       setFormError("")
 
-      const validate = formData.password === formData.confirmPassword
-
-      if (validate) {
+      if (formData.password === formData.confirmPassword) {
         const loginReq = await login("client", {
           email: userData.user,
           password: formData.password,
@@ -56,7 +54,7 @@ function WarningModal({ cancel }: WarningModalInterface) {
             router.reload()
           }
         } else if (loginReq.status === 401) {
-          setFormError("* La contraseña es incorrecta")
+          setFormError(`${texts.changePassword.wrongPassword}`)
         } else {
           setServerErrorModal(true)
         }

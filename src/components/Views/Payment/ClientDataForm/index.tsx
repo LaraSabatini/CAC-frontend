@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { useRouter } from "next/router"
+import routes from "routes"
 import {
   validateEmail,
   validateIdentificationNumber,
@@ -83,18 +84,21 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
             itemId: payment.item.id,
             paymentExpireDate: addMonths(payment.item.time as number),
           }
-
+          // *** Almacenar datos en localStorage para almacenar pago y cliente en la BDD
           localStorage.setItem("client", JSON.stringify(newClient))
           localStorage.setItem("payment", JSON.stringify(paymentData))
 
           setPreferenceId(createPreferenceReq.id)
           setRenderMPButton(true)
         } else {
-          router.push("/payment?preference_error=true")
+          router.replace(
+            `${routes.payment.name}?${routes.payment.queries.preferenceError}`,
+          )
         }
       } else if (validateEmailReq.status === 500) {
         setServerErrorModal(true)
       } else {
+        // *** Error: ya existe un usuario con ese email o DNI
         setFormError(texts.form.duplicatedError)
         setDuplicatedUser(true)
         setLoginModal(true)
@@ -122,7 +126,10 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
             status="notice"
             ctaButton={{
               content: `${texts.form.loginModal.mainButton}`,
-              action: () => router.push("/login?client=true"),
+              action: () =>
+                router.replace(
+                  `${routes.login.name}?${routes.login.queries.client}`,
+                ),
             }}
             secondaryButton={{
               content: `${texts.form.loginModal.secondaryButton}`,

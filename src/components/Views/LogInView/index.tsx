@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 import { useRouter } from "next/router"
+import routes from "routes"
 import { LoginContext } from "contexts/Login"
 import validateReCaptcha from "services/reCaptcha/validateReCaptcha.service"
 import ReCAPTCHA from "react-google-recaptcha"
@@ -64,11 +65,11 @@ function LoginView() {
     if (loginReq.status === 401 || loginReq.status === 404) {
       // *** Validacion de error para evaluar si la ruta es la correcta
       if (loginReq.error === "User is admin") {
-        router.push(`/login?admin=true`)
+        router.replace(`${routes.login.name}?${routes.login.queries.admin}`)
         setUserIsClient(false)
         setRevalidate(1)
       } else if (loginReq.error === "User is client") {
-        router.push(`/login?client=true`)
+        router.replace(`${routes.login.name}?${routes.login.queries.client}`)
         setUserIsClient(true)
         setRevalidate(1)
       } else {
@@ -79,6 +80,7 @@ function LoginView() {
     } else if (loginReq.status === 500) {
       setServerErrorModal(true)
     } else {
+      // *** Almacenar data en localStorage para mantener sesion iniciada
       const userData = {
         id: loginReq.clientId,
         logged: true,
@@ -89,7 +91,7 @@ function LoginView() {
       }
       localStorage.setItem("userData", JSON.stringify(userData))
 
-      router.push("/dashboard")
+      router.replace(routes.dashboard.name)
     }
   }
 
@@ -109,9 +111,9 @@ function LoginView() {
         if (validateReCaptchaReq.status === 201) {
           await tryLogin()
         } else {
-          // ERROR ReCaptcha
-          router.push(
-            `/error?title=${errorTexts.robotDetected.title}&type=preference&span=${errorTexts.robotDetected.span}&description=${errorTexts.robotDetected.descripcion}`,
+          // *** Error ReCaptcha
+          router.replace(
+            `${routes.error.name}?${routes.error.queries.title}${errorTexts.robotDetected.title}&${routes.error.queries.type}preference&${routes.error.queries.span}${errorTexts.robotDetected.span}&${routes.error.queries.description}${errorTexts.robotDetected.description}`,
           )
         }
       } else {
@@ -130,8 +132,8 @@ function LoginView() {
 
   useEffect(() => {
     if (accountBlocked) {
-      router.push(
-        `/error?title=${errorTexts.accountBlocked.title}&type=preference&span=${errorTexts.accountBlocked.span}&description=${errorTexts.accountBlocked.description}`,
+      router.replace(
+        `${routes.error.name}?${routes.error.queries.title}${errorTexts.accountBlocked.title}&${routes.error.queries.type}preference&${routes.error.queries.span}${errorTexts.accountBlocked.span}&${routes.error.queries.description}${errorTexts.accountBlocked.description}`,
       )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -207,13 +209,13 @@ function LoginView() {
               <Button content={texts.login.action} action={validateUser} cta />
               <URLContainer>
                 <a
-                  href={`http://localhost:3000/login?${userQuery}&reset-password=true`}
+                  href={`http://localhost:3000/${routes.login.name}?${userQuery}&${routes.login.queries.resetPassword}`}
                 >
                   {texts.login.restorePassword}
                   <b>{texts.login.restorePasswordBold}</b>
                 </a>
                 {userIsClient && (
-                  <a href="http://localhost:3000/pricing">
+                  <a href={`http://localhost:3000/${routes.pricing.name}`}>
                     {texts.login.subscribe}
                     <b>{texts.login.subscribeBold}</b>
                   </a>

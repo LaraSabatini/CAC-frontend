@@ -5,7 +5,7 @@
         "title": "Cambiar contraseña:",
         "matchingError": "* Las contraseñas no coinciden",
         "requiredError": "* Completa los campos requeridos",
-        "wrongPassword": "La contraseña ingresada es incorrecta",
+        "wrongPassword": "* La contraseña ingresada es incorrecta",
         "password": "Contraseña",
         "newPassword": "Nueva contraseña",
         "confirmPassword": "Confirmar contraseña",

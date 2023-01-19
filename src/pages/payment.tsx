@@ -8,6 +8,7 @@ import {
 import GenericError from "components/Views/Error/GenericError"
 import SuccessView from "components/Views/Payment/SuccessView"
 import texts from "strings/errors.json"
+import routes from "routes"
 import { dateFormated } from "helpers/dates/getToday"
 import generatePassword from "helpers/users/generatePassword"
 import { useRouter } from "next/router"
@@ -76,8 +77,8 @@ function Payment() {
         setRegistrationSuccess(success)
       }
     } else {
-      router.push(
-        `/error?title=${texts.userError.title}&type=error&description=${texts.userError.description}`,
+      router.replace(
+        `${routes.error.name}?${routes.error.queries.title}${texts.userError.title}&${routes.error.queries.type}error&${routes.error.queries.description}${texts.userError.description}`,
       )
     }
 
@@ -101,7 +102,7 @@ function Payment() {
         <GenericError
           title={texts.paymentPending.title}
           description={texts.paymentPending.description}
-          actionButton={() => router.push("/pricing")}
+          actionButton={() => router.replace(routes.pricing.name)}
           type="pending"
         />
       )}
@@ -109,7 +110,7 @@ function Payment() {
         <GenericError
           title={texts.paymentError.title}
           description={texts.paymentError.description}
-          actionButton={() => router.push("/pricing")}
+          actionButton={() => router.replace(routes.pricing.name)}
           type="error"
         />
       )}
@@ -117,7 +118,7 @@ function Payment() {
         <GenericError
           title={texts.preferenceError.title}
           description={texts.preferenceError.description}
-          actionButton={() => router.push("/pricing")}
+          actionButton={() => router.replace(routes.pricing.name)}
           type="preference"
           span={texts.preferenceError.span}
         />
