@@ -1,11 +1,8 @@
-import React, { useState, useRef, useEffect, useContext } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 import { LoginContext } from "contexts/Login"
 import { ProfileContext } from "contexts/Profile"
-import login from "services/auth/login.service"
 import changePassword from "services/auth/changePassword.service"
-import validateReCaptcha from "services/reCaptcha/validateReCaptcha.service"
-import ReCAPTCHA from "react-google-recaptcha"
 import errorTexts from "strings/errors.json"
 import texts from "strings/profile.json"
 import Modal from "components/UI/Modal"
@@ -35,14 +32,7 @@ function ChangePasswordModal({
 
   const { setTriggerUpdate, triggerUpdate } = useContext(ProfileContext)
 
-  const {
-    loginError,
-    setLoginError,
-    loginAttempts,
-    setLoginAttempts,
-    accountBlocked,
-    setAccountBlocked,
-  } = useContext(LoginContext)
+  const { loginError, setLoginError, accountBlocked } = useContext(LoginContext)
 
   const [formData, setFormData] = useState<{
     password: string
@@ -59,51 +49,33 @@ function ChangePasswordModal({
   )
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
-  const captchaRef = useRef<ReCAPTCHA>(null)
+  const tryChangePassword = async () => {
+    // *** Cambiar contraseña
+    const changePasswordReq = await changePassword(userData.type, {
+      id: userData.id,
+      password: formData.password,
+      newPassword: formData.newPassword,
+    })
 
-  const tryChangePassword = async (response: any) => {
-    if (response.status === 201) {
-      // *** Cambiar contraseña
-      const changePasswordReq = await changePassword(userData.type, {
-        id: userData.id,
-        newPassword: formData.newPassword,
-      })
+    if (changePasswordReq.status === 201) {
+      setChangePasswordSuccess(true)
 
-      if (changePasswordReq.status === 201) {
-        setChangePasswordSuccess(true)
-
-        const newUserData = {
-          ...userData,
-          firstLogin: false,
-        }
-
-        localStorage.setItem("userData", JSON.stringify(newUserData))
-      } else {
-        setServerErrorModal(true)
+      const newUserData = {
+        ...userData,
+        firstLogin: false,
       }
-    } else if (response.status === 401) {
+
+      localStorage.setItem("userData", JSON.stringify(newUserData))
+    } else if (changePasswordReq === 401) {
       setFormError(`${texts.changePassword.wrongPassword}`)
       setLoginError(true)
-      setLoginAttempts(response.loginAttempts ?? loginAttempts)
-      setAccountBlocked(response.message === "Account blocked")
     } else {
       setServerErrorModal(true)
     }
   }
 
-  const tryLogin = async () => {
-    const loginReq = await login(userData.type, {
-      email: userData.user,
-      password: formData.password,
-    })
-
-    await tryChangePassword(loginReq)
-  }
-
   const validateChange = async (e: any) => {
     e?.preventDefault()
-
-    let token: string | null
 
     // *** Validar campos requeridos
     if (
@@ -117,21 +89,7 @@ function ChangePasswordModal({
       setFormError(`${texts.changePassword.matchingError}`)
     } else {
       setFormError("")
-      // *** ReCaptcha
-      if (loginAttempts >= 3 && captchaRef.current !== null) {
-        token = captchaRef.current.getValue()
-        captchaRef.current.reset()
-
-        const validateReCaptchaReq = await validateReCaptcha({ token })
-
-        if (validateReCaptchaReq.status === 201) {
-          await tryLogin()
-        } else {
-          setServerErrorModal(true)
-        }
-      } else {
-        await tryLogin()
-      }
+      await tryChangePassword()
     }
   }
 
@@ -186,12 +144,7 @@ function ChangePasswordModal({
             }
           />
         </InputContainer>
-        {loginAttempts >= 3 && (
-          <ReCAPTCHA
-            sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}`}
-            ref={captchaRef}
-          />
-        )}
+
         <ButtonContainer>
           {cantCancel ? (
             <></>
