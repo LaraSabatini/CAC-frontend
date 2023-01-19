@@ -12,8 +12,8 @@
         "cancel":"Cancelar",
         "confirm": "Confirmar",
         "success": {
-            "title": "Excelente!",
-            "description": "La constraseña ha sido modificada con exito"
+            "title": "¡Excelente!",
+            "description": "La constraseña ha sido modificada con éxito."
         }
     },
     "deleteProfile": "Eliminar perfil",
