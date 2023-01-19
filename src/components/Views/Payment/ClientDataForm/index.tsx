@@ -86,6 +86,10 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
 
           localStorage.setItem("client", JSON.stringify(newClient))
           localStorage.setItem("payment", JSON.stringify(paymentData))
+          localStorage.setItem(
+            "item",
+            JSON.stringify({ itemName: payment.item.title }),
+          )
 
           setPreferenceId(createPreferenceReq.id)
           setRenderMPButton(true)

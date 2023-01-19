@@ -5,6 +5,7 @@ import {
   validateEmail,
   validateIdentificationNumber,
 } from "services/auth/validateClient.service"
+import sendRegistarEmail from "services/auth/sendRegisterEmail.service"
 import GenericError from "components/Views/Error/GenericError"
 import SuccessView from "components/Views/Payment/SuccessView"
 import texts from "strings/errors.json"
@@ -70,8 +71,21 @@ function Payment() {
           clientId: registerReq.clientId,
         })
 
+        // *** Enviar mail con credenciales
+        const item = JSON.parse(localStorage.getItem("item") as string)
+
+        const sendRegistarEmailReq = await sendRegistarEmail({
+          recipients: [newClientInfo.email],
+          name: `${newClientInfo.name}`,
+          item: item.itemName,
+          password: `${newClientInfo.password}`,
+          loginURL: "http://localhost:3000/login?client=true",
+        })
+
         success =
-          registerPaymentInDBReq.status === 201 && registerReq.status === 201
+          registerPaymentInDBReq.status === 201 &&
+          registerReq.status === 201 &&
+          sendRegistarEmailReq.status === 201
 
         setRegistrationSuccess(success)
       }
@@ -84,6 +98,7 @@ function Payment() {
     if (success) {
       localStorage.removeItem("client")
       localStorage.removeItem("payment")
+      localStorage.removeItem("item")
     }
   }
 
