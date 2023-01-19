@@ -87,6 +87,10 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           // *** Almacenar datos en localStorage para almacenar pago y cliente en la BDD
           localStorage.setItem("client", JSON.stringify(newClient))
           localStorage.setItem("payment", JSON.stringify(paymentData))
+          localStorage.setItem(
+            "item",
+            JSON.stringify({ itemName: payment.item.title }),
+          )
 
           setPreferenceId(createPreferenceReq.id)
           setRenderMPButton(true)
