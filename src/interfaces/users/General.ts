@@ -2,6 +2,7 @@ export type UserType = "admin" | "client" | string
 
 export interface ChangePasswordInterface {
   id: number
+  password: string
   newPassword: string
 }
 
