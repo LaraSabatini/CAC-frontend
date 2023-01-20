@@ -28,8 +28,6 @@ function LoginView() {
   const {
     userIsClient,
     setUserIsClient,
-    openLoginForm,
-    setOpenLoginForm,
     loginError,
     setLoginError,
     requiredError,
@@ -60,7 +58,7 @@ function LoginView() {
   }
 
   const tryLogin = async () => {
-    const loginReq = await login(userQuery.split("=")[0] as UserType, formData)
+    const loginReq = await login(userQuery.split("=")[1] as UserType, formData)
 
     if (loginReq.status === 401 || loginReq.status === 404) {
       // *** Validacion de error para evaluar si la ruta es la correcta
@@ -85,7 +83,7 @@ function LoginView() {
         id: loginReq.clientId,
         logged: true,
         user: formData.email,
-        type: userQuery.split("=")[0],
+        type: userQuery.split("=")[1],
         firstLogin: loginReq.firstLogin === 1,
         paymentExpireDate: "",
       }
@@ -125,8 +123,7 @@ function LoginView() {
   }
 
   useEffect(() => {
-    setUserIsClient(!!(router.query.client as string))
-    setOpenLoginForm(!(router.query.reset_password as string))
+    setUserIsClient(!!(router.query.user === "client"))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
@@ -159,71 +156,65 @@ function LoginView() {
           changeVisibility={() => setServerErrorModal(false)}
         />
         <div>
-          <Title>
-            {openLoginForm
-              ? `${texts.login.title}`
-              : `${texts.restorePassword.title}`}
-          </Title>
+          <Title>{texts.login.title}</Title>
           {requiredError && (
             <RequiredError>{texts.requiredError}</RequiredError>
           )}
         </div>
-        {openLoginForm && (
-          <>
-            <InputContainer>
-              <Input
-                width={isMobile ? 280 : 321}
-                label={texts.login.email}
-                required
-                type="email"
-                onChange={e =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                backError={requiredError || loginError}
-              />
-              <Input
-                width={isMobile ? 315 : 356}
-                label={texts.login.password}
-                required
-                type="password"
-                onChange={e =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                backError={requiredError || loginError}
-                keyDown={validateUser}
-              />
-              <ErrorMessage>{loginError && texts.login.error}</ErrorMessage>
-            </InputContainer>
-            {loginAttempts >= 3 && (
-              <ReCAPTCHA
-                sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}`}
-                ref={captchaRef}
-              />
+        <>
+          <InputContainer>
+            <Input
+              width={isMobile ? 280 : 321}
+              label={texts.login.email}
+              required
+              type="email"
+              onChange={e =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+              backError={requiredError || loginError}
+            />
+            <Input
+              width={isMobile ? 315 : 356}
+              label={texts.login.password}
+              required
+              type="password"
+              onChange={e =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              backError={requiredError || loginError}
+              keyDown={validateUser}
+            />
+            <ErrorMessage>{loginError && texts.login.error}</ErrorMessage>
+          </InputContainer>
+          {loginAttempts >= 3 && (
+            <ReCAPTCHA
+              sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY}`}
+              ref={captchaRef}
+            />
+          )}
+          <ActionDiv>
+            {loginAttempts > 4 && (
+              <RemainingAttempts>
+                {texts.login.remainingAttempts} {5 - loginAttempts}
+              </RemainingAttempts>
             )}
-            <ActionDiv>
-              {loginAttempts > 4 && (
-                <RemainingAttempts>
-                  {texts.login.remainingAttempts} {5 - loginAttempts}
-                </RemainingAttempts>
-              )}
-              <Button content={texts.login.action} action={validateUser} cta />
-              <URLContainer>
-                <a
-                  href={`http://localhost:3000/${routes.login.name}?${userQuery}&${routes.login.queries.resetPassword}`}
-                >
-                  {texts.login.restorePassword}
-                  <b>{texts.login.restorePasswordBold}</b>
+            <Button content={texts.login.action} action={validateUser} cta />
+            <URLContainer>
+              <a
+                href={`http://localhost:3000${routes.login.name}?${userQuery}&${routes.login.queries.resetPassword}&${routes.login.queries.email}${formData.email}`}
+              >
+                {texts.login.restorePassword}
+                <b>{texts.login.restorePasswordBold}</b>
+              </a>
+              {userIsClient && (
+                <a href={`http://localhost:3000/${routes.pricing.name}`}>
+                  {texts.login.subscribe}
+                  <b>{texts.login.subscribeBold}</b>
                 </a>
-                {userIsClient && (
-                  <a href={`http://localhost:3000/${routes.pricing.name}`}>
-                    {texts.login.subscribe}
-                    <b>{texts.login.subscribeBold}</b>
-                  </a>
-                )}
-              </URLContainer>
-            </ActionDiv>
-          </>
-        )}
+              )}
+            </URLContainer>
+          </ActionDiv>
+        </>
       </Container>
     </>
   )

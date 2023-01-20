@@ -52,11 +52,15 @@ function ChangePasswordModal({
 
   const tryChangePassword = async () => {
     // *** Cambiar contraseña
-    const changePasswordReq = await changePassword(userData.type, {
-      id: userData.id,
-      password: formData.password,
-      newPassword: formData.newPassword,
-    })
+    const changePasswordReq = await changePassword(
+      userData.type,
+      {
+        id: userData.id,
+        password: formData.password,
+        newPassword: formData.newPassword,
+      },
+      false,
+    )
 
     if (changePasswordReq.status === 201) {
       setChangePasswordSuccess(true)
@@ -97,7 +101,6 @@ function ChangePasswordModal({
   useEffect(() => {
     if (accountBlocked) {
       router.replace(
-        // `/error?title=${errorTexts.accountBlocked.title}&type=preference&span=${errorTexts.accountBlocked.span}&description=${errorTexts.accountBlocked.description}`,
         `${routes.error.name}?${routes.error.queries.title}${errorTexts.accountBlocked.title}&${routes.error.queries.type}preference&${routes.error.queries.span}${errorTexts.accountBlocked.span}&${routes.error.queries.description}${errorTexts.accountBlocked.description}`,
       )
     }
