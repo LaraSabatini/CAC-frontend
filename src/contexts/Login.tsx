@@ -22,7 +22,7 @@ export const LoginContext = createContext<LoginContextInterface>({
     password: "",
   },
   setFormData: () => {},
-  userQuery: "client=true",
+  userQuery: "user=client",
 })
 
 function LoginProvider({ children }: any) {
@@ -38,7 +38,7 @@ function LoginProvider({ children }: any) {
     password: "",
   })
 
-  const userQuery = userIsClient ? "client=true" : "admin=true"
+  const userQuery = userIsClient ? "user=client" : "user=admin"
 
   const value: any = useMemo(
     () => ({

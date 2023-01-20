@@ -2,21 +2,24 @@ import React, { useEffect } from "react"
 import { useRouter } from "next/router"
 import routes from "routes"
 import LoginProvider from "contexts/Login"
-import LoginView from "components/Views/LogInView"
+import LoginView from "components/Views/LogIn"
+import ResetPassword from "components/Views/ResetPassword"
 
 function Login() {
   const router = useRouter()
 
+  // const { user } = router.query
+
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData") as string)
 
-    if (Object.keys(router.query).length === 0) {
-      router.replace({
-        query: {
-          client: true,
-        },
-      })
-    }
+    // if (router.isReady) {
+    //   if (!user) {
+    //     router.replace({
+    //       query: { ...router.query, user: "client" },
+    //     })
+    //   }
+    // }
 
     if (userData?.logged) {
       router.replace(routes.dashboard.name)
@@ -25,9 +28,15 @@ function Login() {
   }, [])
 
   return (
-    <LoginProvider>
-      <LoginView />
-    </LoginProvider>
+    <>
+      {typeof router.query.reset_password === "undefined" ? (
+        <LoginProvider>
+          <LoginView />
+        </LoginProvider>
+      ) : (
+        <ResetPassword />
+      )}
+    </>
   )
 }
 

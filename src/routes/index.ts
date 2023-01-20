@@ -6,9 +6,17 @@ const routes = {
   login: {
     name: "/login",
     queries: {
-      client: "client=true",
-      admin: "admin=true",
-      resetPassword: "reset-password=true",
+      client: "user=client",
+      admin: "user=admin",
+      user: "user=",
+      resetPassword: "reset_password=true",
+      redirected: "redirected=true",
+      email: "email=",
+      sendEmail: "send_email=",
+      password: "pass=",
+      restorePassword: "restore_password=",
+      success: "success",
+      failure: "failure",
     },
   },
   profile: {

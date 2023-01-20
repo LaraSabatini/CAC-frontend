@@ -80,7 +80,7 @@ function Payment() {
           name: `${newClientInfo.name}`,
           item: item.itemName,
           password: `${newClientInfo.password}`,
-          loginURL: "http://localhost:3000/login?client=true",
+          loginURL: "http://localhost:3000/login?user=client",
         })
 
         success =
