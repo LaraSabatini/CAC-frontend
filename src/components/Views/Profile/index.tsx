@@ -17,7 +17,7 @@ function ProfileView() {
 
     if (getProfileDataReq.status === 200 && getProfileDataReq.data.length) {
       setProfileData(getProfileDataReq.data[0])
-      if (userData.type === "admin") {
+      if (userData.type !== "client") {
         setProfileData({
           ...getProfileDataReq.data[0],
           accessPermits: JSON.parse(getProfileDataReq.data[0].accessPermits)[0],
@@ -40,7 +40,7 @@ function ProfileView() {
         visible={serverErrorModal}
         changeVisibility={() => setServerErrorModal(false)}
       />
-      {userData.type === "admin" ? <AdminProfile /> : <ClientProfile />}
+      {userData.type === "client" ? <ClientProfile /> : <AdminProfile />}
     </>
   )
 }

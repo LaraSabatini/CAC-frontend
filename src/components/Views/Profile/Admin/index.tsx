@@ -30,7 +30,11 @@ function AdminProfile() {
   ] = useState<AccessPermitsInterface | null>(null)
 
   const permitRequest = () => {
-    // stand by
+    // crear request que envia mail a super usuario pidiendo permisos
+    // pagina usuarios => usuario preseleccionado
+    //                      => permisos requeridos pre-seleccionados
+    //                      => otorgar permisos
+    //                      => email notificacion permisos dados a usuario que lo pidio
   }
 
   useEffect(() => {

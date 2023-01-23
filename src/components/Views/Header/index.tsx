@@ -59,7 +59,7 @@ function Header() {
         </SearchDiv>
       </SearchContainer>
       <ProfileContainer>
-        {userData?.type === "admin" && (
+        {userData?.type !== "client" && (
           <>
             <Button
               cta={false}

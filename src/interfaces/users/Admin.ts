@@ -7,6 +7,7 @@ export interface AccessPermitsInterface {
     delete: boolean
   }
   partners: boolean
+  createAdmin: boolean
 }
 
 export interface AdminInterface extends UserInterface {

@@ -1,4 +1,4 @@
-export type UserType = "admin" | "client" | string
+export type UserType = "admin" | "client" | "master" | string
 
 export interface ChangePasswordInterface {
   id: number
