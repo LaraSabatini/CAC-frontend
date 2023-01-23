@@ -30,7 +30,7 @@ function PricingView() {
 
   const getPricingPlans = async () => {
     const getPlansReq = await getPlans()
-    if (getPlansReq.status === 201) {
+    if (getPlansReq.status === 200) {
       setPricingList(getPlansReq.data)
     } else {
       setServerErrorModal(true)

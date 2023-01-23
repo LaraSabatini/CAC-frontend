@@ -4,7 +4,7 @@ import theme from "./index"
 const GlobalStyle = createGlobalStyle`
   body {
           margin: 0px;
-          padding: 0px;
+          height: 110vh;
           background-color:  ${theme.colors.light_grey};
         }
 `

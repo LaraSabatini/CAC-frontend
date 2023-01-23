@@ -22,7 +22,7 @@ function Dashboard() {
     const userData = JSON.parse(localStorage.getItem("userData") as string)
 
     if (userData === null) {
-      router.replace(`${routes.login}?${routes.login.queries.client}`)
+      router.replace(`${routes.login.name}?${routes.login.queries.client}`)
     } else if (userData?.logged) {
       setIsLogged(true)
       if (userData.firstLogin) {
