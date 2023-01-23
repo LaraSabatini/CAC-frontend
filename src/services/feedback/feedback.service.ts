@@ -3,7 +3,7 @@ import axiosHeader from "services/axiosHeader"
 import FeedbackInterface from "interfaces/users/Feedback"
 import defaultPost from "../defaultPost"
 
-const apiURL = "/feedback"
+const apiURL = "http://localhost:3001/feedback"
 
 const getFeedback = async (page: number) => {
   const res = await axios.get(`${apiURL}/page=${page}`, axiosHeader)

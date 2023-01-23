@@ -3,7 +3,9 @@ import React, { useState } from "react"
 import { useRouter } from "next/router"
 import login from "services/auth/login.service"
 import blockAccount from "services/auth/blockAccount.service"
+import { createFeedback } from "services/feedback/feedback.service"
 import texts from "strings/profile.json"
+import deletionOptions from "const/deleteProfileOptions"
 import Modal from "components/UI/Modal"
 import Icon from "components/UI/Assets/Icon"
 import Button from "components/UI/Button"
@@ -39,25 +41,6 @@ function WarningModal({ cancel }: WarningModalInterface) {
     confirmPassword: "",
   })
 
-  const deletionOptions = [
-    {
-      id: 1,
-      value: "No la necesito mas",
-    },
-    {
-      id: 2,
-      value: "Es muy caro",
-    },
-    {
-      id: 3,
-      value: "Voy a cambiar de servicio",
-    },
-    {
-      id: 4,
-      value: "Otro",
-    },
-  ]
-
   const [deleteOptionSelected, setDeleteOptionSelected] = useState<{
     id: number
     value: string
@@ -77,22 +60,27 @@ function WarningModal({ cancel }: WarningModalInterface) {
 
         if (loginReq.status === 201) {
           const blockAccountReq = await blockAccount(userData.id)
+          const createFeedbackReq = await createFeedback({
+            optionId: deleteOptionSelected.id,
+            optionValue: deleteOptionSelected.value,
+            clientId: userData.id,
+          })
 
-          if (blockAccountReq.status === 201) {
+          if (
+            blockAccountReq.status === 201 &&
+            createFeedbackReq.status === 201
+          ) {
             localStorage.removeItem("userData")
             router.reload()
           }
         } else if (loginReq.status === 401) {
           setFormError(`${texts.changePassword.wrongPassword}`)
-        } else {
-          setServerErrorModal(true)
         }
-      } else {
-        setFormError(`${texts.changePassword.matchingError}`)
+        setServerErrorModal(true)
       }
-    } else {
-      setFormError(`${texts.changePassword.requiredError}`)
+      setFormError(`${texts.changePassword.matchingError}`)
     }
+    setFormError(`${texts.changePassword.requiredError}`)
   }
 
   return (
@@ -104,11 +92,8 @@ function WarningModal({ cancel }: WarningModalInterface) {
         />
         {formStep === 1 ? (
           <>
-            <h3>¿Por que quieres eliminar tu cuenta?</h3>
-            <span>
-              Se bloqueara tu cuenta y podras recuperarla dentro de un periodo
-              de un mes. Luego se eliminara permanentemente.
-            </span>
+            <h3>{texts.deleteProfile.titleQuestion}</h3>
+            <span>{texts.deleteProfile.deleteDescription}</span>
             <FeedbackForm>
               {deletionOptions.map(option => (
                 <RadioButton key={option.id}>
@@ -128,7 +113,7 @@ function WarningModal({ cancel }: WarningModalInterface) {
             <IconContainer>
               <Icon icon="Alert" color="#fff" width="45" height="45" />
             </IconContainer>
-            <h3>¿Estas seguro de que deseas eliminar tu cuenta?</h3>
+            <h3>{texts.deleteProfile.confirm}</h3>
             <InputContainer>
               {formError !== "" && <Error>{formError}</Error>}
 
@@ -159,7 +144,11 @@ function WarningModal({ cancel }: WarningModalInterface) {
 
         <ButtonContainer>
           <Button
-            content={formStep === 1 ? texts.changePassword.cancel : "Volver"}
+            content={
+              formStep === 1
+                ? texts.changePassword.cancel
+                : texts.deleteProfile.goBack
+            }
             cta={false}
             action={() => {
               if (formStep === 1) {
@@ -171,7 +160,9 @@ function WarningModal({ cancel }: WarningModalInterface) {
           />
           <Button
             content={
-              formStep === 1 ? "Continuar" : texts.changePassword.confirm
+              formStep === 1
+                ? texts.deleteProfile.continue
+                : texts.changePassword.confirm
             }
             cta
             action={() => {

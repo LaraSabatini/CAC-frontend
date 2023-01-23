@@ -16,7 +16,14 @@
             "description": "La constraseña ha sido modificada con éxito."
         }
     },
-    "deleteProfile": "Eliminar perfil",
+    "deleteProfile": {
+        "title": "Eliminar perfil",
+        "titleQuestion": "¿Por que quieres eliminar tu cuenta?",
+        "deleteDescription": "Se bloqueara tu cuenta y podras recuperarla dentro de un periodo de un mes. Luego se eliminara permanentemente.",
+        "confirm": "¿Estas seguro de que deseas eliminar tu cuenta?",
+        "continue": "Continuar",
+        "goBack": "Volver"
+    },
     "logoutModal": {
         "title": "¿Estás seguro de que deseas cerrar sesión?",
         "cancel": "Cancelar"
