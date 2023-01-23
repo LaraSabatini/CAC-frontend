@@ -6,7 +6,7 @@ import Button from "components/UI/Button"
 import PersonalInfo from "./PersonalInfo"
 import PaymentStatus from "./PaymentStatus"
 import WarningModal from "./WarningModal"
-import ChangePasswordModal from "./ChangePasswordModal"
+import ChangePasswordModal from "../ChangePasswordModal"
 import { Container, FirstRowData, RightColumn, ButtonContainer } from "./styles"
 
 function ClientProfile() {
