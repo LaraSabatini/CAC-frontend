@@ -17,6 +17,12 @@ function ProfileView() {
 
     if (getProfileDataReq.status === 200 && getProfileDataReq.data.length) {
       setProfileData(getProfileDataReq.data[0])
+      if (userData.type === "admin") {
+        setProfileData({
+          ...getProfileDataReq.data[0],
+          accessPermits: JSON.parse(getProfileDataReq.data[0].accessPermits)[0],
+        })
+      }
     } else {
       setServerErrorModal(true)
     }

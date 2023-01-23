@@ -1,10 +1,5 @@
 import { UserInterface } from "./General"
 
-export interface AdminInterface extends UserInterface {
-  userName: string
-  accessPermits: string
-}
-
 export interface AccessPermitsInterface {
   articles: {
     create: boolean
@@ -12,4 +7,9 @@ export interface AccessPermitsInterface {
     delete: boolean
   }
   partners: boolean
+}
+
+export interface AdminInterface extends UserInterface {
+  userName: string
+  accessPermits: AccessPermitsInterface
 }
