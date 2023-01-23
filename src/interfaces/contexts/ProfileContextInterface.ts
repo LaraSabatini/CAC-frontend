@@ -1,6 +1,6 @@
 import ClientInterface from "interfaces/users/Client"
 import { PaymentInterface } from "interfaces/payments/Payment"
-import AdminInterface from "interfaces/users/Admin"
+import { AdminInterface } from "interfaces/users/Admin"
 
 interface ProfileContextInterface {
   profileData: ClientInterface | AdminInterface

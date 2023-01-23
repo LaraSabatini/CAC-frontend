@@ -4,7 +4,7 @@ import { defaultPayment } from "const/defaultValuesForProfileContext"
 import ProfileContextInterface from "interfaces/contexts/ProfileContextInterface"
 import { PaymentInterface } from "interfaces/payments/Payment"
 import ClientInterface from "interfaces/users/Client"
-import AdminInterface from "interfaces/users/Admin"
+import { AdminInterface } from "interfaces/users/Admin"
 
 export const ProfileContext = createContext<ProfileContextInterface>({
   profileData: defaultClient,

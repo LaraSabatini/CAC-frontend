@@ -10,11 +10,13 @@ function Dashboard() {
   const [isLogged, setIsLogged] = useState<boolean>(false)
 
   const checkPayment = async (userData: UserDataType) => {
-    const checkLastPaymentReq = await checkLastPayment(userData)
-    if (checkLastPaymentReq === "expired") {
-      router.replace(
-        `${routes.profile.name}?${routes.profile.queries.makePayment}`,
-      )
+    if (userData.type === "client") {
+      const checkLastPaymentReq = await checkLastPayment(userData)
+      if (checkLastPaymentReq === "expired") {
+        router.replace(
+          `${routes.profile.name}?${routes.profile.queries.makePayment}`,
+        )
+      }
     }
   }
 
