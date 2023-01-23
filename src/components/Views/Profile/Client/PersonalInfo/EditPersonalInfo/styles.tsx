@@ -7,6 +7,9 @@ const HorizontalGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+  @media (max-width: ${theme.screenSize.mobile}) {
+    flex-wrap: wrap;
+  }
 `
 
 const ButtonContainer = styled.div`

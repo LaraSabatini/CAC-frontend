@@ -80,7 +80,7 @@ function LoginView() {
     } else {
       // *** Almacenar data en localStorage para mantener sesion iniciada
       const userData = {
-        id: loginReq.clientId,
+        id: loginReq.userId,
         logged: true,
         user: formData.email,
         type: userQuery.split("=")[1],

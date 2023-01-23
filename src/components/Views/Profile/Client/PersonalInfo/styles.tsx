@@ -7,6 +7,10 @@ const PersonalDataCard = styled.div`
   width: 380px;
   padding: 25px 30px;
   border-radius: 10px;
+
+  @media (max-width: ${theme.screenSize.mobile}) {
+    width: 260px;
+  }
 `
 
 const CardHeader = styled.div`

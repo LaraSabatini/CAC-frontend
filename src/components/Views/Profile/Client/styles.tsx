@@ -2,15 +2,24 @@ import styled from "styled-components"
 import { TitleStyles } from "theme/styles"
 
 const Container = styled.div`
-  width: 50%;
+  width: fit-content;
   margin: 0 auto;
   padding-top: 100px;
+
+  @media (max-width: 626px) {
+    padding-top: 50px;
+  }
 `
 
 const FirstRowData = styled.div`
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
   gap: 20px;
+
+  @media (max-width: 626px) {
+    padding-left: 20px;
+  }
 `
 
 const Title = styled.h4`
