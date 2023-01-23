@@ -1,8 +1,11 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from "react"
 import { useRouter } from "next/router"
 import login from "services/auth/login.service"
 import blockAccount from "services/auth/blockAccount.service"
+import { createFeedback } from "services/feedback/feedback.service"
 import texts from "strings/profile.json"
+import deletionOptions from "const/deleteProfileOptions"
 import Modal from "components/UI/Modal"
 import Icon from "components/UI/Assets/Icon"
 import Button from "components/UI/Button"
@@ -14,6 +17,8 @@ import {
   ButtonContainer,
   InputContainer,
   Error,
+  FeedbackForm,
+  RadioButton,
 } from "./styles"
 
 interface WarningModalInterface {
@@ -25,6 +30,8 @@ function WarningModal({ cancel }: WarningModalInterface) {
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
+  const [formStep, setFormStep] = useState<1 | 2>(1)
+
   const [formError, setFormError] = useState<string>("")
   const [formData, setFormData] = useState<{
     password: string
@@ -33,6 +40,11 @@ function WarningModal({ cancel }: WarningModalInterface) {
     password: "",
     confirmPassword: "",
   })
+
+  const [deleteOptionSelected, setDeleteOptionSelected] = useState<{
+    id: number
+    value: string
+  }>(deletionOptions[0])
 
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
@@ -48,22 +60,27 @@ function WarningModal({ cancel }: WarningModalInterface) {
 
         if (loginReq.status === 201) {
           const blockAccountReq = await blockAccount(userData.id)
+          const createFeedbackReq = await createFeedback({
+            optionId: deleteOptionSelected.id,
+            optionValue: deleteOptionSelected.value,
+            clientId: userData.id,
+          })
 
-          if (blockAccountReq.status === 201) {
+          if (
+            blockAccountReq.status === 201 &&
+            createFeedbackReq.status === 201
+          ) {
             localStorage.removeItem("userData")
             router.reload()
           }
         } else if (loginReq.status === 401) {
           setFormError(`${texts.changePassword.wrongPassword}`)
-        } else {
-          setServerErrorModal(true)
         }
-      } else {
-        setFormError(`${texts.changePassword.matchingError}`)
+        setServerErrorModal(true)
       }
-    } else {
-      setFormError(`${texts.changePassword.requiredError}`)
+      setFormError(`${texts.changePassword.matchingError}`)
     }
+    setFormError(`${texts.changePassword.requiredError}`)
   }
 
   return (
@@ -73,45 +90,88 @@ function WarningModal({ cancel }: WarningModalInterface) {
           visible={serverErrorModal}
           changeVisibility={() => setServerErrorModal(false)}
         />
-        <IconContainer>
-          <Icon icon="Alert" color="#fff" width="45" height="45" />
-        </IconContainer>
-        <h3>¿Estas seguro de que deseas eliminar tu cuenta?</h3>
-        <InputContainer>
-          {formError !== "" && <Error>{formError}</Error>}
+        {formStep === 1 ? (
+          <>
+            <h3>{texts.deleteProfile.titleQuestion}</h3>
+            <span>{texts.deleteProfile.deleteDescription}</span>
+            <FeedbackForm>
+              {deletionOptions.map(option => (
+                <RadioButton key={option.id}>
+                  <input
+                    type="radio"
+                    value={option.value}
+                    onChange={() => setDeleteOptionSelected(option)}
+                    checked={deleteOptionSelected.id === option.id}
+                  />
+                  <label htmlFor={option.value}>{option.value}</label>
+                </RadioButton>
+              ))}
+            </FeedbackForm>
+          </>
+        ) : (
+          <>
+            <IconContainer>
+              <Icon icon="Alert" color="#fff" width="45" height="45" />
+            </IconContainer>
+            <h3>{texts.deleteProfile.confirm}</h3>
+            <InputContainer>
+              {formError !== "" && <Error>{formError}</Error>}
 
-          <Input
-            label={texts.changePassword.password}
-            width={320}
-            required
-            type="password"
-            backError={formError !== ""}
-            onChange={e =>
-              setFormData({ ...formData, password: e.target.value })
-            }
-          />
-          <Input
-            label={texts.changePassword.confirmPassword}
-            width={320}
-            required
-            type="password"
-            backError={formError !== ""}
-            onChange={e =>
-              setFormData({ ...formData, confirmPassword: e.target.value })
-            }
-            keyDown={deleteProfile}
-          />
-        </InputContainer>
+              <Input
+                label={texts.changePassword.password}
+                width={320}
+                required
+                type="password"
+                backError={formError !== ""}
+                onChange={e =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+              />
+              <Input
+                label={texts.changePassword.confirmPassword}
+                width={320}
+                required
+                type="password"
+                backError={formError !== ""}
+                onChange={e =>
+                  setFormData({ ...formData, confirmPassword: e.target.value })
+                }
+                keyDown={deleteProfile}
+              />
+            </InputContainer>
+          </>
+        )}
+
         <ButtonContainer>
           <Button
-            content={texts.changePassword.cancel}
+            content={
+              formStep === 1
+                ? texts.changePassword.cancel
+                : texts.deleteProfile.goBack
+            }
             cta={false}
-            action={cancel}
+            action={() => {
+              if (formStep === 1) {
+                cancel()
+              } else {
+                setFormStep(1)
+              }
+            }}
           />
           <Button
-            content={texts.changePassword.confirm}
+            content={
+              formStep === 1
+                ? texts.deleteProfile.continue
+                : texts.changePassword.confirm
+            }
             cta
-            action={deleteProfile}
+            action={() => {
+              if (formStep === 1) {
+                setFormStep(2)
+              } else {
+                deleteProfile()
+              }
+            }}
           />
         </ButtonContainer>
       </ModalContainer>

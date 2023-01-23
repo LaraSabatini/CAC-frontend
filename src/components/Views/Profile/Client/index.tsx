@@ -48,7 +48,7 @@ function ClientProfile() {
               />
             </LoginProvider>
             <Button
-              content={texts.deleteProfile}
+              content={texts.deleteProfile.title}
               danger
               cta={false}
               action={() => setDeleteProfileWarning(true)}

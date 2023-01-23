@@ -15,6 +15,13 @@ const ModalContainer = styled.div`
     ${TitleStyles}
     text-align: center;
   }
+
+  span {
+    font-family: ${theme.fonts.extra};
+    font-size: 12px;
+    color: ${theme.colors.blue};
+    padding-bottom: 20px;
+  }
 `
 
 const IconContainer = styled.div`
@@ -49,4 +56,29 @@ const Error = styled.p`
   font-size: ${theme.fontSizes.xs};
 `
 
-export { ModalContainer, IconContainer, ButtonContainer, InputContainer, Error }
+const FeedbackForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-self: flex-start;
+  padding-left: 20px;
+`
+
+const RadioButton = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: ${theme.fonts.content};
+  font-size: ${theme.fontSizes.xs};
+  color: ${theme.colors.blue};
+`
+
+export {
+  ModalContainer,
+  IconContainer,
+  ButtonContainer,
+  InputContainer,
+  Error,
+  FeedbackForm,
+  RadioButton,
+}
