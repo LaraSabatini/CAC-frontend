@@ -1,6 +1,6 @@
 import axios from "axios"
 import axiosHeader from "services/axiosHeader"
-import Article from "interfaces/content/Article"
+import ArticleInterface from "interfaces/content/Article"
 import defaultPost from "../defaultPost"
 
 const apiURL = "/articles"
@@ -10,17 +10,17 @@ const getArticles = async (page: number) => {
   return res.data
 }
 
-const createArticle = async (body: Article) => {
+const createArticle = async (body: ArticleInterface) => {
   const res = await defaultPost(apiURL, body)
   return res
 }
 
-const deleteArticle = async (id: number) => {
+const deleteArticle = async (id: ArticleInterface) => {
   const res = await axios.delete(`${apiURL}/${id}`, axiosHeader)
   return res.data
 }
 
-const editArticle = async (body: Article) => {
+const editArticle = async (body: ArticleInterface) => {
   const res = await axios.put(`${apiURL}/${body.id}`, body, axiosHeader)
   return res.data
 }

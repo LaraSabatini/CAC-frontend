@@ -30,6 +30,12 @@ const routes = {
     name: "/dashboard",
     queries: {},
   },
+  articles: {
+    name: "/article",
+    queries: {
+      id: "id=",
+    },
+  },
   error: {
     name: "/error",
     queries: {
