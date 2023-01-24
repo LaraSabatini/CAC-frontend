@@ -1,0 +1,25 @@
+{
+    "newArticleForm": {
+        "title": "Nueva publicación",
+        "labels": {
+            "title": "Titulo",
+            "titlePlaceholder": "Titulo de la publicación",
+            "subtitle": "Subtitulo",
+            "subtitlePlaceholder": "Subtitulo de la publicación",
+            "filters": "Filtros",
+            "region": "Region",
+            "theme": "Tematica",
+            "description": "Descripcion",
+            "descriptionPlaceholder": "Resumen de la publicación",
+            "fullArticle": "Texto completo",
+            "fullArticlePlaceholder": "Texto de la publicación"
+        },
+        "attachFile": "Adjuntar archivo",
+        "attachImage": "Adjuntar imagen",
+        "attachVideo": "Adjuntar video",
+        "discard": "Descartar",
+        "visualize": "Previsualizar",
+        "edit": "Editar",
+        "publish": "Publicar"
+    }
+}

@@ -2,16 +2,16 @@ export interface ComboBoxSelectInterface {
   readOnly?: true
   optionsList: "single"
   label?: string
-  options: { id: number; display_name: string; is_disabled?: boolean }[]
+  options: { id: number; value: string; is_disabled?: boolean }[]
   width?: number
   required?: boolean
   backError?: boolean
   backErrorMessage?: string
   placement?: "bottom-start" | "bottom-end" | "top-start" | "top-end"
   onChange: (
-    value?: { id: number; display_name: string; is_disabled?: boolean }[],
+    value?: { id: number; value: string; is_disabled?: boolean }[],
   ) => void
-  activeOptions?: { id: number; display_name: string; is_disabled?: boolean }[]
+  activeOptions?: { id: number; value: string; is_disabled?: boolean }[]
   placeholder?: string
 }
 
@@ -25,7 +25,7 @@ export interface ComboBoxSelectGroupInterface {
     group_id: number
     grouped_options: {
       id: number
-      display_name: string
+      value: string
       is_disabled?: boolean
     }[]
   }[]
@@ -40,7 +40,7 @@ export interface ComboBoxSelectGroupInterface {
       group_id: number
       grouped_options: {
         id: number
-        display_name: string
+        value: string
         is_disabled?: boolean
       }[]
     }[],
@@ -50,7 +50,7 @@ export interface ComboBoxSelectGroupInterface {
     group_id: number
     grouped_options: {
       id: number
-      display_name: string
+      value: string
     }[]
   }[]
 }
@@ -60,7 +60,7 @@ export interface GroupInterface {
   group_id: number
   grouped_options: {
     id: number
-    display_name: string
+    value: string
   }[]
 }
 

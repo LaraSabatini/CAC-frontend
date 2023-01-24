@@ -32,7 +32,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
   (props, ref) => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedOptions, setSelectedOptions] = useState<
-      { id: number; display_name: string }[]
+      { id: number; value: string }[]
     >(
       props.activeOptions !== undefined && props.optionsList === "single"
         ? props.activeOptions
@@ -134,7 +134,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
     // function to set filters selected
     const pushOptions = (
       id: number,
-      display_name: string,
+      value: string,
       idGroup?: number,
       nameGroup?: string,
     ) => {
@@ -144,13 +144,13 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
         })
 
         if (verifyOption?.id !== id || verifyOption?.id === undefined) {
-          setSelectedOptions([...selectedOptions, { id, display_name }])
+          setSelectedOptions([...selectedOptions, { id, value }])
 
           if (props.required) {
             setError(false)
           }
 
-          props.onChange([...selectedOptions, { id, display_name }])
+          props.onChange([...selectedOptions, { id, value }])
         } else {
           const removeSelection = selectedOptions.filter(
             object => object.id !== id,
@@ -181,7 +181,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
               grouped_options: [
                 {
                   id,
-                  display_name,
+                  value,
                 },
               ],
             },
@@ -199,7 +199,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
               grouped_options: [
                 {
                   id,
-                  display_name,
+                  value,
                 },
               ],
             },
@@ -211,7 +211,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
             group_title: nameGroup,
             grouped_options: [
               ...groupSelectedOptions[indexGroupMatched].grouped_options,
-              { id, display_name },
+              { id, value },
             ],
           }
           const newState = groupSelectedOptions.filter(
@@ -322,13 +322,11 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
         selectedOptions?.length <= 6
       ) {
         chipSet = selectedOptions?.map(
-          (optionChip: { id: number; display_name: string }) => (
+          (optionChip: { id: number; value: string }) => (
             <Chip
               key={optionChip.id.toString()}
-              display_name={optionChip.display_name}
-              onClick={() =>
-                pushOptions(optionChip.id, optionChip.display_name)
-              }
+              value={optionChip.value}
+              onClick={() => pushOptions(optionChip.id, optionChip.value)}
             />
           ),
         )
@@ -339,14 +337,14 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
         chipSet = (
           <>
             {selectedOptions?.map(
-              (optionChip: { id: number; display_name: string }, i: number) => {
+              (optionChip: { id: number; value: string }, i: number) => {
                 return (
                   i <= 5 && (
                     <Chip
                       key={optionChip.id.toString()}
-                      display_name={optionChip.display_name}
+                      value={optionChip.value}
                       onClick={() =>
-                        pushOptions(optionChip.id, optionChip.display_name)
+                        pushOptions(optionChip.id, optionChip.value)
                       }
                     />
                   )
@@ -354,7 +352,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
               },
             )}
             <Tooltip title={`+${selectedOptions?.length - 6}`} placement="top">
-              <Chip display_name={<HiDotsHorizontal />} />
+              <Chip value={<HiDotsHorizontal />} />
             </Tooltip>
           </>
         )
@@ -371,24 +369,24 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                 group_id: number
                 grouped_options: {
                   id: number
-                  display_name: string
+                  value: string
                 }[]
               }) => (
                 <React.Fragment key={`${group.group_id}`}>
                   {group.grouped_options.length &&
                     group.grouped_options.map(
-                      (optionChip: { id: number; display_name: string }) => (
+                      (optionChip: { id: number; value: string }) => (
                         <Chip
                           key={`${optionChip.id}${group.group_id}`}
-                          display_name={
+                          value={
                             props.concatenateChips
-                              ? `${group.group_title} ${optionChip.display_name}`
-                              : optionChip.display_name
+                              ? `${group.group_title} ${optionChip.value}`
+                              : optionChip.value
                           }
                           onClick={() =>
                             pushOptions(
                               optionChip.id,
-                              optionChip.display_name,
+                              optionChip.value,
                               group.group_id,
                               group.group_title,
                             )
@@ -411,29 +409,29 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                   group_id: number
                   grouped_options: {
                     id: number
-                    display_name: string
+                    value: string
                   }[]
                 }) => (
                   <React.Fragment key={`${group.group_id}`}>
                     {group.grouped_options.length &&
                       group.grouped_options.map(
                         (
-                          optionChip: { id: number; display_name: string },
+                          optionChip: { id: number; value: string },
                           i: number,
                         ) => {
                           return (
                             i <= 5 && (
                               <Chip
                                 key={`${optionChip.id}${group.group_id}`}
-                                display_name={
+                                value={
                                   props.concatenateChips
-                                    ? `${group.group_title} ${optionChip.display_name}`
-                                    : optionChip.display_name
+                                    ? `${group.group_title} ${optionChip.value}`
+                                    : optionChip.value
                                 }
                                 onClick={() =>
                                   pushOptions(
                                     optionChip.id,
-                                    optionChip.display_name,
+                                    optionChip.value,
                                     group.group_id,
                                     group.group_title,
                                   )
@@ -447,7 +445,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                 ),
               )}
             <Tooltip title={`+${idsOnChips?.length - 6}`} placement="top">
-              <Chip display_name={<HiDotsHorizontal />} />
+              <Chip value={<HiDotsHorizontal />} />
             </Tooltip>
           </>
         )
@@ -463,30 +461,27 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
         props.options?.length <= 6
       ) {
         chipSet = props.options?.map(
-          (optionChip: { id: number; display_name: string }) => (
-            <Chip
-              key={optionChip.id.toString()}
-              display_name={optionChip.display_name}
-            />
+          (optionChip: { id: number; value: string }) => (
+            <Chip key={optionChip.id.toString()} value={optionChip.value} />
           ),
         )
       } else if (props.optionsList === "single" && props.options?.length > 6) {
         chipSet = (
           <>
             {props.options?.map(
-              (optionChip: { id: number; display_name: string }, i: number) => {
+              (optionChip: { id: number; value: string }, i: number) => {
                 return (
                   i <= 5 && (
                     <Chip
                       key={optionChip.id.toString()}
-                      display_name={optionChip.display_name}
+                      value={optionChip.value}
                     />
                   )
                 )
               },
             )}
             <Tooltip title={`+${props.options?.length - 6}`} placement="top">
-              <Chip display_name={<HiDotsHorizontal />} />
+              <Chip value={<HiDotsHorizontal />} />
             </Tooltip>
           </>
         )
@@ -503,20 +498,20 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
               group_id: number
               grouped_options: {
                 id: number
-                display_name: string
+                value: string
                 is_disabled?: boolean
               }[]
             }) => (
               <React.Fragment key={`${group.group_id}`}>
                 {group.grouped_options.length &&
                   group.grouped_options.map(
-                    (optionChip: { id: number; display_name: string }) => (
+                    (optionChip: { id: number; value: string }) => (
                       <Chip
                         key={optionChip.id.toString()}
-                        display_name={
+                        value={
                           props.concatenateChips
-                            ? `${group.group_title} ${optionChip.display_name}`
-                            : optionChip.display_name
+                            ? `${group.group_title} ${optionChip.value}`
+                            : optionChip.value
                         }
                       />
                     ),
@@ -533,7 +528,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                   group_id: number
                   grouped_options: {
                     id: number
-                    display_name: string
+                    value: string
                     is_disabled?: boolean
                   }[]
                 }) => (
@@ -541,17 +536,17 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                     {group.grouped_options.length &&
                       group.grouped_options.map(
                         (
-                          optionChip: { id: number; display_name: string },
+                          optionChip: { id: number; value: string },
                           i: number,
                         ) => {
                           return (
                             i <= 5 && (
                               <Chip
                                 key={optionChip.id.toString()}
-                                display_name={
+                                value={
                                   props.concatenateChips
-                                    ? `${group.group_title} ${optionChip.display_name}`
-                                    : optionChip.display_name
+                                    ? `${group.group_title} ${optionChip.value}`
+                                    : optionChip.value
                                 }
                               />
                             )
@@ -562,7 +557,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                       title={`+${idsOfOptions.length - 6}`}
                       placement="top"
                     >
-                      <Chip display_name={<HiDotsHorizontal />} />
+                      <Chip value={<HiDotsHorizontal />} />
                     </Tooltip>
                     )
                   </React.Fragment>
@@ -703,7 +698,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                       props.options.map(
                         (option: {
                           id: number
-                          display_name: string
+                          value: string
                           is_disabled?: boolean
                         }) => (
                           <OptionWrapper
@@ -714,7 +709,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                               option?.is_disabled && <DisabledMask />}
                             <Checkbox
                               onChange={() =>
-                                pushOptions(option.id, option.display_name)
+                                pushOptions(option.id, option.value)
                               }
                               // create a random id to prevent duplicated checkboxes
                               idParam={`${Math.floor(
@@ -728,7 +723,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                               }
                             />
                             <li className="combobox-select-option">
-                              {option.display_name}
+                              {option.value}
                             </li>
                           </OptionWrapper>
                         ),
@@ -742,7 +737,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                             group_id: number
                             grouped_options: {
                               id: number
-                              display_name: string
+                              value: string
                               is_disabled?: boolean
                             }[]
                           },
@@ -757,7 +752,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                               group.grouped_options.map(
                                 (option: {
                                   id: number
-                                  display_name: string
+                                  value: string
                                   is_disabled?: boolean
                                 }) => (
                                   <OptionWrapper
@@ -770,7 +765,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                                       onChange={() =>
                                         pushOptions(
                                           option.id,
-                                          option.display_name,
+                                          option.value,
                                           group.group_id,
                                           group.group_title,
                                         )
@@ -786,7 +781,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                                       )}
                                     />
                                     <li className="combobox-select-option">
-                                      {option.display_name}
+                                      {option.value}
                                     </li>
                                   </OptionWrapper>
                                 ),
@@ -803,7 +798,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                         props.options.map(
                           (option: {
                             id: number
-                            display_name: string
+                            value: string
                             is_disabled?: boolean
                           }) => (
                             <OptionWrapper
@@ -814,7 +809,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                                 option?.is_disabled && <DisabledMask />}
                               <Checkbox
                                 onChange={() => {
-                                  pushOptions(option.id, option.display_name)
+                                  pushOptions(option.id, option.value)
                                 }}
                                 // create a random id to prevent duplicated checkboxes
                                 idParam={`${Math.floor(
@@ -828,7 +823,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                                 }
                               />
                               <li className="combobox-select-option">
-                                {option.display_name}
+                                {option.value}
                               </li>
                             </OptionWrapper>
                           ),
@@ -842,7 +837,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                               group_id: number
                               grouped_options: {
                                 id: number
-                                display_name: string
+                                value: string
                                 is_disabled?: boolean
                               }[]
                             },
@@ -857,7 +852,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                                 group.grouped_options.map(
                                   (option: {
                                     id: number
-                                    display_name: string
+                                    value: string
                                     is_disabled?: boolean
                                   }) => (
                                     <OptionWrapper
@@ -870,7 +865,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                                         onChange={() => {
                                           pushOptions(
                                             option.id,
-                                            option.display_name,
+                                            option.value,
                                             group.group_id,
                                             group.group_title,
                                           )
@@ -886,7 +881,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                                         )}
                                       />
                                       <li className="combobox-select-option">
-                                        {option.display_name}
+                                        {option.value}
                                       </li>
                                     </OptionWrapper>
                                   ),
