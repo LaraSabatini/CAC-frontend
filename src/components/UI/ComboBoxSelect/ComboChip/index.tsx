@@ -14,7 +14,7 @@ function ComboChip({ display_name, onClick }: ComboChipInterface) {
       <p className="chip-display-name">{display_name}</p>
       {onClick && (
         <Close type="button" onClick={onClick}>
-          <Icon icon="IconMenuOff" color={theme.colors.light_grey} />
+          <Icon icon="MenuOff" color={theme.colors.blue} />
         </Close>
       )}
     </ChipContainer>

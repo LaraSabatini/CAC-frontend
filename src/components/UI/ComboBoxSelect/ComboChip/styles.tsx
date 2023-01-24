@@ -10,7 +10,7 @@ export const ChipContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #fafafa; /* Not in the theme */
+  background: #466a951f; /* Not in the theme */
   border-radius: 17px;
   gap: 10px;
   -webkit-box-sizing: border-box;

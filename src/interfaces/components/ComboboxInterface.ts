@@ -8,10 +8,11 @@ export interface ComboBoxSelectInterface {
   backError?: boolean
   backErrorMessage?: string
   placement?: "bottom-start" | "bottom-end" | "top-start" | "top-end"
-  onChange?: (
+  onChange: (
     value?: { id: number; display_name: string; is_disabled?: boolean }[],
   ) => void
   activeOptions?: { id: number; display_name: string; is_disabled?: boolean }[]
+  placeholder?: string
 }
 
 export interface ComboBoxSelectGroupInterface {
@@ -33,7 +34,7 @@ export interface ComboBoxSelectGroupInterface {
   backError?: boolean
   backErrorMessage?: string
   placement?: "bottom-start" | "bottom-end" | "top-start" | "top-end"
-  onChange?: (
+  onChange: (
     value?: {
       group_title?: string
       group_id: number

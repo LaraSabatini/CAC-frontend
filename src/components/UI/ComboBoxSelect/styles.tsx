@@ -53,29 +53,18 @@ export const SelectContainer = styled.div<{
   align-items: center;
   position: relative;
   ${({ isOpen }) =>
-    isOpen
-      ? css`
-          border-width: 2px;
-        `
-      : css`
-          border-width: 1px;
-        `}
-  ${({ error, backError }) =>
-    (error || backError) &&
+    isOpen &&
     css`
-      border-width: 2px;
+      border-color: ${theme.colors.blue};
     `}
-  border-style: solid;
+
+  border: 0 0 1px 0;
+  border-bottom-style: solid;
   border-color: ${({ error, backError }) =>
-    error || backError ? theme.colors.red : theme.colors.blue};
-  border-radius: 5px;
-  background: ${theme.colors.white};
+    error || backError ? theme.colors.red : theme.colors.blue_alpha};
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  &:hover {
-    background: ${theme.colors.light_grey};
-  }
 `
 
 export const ChipsContainer = styled.label<{
@@ -193,7 +182,7 @@ export const DropdownList = styled.div<{
   ${({ placement }) =>
     (placement === undefined || placement === "bottom-start") &&
     css`
-      top: 100%;
+      top: 70%;
       left: 0;
       margin-top: 2px;
     `}
@@ -222,6 +211,7 @@ export const DropdownList = styled.div<{
   background: ${theme.colors.white};
   box-shadow: 0px 3px 6px #00000029; /* Not in the theme */
   border: 1px solid #8080802d; /* Not in the theme */
+
   border-radius: 5px;
   z-index: 2;
   -webkit-box-sizing: border-box;
@@ -289,4 +279,13 @@ export const ErrorMessageContainer = styled.div<{ width?: number }>`
   margin-top: 3px;
   min-height: 18px;
   width: ${({ width }) => width || 312}px !important;
+`
+
+export const PlaceHolder = styled.p`
+  margin: 0;
+  font-family: ${theme.fonts.extra};
+  font-size: ${theme.fontSizes.xs};
+  line-height: 18px;
+
+  color: ${theme.colors.blue};
 `

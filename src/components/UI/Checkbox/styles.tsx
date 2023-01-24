@@ -26,6 +26,11 @@ const CheckboxContainer = styled.div`
     transition: all 0s ease;
     width: 20px;
     z-index: 1;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
   }
   input[type="checkbox"]:checked + label {
     border: 1px solid ${theme.colors.blue};

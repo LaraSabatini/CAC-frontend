@@ -3,6 +3,7 @@ import {
   GroupInterface,
   ComboBoxSelectType,
 } from "interfaces/components/ComboboxInterface"
+import { HiDotsHorizontal } from "react-icons/hi"
 import InputMessages from "strings/inputMessages.json"
 import ErrorMessage from "components/UI/ErrorMessage"
 import Scroll from "components/UI/Scroll"
@@ -24,6 +25,7 @@ import {
   GroupTitle,
   GroupContainer,
   ClickableContainer,
+  PlaceHolder,
 } from "./styles"
 
 const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
@@ -148,9 +150,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
             setError(false)
           }
 
-          if (props.onChange !== undefined) {
-            props.onChange([...selectedOptions, { id, display_name }])
-          }
+          props.onChange([...selectedOptions, { id, display_name }])
         } else {
           const removeSelection = selectedOptions.filter(
             object => object.id !== id,
@@ -161,9 +161,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
             setError(true)
           }
 
-          if (props.onChange !== undefined) {
-            props.onChange(removeSelection)
-          }
+          props.onChange(removeSelection)
         }
       } else {
         const indexGroupMatched = groupSelectedOptions?.findIndex(
@@ -193,21 +191,19 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
             setError(false)
           }
 
-          if (props.onChange !== undefined) {
-            props.onChange([
-              ...groupSelectedOptions,
-              {
-                group_id: idGroup as number,
-                group_title: nameGroup,
-                grouped_options: [
-                  {
-                    id,
-                    display_name,
-                  },
-                ],
-              },
-            ])
-          }
+          props.onChange([
+            ...groupSelectedOptions,
+            {
+              group_id: idGroup as number,
+              group_title: nameGroup,
+              grouped_options: [
+                {
+                  id,
+                  display_name,
+                },
+              ],
+            },
+          ])
         } else if (verifyOption === -1) {
           // add an option to a allready created group
           const newGroup = {
@@ -228,9 +224,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
           if (props.required) {
             setError(false)
           }
-          if (props.onChange !== undefined) {
-            props.onChange(newState)
-          }
+          props.onChange(newState)
         } else if (indexGroupMatched !== -1 && verifyOption !== -1) {
           // delete option of a existing group
           const newOptionsOfGroup = groupSelectedOptions[
@@ -251,9 +245,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                 setError(true)
               }
             }
-            if (props.onChange !== undefined) {
-              props.onChange(newGroups)
-            }
+            props.onChange(newGroups)
           } else {
             // delete only the option on the group
             const newGroups = groupSelectedOptions.filter(
@@ -270,9 +262,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
             if (props.required) {
               setError(false)
             }
-            if (props.onChange !== undefined) {
-              props.onChange(newGroups)
-            }
+            props.onChange(newGroups)
           }
           const newIds = idsOnChips.filter(
             idChip => idChip !== `${idGroup}${id}`,
@@ -364,7 +354,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
               },
             )}
             <Tooltip title={`+${selectedOptions?.length - 6}`} placement="top">
-              <Chip display_name={<Icon icon="IconSeeMore" />} />
+              <Chip display_name={<HiDotsHorizontal />} />
             </Tooltip>
           </>
         )
@@ -457,7 +447,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                 ),
               )}
             <Tooltip title={`+${idsOnChips?.length - 6}`} placement="top">
-              <Chip display_name={<Icon icon="IconSeeMore" />} />
+              <Chip display_name={<HiDotsHorizontal />} />
             </Tooltip>
           </>
         )
@@ -496,7 +486,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
               },
             )}
             <Tooltip title={`+${props.options?.length - 6}`} placement="top">
-              <Chip display_name={<Icon icon="IconSeeMore" />} />
+              <Chip display_name={<HiDotsHorizontal />} />
             </Tooltip>
           </>
         )
@@ -572,7 +562,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                       title={`+${idsOfOptions.length - 6}`}
                       placement="top"
                     >
-                      <Chip display_name={<Icon icon="IconSeeMore" />} />
+                      <Chip display_name={<HiDotsHorizontal />} />
                     </Tooltip>
                     )
                   </React.Fragment>
@@ -641,6 +631,14 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
           error={error}
           backError={props.backError ?? false}
         >
+          {props.optionsList === "single" && (
+            <>
+              {props.placeholder !== undefined && (
+                <PlaceHolder>{props.placeholder}</PlaceHolder>
+              )}
+            </>
+          )}
+
           <ChipsContainer
             htmlFor="chips-container"
             isOpen={isOpen}
@@ -672,7 +670,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
           </ChipsContainer>
           <ClickableContainer onClick={toggleOpen}>
             <ToggleContainer isOpen={isOpen} onClick={toggleOpen}>
-              <Icon icon="IconSingleArrow" />
+              <Icon icon="SingleArrow" />
             </ToggleContainer>
           </ClickableContainer>
         </SelectContainer>
@@ -778,7 +776,6 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                                         )
                                       }
                                       // create a random id to prevent duplicated checkboxes
-
                                       idParam={`${Math.floor(
                                         Math.random() * (999 - 100 + 1) + 100,
                                       )}_${option.id}`}

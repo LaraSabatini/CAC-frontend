@@ -1,13 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-
 import React, { useState, useEffect } from "react"
+import { BsCheck } from "react-icons/bs"
 import CheckboxInterface from "interfaces/components/CheckboxInterface"
 import CheckboxContainer from "./styles"
-import Icon from "../Assets/Icon"
 
 function Checkbox({
   checked,
-  iconCheck = "IconCheck",
   idParam,
   onChange,
   isDisabled,
@@ -49,7 +47,7 @@ function Checkbox({
           onChange={handleChange}
         />
         <label htmlFor={idParam}>
-          <Icon icon={!iconCheck ? "IconCheck" : iconCheck} color="white" />
+          <BsCheck />
         </label>
       </CheckboxContainer>
     </>
