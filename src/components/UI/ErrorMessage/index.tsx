@@ -1,13 +1,7 @@
-import theme from "@theme/index"
+import ErrorMessageInterface from "interfaces/components/ErrorMessageInterface"
+import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
 import Message from "./styles"
-
-export interface ErrorMessageInterface {
-  message: string
-  has_icon?: boolean
-  icon_name?: string
-  className?: string
-}
 
 function ErrorMessage({
   message,

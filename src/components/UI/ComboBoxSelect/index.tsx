@@ -1,4 +1,8 @@
 import React, { useState, useRef, useEffect } from "react"
+import {
+  GroupInterface,
+  ComboBoxSelectType,
+} from "interfaces/components/ComboboxInterface"
 import InputMessages from "strings/inputMessages.json"
 import ErrorMessage from "components/UI/ErrorMessage"
 import Scroll from "components/UI/Scroll"
@@ -21,73 +25,6 @@ import {
   GroupContainer,
   ClickableContainer,
 } from "./styles"
-
-interface ComboBoxSelectInterface {
-  readOnly?: true
-  optionsList: "single"
-  label?: string
-  options: { id: number; display_name: string; is_disabled?: boolean }[]
-  width?: number
-  required?: boolean
-  backError?: boolean
-  backErrorMessage?: string
-  placement?: "bottom-start" | "bottom-end" | "top-start" | "top-end"
-  onChange?: (
-    value?: { id: number; display_name: string; is_disabled?: boolean }[],
-  ) => void
-  activeOptions?: { id: number; display_name: string; is_disabled?: boolean }[]
-}
-
-interface ComboBoxSelectGroupInterface {
-  readOnly?: true
-  label?: string
-  optionsList: "grouped"
-  concatenateChips?: boolean
-  options: {
-    group_title?: string
-    group_id: number
-    grouped_options: {
-      id: number
-      display_name: string
-      is_disabled?: boolean
-    }[]
-  }[]
-  width?: number
-  required?: boolean
-  backError?: boolean
-  backErrorMessage?: string
-  placement?: "bottom-start" | "bottom-end" | "top-start" | "top-end"
-  onChange?: (
-    value?: {
-      group_title?: string
-      group_id: number
-      grouped_options: {
-        id: number
-        display_name: string
-        is_disabled?: boolean
-      }[]
-    }[],
-  ) => void
-  activeOptions?: {
-    group_title?: string
-    group_id: number
-    grouped_options: {
-      id: number
-      display_name: string
-    }[]
-  }[]
-}
-
-interface GroupInterface {
-  group_title?: string
-  group_id: number
-  grouped_options: {
-    id: number
-    display_name: string
-  }[]
-}
-
-type ComboBoxSelectType = ComboBoxSelectInterface | ComboBoxSelectGroupInterface
 
 const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
   (props, ref) => {

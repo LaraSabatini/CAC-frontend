@@ -1,20 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 import React, { useState, useEffect } from "react"
-
+import CheckboxInterface from "interfaces/components/CheckboxInterface"
 import CheckboxContainer from "./styles"
 import Icon from "../Assets/Icon"
 
-interface ICheckbox {
-  checked?: boolean
-  iconCheck?: string
-  onChange?: (e?: React.ChangeEvent<HTMLInputElement>) => void
-  idParam: string
-  isDisabled?: boolean
-  ownState?: boolean
-  hasEvent?: boolean
-  //   ref?: any
-}
 function Checkbox({
   checked,
   iconCheck = "IconCheck",
@@ -23,7 +13,7 @@ function Checkbox({
   isDisabled,
   ownState,
   hasEvent,
-}: ICheckbox) {
+}: CheckboxInterface) {
   const [checkState, setcheckState] = useState(checked)
   const [init, setinit] = useState(false)
   useEffect(() => {
