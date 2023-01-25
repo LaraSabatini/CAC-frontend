@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react"
 import Button from "components/UI/Button"
 import texts from "strings/articles.json"
 import { DashboardContext } from "contexts/Dashboard"
-import ArticleView from "components/Views/Article"
+import ArticleView from "@components/Views/Articles/ArticleCard"
 import { Container, ButtonContainer, Content } from "./styles"
 
 function PrevisualizeArticle() {

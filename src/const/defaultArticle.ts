@@ -10,8 +10,6 @@ const defaultArticle: ArticleInterface = {
   subtitle: "",
   regionFilters: [],
   themeFilters: [],
-  regionTitle: "",
-  regionSubTitle: "",
   article: "",
   attachments: [],
   author: "",

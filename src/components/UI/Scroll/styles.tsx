@@ -17,13 +17,13 @@ const ScrollView = styled.div<{ height: number; horizontal?: boolean }>`
   ::-webkit-scrollbar {
     height: 6px;
     width: 6px;
-    background-color: ${theme.colors.light_grey};
+    background-color: ${theme.colors.blue_alpha};
     border-radius: 7px;
   }
   ::-webkit-scrollbar-thumb {
     height: 5px;
     background-clip: padding-box;
-    background-color: ${theme.colors.orange_light};
+    background-color: ${theme.colors.blue};
     border-radius: 7px;
     -webkit-border-radius: 7px;
   }

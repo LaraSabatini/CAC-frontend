@@ -70,7 +70,7 @@ function Header() {
           </>
         )}
         <ProfilePic onClick={() => setOpenProfileMenu(!openProfileMenu)}>
-          <Icon icon="Profile" width="25" height="25" />
+          <Icon icon="Profile" />
           {openProfileMenu && (
             <ProfileOptions>
               <Button

@@ -26,5 +26,6 @@
         "article": "Articulo",
         "deleteFile": "Borrar archivo",
         "attachedFiles": "Archivos adjuntos"
-    }
+    },
+    "author": "Publicado por"
 }

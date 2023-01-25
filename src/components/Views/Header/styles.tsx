@@ -35,10 +35,6 @@ const ProfileContainer = styled.div`
 `
 
 const ProfilePic = styled.div`
-  background-color: ${theme.colors.blue};
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
