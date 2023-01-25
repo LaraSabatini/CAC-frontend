@@ -3,7 +3,7 @@ import axiosHeader from "services/axiosHeader"
 import ArticleInterface from "interfaces/content/Article"
 import defaultPost from "../defaultPost"
 
-const apiURL = "/articles"
+const apiURL = "http://localhost:3001/articles"
 
 const getArticles = async (page: number) => {
   const res = await axios.get(`${apiURL}/page=${page}`, axiosHeader)

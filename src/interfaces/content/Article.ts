@@ -14,6 +14,10 @@ export interface ArticleFiltersInterface {
   value: string
 }
 
+export interface AttachmentInterface {
+  name: string
+  type: "file" | "image" | "video"
+}
 interface ArticleInterface {
   id: number
   title: string
@@ -27,7 +31,7 @@ interface ArticleInterface {
   regionTitle: string
   regionSubTitle: string
   article: string
-  attachments: string[] // urls[]
+  attachments: AttachmentInterface[] // urls[]
   author: string
 }
 
