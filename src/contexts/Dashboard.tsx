@@ -22,6 +22,7 @@ export const DashboardContext = createContext<DashboardContextInterface>({
   setPrevisualize: () => {},
   attachmentsForServer: [],
   setAttachmentsForServer: () => {},
+  discardNewArticle: () => {},
 })
 
 function DashboardProvider({ children }: any) {
@@ -44,6 +45,13 @@ function DashboardProvider({ children }: any) {
 
   const [previsualize, setPrevisualize] = useState<boolean>(false)
 
+  const discardNewArticle = () => {
+    setNewArticle(defaultArticle)
+    setAttachmentsForDataBase([])
+    setAttachmentsForServer([])
+    setPrevisualize(false)
+  }
+
   const value: any = useMemo(
     () => ({
       regionFilters,
@@ -60,6 +68,7 @@ function DashboardProvider({ children }: any) {
       setPrevisualize,
       attachmentsForServer,
       setAttachmentsForServer,
+      discardNewArticle,
     }),
     [
       regionFilters,

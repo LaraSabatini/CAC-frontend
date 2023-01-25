@@ -24,6 +24,7 @@ interface DashboardContextInterface {
   setPrevisualize(previsualize: boolean): void
   attachmentsForServer: File[] | []
   setAttachmentsForServer(attachmentsForServer: File[] | []): void
+  discardNewArticle(): void
 }
 
 export default DashboardContextInterface
