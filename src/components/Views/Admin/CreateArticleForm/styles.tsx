@@ -19,6 +19,7 @@ const InputContainer = styled.div`
   padding-top: 43px;
   display: flex;
   flex-direction: column;
+  padding-bottom: 70px;
 `
 
 const HorizontalGroup = styled.div`
@@ -37,7 +38,7 @@ const FiltersTitle = styled.p`
 `
 
 const ButtonContainer = styled.div`
-  margin-top: 70px;
+  /* margin-top: 70px; */
   display: flex;
   justify-content: space-between;
 `

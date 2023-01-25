@@ -33,8 +33,6 @@ interface ArticleInterface {
   subtitle: string
   regionFilters: ArticleFiltersInterface[] // JSON
   themeFilters: ArticleFiltersInterface[] // JSON
-  regionTitle: string
-  regionSubTitle: string
   article: string
   attachments: AttachmentInterface[] // urls[]
   author: string

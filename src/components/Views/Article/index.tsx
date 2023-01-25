@@ -15,27 +15,30 @@ import {
 
 interface ArticleViewInterface {
   article: ArticleInterface
+  URLBlocked?: boolean
 }
 
-function ArticleView({ article }: ArticleViewInterface) {
+function ArticleView({ article, URLBlocked }: ArticleViewInterface) {
   const router = useRouter()
 
   return (
     <ArticleCard>
       <CardInfo>
         <div className="articleHeader">
-          <ArticleRegion>{article.regionTitle}</ArticleRegion>
+          <ArticleRegion>{article.regionFilters[0]?.value}</ArticleRegion>
           <ArticleTitle>{article.title}</ArticleTitle>
         </div>
 
         <ArticleDescription>{article.description}</ArticleDescription>
 
         <OpenButton
-          onClick={() =>
-            router.replace(
-              `${routes.articles.name}?${routes.articles.queries.id}${article.id}`,
-            )
-          }
+          onClick={() => {
+            if (!URLBlocked) {
+              router.replace(
+                `${routes.articles.name}?${routes.articles.queries.id}${article.id}`,
+              )
+            }
+          }}
         >
           {texts.readArticle}
         </OpenButton>
