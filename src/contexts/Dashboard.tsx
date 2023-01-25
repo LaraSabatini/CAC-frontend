@@ -16,10 +16,12 @@ export const DashboardContext = createContext<DashboardContextInterface>({
   setArticles: () => {},
   newArticle: defaultArticle,
   setNewArticle: () => {},
-  attachments: [],
-  setAttachments: () => {},
+  attachmentsForDataBase: [],
+  setAttachmentsForDataBase: () => {},
   previsualize: false,
   setPrevisualize: () => {},
+  attachmentsForServer: [],
+  setAttachmentsForServer: () => {},
 })
 
 function DashboardProvider({ children }: any) {
@@ -32,7 +34,13 @@ function DashboardProvider({ children }: any) {
   // *** Article creation
   const [newArticle, setNewArticle] = useState<ArticleInterface>(defaultArticle)
 
-  const [attachments, setAttachments] = useState<AttachmentInterface[] | []>([])
+  const [attachmentsForDataBase, setAttachmentsForDataBase] = useState<
+    AttachmentInterface[] | []
+  >([])
+
+  const [attachmentsForServer, setAttachmentsForServer] = useState<File[] | []>(
+    [],
+  )
 
   const [previsualize, setPrevisualize] = useState<boolean>(false)
 
@@ -46,18 +54,21 @@ function DashboardProvider({ children }: any) {
       articles,
       newArticle,
       setNewArticle,
-      attachments,
-      setAttachments,
+      attachmentsForDataBase,
+      setAttachmentsForDataBase,
       previsualize,
       setPrevisualize,
+      attachmentsForServer,
+      setAttachmentsForServer,
     }),
     [
       regionFilters,
       themeFilters,
       articles,
       newArticle,
-      attachments,
+      attachmentsForDataBase,
       previsualize,
+      attachmentsForServer,
     ],
   )
 

@@ -5,6 +5,8 @@ export interface CreatedByInterface {
 
 export type FilterType = "themes" | "regions"
 
+export type ExtensionType = "file" | "image" | "video"
+
 export interface ChangesHistoryInterface {
   date: Date | string
   changedBy: CreatedByInterface
@@ -18,7 +20,8 @@ export interface ArticleFiltersInterface {
 
 export interface AttachmentInterface {
   name: string
-  type: "file" | "image" | "video"
+  extension: string
+  type: ExtensionType
 }
 interface ArticleInterface {
   id: number

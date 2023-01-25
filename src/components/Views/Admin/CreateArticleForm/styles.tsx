@@ -56,10 +56,12 @@ const IconButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 
   svg {
     width: 20px;
     height: 20px;
+    color: ${theme.colors.blue};
   }
 `
 

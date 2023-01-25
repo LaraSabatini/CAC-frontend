@@ -4,8 +4,8 @@ import { DashboardContext } from "contexts/Dashboard"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Modal from "components/UI/Modal"
 import Input from "components/UI/Input"
-import Button from "components/UI/Button"
 import AttachmentButtons from "./AttachmentButtons"
+import ArticleButtons from "./ArticleButtons"
 import {
   Container,
   Title,
@@ -13,7 +13,6 @@ import {
   HorizontalGroup,
   FiltersTitle,
   ButtonContainer,
-  ActionButtons,
 } from "./styles"
 
 interface CreateArticleFormInterface {
@@ -26,16 +25,9 @@ interface OptionsInterface {
 }
 
 function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
-  const {
-    regionFilters,
-    themeFilters,
-    newArticle,
-    setNewArticle,
-    previsualize,
-    setPrevisualize,
-  } = useContext(DashboardContext)
-
-  const publishArticle = () => {}
+  const { regionFilters, themeFilters, newArticle, setNewArticle } = useContext(
+    DashboardContext,
+  )
 
   return (
     <Modal>
@@ -124,31 +116,18 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
             onChange={e =>
               setNewArticle({ ...newArticle, article: e.target.value })
             }
+            value={newArticle.article}
+            keyDown={() => {
+              setNewArticle({
+                ...newArticle,
+                article: `${newArticle.article}\n`,
+              })
+            }}
           />
         </InputContainer>
         <ButtonContainer>
           <AttachmentButtons />
-          <ActionButtons>
-            <Button
-              content={texts.newArticleForm.discard}
-              cta={false}
-              action={closeForm}
-            />
-            <Button
-              content={
-                !previsualize
-                  ? `${texts.newArticleForm.visualize}`
-                  : `${texts.newArticleForm.edit}`
-              }
-              cta={false}
-              action={() => setPrevisualize(!previsualize)}
-            />
-            <Button
-              content={texts.newArticleForm.publish}
-              cta
-              action={publishArticle}
-            />
-          </ActionButtons>
+          <ArticleButtons closeForm={closeForm} />
         </ButtonContainer>
       </Container>
     </Modal>

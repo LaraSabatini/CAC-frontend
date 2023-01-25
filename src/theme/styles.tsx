@@ -18,6 +18,7 @@ const FlexColumnDiv = () => css`
 const TitleStyles = () => css`
   font-family: ${theme.fonts.titles};
   color: ${theme.colors.blue_dark};
+  margin: 0;
 `
 
 export { GlobalStyle, FlexColumnDiv, TitleStyles }
