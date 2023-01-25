@@ -4,6 +4,9 @@ const Container = styled.div``
 
 const Content = styled.div`
   height: 570px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const ButtonContainer = styled.div`

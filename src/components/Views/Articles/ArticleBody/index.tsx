@@ -17,9 +17,10 @@ import {
 
 interface ArticleBodyInterface {
   article: ArticleInterface
+  showImageVisualizer?: boolean
 }
 
-function ArticleBody({ article }: ArticleBodyInterface) {
+function ArticleBody({ article, showImageVisualizer }: ArticleBodyInterface) {
   const [articleParagraphs, setArticleParagraphs] = useState<string[]>([])
 
   const cleanArticle = () => {
@@ -55,7 +56,7 @@ function ArticleBody({ article }: ArticleBodyInterface) {
           </AuthorContainer>
         </ArticleContainer>
       </LeftContainer>
-      <RigthContainer />
+      {showImageVisualizer && <RigthContainer />}
     </Container>
   )
 }

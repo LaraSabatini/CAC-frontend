@@ -2,12 +2,15 @@ import React, { useState, useContext, useEffect } from "react"
 import Button from "components/UI/Button"
 import texts from "strings/articles.json"
 import { DashboardContext } from "contexts/Dashboard"
-import ArticleView from "@components/Views/Articles/ArticleCard"
+import ArticleView from "components/Views/Articles/ArticleCard"
+import ArticleBody from "components/Views/Articles/ArticleBody"
 import { Container, ButtonContainer, Content } from "./styles"
 
 function PrevisualizeArticle() {
   const { newArticle, attachmentsForServer } = useContext(DashboardContext)
-  const [contentToShow, setContentToShow] = useState<"card" | "content">("card")
+  const [contentToShow, setContentToShow] = useState<
+    "card" | "content" | "attachments"
+  >("card")
 
   const [portrait, setPortrait] = useState<{ image: string }>({ image: "" })
 
@@ -46,12 +49,22 @@ function PrevisualizeArticle() {
           cta={contentToShow === "content"}
           action={() => setContentToShow("content")}
         />
+        <Button
+          content={texts.newArticleForm.attachedFiles}
+          cta={contentToShow === "attachments"}
+          action={() => setContentToShow("attachments")}
+        />
       </ButtonContainer>
       <Content>
-        <ArticleView
-          URLBlocked
-          article={{ ...newArticle, portrait: portrait.image }}
-        />
+        {contentToShow === "card" && (
+          <ArticleView
+            URLBlocked
+            article={{ ...newArticle, portrait: portrait.image }}
+          />
+        )}
+        {contentToShow === "content" && (
+          <ArticleBody article={{ ...newArticle, author: "Flor Voglino" }} />
+        )}
       </Content>
     </Container>
   )

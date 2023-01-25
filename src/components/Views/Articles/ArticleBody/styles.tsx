@@ -2,7 +2,7 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  width: 92vw;
+  /* width: 92vw; */
   margin: 0 auto;
   display: flex;
   gap: 40px;

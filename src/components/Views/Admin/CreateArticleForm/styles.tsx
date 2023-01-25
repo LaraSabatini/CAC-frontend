@@ -38,7 +38,6 @@ const FiltersTitle = styled.p`
 `
 
 const ButtonContainer = styled.div`
-  /* margin-top: 70px; */
   display: flex;
   justify-content: space-between;
 `
@@ -46,6 +45,7 @@ const ButtonContainer = styled.div`
 const ActionButtons = styled.div`
   display: flex;
   gap: 10px;
+  position: relative;
 `
 
 const IconButton = styled.button`
@@ -66,6 +66,17 @@ const IconButton = styled.button`
   }
 `
 
+const WarningMessage = styled.p`
+  margin: 0;
+  font-family: ${theme.fonts.content};
+  font-size: ${theme.fontSizes.xs};
+  color: ${theme.colors.red};
+  position: absolute;
+  right: 0;
+  top: -25px;
+  width: max-content;
+`
+
 export {
   Container,
   Title,
@@ -75,4 +86,5 @@ export {
   ButtonContainer,
   ActionButtons,
   IconButton,
+  WarningMessage,
 }
