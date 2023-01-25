@@ -1,15 +1,13 @@
-import React, { useState } from "react"
-import { AiOutlinePaperClip } from "react-icons/ai"
-import { BsFillPlayFill } from "react-icons/bs"
+import React, { useState, useContext } from "react"
 import texts from "strings/articles.json"
+import { DashboardContext } from "contexts/Dashboard"
 import ArticleInterface from "interfaces/content/Article"
 import defaultArticle from "const/defaultArticle"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Modal from "components/UI/Modal"
 import Input from "components/UI/Input"
-import Icon from "components/UI/Assets/Icon"
-import Tooltip from "components/UI/Tooltip"
 import Button from "components/UI/Button"
+import AttachmentButtons from "./AttachmentButtons"
 import {
   Container,
   Title,
@@ -18,7 +16,6 @@ import {
   FiltersTitle,
   ButtonContainer,
   ActionButtons,
-  IconButton,
 } from "./styles"
 
 interface CreateArticleFormInterface {
@@ -28,34 +25,13 @@ interface CreateArticleFormInterface {
 interface OptionsInterface {
   id: number
   value: string
-  is_disabled?: boolean
 }
 
 function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
+  const { regionFilters, themeFilters } = useContext(DashboardContext)
+
   const [previsualize, setPrevisualize] = useState<boolean>(false)
   const [newArticle, setNewArticle] = useState<ArticleInterface>(defaultArticle)
-
-  const regionOptions = [
-    {
-      id: 1,
-      value: "Ciudad de Buenos Aires",
-    },
-    {
-      id: 2,
-      value: "Prov. de Buenos Aires",
-    },
-  ]
-
-  const themeOptions = [
-    {
-      id: 1,
-      value: "Ciudad de Buenos Aires",
-    },
-    {
-      id: 2,
-      value: "Prov. de Buenos Aires",
-    },
-  ]
 
   const publishArticle = () => {}
 
@@ -96,7 +72,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
               }
               optionsList="single"
               width={480}
-              options={regionOptions}
+              options={regionFilters}
               onChange={(e: OptionsInterface[] | undefined) => {
                 if (e !== undefined) {
                   setNewArticle({
@@ -114,7 +90,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
               }
               optionsList="single"
               width={475}
-              options={themeOptions}
+              options={themeFilters}
               onChange={(e: OptionsInterface[] | undefined) => {
                 if (e !== undefined) {
                   setNewArticle({
@@ -149,23 +125,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
           />
         </InputContainer>
         <ButtonContainer>
-          <ActionButtons>
-            <Tooltip title={texts.newArticleForm.attachFile}>
-              <IconButton>
-                <AiOutlinePaperClip />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={texts.newArticleForm.attachImage}>
-              <IconButton>
-                <Icon icon="IconImage" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={texts.newArticleForm.attachVideo}>
-              <IconButton>
-                <BsFillPlayFill />
-              </IconButton>
-            </Tooltip>
-          </ActionButtons>
+          <AttachmentButtons />
           <ActionButtons>
             <Button
               content={texts.newArticleForm.discard}

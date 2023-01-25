@@ -3,6 +3,8 @@ export interface CreatedByInterface {
   email: string
 }
 
+export type FilterType = "themes" | "regions"
+
 export interface ChangesHistoryInterface {
   date: Date | string
   changedBy: CreatedByInterface

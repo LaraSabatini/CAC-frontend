@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { UserDataType } from "interfaces/users/General"
+import DashboardProvider from "contexts/Dashboard"
 import routes from "routes"
 import checkLastPayment from "helpers/dates/checkLastPayment"
 import DashboardView from "components/Views/Dashboard"
@@ -38,7 +39,15 @@ function Dashboard() {
     //  eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return <div>{isLogged && <DashboardView />}</div>
+  return (
+    <div>
+      {isLogged && (
+        <DashboardProvider>
+          <DashboardView />
+        </DashboardProvider>
+      )}
+    </div>
+  )
 }
 
 export default Dashboard
