@@ -1,8 +1,6 @@
-import React, { useState, useContext } from "react"
+import React, { useContext } from "react"
 import texts from "strings/articles.json"
 import { DashboardContext } from "contexts/Dashboard"
-import ArticleInterface from "interfaces/content/Article"
-import defaultArticle from "const/defaultArticle"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Modal from "components/UI/Modal"
 import Input from "components/UI/Input"
@@ -28,10 +26,14 @@ interface OptionsInterface {
 }
 
 function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
-  const { regionFilters, themeFilters } = useContext(DashboardContext)
-
-  const [previsualize, setPrevisualize] = useState<boolean>(false)
-  const [newArticle, setNewArticle] = useState<ArticleInterface>(defaultArticle)
+  const {
+    regionFilters,
+    themeFilters,
+    newArticle,
+    setNewArticle,
+    previsualize,
+    setPrevisualize,
+  } = useContext(DashboardContext)
 
   const publishArticle = () => {}
 
