@@ -1,27 +1,14 @@
 import React, { ChangeEvent, useRef, useContext, useState } from "react"
 import { AiOutlinePaperClip, AiOutlineEye } from "react-icons/ai"
-import { MdOutlineClose, MdAddCircleOutline } from "react-icons/md"
 import { BsFillPlayFill } from "react-icons/bs"
 import { DashboardContext } from "contexts/Dashboard"
 import { AttachmentInterface, ExtensionType } from "interfaces/content/Article"
 import texts from "strings/articles.json"
-import Modal from "components/UI/Modal"
 import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
-import Input from "components/UI/Input"
+import ModalAttachedFiles from "./ModalAttachedFiles"
+import ModalVideos from "./ModalVideos"
 import { ActionButtons, IconButton } from "../styles"
-import {
-  AttachmentsList,
-  Title,
-  Item,
-  ItemContainer,
-  AttachmentsListHead,
-  DeleteItemButton,
-  CloseAttachmentsListButton,
-  VideoModal,
-  InputContainer,
-  AddVideoButton,
-} from "./styles"
 
 function AttachmentButtons() {
   const {
@@ -33,12 +20,9 @@ function AttachmentButtons() {
 
   const [showAttachedFiles, setShowAttachedFiles] = useState<boolean>(false)
   const [addVideoURL, setAddVideoURL] = useState<boolean>(false)
-  const [currentVideoURL, setCurrentVideoURL] = useState<string>("")
 
   const hiddenFileInput = useRef<HTMLInputElement>(null)
   const hiddenImageInput = useRef<HTMLInputElement>(null)
-
-  const videoURLs = attachmentsForDataBase.filter(file => file.type === "video")
 
   const handleFileChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -63,6 +47,7 @@ function AttachmentButtons() {
     }
   }
 
+  // *** Disparar click en input para adjuntar archivos
   const handleClick = (type: "file" | "image") => {
     if (type === "file") {
       if (hiddenFileInput.current !== null) {
@@ -71,36 +56,6 @@ function AttachmentButtons() {
     } else if (hiddenImageInput.current !== null) {
       hiddenImageInput.current.click()
     }
-  }
-
-  const removeFileFromList = (file: AttachmentInterface) => {
-    const fileInDBArray = attachmentsForDataBase.filter(item => item !== file)
-    const fileInServerArray = attachmentsForServer.filter(
-      item => item.name !== `${file.name}.${file.extension}`,
-    )
-
-    setAttachmentsForDataBase(fileInDBArray)
-    setAttachmentsForServer(fileInServerArray)
-  }
-
-  const addVideoToAttachments = () => {
-    const URL = currentVideoURL.split("www.")
-    const domain = URL[1].split(".com")
-
-    setAttachmentsForDataBase([
-      ...attachmentsForDataBase,
-      {
-        name: domain[0],
-        extension: currentVideoURL,
-        type: "video",
-      },
-    ])
-
-    setCurrentVideoURL("")
-  }
-
-  const openInNewTab = (url: string) => {
-    window.open(url, "_blank", "noreferrer")
   }
 
   return (
@@ -137,7 +92,7 @@ function AttachmentButtons() {
         </IconButton>
       </Tooltip>
       {attachmentsForDataBase.length ? (
-        <Tooltip title="Ver archivos adjuntos">
+        <Tooltip title={texts.newArticleForm.seeAttachments}>
           <IconButton onClick={() => setShowAttachedFiles(true)}>
             <AiOutlineEye />
           </IconButton>
@@ -146,67 +101,9 @@ function AttachmentButtons() {
         <></>
       )}
       {showAttachedFiles && (
-        <Modal>
-          <AttachmentsList>
-            <AttachmentsListHead>
-              <Title>Archivos adjuntos</Title>
-              <CloseAttachmentsListButton
-                onClick={() => setShowAttachedFiles(false)}
-              >
-                <MdOutlineClose />
-              </CloseAttachmentsListButton>
-            </AttachmentsListHead>
-            <ItemContainer>
-              {attachmentsForDataBase.map(file => (
-                <Item>
-                  {file.name}.{file.extension}
-                  <Tooltip title="Borrar archivo">
-                    <DeleteItemButton onClick={() => removeFileFromList(file)}>
-                      <MdOutlineClose />
-                    </DeleteItemButton>
-                  </Tooltip>
-                </Item>
-              ))}
-            </ItemContainer>
-          </AttachmentsList>
-        </Modal>
+        <ModalAttachedFiles closeModal={() => setShowAttachedFiles(false)} />
       )}
-      {addVideoURL && (
-        <Modal>
-          <VideoModal>
-            <AttachmentsListHead>
-              <Title>Adjuntar videos</Title>
-              <CloseAttachmentsListButton onClick={() => setAddVideoURL(false)}>
-                <MdOutlineClose />
-              </CloseAttachmentsListButton>
-            </AttachmentsListHead>
-            <InputContainer>
-              <Input
-                label="URL"
-                required={false}
-                type="text"
-                onChange={e => setCurrentVideoURL(e.target.value)}
-                value={currentVideoURL}
-              />
-              <AddVideoButton onClick={addVideoToAttachments}>
-                <MdAddCircleOutline />
-              </AddVideoButton>
-            </InputContainer>
-            <ItemContainer>
-              {videoURLs.map(file => (
-                <Item onClick={() => openInNewTab(file.extension)}>
-                  {file.name}
-                  <Tooltip title="Borrar archivo">
-                    <DeleteItemButton onClick={() => removeFileFromList(file)}>
-                      <MdOutlineClose />
-                    </DeleteItemButton>
-                  </Tooltip>
-                </Item>
-              ))}
-            </ItemContainer>
-          </VideoModal>
-        </Modal>
-      )}
+      {addVideoURL && <ModalVideos closeModal={() => setAddVideoURL(false)} />}
     </ActionButtons>
   )
 }

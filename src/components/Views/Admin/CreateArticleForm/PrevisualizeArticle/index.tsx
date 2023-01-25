@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react"
 import Button from "components/UI/Button"
+import texts from "strings/articles.json"
 import { DashboardContext } from "contexts/Dashboard"
 import ArticleView from "components/Views/Article"
 import { Container, ButtonContainer, Content } from "./styles"
@@ -10,6 +11,7 @@ function PrevisualizeArticle() {
 
   const [portrait, setPortrait] = useState<{ image: string }>({ image: "" })
 
+  // *** Setear imagen como URL para poder previsualizarla en la carta de articulo
   const setImageURL = () => {
     const getImage = attachmentsForServer.filter(
       image => image.type.split("/")[0] === "image",
@@ -35,12 +37,12 @@ function PrevisualizeArticle() {
     <Container>
       <ButtonContainer>
         <Button
-          content="Carta"
+          content={texts.newArticleForm.card}
           cta={contentToShow === "card"}
           action={() => setContentToShow("card")}
         />
         <Button
-          content="Articulo"
+          content={texts.newArticleForm.article}
           cta={contentToShow === "content"}
           action={() => setContentToShow("content")}
         />

@@ -65,7 +65,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                   }
                 />
               </HorizontalGroup>
-              <FiltersTitle>Filtros</FiltersTitle>
+              <FiltersTitle>{texts.newArticleForm.labels.filters}</FiltersTitle>
               <HorizontalGroup>
                 <ComboBoxSelect
                   placeholder={

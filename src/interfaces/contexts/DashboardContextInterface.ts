@@ -25,6 +25,7 @@ interface DashboardContextInterface {
   attachmentsForServer: File[] | []
   setAttachmentsForServer(attachmentsForServer: File[] | []): void
   discardNewArticle(): void
+  removeFileFromList(arg: AttachmentInterface): void
 }
 
 export default DashboardContextInterface

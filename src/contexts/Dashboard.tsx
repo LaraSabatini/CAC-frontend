@@ -23,6 +23,7 @@ export const DashboardContext = createContext<DashboardContextInterface>({
   attachmentsForServer: [],
   setAttachmentsForServer: () => {},
   discardNewArticle: () => {},
+  removeFileFromList: () => {},
 })
 
 function DashboardProvider({ children }: any) {
@@ -52,6 +53,16 @@ function DashboardProvider({ children }: any) {
     setPrevisualize(false)
   }
 
+  const removeFileFromList = (file: AttachmentInterface) => {
+    const fileInDBArray = attachmentsForDataBase.filter(item => item !== file)
+    const fileInServerArray = attachmentsForServer.filter(
+      item => item.name !== `${file.name}.${file.extension}`,
+    )
+
+    setAttachmentsForDataBase(fileInDBArray)
+    setAttachmentsForServer(fileInServerArray)
+  }
+
   const value: any = useMemo(
     () => ({
       regionFilters,
@@ -69,7 +80,9 @@ function DashboardProvider({ children }: any) {
       attachmentsForServer,
       setAttachmentsForServer,
       discardNewArticle,
+      removeFileFromList,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       regionFilters,
       themeFilters,

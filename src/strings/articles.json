@@ -17,9 +17,14 @@
         "attachFile": "Adjuntar archivo",
         "attachImage": "Adjuntar imagen",
         "attachVideo": "Adjuntar video",
+        "seeAttachments": "Ver archivos adjuntos",
         "discard": "Descartar",
         "visualize": "Previsualizar",
         "edit": "Editar",
-        "publish": "Publicar"
+        "publish": "Publicar",
+        "card": "Carta",
+        "article": "Articulo",
+        "deleteFile": "Borrar archivo",
+        "attachedFiles": "Archivos adjuntos"
     }
 }
