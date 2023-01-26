@@ -10,6 +10,11 @@ const getArticles = async (page: number) => {
   return res.data
 }
 
+const getArticleById = async (id: number) => {
+  const res = await axios.get(`${apiURL}/id=${id}`, axiosHeader)
+  return res.data
+}
+
 const createArticle = async (body: ArticleInterface) => {
   const res = await defaultPost(apiURL, body)
   return res
@@ -25,4 +30,10 @@ const editArticle = async (body: ArticleInterface) => {
   return res.data
 }
 
-export { createArticle, editArticle, deleteArticle, getArticles }
+export {
+  createArticle,
+  editArticle,
+  deleteArticle,
+  getArticles,
+  getArticleById,
+}

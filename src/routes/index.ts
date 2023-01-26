@@ -28,7 +28,9 @@ const routes = {
   },
   dashboard: {
     name: "/dashboard",
-    queries: {},
+    queries: {
+      article: "articleId=",
+    },
   },
   articles: {
     name: "/article",

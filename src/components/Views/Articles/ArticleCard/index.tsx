@@ -25,7 +25,11 @@ function ArticleView({ article, URLBlocked }: ArticleViewInterface) {
     <ArticleCard>
       <CardInfo>
         <div className="articleHeader">
-          <ArticleRegion>{article.regionFilters[0]?.value}</ArticleRegion>
+          <ArticleRegion>
+            {typeof article.regionFilters === "string"
+              ? JSON.parse(article.regionFilters as string)[0].value
+              : article.regionFilters[0].value}
+          </ArticleRegion>
           <ArticleTitle>{article.title}</ArticleTitle>
         </div>
 
@@ -35,7 +39,7 @@ function ArticleView({ article, URLBlocked }: ArticleViewInterface) {
           onClick={() => {
             if (!URLBlocked) {
               router.replace(
-                `${routes.articles.name}?${routes.articles.queries.id}${article.id}`,
+                `${routes.dashboard.name}?${routes.dashboard.queries.article}${article.id}&title=${article.title}`,
               )
             }
           }}

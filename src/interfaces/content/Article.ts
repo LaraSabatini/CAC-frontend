@@ -31,10 +31,10 @@ interface ArticleInterface {
   changesHistory: ChangesHistoryInterface[] // JSON
   portrait: string
   subtitle: string
-  regionFilters: ArticleFiltersInterface[] // JSON
-  themeFilters: ArticleFiltersInterface[] // JSON
+  regionFilters: ArticleFiltersInterface[] | string // JSON
+  themeFilters: ArticleFiltersInterface[] | string // JSON
   article: string
-  attachments: AttachmentInterface[] // urls[]
+  attachments: AttachmentInterface[] | string // urls[]
   author: string
 }
 
