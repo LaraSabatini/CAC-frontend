@@ -54,7 +54,7 @@ function DashboardView() {
             <BsChevronRight />
             <span>{router.query.title}</span>
           </Chip>
-          <ArticleBody queries />
+          <ArticleBody showImageVisualizer queries />
         </FullArticle>
       )}
     </>

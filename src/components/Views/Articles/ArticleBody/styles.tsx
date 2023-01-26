@@ -2,7 +2,6 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  /* width: 92vw; */
   margin: 0 auto;
   display: flex;
   gap: 40px;
@@ -47,7 +46,6 @@ const Subtitle = styled.span`
 `
 
 const ArticleContainer = styled.div`
-  /* width: 550px; */
   padding-top: 27px;
   display: flex;
   gap: 35px;
@@ -87,10 +85,8 @@ const AuthorContainer = styled.div`
 `
 
 const RigthContainer = styled.div`
-  border: 1px solid #466995;
-  width: 550px;
+  width: 500px;
   height: 390px;
-  border-radius: 18px;
 `
 
 export {

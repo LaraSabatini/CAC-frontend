@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import theme from "theme/index"
-import {Button} from 'components/UI/sharedStyles'
+import { Button } from "components/UI/sharedStyles"
 
 const Container = styled.div``
 
@@ -34,7 +34,6 @@ const ButtonContainer = styled.div`
 const Previewer = styled.div`
   width: 700px;
   height: 500px;
-  background-color: ${theme.colors.blue_alpha};
   display: flex;
   border-radius: 18px;
 `
@@ -60,17 +59,23 @@ const ArrowContainer = styled.div`
 `
 
 const PreviewContent = styled.div`
-  position: relative; 
+  position: relative;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  img {
+  /* img {
     width: 500px;
     border-radius: 18px;
-  }
+  } */
 `
 
-
-export { PreviewContent, Container, ButtonContainer, Content, Previewer, ArrowContainer, }
+export {
+  PreviewContent,
+  Container,
+  ButtonContainer,
+  Content,
+  Previewer,
+  ArrowContainer,
+}

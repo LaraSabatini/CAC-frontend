@@ -5,6 +5,7 @@ import ArticleInterface from "interfaces/content/Article"
 import texts from "strings/articles.json"
 import Scroll from "components/UI/Scroll"
 import Icon from "components/UI/Assets/Icon"
+import MediaViewer from "components/UI/MediaViewer"
 import {
   Container,
   LeftContainer,
@@ -94,7 +95,21 @@ function ArticleBody(props: Props) {
           </ArticleContainer>
         </LeftContainer>
       )}
-      {showImageVisualizer && <RigthContainer />}
+      {showImageVisualizer && data !== undefined && (
+        <RigthContainer>
+          {(typeof data.attachments === "string"
+            ? JSON.parse(data.attachments as string).length
+            : data.attachments.length) && (
+            <MediaViewer
+              urls={
+                typeof data.attachments === "string"
+                  ? JSON.parse(data.attachments as string)
+                  : data.attachments
+              }
+            />
+          )}
+        </RigthContainer>
+      )}
     </Container>
   )
 }
