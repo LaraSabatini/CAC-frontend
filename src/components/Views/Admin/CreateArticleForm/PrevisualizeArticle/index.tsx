@@ -39,7 +39,7 @@ function PrevisualizeArticle() {
     const newArray = []
     for (let i = 0; i < attachmentsForDataBase.length; i += 1) {
       newArray.push({
-        uri: docs[i].uri,
+        uri: docs[i]?.uri,
         name: attachmentsForDataBase[i].name,
         extension: attachmentsForDataBase[i].extension,
         type: attachmentsForDataBase[i].type,
@@ -101,13 +101,12 @@ function PrevisualizeArticle() {
           />
         )}
         {contentToShow === "content" && (
-          <ArticleBody article={{ ...newArticle, author: "Flor Voglino" }} />
+          <ArticleBody article={{ ...newArticle }} />
         )}
         {contentToShow === "attachments" && (
           <Previewer>
             {attachmentsForServer.length > 0 && (
               <PreviewContent>
-                {/* FORMAT URI OBJECT */}
                 {attachmentsForServer.length && (
                   <MediaViewer uri={defineFileNamesForVisualizer()} />
                 )}

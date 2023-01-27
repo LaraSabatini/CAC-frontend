@@ -40,11 +40,13 @@ function ModalVideos({ closeModal }: ModalVideosInterface) {
     const URL = currentVideoURL.split("www.")
     const domain = URL[1].split(".com")
 
+    const videoIdentifier = currentVideoURL.split("watch?v=")[1].split("&")[0]
+
     setAttachmentsForDataBase([
       ...attachmentsForDataBase,
       {
         name: domain[0],
-        extension: currentVideoURL,
+        extension: `https://www.youtube.com/embed/${videoIdentifier}`,
         type: "video",
       },
     ])

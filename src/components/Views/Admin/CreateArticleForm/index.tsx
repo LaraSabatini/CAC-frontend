@@ -133,10 +133,10 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                 />
                 <Input
                   value={newArticle.author}
-                  label="Autor"
+                  label={texts.newArticleForm.labels.author}
                   required
                   type="text"
-                  placeholder="Autor"
+                  placeholder={texts.newArticleForm.labels.author}
                   width={300}
                   max={100}
                   onChange={e =>

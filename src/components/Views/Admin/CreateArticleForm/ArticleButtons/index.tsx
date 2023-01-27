@@ -104,8 +104,8 @@ function ArticleButtons({
     <ActionButtons>
       {createdArticle && (
         <ModalStatus
-          title="Excelente"
-          description="El articulo se ha creado correctamente."
+          title={texts.newArticleForm.success.title}
+          description={texts.newArticleForm.success.description}
           status="success"
           selfClose
           selfCloseAction={updateList}
@@ -131,9 +131,7 @@ function ArticleButtons({
             setPrevisualize(!previsualize)
             setWarningMessage("")
           } else {
-            setWarningMessage(
-              "Completa todos los campos obligatorios y agregar una portada.",
-            )
+            setWarningMessage(texts.newArticleForm.requiredMessage)
           }
         }}
       />
@@ -145,9 +143,7 @@ function ArticleButtons({
             publishArticle()
             setWarningMessage("")
           } else {
-            setWarningMessage(
-              "Completa todos los campos obligatorios y agregar una portada.",
-            )
+            setWarningMessage(texts.newArticleForm.requiredMessage)
           }
         }}
       />

@@ -12,7 +12,8 @@
             "description": "Descripcion",
             "descriptionPlaceholder": "Resumen de la publicación",
             "fullArticle": "Texto completo",
-            "fullArticlePlaceholder": "Texto de la publicación"
+            "fullArticlePlaceholder": "Texto de la publicación",
+            "author": "Autor"
         },
         "attachFile": "Adjuntar archivo",
         "attachImage": "Adjuntar imagen",
@@ -25,7 +26,12 @@
         "card": "Carta",
         "article": "Articulo",
         "deleteFile": "Borrar archivo",
-        "attachedFiles": "Archivos adjuntos"
+        "attachedFiles": "Archivos adjuntos",
+        "requiredMessage": "Completa todos los campos obligatorios y agregar una portada.",
+        "success": {
+            "title": "Excelente",
+            "description": "El articulo se ha creado correctamente."
+        }
     },
     "author": "Publicado por"
 }

@@ -61,23 +61,39 @@ function MediaViewer(props: MediaViewerType) {
           <div className="head">
             <Title>
               <AiOutlinePaperClip />
-              {files[currentFile].name}.{files[currentFile].extension}
+              {files[currentFile].type === "video" ? (
+                "Video de Youtube"
+              ) : (
+                <>
+                  {files[currentFile].name}.{files[currentFile].extension}
+                </>
+              )}
             </Title>
             <Tooltip title="Maximizar">
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={
-                  typeof uri !== "undefined"
-                    ? files[currentFile].uri
-                    : getFiles(
-                        files[currentFile].name,
-                        files[currentFile].extension,
-                      )
-                }
-              >
-                <MdOpenInNew />
-              </a>
+              {files[currentFile].type === "video" ? (
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={files[currentFile].extension}
+                >
+                  <MdOpenInNew />
+                </a>
+              ) : (
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={
+                    typeof uri !== "undefined"
+                      ? files[currentFile].uri
+                      : getFiles(
+                          files[currentFile].name,
+                          files[currentFile].extension,
+                        )
+                  }
+                >
+                  <MdOpenInNew />
+                </a>
+              )}
             </Tooltip>
           </div>
           <Navigation>
@@ -135,6 +151,17 @@ function MediaViewer(props: MediaViewerType) {
                   Archivo
                 </a>
               </object>
+            )}
+            {files[currentFile].type === "video" && (
+              <iframe
+                width="100%"
+                height="100%"
+                src={files[currentFile].extension}
+                title="video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
             )}
           </Content>
         </>
