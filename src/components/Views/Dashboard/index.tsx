@@ -19,6 +19,7 @@ function DashboardView() {
     setThemeFilters,
     setArticles,
     articles,
+    triggerArticleListUpdate,
   } = useContext(DashboardContext)
 
   const getFiltersData = async () => {
@@ -36,7 +37,7 @@ function DashboardView() {
   useEffect(() => {
     getFiltersData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [triggerArticleListUpdate])
 
   return (
     <>

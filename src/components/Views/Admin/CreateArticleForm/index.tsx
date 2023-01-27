@@ -4,6 +4,7 @@ import { DashboardContext } from "contexts/Dashboard"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Modal from "components/UI/Modal"
 import Input from "components/UI/Input"
+import { ArticleFiltersInterface } from "interfaces/content/Article"
 import AttachmentButtons from "./AttachmentButtons"
 import ArticleButtons from "./ArticleButtons"
 import PrevisualizeArticle from "./PrevisualizeArticle"
@@ -32,6 +33,8 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
     newArticle,
     setNewArticle,
     previsualize,
+    setTriggerArticleListUpdate,
+    triggerArticleListUpdate,
   } = useContext(DashboardContext)
 
   return (
@@ -76,7 +79,9 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                   optionsList="single"
                   width={480}
                   options={regionFilters}
-                  activeOptions={newArticle.regionFilters}
+                  activeOptions={
+                    newArticle.regionFilters as ArticleFiltersInterface[]
+                  }
                   onChange={(e: OptionsInterface[] | undefined) => {
                     if (e !== undefined) {
                       setNewArticle({
@@ -95,7 +100,9 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                   optionsList="single"
                   width={475}
                   options={themeFilters}
-                  activeOptions={newArticle.themeFilters}
+                  activeOptions={
+                    newArticle.themeFilters as ArticleFiltersInterface[]
+                  }
                   onChange={(e: OptionsInterface[] | undefined) => {
                     if (e !== undefined) {
                       setNewArticle({
@@ -106,18 +113,37 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                   }}
                 />
               </HorizontalGroup>
-              <Input
-                value={newArticle.description}
-                label={texts.newArticleForm.labels.description}
-                required
-                type="text"
-                placeholder={texts.newArticleForm.labels.descriptionPlaceholder}
-                width={1010}
-                max={300}
-                onChange={e =>
-                  setNewArticle({ ...newArticle, description: e.target.value })
-                }
-              />
+              <HorizontalGroup>
+                <Input
+                  value={newArticle.description}
+                  label={texts.newArticleForm.labels.description}
+                  required
+                  type="text"
+                  placeholder={
+                    texts.newArticleForm.labels.descriptionPlaceholder
+                  }
+                  width={700}
+                  max={300}
+                  onChange={e =>
+                    setNewArticle({
+                      ...newArticle,
+                      description: e.target.value,
+                    })
+                  }
+                />
+                <Input
+                  value={newArticle.author}
+                  label="Autor"
+                  required
+                  type="text"
+                  placeholder="Autor"
+                  width={300}
+                  max={100}
+                  onChange={e =>
+                    setNewArticle({ ...newArticle, author: e.target.value })
+                  }
+                />
+              </HorizontalGroup>
               <Input
                 label={texts.newArticleForm.labels.fullArticle}
                 required
@@ -143,7 +169,13 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
         )}
         <ButtonContainer>
           {!previsualize && <AttachmentButtons />}
-          <ArticleButtons closeForm={closeForm} />
+          <ArticleButtons
+            closeForm={closeForm}
+            updateList={() => {
+              closeForm()
+              setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
+            }}
+          />
         </ButtonContainer>
       </Container>
     </Modal>

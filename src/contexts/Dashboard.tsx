@@ -24,6 +24,8 @@ export const DashboardContext = createContext<DashboardContextInterface>({
   setAttachmentsForServer: () => {},
   discardNewArticle: () => {},
   removeFileFromList: () => {},
+  triggerArticleListUpdate: 0,
+  setTriggerArticleListUpdate: () => {},
 })
 
 function DashboardProvider({ children }: any) {
@@ -63,6 +65,11 @@ function DashboardProvider({ children }: any) {
     setAttachmentsForServer(fileInServerArray)
   }
 
+  const [
+    triggerArticleListUpdate,
+    setTriggerArticleListUpdate,
+  ] = useState<number>(0)
+
   const value: any = useMemo(
     () => ({
       regionFilters,
@@ -81,6 +88,8 @@ function DashboardProvider({ children }: any) {
       setAttachmentsForServer,
       discardNewArticle,
       removeFileFromList,
+      triggerArticleListUpdate,
+      setTriggerArticleListUpdate,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -91,6 +100,7 @@ function DashboardProvider({ children }: any) {
       attachmentsForDataBase,
       previsualize,
       attachmentsForServer,
+      triggerArticleListUpdate,
     ],
   )
 

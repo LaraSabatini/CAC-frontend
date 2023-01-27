@@ -10,7 +10,7 @@ export type ExtensionType = "file" | "image" | "video"
 export interface ChangesHistoryInterface {
   date: Date | string
   changedBy: CreatedByInterface
-  elementChanged: string
+  action: "CREATED" | "MODIFIED"
 }
 
 export interface ArticleFiltersInterface {
@@ -27,8 +27,8 @@ interface ArticleInterface {
   id: number
   title: string
   description: string
-  createdBy: CreatedByInterface
-  changesHistory: ChangesHistoryInterface[] // JSON
+  createdBy: CreatedByInterface | string
+  changesHistory: ChangesHistoryInterface[] | string // JSON
   portrait: string
   subtitle: string
   regionFilters: ArticleFiltersInterface[] | string // JSON
