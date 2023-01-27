@@ -4,21 +4,21 @@ import theme from "theme/index"
 const Container = styled.div`
   margin: 0 auto;
   display: flex;
-  gap: 40px;
+  justify-content: space-between;
 `
 
-const LeftContainer = styled.div``
+const LeftContainer = styled.div`
+  width: 890px;
+`
 
 const ArticleTitle = styled.h3`
-  width: 730px;
-
+  width: 100%;
   margin: 0;
 
   font-family: ${theme.fonts.titles};
   font-weight: ${theme.fontWeights.semiBold};
   font-size: ${theme.fontSizes.ml};
   line-height: 33px;
-
   color: ${theme.colors.blue_dark};
 `
 
@@ -29,26 +29,23 @@ const ArticleRegion = styled.span`
   font-family: ${theme.fonts.titles};
   font-weight: ${theme.fontWeights.light};
   font-size: ${theme.fontSizes.xs};
-
   line-height: 18px;
-
   color: ${theme.colors.blue_dark};
 `
 
 const Subtitle = styled.span`
   font-family: ${theme.fonts.titles};
   font-size: ${theme.fontSizes.ml};
-
   line-height: 33px;
   color: ${theme.colors.blue};
-
   margin: 0;
 `
 
 const ArticleContainer = styled.div`
-  padding-top: 27px;
   display: flex;
-  gap: 35px;
+  gap: 36px;
+  width: 90%;
+  padding-top: 27px;
 `
 
 const ArticleParagraph = styled.p`
@@ -56,8 +53,7 @@ const ArticleParagraph = styled.p`
   font-size: ${theme.fontSizes.s};
   line-height: 21px;
   color: ${theme.colors.blue_dark};
-
-  width: 500px;
+  width: 517px;
 `
 
 const AuthorContainer = styled.div`
@@ -67,13 +63,12 @@ const AuthorContainer = styled.div`
   gap: 15px;
 
   p {
-    font-family: ${theme.fonts.content};
     display: flex;
     flex-direction: column;
+
+    font-family: ${theme.fonts.content};
     font-size: ${theme.fontSizes.m};
-
     line-height: 24px;
-
     color: ${theme.colors.blue_dark};
 
     span {
@@ -85,8 +80,8 @@ const AuthorContainer = styled.div`
 `
 
 const RigthContainer = styled.div`
-  width: 500px;
-  height: 390px;
+  width: 820px;
+  height: 513px;
 `
 
 export {

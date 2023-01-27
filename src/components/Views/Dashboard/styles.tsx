@@ -14,6 +14,8 @@ const FullArticle = styled.div`
   width: 90vw;
   margin: 0 auto;
   padding-top: 30px;
+  /* display: flex;
+  flex-direction: column; */
 `
 
 const Chip = styled.div`

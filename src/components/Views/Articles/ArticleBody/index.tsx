@@ -80,7 +80,7 @@ function ArticleBody(props: Props) {
             <Subtitle>{data.subtitle}</Subtitle>
           </div>
           <ArticleContainer>
-            <Scroll height={340}>
+            <Scroll height={360}>
               {articleParagraphs.map((paragraph: string) => (
                 <ArticleParagraph>{paragraph}</ArticleParagraph>
               ))}
