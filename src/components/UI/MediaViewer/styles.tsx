@@ -6,34 +6,42 @@ import { Button } from "components/UI/sharedStyles"
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  border-radius: 18px;
-  padding: 20px 30px;
-  background-color: #466a9533;
   display: flex;
   flex-direction: column;
+  gap: 12px;
   position: relative;
   gap: 10px;
 
-  .head {
+  .footer {
+    width: 90%;
     display: flex;
-    align-items: center;
+    align-self: center;
     justify-content: space-between;
 
-    svg {
-      color: ${theme.colors.blue_dark};
-      width: 22px;
-      height: 22px;
+    a {
+      text-decoration: none;
     }
   }
 `
 
 const Title = styled.p`
   ${TitleStyles}
-  font-weight: 500;
   display: flex;
-  gap: 5px;
-  font-size: 14px;
+  gap: 18px;
   align-items: center;
+
+  font-family: "Sora";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 18px;
+
+  color: #153654;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
 `
 
 const Navigation = styled.div`
@@ -48,6 +56,7 @@ const Navigation = styled.div`
   top: 50%;
   button {
     ${Button}
+    padding: 0;
 
     svg {
       color: ${theme.colors.blue_dark};
@@ -62,18 +71,12 @@ const Indicator = styled.div`
   gap: 10px;
   display: flex;
   justify-content: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  bottom: 20px;
+  align-items: center;
 `
 
 const Dot = styled.div<{ active: boolean }>`
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border: 1px solid ${theme.colors.blue_dark};
   border-radius: 50%;
 
@@ -88,8 +91,8 @@ const Dot = styled.div<{ active: boolean }>`
 `
 
 const Content = styled.div`
-  width: 90%;
-  height: 90%;
+  width: 93%;
+  height: 94%;
   align-self: center;
   display: flex;
   align-items: center;
@@ -97,13 +100,14 @@ const Content = styled.div`
 
   img {
     width: 100%;
+    height: 100%;
     border-radius: 10px;
   }
 
   object {
     border-radius: 10px;
     width: 100%;
-    height: 90%;
+    height: 100%;
   }
 `
 

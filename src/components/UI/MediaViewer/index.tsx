@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react"
 import getFiles from "helpers/media/getFiles"
 import { AiOutlinePaperClip } from "react-icons/ai"
-import { MdOpenInNew } from "react-icons/md"
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs"
 import { AttachmentInterface, ExtensionType } from "interfaces/content/Article"
-import Tooltip from "components/UI/Tooltip"
 import { Container, Title, Content, Navigation, Indicator, Dot } from "./styles"
+
+// SIZE RATIO:
+//  width: 820px;
+//  height: 513px;
 
 type MediaViewerType =
   | {
@@ -55,47 +57,9 @@ function MediaViewer(props: MediaViewerType) {
   }, [])
 
   return (
-    <Container>
+    <>
       {files !== undefined && (
-        <>
-          <div className="head">
-            <Title>
-              <AiOutlinePaperClip />
-              {files[currentFile].type === "video" ? (
-                "Video de Youtube"
-              ) : (
-                <>
-                  {files[currentFile].name}.{files[currentFile].extension}
-                </>
-              )}
-            </Title>
-            <Tooltip title="Maximizar">
-              {files[currentFile].type === "video" ? (
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  href={files[currentFile].extension}
-                >
-                  <MdOpenInNew />
-                </a>
-              ) : (
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  href={
-                    typeof uri !== "undefined"
-                      ? files[currentFile].uri
-                      : getFiles(
-                          files[currentFile].name,
-                          files[currentFile].extension,
-                        )
-                  }
-                >
-                  <MdOpenInNew />
-                </a>
-              )}
-            </Tooltip>
-          </div>
+        <Container>
           <Navigation>
             <button type="button" onClick={goPrev}>
               <BsChevronLeft />
@@ -104,12 +68,6 @@ function MediaViewer(props: MediaViewerType) {
               <BsChevronRight />
             </button>
           </Navigation>
-          <Indicator>
-            {files.length &&
-              files.map((attachment: any, index: number) => (
-                <Dot key={attachment.name} active={currentFile === index} />
-              ))}
-          </Indicator>
           <Content>
             {files[currentFile].type === "image" && (
               <img
@@ -164,9 +122,59 @@ function MediaViewer(props: MediaViewerType) {
               />
             )}
           </Content>
-        </>
+          <div className="footer">
+            {files[currentFile].type === "video" ? (
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={files[currentFile].extension}
+              >
+                <Title>
+                  <AiOutlinePaperClip />
+                  {files[currentFile].type === "video" ? (
+                    "Video de Youtube"
+                  ) : (
+                    <>
+                      {files[currentFile].name}.{files[currentFile].extension}
+                    </>
+                  )}
+                </Title>
+              </a>
+            ) : (
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={
+                  typeof uri !== "undefined"
+                    ? files[currentFile].uri
+                    : getFiles(
+                        files[currentFile].name,
+                        files[currentFile].extension,
+                      )
+                }
+              >
+                <Title>
+                  <AiOutlinePaperClip />
+                  {files[currentFile].type === "video" ? (
+                    "Video de Youtube"
+                  ) : (
+                    <>
+                      {files[currentFile].name}.{files[currentFile].extension}
+                    </>
+                  )}
+                </Title>
+              </a>
+            )}
+            <Indicator>
+              {files.length &&
+                files.map((attachment: any, index: number) => (
+                  <Dot key={attachment.name} active={currentFile === index} />
+                ))}
+            </Indicator>
+          </div>
+        </Container>
       )}
-    </Container>
+    </>
   )
 }
 
