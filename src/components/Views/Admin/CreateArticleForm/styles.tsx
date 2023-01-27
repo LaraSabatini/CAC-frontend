@@ -5,6 +5,8 @@ import theme from "theme/index"
 const Container = styled.div`
   background-color: #f2f8ff;
   width: 70vw;
+  max-width: 995px;
+  max-height: 670px;
   height: 85vh;
   border-radius: 18px;
   padding: 40px 50px;
@@ -40,6 +42,11 @@ const FiltersTitle = styled.p`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 100%;
+
+  @media (max-width: 1360px) {
+    width: 800px;
+  }
 `
 
 const ActionButtons = styled.div`

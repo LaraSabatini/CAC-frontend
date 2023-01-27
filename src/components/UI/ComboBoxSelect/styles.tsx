@@ -58,9 +58,7 @@ export const SelectContainer = styled.div<{
       border-color: ${theme.colors.blue};
     `}
 
-  border: 0 0 1px 0;
-  border-bottom-style: solid;
-  border-color: ${({ error, backError }) =>
+  border-bottom: 1px solid  ${({ error, backError }) =>
     error || backError ? theme.colors.red : theme.colors.blue_alpha};
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
