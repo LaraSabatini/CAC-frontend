@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useRef, useContext, useState } from "react"
+import React, {
+  ChangeEvent,
+  useRef,
+  useContext,
+  useState,
+  useEffect,
+} from "react"
 import { AiOutlinePaperClip, AiOutlineEye } from "react-icons/ai"
 import { BsFillPlayFill } from "react-icons/bs"
 import { DashboardContext } from "contexts/Dashboard"
@@ -17,6 +23,8 @@ function AttachmentButtons() {
     attachmentsForDataBase,
     attachmentsForServer,
     setAttachmentsForServer,
+    setImageSelectedForPortrait,
+    imageSelectedForPortrait,
   } = useContext(DashboardContext)
 
   const [showAttachedFiles, setShowAttachedFiles] = useState<boolean>(false)
@@ -30,7 +38,22 @@ function AttachmentButtons() {
     type: ExtensionType,
   ) => {
     if (e.target.files) {
+      // *** Nombres de archivos deben ser asi: nombre.extension (ej: portada.jpeg)
       const { files } = e.target
+
+      if (type === "image" && imageSelectedForPortrait === null) {
+        const imageFileName = [...files].filter(s =>
+          s.type.includes("image"),
+        )[0].name
+
+        const imageFileExtesion = [...files].filter(s =>
+          s.type.includes("image"),
+        )[0].type
+
+        setImageSelectedForPortrait(
+          `${renameFile(imageFileName)}.${imageFileExtesion.split("/")[1]}`,
+        )
+      }
 
       const filesForDBArray: AttachmentInterface[] = [...attachmentsForDataBase]
       const filesForServerArray: File[] = [...attachmentsForServer]
@@ -63,6 +86,21 @@ function AttachmentButtons() {
     }
   }
 
+  const checkPortraitImage = () => {
+    const filterImageFiles = attachmentsForDataBase.filter(
+      f => f.type === "image",
+    )
+
+    if (filterImageFiles.length === 0) {
+      setImageSelectedForPortrait(null)
+    }
+  }
+
+  useEffect(() => {
+    checkPortraitImage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [attachmentsForDataBase])
+
   return (
     <ActionButtons>
       <Tooltip title={texts.newArticleForm.attachFile}>
@@ -86,7 +124,7 @@ function AttachmentButtons() {
             type="file"
             multiple
             onChange={e => handleFileChange(e, "image")}
-            accept="image/*"
+            accept="image/png, image/jpeg, image/jpg"
           />
           <Icon icon="IconImage" />
         </IconButton>

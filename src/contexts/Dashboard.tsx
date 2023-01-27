@@ -26,6 +26,8 @@ export const DashboardContext = createContext<DashboardContextInterface>({
   removeFileFromList: () => {},
   triggerArticleListUpdate: 0,
   setTriggerArticleListUpdate: () => {},
+  imageSelectedForPortrait: null,
+  setImageSelectedForPortrait: () => {},
 })
 
 function DashboardProvider({ children }: any) {
@@ -48,13 +50,6 @@ function DashboardProvider({ children }: any) {
 
   const [previsualize, setPrevisualize] = useState<boolean>(false)
 
-  const discardNewArticle = () => {
-    setNewArticle(defaultArticle)
-    setAttachmentsForDataBase([])
-    setAttachmentsForServer([])
-    setPrevisualize(false)
-  }
-
   const removeFileFromList = (file: AttachmentInterface) => {
     const fileInDBArray = attachmentsForDataBase.filter(item => item !== file)
     const fileInServerArray = attachmentsForServer.filter(
@@ -69,6 +64,19 @@ function DashboardProvider({ children }: any) {
     triggerArticleListUpdate,
     setTriggerArticleListUpdate,
   ] = useState<number>(0)
+
+  const [imageSelectedForPortrait, setImageSelectedForPortrait] = useState<
+    string | null
+  >(null)
+
+  const discardNewArticle = () => {
+    setNewArticle(defaultArticle)
+    setAttachmentsForDataBase([])
+    setAttachmentsForServer([])
+    setPrevisualize(false)
+    setTriggerArticleListUpdate(0)
+    setImageSelectedForPortrait(null)
+  }
 
   const value: any = useMemo(
     () => ({
@@ -90,6 +98,8 @@ function DashboardProvider({ children }: any) {
       removeFileFromList,
       triggerArticleListUpdate,
       setTriggerArticleListUpdate,
+      imageSelectedForPortrait,
+      setImageSelectedForPortrait,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -101,6 +111,7 @@ function DashboardProvider({ children }: any) {
       previsualize,
       attachmentsForServer,
       triggerArticleListUpdate,
+      imageSelectedForPortrait,
     ],
   )
 

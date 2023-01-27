@@ -19,6 +19,7 @@ function PrevisualizeArticle() {
     newArticle,
     attachmentsForServer,
     attachmentsForDataBase,
+    imageSelectedForPortrait,
   } = useContext(DashboardContext)
   const [contentToShow, setContentToShow] = useState<
     "card" | "content" | "attachments"
@@ -50,8 +51,9 @@ function PrevisualizeArticle() {
 
   // *** Setear imagen como URL para poder previsualizarla en la carta de articulo
   const setImageURL = () => {
-    const getImage = attachmentsForServer.filter(
-      image => image.type.split("/")[0] === "image",
+    const image = imageSelectedForPortrait as string
+    const findImage = [...attachmentsForServer].filter(
+      s => s.name.split(".")[0] === image.split(".")[0],
     )
 
     const docsArray: any = []
@@ -60,9 +62,9 @@ function PrevisualizeArticle() {
     }
     setDocs(docsArray)
 
-    if (getImage.length) {
-      setPortrait({ image: URL.createObjectURL(getImage[0]) })
-      reader.readAsDataURL(getImage[0])
+    if (findImage.length) {
+      setPortrait({ image: URL.createObjectURL(findImage[0]) })
+      reader.readAsDataURL(findImage[0])
     }
   }
 

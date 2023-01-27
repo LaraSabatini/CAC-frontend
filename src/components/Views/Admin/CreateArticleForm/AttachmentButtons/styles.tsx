@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import theme from "theme/index"
 import { TitleStyles } from "theme/styles"
 import { Button } from "components/UI/sharedStyles"
@@ -29,6 +29,7 @@ const AttachmentsListHead = styled.div`
 const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
+
   gap: 10px;
 `
 
@@ -42,6 +43,12 @@ const Item = styled.div`
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
 `
 
 const DeleteItemButton = styled.button`
@@ -80,6 +87,23 @@ const AddVideoButton = styled.button`
   }
 `
 
+const PortraitTag = styled.p<{ active: boolean }>`
+  margin: 0;
+  background-color: ${theme.colors.white};
+  color: ${theme.colors.blue_dark};
+  border: 1px solid ${theme.colors.blue_dark};
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+
+  ${props =>
+    props.active &&
+    css`
+      background-color: ${theme.colors.blue_dark};
+      color: ${theme.colors.white};
+    `}
+`
+
 export {
   AttachmentsList,
   Title,
@@ -91,4 +115,5 @@ export {
   VideoModal,
   InputContainer,
   AddVideoButton,
+  PortraitTag,
 }

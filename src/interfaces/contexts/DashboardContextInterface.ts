@@ -28,6 +28,8 @@ interface DashboardContextInterface {
   removeFileFromList(arg: AttachmentInterface): void
   triggerArticleListUpdate: number
   setTriggerArticleListUpdate(triggerArticleListUpdate: number): void
+  imageSelectedForPortrait: string | null
+  setImageSelectedForPortrait(imageSelectedForPortrait: string | null): void
 }
 
 export default DashboardContextInterface

@@ -24,16 +24,13 @@ function ArticleButtons({
     newArticle,
     attachmentsForDataBase,
     attachmentsForServer,
+    imageSelectedForPortrait,
   } = useContext(DashboardContext)
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const [warningMessage, setWarningMessage] = useState<string>("")
   const [createdArticle, setCreatedArticle] = useState<boolean>(false)
-
-  const findPortrait = attachmentsForDataBase.filter(
-    file => file.type === "image",
-  )
 
   const canPreview =
     newArticle.title !== "" &&
@@ -42,7 +39,7 @@ function ArticleButtons({
     newArticle.regionFilters.length &&
     newArticle.article !== "" &&
     newArticle.author !== "" &&
-    findPortrait.length > 0
+    imageSelectedForPortrait !== null
 
   const saveFile = (index: number) => {
     return {
@@ -63,41 +60,46 @@ function ArticleButtons({
   }
 
   const publishArticle = async () => {
-    let success: boolean = false
-    const data = {
-      ...newArticle,
-      createdBy: JSON.stringify({ id: userData.id, email: userData.user }),
-      portrait: getFiles(findPortrait[0].name, findPortrait[0].extension),
-      attachments: JSON.stringify(attachmentsForDataBase),
-      regionFilters: JSON.stringify(newArticle.regionFilters),
-      themeFilters: JSON.stringify(newArticle.themeFilters),
-      changesHistory: JSON.stringify({
-        date: dateFormated,
-        changedBy: { id: userData.id, email: userData.user },
-        action: "CREATED",
-      }),
-    }
-
-    const createArticleReq = await createArticle(data)
-
-    success = createArticleReq.status === 201
-
-    for (let i = 0; i < attachmentsForServer.length; i += 1) {
-      const fileData = saveFile(i)
-
-      const formData = new FormData()
-
-      if (fileData !== undefined) {
-        formData.append("file", fileData.file)
-        formData.append("fileName", fileData.name)
-
-        // eslint-disable-next-line no-await-in-loop
-        const postFile: any = await sendFile(formData)
-        success = postFile.status === 200
+    if (canPreview) {
+      let success: boolean = false
+      const data = {
+        ...newArticle,
+        createdBy: JSON.stringify({ id: userData.id, email: userData.user }),
+        portrait: getFiles(
+          imageSelectedForPortrait.split(".")[0],
+          imageSelectedForPortrait.split(".")[1],
+        ),
+        attachments: JSON.stringify(attachmentsForDataBase),
+        regionFilters: JSON.stringify(newArticle.regionFilters),
+        themeFilters: JSON.stringify(newArticle.themeFilters),
+        changesHistory: JSON.stringify({
+          date: dateFormated,
+          changedBy: { id: userData.id, email: userData.user },
+          action: "CREATED",
+        }),
       }
-    }
 
-    setCreatedArticle(success)
+      const createArticleReq = await createArticle(data)
+
+      success = createArticleReq.status === 201
+
+      for (let i = 0; i < attachmentsForServer.length; i += 1) {
+        const fileData = saveFile(i)
+
+        const formData = new FormData()
+
+        if (fileData !== undefined) {
+          formData.append("file", fileData.file)
+          formData.append("fileName", fileData.name)
+
+          // eslint-disable-next-line no-await-in-loop
+          const postFile: any = await sendFile(formData)
+          success = postFile.status === 200
+        }
+      }
+
+      setCreatedArticle(success)
+    }
   }
 
   return (

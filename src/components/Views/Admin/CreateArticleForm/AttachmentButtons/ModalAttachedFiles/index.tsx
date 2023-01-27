@@ -12,6 +12,7 @@ import {
   AttachmentsListHead,
   DeleteItemButton,
   CloseAttachmentsListButton,
+  PortraitTag,
 } from "../styles"
 
 interface ModalAttachedFilesInterface {
@@ -19,9 +20,12 @@ interface ModalAttachedFilesInterface {
 }
 
 function ModalAttachedFiles({ closeModal }: ModalAttachedFilesInterface) {
-  const { attachmentsForDataBase, removeFileFromList } = useContext(
-    DashboardContext,
-  )
+  const {
+    attachmentsForDataBase,
+    removeFileFromList,
+    imageSelectedForPortrait,
+    setImageSelectedForPortrait,
+  } = useContext(DashboardContext)
 
   return (
     <Modal>
@@ -36,11 +40,36 @@ function ModalAttachedFiles({ closeModal }: ModalAttachedFilesInterface) {
           {attachmentsForDataBase.map(file => (
             <Item>
               {file.name}.{file.extension}
-              <Tooltip title={texts.newArticleForm.deleteFile}>
-                <DeleteItemButton onClick={() => removeFileFromList(file)}>
-                  <MdOutlineClose />
-                </DeleteItemButton>
-              </Tooltip>
+              <div className="actions">
+                <PortraitTag
+                  active={
+                    imageSelectedForPortrait ===
+                    `${file.name}.${file.extension}`
+                  }
+                  onClick={() =>
+                    setImageSelectedForPortrait(
+                      `${file.name}.${file.extension}`,
+                    )
+                  }
+                >
+                  Portada
+                </PortraitTag>
+                <Tooltip title={texts.newArticleForm.deleteFile}>
+                  <DeleteItemButton
+                    onClick={() => {
+                      if (
+                        imageSelectedForPortrait ===
+                        `${file.name}.${file.extension}`
+                      ) {
+                        setImageSelectedForPortrait(null)
+                      }
+                      removeFileFromList(file)
+                    }}
+                  >
+                    <MdOutlineClose />
+                  </DeleteItemButton>
+                </Tooltip>
+              </div>
             </Item>
           ))}
         </ItemContainer>
