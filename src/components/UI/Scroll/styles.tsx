@@ -7,7 +7,7 @@ const ScrollView = styled.div<{ height: number; horizontal?: boolean }>`
   padding: 0;
   margin: 1;
   width: auto;
-  overflow-y: scroll;
+  overflow-y: auto;
   ${({ horizontal }) =>
     horizontal &&
     css`
