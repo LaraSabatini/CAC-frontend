@@ -36,4 +36,11 @@ const Chip = styled.div`
   }
 `
 
-export { ArticlesContainer, FullArticle, Chip }
+const EmptyPage = styled.h2`
+  font-family: ${theme.fonts.titles};
+  color: ${theme.colors.blue};
+  text-align: center;
+  padding-top: 20px;
+`
+
+export { ArticlesContainer, FullArticle, Chip, EmptyPage }

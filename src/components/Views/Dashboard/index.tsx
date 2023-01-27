@@ -5,7 +5,7 @@ import { getArticles } from "services/articles/articles.service"
 import { DashboardContext } from "contexts/Dashboard"
 import { getFilters } from "services/articles/filters.service"
 import Header from "components/Views/Header"
-import { FullArticle, ArticlesContainer, Chip } from "./styles"
+import { FullArticle, ArticlesContainer, Chip, EmptyPage } from "./styles"
 import ArticleView from "../Articles/ArticleCard"
 import ArticleBody from "../Articles/ArticleBody"
 
@@ -45,8 +45,11 @@ function DashboardView() {
 
       {articleId === undefined ? (
         <ArticlesContainer>
-          {articles.length &&
-            articles.map(article => <ArticleView article={article} />)}
+          {articles.length ? (
+            articles.map(article => <ArticleView article={article} />)
+          ) : (
+            <EmptyPage>No hay articulos para mostrar</EmptyPage>
+          )}
         </ArticlesContainer>
       ) : (
         <FullArticle>

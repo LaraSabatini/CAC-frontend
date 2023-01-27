@@ -13,8 +13,8 @@ const ArticleCard = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  @media (max-width: ${theme.screenSize.desktop_medium}) {
-    width: 600px;
+  @media (max-width: 1450px) {
+    width: 650px;
     height: 350px;
   }
 
@@ -42,7 +42,7 @@ const CardInfo = styled.div`
     padding-top: 41px;
   }
 
-  @media (max-width: ${theme.screenSize.desktop_medium}) {
+  @media (max-width: 1450px) {
     .articleHeader {
       padding-top: 20px;
     }
@@ -84,7 +84,7 @@ const CardImageContainer = styled.div`
     height: 100%;
   }
 
-  @media (max-width: ${theme.screenSize.desktop_medium}) {
+  @media (max-width: 1450px) {
     width: 42%;
   }
 
@@ -122,7 +122,7 @@ const ArticleTitle = styled.h3`
 
   color: ${theme.colors.blue_dark};
 
-  @media (max-width: ${theme.screenSize.desktop_medium}) {
+  @media (max-width: 1450px) {
     width: 320px;
     font-size: ${theme.fontSizes.m};
     line-height: 30px;
@@ -165,7 +165,7 @@ const ArticleDescription = styled.p`
 
   color: ${theme.colors.blue_dark};
 
-  @media (max-width: ${theme.screenSize.desktop_medium}) {
+  @media (max-width: 1450px) {
     width: 320px;
   }
 
