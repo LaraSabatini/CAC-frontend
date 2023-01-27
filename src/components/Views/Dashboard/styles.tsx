@@ -5,6 +5,9 @@ const ArticlesContainer = styled.div`
   width: 90vw;
   margin: 0 auto;
   padding-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 `
 
 const FullArticle = styled.div`
