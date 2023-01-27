@@ -41,19 +41,21 @@ function ModalAttachedFiles({ closeModal }: ModalAttachedFilesInterface) {
             <Item>
               {file.name}.{file.extension}
               <div className="actions">
-                <PortraitTag
-                  active={
-                    imageSelectedForPortrait ===
-                    `${file.name}.${file.extension}`
-                  }
-                  onClick={() =>
-                    setImageSelectedForPortrait(
-                      `${file.name}.${file.extension}`,
-                    )
-                  }
-                >
-                  Portada
-                </PortraitTag>
+                {file.type === "image" && (
+                  <PortraitTag
+                    active={
+                      imageSelectedForPortrait ===
+                      `${file.name}.${file.extension}`
+                    }
+                    onClick={() =>
+                      setImageSelectedForPortrait(
+                        `${file.name}.${file.extension}`,
+                      )
+                    }
+                  >
+                    Portada
+                  </PortraitTag>
+                )}
                 <Tooltip title={texts.newArticleForm.deleteFile}>
                   <DeleteItemButton
                     onClick={() => {

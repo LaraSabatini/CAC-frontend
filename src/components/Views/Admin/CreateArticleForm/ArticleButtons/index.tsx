@@ -44,7 +44,9 @@ function ArticleButtons({
   const saveFile = (index: number) => {
     return {
       file: attachmentsForServer[index],
-      name: attachmentsForServer[index].name,
+      name: `${attachmentsForServer[index].name}.${
+        attachmentsForServer[index].type.split("/")[1]
+      }`,
     }
   }
 
