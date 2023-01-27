@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react"
 import { DashboardContext } from "contexts/Dashboard"
 import { MdOutlineClose, MdAddCircleOutline } from "react-icons/md"
 import texts from "strings/articles.json"
+import getVideoURL from "helpers/media/getVideoURL"
 import Modal from "components/UI/Modal"
 import Tooltip from "components/UI/Tooltip"
 import Input from "components/UI/Input"
@@ -40,13 +41,11 @@ function ModalVideos({ closeModal }: ModalVideosInterface) {
     const URL = currentVideoURL.split("www.")
     const domain = URL[1].split(".com")
 
-    const videoIdentifier = currentVideoURL.split("watch?v=")[1].split("&")[0]
-
     setAttachmentsForDataBase([
       ...attachmentsForDataBase,
       {
         name: domain[0],
-        extension: `https://www.youtube.com/embed/${videoIdentifier}`,
+        extension: getVideoURL(currentVideoURL),
         type: "video",
       },
     ])

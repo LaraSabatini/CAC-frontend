@@ -69,7 +69,6 @@ function PrevisualizeArticle() {
   useEffect(() => {
     if (attachmentsForServer.length) {
       setImageURL()
-      // setCurrentFile(0)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attachmentsForServer])

@@ -4,6 +4,7 @@ import { BsFillPlayFill } from "react-icons/bs"
 import { DashboardContext } from "contexts/Dashboard"
 import { AttachmentInterface, ExtensionType } from "interfaces/content/Article"
 import texts from "strings/articles.json"
+import renameFile from "helpers/formatting/renameFile"
 import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import ModalAttachedFiles from "./ModalAttachedFiles"
@@ -35,12 +36,16 @@ function AttachmentButtons() {
       const filesForServerArray: File[] = [...attachmentsForServer]
 
       for (let i = 0; i < files.length; i += 1) {
+        const fileRenamed = renameFile(e.target.files[i].name)
+
         filesForDBArray.push({
-          name: e.target.files[i].name.split(".")[0],
+          name: fileRenamed,
           extension: e.target.files[i].name.split(".")[1],
           type,
         })
-        filesForServerArray.push(files[i])
+
+        const file = new File([files[i]], fileRenamed)
+        filesForServerArray.push(file)
       }
       setAttachmentsForDataBase(filesForDBArray)
       setAttachmentsForServer(filesForServerArray)
