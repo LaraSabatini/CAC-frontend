@@ -1,10 +1,12 @@
 import styled from "styled-components"
 import theme from "theme/index"
+import { Button } from "components/UI/sharedStyles"
 
 const Container = styled.div`
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 `
 
 const LeftContainer = styled.div`
@@ -43,8 +45,8 @@ const Subtitle = styled.span`
 
 const ArticleContainer = styled.div`
   display: flex;
-  gap: 36px;
-  width: 90%;
+  gap: 18px;
+  width: 97%;
   padding-top: 27px;
 `
 
@@ -53,7 +55,7 @@ const ArticleParagraph = styled.p`
   font-size: ${theme.fontSizes.s};
   line-height: 21px;
   color: ${theme.colors.blue_dark};
-  width: 517px;
+  width: 528px;
 `
 
 const AuthorContainer = styled.div`
@@ -80,8 +82,49 @@ const AuthorContainer = styled.div`
 `
 
 const RigthContainer = styled.div`
-  width: 820px;
-  height: 513px;
+  width: 670px;
+  height: 363px;
+  /* margin-top: -57px; */
+`
+
+const RightSubcolumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`
+
+const Buttons = styled.div`
+  display: flex;
+  gap: 20px;
+
+  svg {
+    color: ${theme.colors.white};
+  }
+
+  button {
+    ${Button}
+    width: 35px;
+    height: 35px;
+    border-radius: 4px;
+  }
+
+  .edit {
+    background-color: ${theme.colors.blue};
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .delete {
+    background-color: ${theme.colors.red};
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
 `
 
 export {
@@ -94,4 +137,6 @@ export {
   ArticleParagraph,
   AuthorContainer,
   RigthContainer,
+  RightSubcolumn,
+  Buttons,
 }

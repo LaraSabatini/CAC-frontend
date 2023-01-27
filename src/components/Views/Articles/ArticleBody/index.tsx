@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { getArticleById } from "services/articles/articles.service"
 import ArticleInterface from "interfaces/content/Article"
+import { TbPencil } from "react-icons/tb"
+import { FaRegTrashAlt } from "react-icons/fa"
 import texts from "strings/articles.json"
+import Tooltip from "components/UI/Tooltip"
 import Scroll from "components/UI/Scroll"
 import Icon from "components/UI/Assets/Icon"
 import MediaViewer from "components/UI/MediaViewer"
+import DeleteArticleModal from "./DeleteArticleModal"
 import {
   Container,
   LeftContainer,
@@ -16,6 +20,8 @@ import {
   ArticleParagraph,
   AuthorContainer,
   RigthContainer,
+  RightSubcolumn,
+  Buttons,
 } from "./styles"
 
 type ConditionalProps =
@@ -38,10 +44,13 @@ function ArticleBody(props: Props) {
   const { article, showImageVisualizer, queries } = props
 
   const router = useRouter()
+  const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const [data, setData] = useState<ArticleInterface>()
 
   const [articleParagraphs, setArticleParagraphs] = useState<string[]>([])
+
+  const [modalDelete, setModalDelete] = useState<boolean>(false)
 
   const cleanArticle = (fullArticle: string) => {
     const text = fullArticle.split("\n")
@@ -66,10 +75,17 @@ function ArticleBody(props: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const editArticle = () => {
+    // modal crear pero para editar
+  }
+
   return (
     <Container>
       {data !== undefined && (
         <LeftContainer>
+          {modalDelete && (
+            <DeleteArticleModal cancel={() => setModalDelete(false)} />
+          )}
           <div className="articleHeader">
             <ArticleRegion>
               {typeof data.regionFilters === "string"
@@ -80,18 +96,42 @@ function ArticleBody(props: Props) {
             <Subtitle>{data.subtitle}</Subtitle>
           </div>
           <ArticleContainer>
-            <Scroll height={360}>
+            <Scroll height={350}>
               {articleParagraphs.map((paragraph: string) => (
                 <ArticleParagraph>{paragraph}</ArticleParagraph>
               ))}
             </Scroll>
-            <AuthorContainer>
-              <Icon icon="Profile" />
-              <p>
-                <span>{texts.author}</span>
-                {data.author}
-              </p>
-            </AuthorContainer>
+            <RightSubcolumn>
+              <AuthorContainer>
+                <Icon icon="Profile" />
+                <p>
+                  <span>{texts.author}</span>
+                  {data.author}
+                </p>
+              </AuthorContainer>
+              {typeof queries !== "undefined" && userData.type === "admin" && (
+                <Buttons>
+                  <Tooltip title="Editar">
+                    <button
+                      type="button"
+                      className="edit"
+                      onClick={editArticle}
+                    >
+                      <TbPencil />
+                    </button>
+                  </Tooltip>
+                  <Tooltip title="Eliminar">
+                    <button
+                      type="button"
+                      className="delete"
+                      onClick={() => setModalDelete(true)}
+                    >
+                      <FaRegTrashAlt />
+                    </button>
+                  </Tooltip>
+                </Buttons>
+              )}
+            </RightSubcolumn>
           </ArticleContainer>
         </LeftContainer>
       )}
