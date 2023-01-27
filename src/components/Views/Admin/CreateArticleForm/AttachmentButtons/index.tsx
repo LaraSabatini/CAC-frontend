@@ -44,7 +44,7 @@ function AttachmentButtons() {
           type,
         })
 
-        const file = new File([files[i]], fileRenamed)
+        const file = new File([files[i]], fileRenamed, { type: files[i].type })
         filesForServerArray.push(file)
       }
       setAttachmentsForDataBase(filesForDBArray)
