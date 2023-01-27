@@ -20,8 +20,8 @@ const createArticle = async (body: ArticleInterface) => {
   return res
 }
 
-const deleteArticle = async (id: ArticleInterface) => {
-  const res = await axios.delete(`${apiURL}/${id}`, axiosHeader)
+const deleteArticle = async (id: number) => {
+  const res = await axios.delete(`${apiURL}/id=${id}`, axiosHeader)
   return res.data
 }
 

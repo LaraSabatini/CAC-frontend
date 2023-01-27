@@ -2,7 +2,7 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const ArticlesContainer = styled.div`
-  width: 90vw;
+  width: 95vw;
   margin: 0 auto;
   padding-top: 50px;
   display: flex;
@@ -11,11 +11,9 @@ const ArticlesContainer = styled.div`
 `
 
 const FullArticle = styled.div`
-  width: 90vw;
+  width: 95vw;
   margin: 0 auto;
   padding-top: 30px;
-  /* display: flex;
-  flex-direction: column; */
 `
 
 const Chip = styled.div`

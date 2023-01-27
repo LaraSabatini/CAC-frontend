@@ -33,5 +33,15 @@
             "description": "El articulo se ha creado correctamente."
         }
     },
-    "author": "Publicado por"
+    "author": "Publicado por",
+    "deleteArticle": {
+        "success": {
+            "title": "Excelente",
+            "description": "El articulo se ha borrado con exito."
+        },
+        "title":"Estas seguro de que deseas eliminar el articulo",
+        "span": "Se elminaran todos los registros del mismo",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar"
+    }
 }
