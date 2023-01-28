@@ -55,6 +55,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                   onChange={e =>
                     setNewArticle({ ...newArticle, title: e.target.value })
                   }
+                  max={70}
                 />
                 <Input
                   label={texts.newArticleForm.labels.subtitle}
