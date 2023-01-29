@@ -10,6 +10,7 @@ import Scroll from "components/UI/Scroll"
 import Icon from "components/UI/Assets/Icon"
 import MediaViewer from "components/UI/MediaViewer"
 import DeleteArticleModal from "./DeleteArticleModal"
+import EditArticleForm from "../../Admin/EditArticleForm"
 import {
   Container,
   LeftContainer,
@@ -51,6 +52,7 @@ function ArticleBody(props: Props) {
   const [articleParagraphs, setArticleParagraphs] = useState<string[]>([])
 
   const [modalDelete, setModalDelete] = useState<boolean>(false)
+  const [modalEdit, setModalEdit] = useState<boolean>(false)
 
   const cleanArticle = (fullArticle: string) => {
     const text = fullArticle.split("\n")
@@ -75,16 +77,15 @@ function ArticleBody(props: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const editArticle = () => {
-    // modal crear pero para editar
-  }
-
   return (
     <Container>
       {data !== undefined && (
         <LeftContainer>
           {modalDelete && (
             <DeleteArticleModal cancel={() => setModalDelete(false)} />
+          )}
+          {modalEdit && (
+            <EditArticleForm closeForm={() => setModalEdit(false)} />
           )}
           <div className="articleHeader">
             <ArticleRegion>
@@ -115,7 +116,7 @@ function ArticleBody(props: Props) {
                     <button
                       type="button"
                       className="edit"
-                      onClick={editArticle}
+                      onClick={() => setModalEdit(true)}
                     >
                       <TbPencil />
                     </button>

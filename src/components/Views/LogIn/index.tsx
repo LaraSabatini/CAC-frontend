@@ -207,7 +207,7 @@ function LoginView() {
                 <b>{texts.login.restorePasswordBold}</b>
               </a>
               {userIsClient && (
-                <a href={`http://localhost:3000/${routes.pricing.name}`}>
+                <a href={`http://localhost:3000${routes.pricing.name}`}>
                   {texts.login.subscribe}
                   <b>{texts.login.subscribeBold}</b>
                 </a>
