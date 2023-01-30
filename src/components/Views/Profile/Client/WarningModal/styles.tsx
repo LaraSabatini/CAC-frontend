@@ -14,6 +14,7 @@ const ModalContainer = styled.div`
   h3 {
     ${TitleStyles}
     text-align: center;
+    padding-bottom: 20px;
   }
 
   span {
@@ -21,6 +22,7 @@ const ModalContainer = styled.div`
     font-size: 12px;
     color: ${theme.colors.blue};
     padding-bottom: 20px;
+    padding-left: 5px;
   }
 `
 
@@ -32,6 +34,7 @@ const IconContainer = styled.div`
   width: 50px;
   height: 50px;
   padding: 20px;
+  margin-bottom: 20px;
   border-radius: 50%;
 `
 

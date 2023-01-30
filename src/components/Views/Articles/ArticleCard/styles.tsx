@@ -33,18 +33,20 @@ const ArticleCard = styled.div`
 const CardInfo = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   align-items: center;
-  height: 100%;
+  height: 80%;
+  /* border: 1px solid red; */
   width: 60%;
+  gap: 40px;
 
   .articleHeader {
-    padding-top: 41px;
+    /* padding-top: 41px; */
   }
 
   @media (max-width: 1450px) {
     .articleHeader {
-      padding-top: 20px;
+      /* padding-top: 30px; */
     }
     width: 58%;
   }
@@ -111,7 +113,7 @@ const CardImageContainer = styled.div`
 
 const ArticleTitle = styled.h3`
   width: 390px;
-  height: 58px;
+  /* height: 58px; */
 
   margin: 0;
 
@@ -162,6 +164,7 @@ const ArticleDescription = styled.p`
   font-weight: ${theme.fontWeights.regular};
   font-size: ${theme.fontSizes.s};
   line-height: 21px;
+  /* padding-top: 41px; */
 
   color: ${theme.colors.blue_dark};
 
@@ -193,7 +196,6 @@ const OpenButton = styled.button`
   font-weight: ${theme.fontWeights.regular};
   font-size: ${theme.fontSizes.s};
 
-  line-height: 19px;
   color: ${theme.colors.blue};
   margin-left: 50%;
 

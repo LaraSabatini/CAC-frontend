@@ -64,6 +64,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                   placeholder={texts.newArticleForm.labels.subtitlePlaceholder}
                   width={500}
                   value={newArticle.subtitle}
+                  max={100}
                   onChange={e =>
                     setNewArticle({ ...newArticle, subtitle: e.target.value })
                   }
