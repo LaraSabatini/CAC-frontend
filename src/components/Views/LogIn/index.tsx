@@ -193,7 +193,7 @@ function LoginView() {
             />
           )}
           <ActionDiv>
-            {loginAttempts > 4 && (
+            {loginAttempts >= 1 && (
               <RemainingAttempts>
                 {texts.login.remainingAttempts} {5 - loginAttempts}
               </RemainingAttempts>

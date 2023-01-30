@@ -8,10 +8,12 @@ const ScrollView = styled.div<{ height: number; horizontal?: boolean }>`
   margin: 1;
   width: auto;
   overflow-y: auto;
+  overflow-x: hidden;
+
   ${({ horizontal }) =>
     horizontal &&
     css`
-      overflow-x: auto;
+      overflow-x: hidden;
     `}
   padding-right: 20px;
   ::-webkit-scrollbar {

@@ -55,7 +55,7 @@ const ArticleParagraph = styled.p`
   font-size: ${theme.fontSizes.s};
   line-height: 21px;
   color: ${theme.colors.blue_dark};
-  width: 528px;
+  width: 540px;
 `
 
 const AuthorContainer = styled.div`

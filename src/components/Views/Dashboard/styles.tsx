@@ -7,7 +7,8 @@ const ArticlesContainer = styled.div`
   padding-top: 50px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  gap: 50px;
+  padding-bottom: 50px;
 `
 
 const FullArticle = styled.div`
