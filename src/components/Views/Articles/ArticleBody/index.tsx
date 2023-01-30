@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { useRouter } from "next/router"
+import { DashboardContext } from "contexts/Dashboard"
 import { getArticleById } from "services/articles/articles.service"
 import ArticleInterface from "interfaces/content/Article"
 import { TbPencil } from "react-icons/tb"
@@ -43,6 +44,8 @@ type Props = CommonProps & ConditionalProps
 
 function ArticleBody(props: Props) {
   const { article, showImageVisualizer, queries } = props
+
+  const { setArticleSelected } = useContext(DashboardContext)
 
   const router = useRouter()
   const userData = JSON.parse(localStorage.getItem("userData") as string)
@@ -116,7 +119,10 @@ function ArticleBody(props: Props) {
                     <button
                       type="button"
                       className="edit"
-                      onClick={() => setModalEdit(true)}
+                      onClick={() => {
+                        setArticleSelected(data)
+                        setModalEdit(true)
+                      }}
                     >
                       <TbPencil />
                     </button>

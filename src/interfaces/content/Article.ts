@@ -23,6 +23,11 @@ export interface AttachmentInterface {
   extension: string
   type: ExtensionType
 }
+
+export interface OptionsInterface {
+  id: number
+  value: string
+}
 interface ArticleInterface {
   id: number
   title: string

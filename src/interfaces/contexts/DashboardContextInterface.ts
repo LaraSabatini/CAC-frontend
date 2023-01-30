@@ -30,6 +30,10 @@ interface DashboardContextInterface {
   setTriggerArticleListUpdate(triggerArticleListUpdate: number): void
   imageSelectedForPortrait: string | null
   setImageSelectedForPortrait(imageSelectedForPortrait: string | null): void
+  articleSelected: ArticleInterface
+  setArticleSelected(articleSelected: ArticleInterface): void
+  articleEdited: ArticleInterface
+  setArticleEdited(articleEdited: ArticleInterface): void
 }
 
 export default DashboardContextInterface

@@ -28,6 +28,10 @@ export const DashboardContext = createContext<DashboardContextInterface>({
   setTriggerArticleListUpdate: () => {},
   imageSelectedForPortrait: null,
   setImageSelectedForPortrait: () => {},
+  articleSelected: defaultArticle,
+  setArticleSelected: () => {},
+  articleEdited: defaultArticle,
+  setArticleEdited: () => {},
 })
 
 function DashboardProvider({ children }: any) {
@@ -78,6 +82,15 @@ function DashboardProvider({ children }: any) {
     setImageSelectedForPortrait(null)
   }
 
+  // *** Article edition
+  const [articleSelected, setArticleSelected] = useState<ArticleInterface>(
+    defaultArticle,
+  )
+
+  const [articleEdited, setArticleEdited] = useState<ArticleInterface>(
+    defaultArticle,
+  )
+
   const value: any = useMemo(
     () => ({
       regionFilters,
@@ -100,6 +113,10 @@ function DashboardProvider({ children }: any) {
       setTriggerArticleListUpdate,
       imageSelectedForPortrait,
       setImageSelectedForPortrait,
+      articleSelected,
+      setArticleSelected,
+      articleEdited,
+      setArticleEdited,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -112,6 +129,8 @@ function DashboardProvider({ children }: any) {
       attachmentsForServer,
       triggerArticleListUpdate,
       imageSelectedForPortrait,
+      articleSelected,
+      articleEdited,
     ],
   )
 

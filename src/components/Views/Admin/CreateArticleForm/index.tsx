@@ -4,7 +4,10 @@ import { DashboardContext } from "contexts/Dashboard"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Modal from "components/UI/Modal"
 import Input from "components/UI/Input"
-import { ArticleFiltersInterface } from "interfaces/content/Article"
+import {
+  ArticleFiltersInterface,
+  OptionsInterface,
+} from "interfaces/content/Article"
 import AttachmentButtons from "./AttachmentButtons"
 import ArticleButtons from "./ArticleButtons"
 import PrevisualizeArticle from "./PrevisualizeArticle"
@@ -19,11 +22,6 @@ import {
 
 interface CreateArticleFormInterface {
   closeForm: (arg?: any) => void
-}
-
-interface OptionsInterface {
-  id: number
-  value: string
 }
 
 function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
