@@ -7,12 +7,13 @@ const ModalContainer = styled.div`
   flex-direction: column;
   background-color: ${theme.colors.white};
   width: 300px;
-  padding: 20px 25px;
+  padding: 30px 25px 25px 25px;
   border-radius: 10px;
 
   h3 {
     ${TitleStyles};
     margin: 0;
+    padding-left: 15px;
   }
 
   @media (max-width: ${theme.screenSize.mobile}) {
@@ -33,7 +34,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding-top: 30px;
+  padding-top: 15px;
 `
 
 const Error = styled.p`

@@ -28,10 +28,19 @@ export const DashboardContext = createContext<DashboardContextInterface>({
   setTriggerArticleListUpdate: () => {},
   imageSelectedForPortrait: null,
   setImageSelectedForPortrait: () => {},
-  articleSelected: defaultArticle,
+  articleSelected: null,
   setArticleSelected: () => {},
   articleEdited: defaultArticle,
   setArticleEdited: () => {},
+  previsualizeEdit: false,
+  setPrevisualizeEdit: () => {},
+  portrait: null,
+  setPortrait: () => {},
+  newAttachmentsForDataBase: [],
+  setNewAttachmentsForDataBase: () => {},
+  newAttachmentsForServer: [],
+  setNewAttachmentsForServer: () => {},
+  discardArticleEdition: () => {},
 })
 
 function DashboardProvider({ children }: any) {
@@ -83,13 +92,34 @@ function DashboardProvider({ children }: any) {
   }
 
   // *** Article edition
-  const [articleSelected, setArticleSelected] = useState<ArticleInterface>(
-    defaultArticle,
-  )
+  const [
+    articleSelected,
+    setArticleSelected,
+  ] = useState<ArticleInterface | null>(null)
 
   const [articleEdited, setArticleEdited] = useState<ArticleInterface>(
     defaultArticle,
   )
+
+  const [previsualizeEdit, setPrevisualizeEdit] = useState<boolean>(false)
+
+  const [portrait, setPortrait] = useState<string | null>(null)
+
+  const [newAttachmentsForDataBase, setNewAttachmentsForDataBase] = useState<
+    AttachmentInterface[] | []
+  >([])
+
+  const [newAttachmentsForServer, setNewAttachmentsForServer] = useState<
+    File[] | []
+  >([])
+
+  const discardArticleEdition = () => {
+    setArticleSelected(null)
+    setArticleEdited(defaultArticle)
+    setPortrait(null)
+    setNewAttachmentsForDataBase([])
+    setNewAttachmentsForServer([])
+  }
 
   const value: any = useMemo(
     () => ({
@@ -117,6 +147,15 @@ function DashboardProvider({ children }: any) {
       setArticleSelected,
       articleEdited,
       setArticleEdited,
+      previsualizeEdit,
+      setPrevisualizeEdit,
+      portrait,
+      setPortrait,
+      newAttachmentsForDataBase,
+      setNewAttachmentsForDataBase,
+      newAttachmentsForServer,
+      setNewAttachmentsForServer,
+      discardArticleEdition,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -131,6 +170,10 @@ function DashboardProvider({ children }: any) {
       imageSelectedForPortrait,
       articleSelected,
       articleEdited,
+      previsualizeEdit,
+      portrait,
+      newAttachmentsForDataBase,
+      newAttachmentsForServer,
     ],
   )
 

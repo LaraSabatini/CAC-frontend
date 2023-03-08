@@ -8,7 +8,7 @@ const ModalContainer = styled.div`
   align-items: center;
   background-color: ${theme.colors.white};
   width: 350px;
-  padding: 20px;
+  padding: 25px;
   border-radius: 10px;
 
   h3 {

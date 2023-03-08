@@ -45,7 +45,9 @@ type Props = CommonProps & ConditionalProps
 function ArticleBody(props: Props) {
   const { article, showImageVisualizer, queries } = props
 
-  const { setArticleSelected } = useContext(DashboardContext)
+  const { setArticleSelected, discardArticleEdition } = useContext(
+    DashboardContext,
+  )
 
   const router = useRouter()
   const userData = JSON.parse(localStorage.getItem("userData") as string)
@@ -88,7 +90,12 @@ function ArticleBody(props: Props) {
             <DeleteArticleModal cancel={() => setModalDelete(false)} />
           )}
           {modalEdit && (
-            <EditArticleForm closeForm={() => setModalEdit(false)} />
+            <EditArticleForm
+              closeForm={() => {
+                setModalEdit(false)
+                discardArticleEdition()
+              }}
+            />
           )}
           <div className="articleHeader">
             <ArticleRegion>
@@ -102,7 +109,9 @@ function ArticleBody(props: Props) {
           <ArticleContainer>
             <Scroll height={350}>
               {articleParagraphs.map((paragraph: string) => (
-                <ArticleParagraph key={paragraph}>{paragraph}</ArticleParagraph>
+                <ArticleParagraph key={Math.floor(Math.random() * 1000)}>
+                  {paragraph}
+                </ArticleParagraph>
               ))}
             </Scroll>
             <RightSubcolumn>

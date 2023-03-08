@@ -35,10 +35,10 @@ const CardInfo = styled.div`
   flex-direction: column;
   /* justify-content: space-around; */
   align-items: center;
-  height: 80%;
+  height: 78%;
   /* border: 1px solid red; */
   width: 60%;
-  gap: 40px;
+  gap: 30px;
 
   .articleHeader {
     /* padding-top: 41px; */

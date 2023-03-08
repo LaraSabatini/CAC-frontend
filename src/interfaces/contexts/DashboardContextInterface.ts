@@ -30,10 +30,21 @@ interface DashboardContextInterface {
   setTriggerArticleListUpdate(triggerArticleListUpdate: number): void
   imageSelectedForPortrait: string | null
   setImageSelectedForPortrait(imageSelectedForPortrait: string | null): void
-  articleSelected: ArticleInterface
-  setArticleSelected(articleSelected: ArticleInterface): void
+  articleSelected: ArticleInterface | null
+  setArticleSelected(articleSelected: ArticleInterface | null): void
   articleEdited: ArticleInterface
   setArticleEdited(articleEdited: ArticleInterface): void
+  previsualizeEdit: boolean
+  setPrevisualizeEdit(previsualizeEdit: boolean): void
+  portrait: string | null
+  setPortrait(portrait: string | null): void
+  newAttachmentsForDataBase: AttachmentInterface[] | []
+  setNewAttachmentsForDataBase(
+    newAttachmentsForDataBase: AttachmentInterface[] | [],
+  ): void
+  newAttachmentsForServer: File[] | []
+  setNewAttachmentsForServer(newAttachmentsForServer: File[] | []): void
+  discardArticleEdition(): void
 }
 
 export default DashboardContextInterface

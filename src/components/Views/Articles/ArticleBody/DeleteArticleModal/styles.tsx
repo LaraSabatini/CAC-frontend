@@ -16,13 +16,14 @@ const ModalContainer = styled.div`
     text-align: center;
     padding-bottom: 20px;
     padding-top: 20px;
+    width: 300px;
   }
 
   span {
     font-family: ${theme.fonts.extra};
-    font-size: 12px;
+    font-size: 13px;
     color: ${theme.colors.blue};
-    padding-bottom: 20px;
+    padding-bottom: 23px;
   }
 `
 
@@ -41,7 +42,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding-top: 30px;
+  padding-top: 45px;
 `
 
 const InputContainer = styled.div`

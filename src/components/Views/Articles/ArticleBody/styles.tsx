@@ -7,6 +7,10 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  .articleHeader {
+    width: 100%;
+  }
 `
 
 const LeftContainer = styled.div`
@@ -31,16 +35,18 @@ const ArticleRegion = styled.span`
   font-family: ${theme.fonts.titles};
   font-weight: ${theme.fontWeights.light};
   font-size: ${theme.fontSizes.xs};
-  line-height: 18px;
+  line-height: 25px;
   color: ${theme.colors.blue_dark};
 `
 
 const Subtitle = styled.span`
   font-family: ${theme.fonts.titles};
-  font-size: ${theme.fontSizes.ml};
-  line-height: 33px;
+  font-size: ${theme.fontSizes.m};
+  line-height: 25px;
   color: ${theme.colors.blue};
-  margin: 0;
+  margin: 5px 0 0 0;
+  width: 90%;
+  display: block;
 `
 
 const ArticleContainer = styled.div`
@@ -90,7 +96,7 @@ const RigthContainer = styled.div`
 const RightSubcolumn = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 15px;
 `
 
 const Buttons = styled.div`

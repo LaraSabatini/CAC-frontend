@@ -7,6 +7,8 @@ export type FilterType = "themes" | "regions"
 
 export type ExtensionType = "file" | "image" | "video"
 
+export type ContentType = "card" | "content" | "attachments"
+
 export interface ChangesHistoryInterface {
   date: Date | string
   changedBy: CreatedByInterface
@@ -22,6 +24,13 @@ export interface AttachmentInterface {
   name: string
   extension: string
   type: ExtensionType
+}
+
+export interface AttachmentViewInterface {
+  name: string
+  extension: string
+  type: ExtensionType
+  uri: string
 }
 
 export interface OptionsInterface {

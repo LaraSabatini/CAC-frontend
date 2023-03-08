@@ -1,31 +1,31 @@
 import React, {
-  ChangeEvent,
   useRef,
   useContext,
+  ChangeEvent,
   useState,
   useEffect,
 } from "react"
+import { DashboardContext } from "contexts/Dashboard"
+import texts from "strings/articles.json"
 import { AiOutlinePaperClip, AiOutlineEye } from "react-icons/ai"
 import { BsFillPlayFill } from "react-icons/bs"
-import { DashboardContext } from "contexts/Dashboard"
 import { AttachmentInterface, ExtensionType } from "interfaces/content/Article"
-import texts from "strings/articles.json"
 import renameFile from "helpers/formatting/renameFile"
 import getPortraitName from "helpers/media/getPortraitName"
 import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import ModalAttachedFiles from "./ModalAttachedFiles"
-import ModalVideos from "./ModalVideos"
-import { ActionButtons, IconButton } from "../styles"
+import ModalVideos from "../../CreateArticleForm/AttachmentButtons/ModalVideos"
+import { ActionButtons, IconButton } from "../../CreateArticleForm/styles"
 
-function AttachmentButtons() {
+function AttachmentButton() {
   const {
-    setAttachmentsForDataBase,
-    attachmentsForDataBase,
-    attachmentsForServer,
-    setAttachmentsForServer,
-    setImageSelectedForPortrait,
-    imageSelectedForPortrait,
+    setNewAttachmentsForDataBase,
+    newAttachmentsForDataBase,
+    newAttachmentsForServer,
+    setNewAttachmentsForServer,
+    portrait,
+    setPortrait,
   } = useContext(DashboardContext)
 
   const [showAttachedFiles, setShowAttachedFiles] = useState<boolean>(false)
@@ -42,12 +42,14 @@ function AttachmentButtons() {
       // *** Nombres de archivos deben ser asi: nombre.extension (ej: portada.jpeg)
       const { files } = e.target
 
-      if (type === "image" && imageSelectedForPortrait === null) {
-        setImageSelectedForPortrait(getPortraitName(files))
+      if (type === "image" && portrait === null) {
+        setPortrait(getPortraitName(files))
       }
 
-      const filesForDBArray: AttachmentInterface[] = [...attachmentsForDataBase]
-      const filesForServerArray: File[] = [...attachmentsForServer]
+      const filesForDBArray: AttachmentInterface[] = [
+        ...newAttachmentsForDataBase,
+      ]
+      const filesForServerArray: File[] = [...newAttachmentsForServer]
 
       for (let i = 0; i < files.length; i += 1) {
         const fileRenamed = renameFile(e.target.files[i].name)
@@ -60,8 +62,8 @@ function AttachmentButtons() {
 
         filesForServerArray.push(files[i])
       }
-      setAttachmentsForDataBase(filesForDBArray)
-      setAttachmentsForServer(filesForServerArray)
+      setNewAttachmentsForDataBase(filesForDBArray)
+      setNewAttachmentsForServer(filesForServerArray)
     }
   }
 
@@ -77,19 +79,19 @@ function AttachmentButtons() {
   }
 
   const checkPortraitImage = () => {
-    const filterImageFiles = attachmentsForDataBase.filter(
+    const filterImageFiles = newAttachmentsForDataBase.filter(
       f => f.type === "image",
     )
 
     if (filterImageFiles.length === 0) {
-      setImageSelectedForPortrait(null)
+      setPortrait(null)
     }
   }
 
   useEffect(() => {
     checkPortraitImage()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [attachmentsForDataBase])
+  }, [newAttachmentsForDataBase])
 
   return (
     <ActionButtons>
@@ -124,7 +126,7 @@ function AttachmentButtons() {
           <BsFillPlayFill />
         </IconButton>
       </Tooltip>
-      {attachmentsForDataBase.length ? (
+      {newAttachmentsForDataBase.length ? (
         <Tooltip title={texts.newArticleForm.seeAttachments}>
           <IconButton onClick={() => setShowAttachedFiles(true)}>
             <AiOutlineEye />
@@ -141,4 +143,4 @@ function AttachmentButtons() {
   )
 }
 
-export default AttachmentButtons
+export default AttachmentButton
