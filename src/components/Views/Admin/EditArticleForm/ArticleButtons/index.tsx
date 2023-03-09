@@ -38,10 +38,15 @@ function ArticleButtons({
 
   const publishArticle = () => {
     console.log("publishArticle")
-    setEditedArticle(true)
+    // setEditedArticle(true)
     console.log("articleEdited", articleEdited)
-    console.log("newAttachmentsForDataBase", newAttachmentsForDataBase)
-    console.log("newAttachmentsForServer", newAttachmentsForServer)
+
+    // attachments
+    // portrait
+    // changesHistory
+
+    // subir o eliminar archivos
+    //
   }
 
   return (

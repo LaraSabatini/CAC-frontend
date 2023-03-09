@@ -58,6 +58,7 @@ function ModalAttachedFiles({ closeModal }: ModalAttachedFilesInterface) {
     const fileInDBArray = newAttachmentsForDataBase.filter(
       item => item !== file,
     )
+
     const fileInServerArray = newAttachmentsForServer.filter(
       item => item.name !== `${file.name}.${file.extension}`,
     )

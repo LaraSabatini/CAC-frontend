@@ -42,6 +42,7 @@ function PrevisualizeArticle() {
         type: attachmentsForDataBase[i].type,
       })
     }
+
     return newArray
   }
 

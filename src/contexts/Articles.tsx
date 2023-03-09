@@ -53,16 +53,6 @@ function ArticlesProvider({ children }: any) {
 
   const [previsualize, setPrevisualize] = useState<boolean>(false)
 
-  const removeFileFromList = (file: AttachmentInterface) => {
-    const fileInDBArray = attachmentsForDataBase.filter(item => item !== file)
-    const fileInServerArray = attachmentsForServer.filter(
-      item => item.name !== `${file.name}.${file.extension}`,
-    )
-
-    setAttachmentsForDataBase(fileInDBArray)
-    setAttachmentsForServer(fileInServerArray)
-  }
-
   const [
     triggerArticleListUpdate,
     setTriggerArticleListUpdate,
@@ -109,6 +99,31 @@ function ArticlesProvider({ children }: any) {
     setPortrait(null)
     setNewAttachmentsForDataBase([])
     setNewAttachmentsForServer([])
+  }
+
+  const removeFileFromList = (
+    file: AttachmentInterface,
+    action: "edit" | "create",
+  ) => {
+    if (action === "create") {
+      const fileInDBArray = attachmentsForDataBase.filter(item => item !== file)
+      const fileInServerArray = attachmentsForServer.filter(
+        item => item.name !== `${file.name}.${file.extension}`,
+      )
+
+      setAttachmentsForDataBase(fileInDBArray)
+      setAttachmentsForServer(fileInServerArray)
+    } else {
+      const fileInDBArray = newAttachmentsForDataBase.filter(
+        item => item !== file,
+      )
+      const fileInServerArray = newAttachmentsForServer.filter(
+        item => item.name !== `${file.name}.${file.extension}`,
+      )
+
+      setNewAttachmentsForDataBase(fileInDBArray)
+      setNewAttachmentsForServer(fileInServerArray)
+    }
   }
 
   const value: any = useMemo(

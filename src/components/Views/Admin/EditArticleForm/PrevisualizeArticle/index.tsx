@@ -2,14 +2,13 @@ import React, { useState, useContext, useEffect } from "react"
 import Button from "components/UI/Button"
 import texts from "strings/articles.json"
 import { ArticlesContext } from "contexts/Articles"
-import {
-  AttachmentViewInterface,
-  ContentType,
-} from "interfaces/content/Article"
+import { ContentType } from "interfaces/content/Article"
+import DataPrevisualizerInterface from "interfaces/components/DataPrevisualizerInterface"
 import MediaViewer from "components/UI/MediaViewer"
 import ArticleView from "components/Views/Articles/ArticleCard"
 import ArticleBody from "components/Views/Articles/ArticleBody"
 import getFiles from "helpers/media/getFiles"
+import { getFile } from "services/articles/fileManagement.service"
 import {
   Container,
   ButtonContainer,
@@ -28,42 +27,66 @@ function PrevisualizeArticle() {
   } = useContext(ArticlesContext)
   const [contentToShow, setContentToShow] = useState<ContentType>("card")
 
-  const [docs, setDocs] = useState<any>([])
-
   const reader = new FileReader()
 
   const [cardPortrait, setCardPortrait] = useState<any>()
 
+  const [filesToPreview, setFilesToPreview] = useState<
+    DataPrevisualizerInterface[]
+  >()
+
   const originalDocs = JSON.parse(articleSelected?.attachments as string)
 
-  const getURLsForOriginalDocs = (): AttachmentViewInterface[] => {
-    const originalDocsCleaned: AttachmentViewInterface[] = []
+  console.log(newAttachmentsForDataBase)
 
-    for (let i = 0; i < originalDocs.length; i += 1) {
-      const URL = getFiles(originalDocs[i].name, originalDocs[i].extension)
-      originalDocsCleaned.push({
+  const getURLsForPreview = async () => {
+    const fileArray: any[] = []
+    const newFiles: any[] = []
+
+    const attachmentsToTransform = newAttachmentsForDataBase.filter(
+      item => item.type !== "video",
+    )
+
+    const attachedVideos = newAttachmentsForDataBase.filter(
+      item => item.type === "video",
+    )
+
+    for (let i = 0; i < attachmentsToTransform.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      const findFile: any = await getFile(
+        attachmentsToTransform[i].name,
+        attachmentsToTransform[i].extension,
+      )
+      if (findFile.data !== undefined) {
+        fileArray.push(attachmentsToTransform[i])
+      } else {
+        newFiles.push(attachmentsToTransform[i])
+      }
+    }
+
+    const filesToPreviewArray: DataPrevisualizerInterface[] = []
+
+    for (let i = 0; i < fileArray.length; i += 1) {
+      const URL = getFiles(fileArray[i].name, fileArray[i].extension)
+
+      filesToPreviewArray.push({
         uri: URL,
-        name: originalDocs[i].name,
-        extension: originalDocs[i].extension,
-        type: originalDocs[i].type,
+        name: fileArray[i].name,
+        extension: fileArray[i].extension,
+        type: fileArray[i].type,
       })
     }
 
-    return originalDocsCleaned
-  }
-
-  const defineFileNamesForVisualizer = (): AttachmentViewInterface[] => {
-    const newArray = [...getURLsForOriginalDocs()]
-    for (let i = 0; i < newAttachmentsForDataBase.length; i += 1) {
-      newArray.push({
-        uri: docs[i]?.uri,
-        name: newAttachmentsForDataBase[i].name,
-        extension: newAttachmentsForDataBase[i].extension,
-        type: newAttachmentsForDataBase[i].type,
+    for (let i = 0; i < newFiles.length; i += 1) {
+      filesToPreviewArray.push({
+        uri: URL.createObjectURL(newAttachmentsForServer[i]),
+        name: newFiles[i].name,
+        extension: newFiles[i].extension,
+        type: newFiles[i].type,
       })
     }
 
-    return newArray.filter(file => file.uri !== undefined)
+    setFilesToPreview(filesToPreviewArray.concat(attachedVideos[0]))
   }
 
   // *** Setear imagen como URL para poder previsualizarla en la carta de articulo
@@ -77,7 +100,7 @@ function PrevisualizeArticle() {
     for (let i = 0; i < newAttachmentsForServer.length; i += 1) {
       docsArray.push({ uri: URL.createObjectURL(newAttachmentsForServer[i]) })
     }
-    setDocs(docsArray)
+    // setDocs(docsArray)
 
     if (findImage.length) {
       setCardPortrait(URL.createObjectURL(findImage[0]))
@@ -89,6 +112,7 @@ function PrevisualizeArticle() {
 
   useEffect(() => {
     setImageURL()
+    getURLsForPreview()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -129,7 +153,7 @@ function PrevisualizeArticle() {
           <Previewer>
             {newAttachmentsForServer.length || originalDocs.length ? (
               <PreviewContent>
-                <MediaViewer uri={defineFileNamesForVisualizer()} />
+                <MediaViewer uri={filesToPreview} />
               </PreviewContent>
             ) : (
               <></>

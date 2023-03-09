@@ -16,7 +16,7 @@ import {
   VideoModal,
   InputContainer,
   AddVideoButton,
-} from "../styles"
+} from "../../../CreateArticleForm/AttachmentButtons/styles"
 
 interface ModalVideosInterface {
   closeModal: (arg?: any) => void
@@ -24,13 +24,15 @@ interface ModalVideosInterface {
 
 function ModalVideos({ closeModal }: ModalVideosInterface) {
   const {
-    attachmentsForDataBase,
-    setAttachmentsForDataBase,
+    newAttachmentsForDataBase,
+    setNewAttachmentsForDataBase,
     removeFileFromList,
   } = useContext(ArticlesContext)
   const [currentVideoURL, setCurrentVideoURL] = useState<string>("")
 
-  const videoURLs = attachmentsForDataBase.filter(file => file.type === "video")
+  const videoURLs = newAttachmentsForDataBase.filter(
+    file => file.type === "video",
+  )
 
   const openInNewTab = (url: string) => {
     window.open(url, "_blank", "noreferrer")
@@ -38,11 +40,13 @@ function ModalVideos({ closeModal }: ModalVideosInterface) {
 
   // *** Guardar URL del video
   const addVideoToAttachments = () => {
+    console.log("addVideoToAttachments")
+
     const URL = currentVideoURL.split("www.")
     const domain = URL[1].split(".com")
 
-    setAttachmentsForDataBase([
-      ...attachmentsForDataBase,
+    setNewAttachmentsForDataBase([
+      ...newAttachmentsForDataBase,
       {
         name: domain[0],
         extension: getVideoURL(currentVideoURL),
@@ -80,7 +84,7 @@ function ModalVideos({ closeModal }: ModalVideosInterface) {
               {file.name}
               <Tooltip title={texts.newArticleForm.deleteFile}>
                 <DeleteItemButton
-                  onClick={() => removeFileFromList(file, "create")}
+                  onClick={() => removeFileFromList(file, "edit")}
                 >
                   <MdOutlineClose />
                 </DeleteItemButton>

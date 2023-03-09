@@ -11,6 +11,17 @@ const uploadFile = async (formData: any) => {
   }
 }
 
+const getFile = async (fileName: string, fileExtension: string) => {
+  try {
+    const res = await axios.get(
+      `${apiURL}/file_name=${fileName}&file_extension=${fileExtension}`,
+    )
+    return res
+  } catch (ex) {
+    return ex
+  }
+}
+
 const deleteFile = async (route: string) => {
   try {
     const res = await axios.delete(`${apiURL}/route=${route}`)
@@ -20,4 +31,4 @@ const deleteFile = async (route: string) => {
   }
 }
 
-export { uploadFile, deleteFile }
+export { uploadFile, deleteFile, getFile }

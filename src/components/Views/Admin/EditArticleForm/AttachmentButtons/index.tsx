@@ -15,7 +15,7 @@ import getPortraitName from "helpers/media/getPortraitName"
 import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import ModalAttachedFiles from "./ModalAttachedFiles"
-import ModalVideos from "../../CreateArticleForm/AttachmentButtons/ModalVideos"
+import ModalVideos from "./ModalVideos"
 import { ActionButtons, IconButton } from "../../CreateArticleForm/styles"
 
 function AttachmentButton() {

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react"
 import getFiles from "helpers/media/getFiles"
 import { AiOutlinePaperClip } from "react-icons/ai"
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs"
-import { AttachmentInterface, ExtensionType } from "interfaces/content/Article"
+import { AttachmentInterface } from "interfaces/content/Article"
+import DataPrevisualizerInterface from "interfaces/components/DataPrevisualizerInterface"
 import { Container, Title, Content, Navigation, Indicator, Dot } from "./styles"
 
 // SIZE RATIO:
@@ -16,12 +17,7 @@ type MediaViewerType =
     }
   | {
       urls?: never
-      uri?: {
-        uri: string
-        name: string
-        extension: string
-        type: ExtensionType
-      }[]
+      uri?: DataPrevisualizerInterface[]
     }
 
 function MediaViewer(props: MediaViewerType) {
