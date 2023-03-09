@@ -11,4 +11,13 @@ const uploadFile = async (formData: any) => {
   }
 }
 
-export default uploadFile
+const deleteFile = async (route: string) => {
+  try {
+    const res = await axios.delete(`${apiURL}/route=${route}`)
+    return res
+  } catch (ex) {
+    return ex
+  }
+}
+
+export { uploadFile, deleteFile }

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react"
 import { DashboardContext } from "contexts/Dashboard"
-import uploadFile from "services/articles/fileManagement.service"
+import { uploadFile } from "services/articles/fileManagement.service"
 import { createArticle } from "services/articles/articles.service"
 import texts from "strings/articles.json"
 import { dateFormated } from "helpers/dates/getToday"
