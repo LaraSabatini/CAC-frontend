@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { useState, useContext } from "react"
-import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import texts from "strings/articles.json"
 import ModalStatus from "components/UI/ModalStatus"
 import Button from "components/UI/Button"
@@ -22,7 +22,7 @@ function ArticleButtons({
     newAttachmentsForDataBase,
     newAttachmentsForServer,
     portrait,
-  } = useContext(DashboardContext)
+  } = useContext(ArticlesContext)
 
   const [warningMessage, setWarningMessage] = useState<string>("")
   const [editedArticle, setEditedArticle] = useState<boolean>(false)

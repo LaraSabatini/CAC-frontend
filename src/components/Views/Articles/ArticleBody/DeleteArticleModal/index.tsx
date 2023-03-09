@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react"
 import { useRouter } from "next/router"
 import { deleteArticle } from "services/articles/articles.service"
 import login from "services/auth/login.service"
-import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import profileTexts from "strings/profile.json"
 import texts from "strings/articles.json"
 import Modal from "components/UI/Modal"
@@ -27,7 +27,7 @@ function DeleteArticleModal({ cancel }: WarningModalInterface) {
   const router = useRouter()
 
   const { setTriggerArticleListUpdate, triggerArticleListUpdate } = useContext(
-    DashboardContext,
+    ArticlesContext,
   )
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)

@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import { MdOutlineClose } from "react-icons/md"
 import texts from "strings/articles.json"
 import Modal from "components/UI/Modal"
@@ -25,7 +25,7 @@ function ModalAttachedFiles({ closeModal }: ModalAttachedFilesInterface) {
     removeFileFromList,
     imageSelectedForPortrait,
     setImageSelectedForPortrait,
-  } = useContext(DashboardContext)
+  } = useContext(ArticlesContext)
 
   return (
     <Modal>

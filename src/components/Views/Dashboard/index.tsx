@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react"
 import { useRouter } from "next/router"
 import { BsChevronRight } from "react-icons/bs"
 import { getArticles } from "services/articles/articles.service"
+import { ArticlesContext } from "contexts/Articles"
 import { DashboardContext } from "contexts/Dashboard"
 import { getFilters } from "services/articles/filters.service"
 import Header from "components/Views/Header"
@@ -14,13 +15,10 @@ function DashboardView() {
 
   const { articleId } = router.query
 
-  const {
-    setRegionFilters,
-    setThemeFilters,
-    setArticles,
-    articles,
-    triggerArticleListUpdate,
-  } = useContext(DashboardContext)
+  const { setArticles, articles, triggerArticleListUpdate } = useContext(
+    ArticlesContext,
+  )
+  const { setRegionFilters, setThemeFilters } = useContext(DashboardContext)
 
   const getFiltersData = async () => {
     const getFiltersRegion = await getFilters("regions")

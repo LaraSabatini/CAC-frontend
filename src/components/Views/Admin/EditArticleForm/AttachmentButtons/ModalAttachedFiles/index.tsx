@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 import React, { useContext } from "react"
-import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import { MdOutlineClose } from "react-icons/md"
 import { AttachmentInterface } from "interfaces/content/Article"
 import getFiles from "helpers/media/getFiles"
@@ -31,7 +31,7 @@ function ModalAttachedFiles({ closeModal }: ModalAttachedFilesInterface) {
     newAttachmentsForServer,
     setNewAttachmentsForDataBase,
     setNewAttachmentsForServer,
-  } = useContext(DashboardContext)
+  } = useContext(ArticlesContext)
 
   const portraitImage = portrait as string
   let portraitName: string

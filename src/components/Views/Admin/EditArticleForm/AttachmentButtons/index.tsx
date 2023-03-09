@@ -5,7 +5,7 @@ import React, {
   useState,
   useEffect,
 } from "react"
-import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import texts from "strings/articles.json"
 import { AiOutlinePaperClip, AiOutlineEye } from "react-icons/ai"
 import { BsFillPlayFill } from "react-icons/bs"
@@ -26,7 +26,7 @@ function AttachmentButton() {
     setNewAttachmentsForServer,
     portrait,
     setPortrait,
-  } = useContext(DashboardContext)
+  } = useContext(ArticlesContext)
 
   const [showAttachedFiles, setShowAttachedFiles] = useState<boolean>(false)
   const [addVideoURL, setAddVideoURL] = useState<boolean>(false)

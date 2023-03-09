@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react"
-import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import { MdOutlineClose, MdAddCircleOutline } from "react-icons/md"
 import texts from "strings/articles.json"
 import getVideoURL from "helpers/media/getVideoURL"
@@ -27,7 +27,7 @@ function ModalVideos({ closeModal }: ModalVideosInterface) {
     attachmentsForDataBase,
     setAttachmentsForDataBase,
     removeFileFromList,
-  } = useContext(DashboardContext)
+  } = useContext(ArticlesContext)
   const [currentVideoURL, setCurrentVideoURL] = useState<string>("")
 
   const videoURLs = attachmentsForDataBase.filter(file => file.type === "video")

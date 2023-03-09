@@ -7,7 +7,7 @@ import React, {
 } from "react"
 import { AiOutlinePaperClip, AiOutlineEye } from "react-icons/ai"
 import { BsFillPlayFill } from "react-icons/bs"
-import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import { AttachmentInterface, ExtensionType } from "interfaces/content/Article"
 import texts from "strings/articles.json"
 import renameFile from "helpers/formatting/renameFile"
@@ -26,7 +26,7 @@ function AttachmentButtons() {
     setAttachmentsForServer,
     setImageSelectedForPortrait,
     imageSelectedForPortrait,
-  } = useContext(DashboardContext)
+  } = useContext(ArticlesContext)
 
   const [showAttachedFiles, setShowAttachedFiles] = useState<boolean>(false)
   const [addVideoURL, setAddVideoURL] = useState<boolean>(false)

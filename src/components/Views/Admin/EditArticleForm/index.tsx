@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import texts from "strings/articles.json"
 import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import Modal from "components/UI/Modal"
 import Input from "components/UI/Input"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
@@ -23,9 +24,9 @@ interface EditArticleFormInterface {
 }
 
 function EditArticleForm({ closeForm }: EditArticleFormInterface) {
+  const { regionFilters, themeFilters } = useContext(DashboardContext)
+
   const {
-    regionFilters,
-    themeFilters,
     previsualizeEdit,
     setTriggerArticleListUpdate,
     triggerArticleListUpdate,
@@ -34,7 +35,7 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
     setArticleEdited,
     setPortrait,
     setNewAttachmentsForDataBase,
-  } = useContext(DashboardContext)
+  } = useContext(ArticlesContext)
 
   useEffect(() => {
     if (articleSelected !== null) {

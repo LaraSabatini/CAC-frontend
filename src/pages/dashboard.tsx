@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { UserDataType } from "interfaces/users/General"
 import DashboardProvider from "contexts/Dashboard"
+import ArticlesProvider from "contexts/Articles"
 import routes from "routes"
 import checkLastPayment from "helpers/dates/checkLastPayment"
 import DashboardView from "components/Views/Dashboard"
@@ -43,7 +44,9 @@ function Dashboard() {
     <div>
       {isLogged && (
         <DashboardProvider>
-          <DashboardView />
+          <ArticlesProvider>
+            <DashboardView />
+          </ArticlesProvider>
         </DashboardProvider>
       )}
     </div>

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react"
-import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import { uploadFile } from "services/articles/fileManagement.service"
 import { createArticle } from "services/articles/articles.service"
 import texts from "strings/articles.json"
@@ -25,7 +25,7 @@ function ArticleButtons({
     attachmentsForDataBase,
     attachmentsForServer,
     imageSelectedForPortrait,
-  } = useContext(DashboardContext)
+  } = useContext(ArticlesContext)
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 

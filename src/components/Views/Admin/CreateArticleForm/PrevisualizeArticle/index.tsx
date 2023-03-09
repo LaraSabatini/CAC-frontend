@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react"
 import Button from "components/UI/Button"
 import texts from "strings/articles.json"
-import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import {
   AttachmentViewInterface,
   ContentType,
@@ -23,7 +23,7 @@ function PrevisualizeArticle() {
     attachmentsForServer,
     attachmentsForDataBase,
     imageSelectedForPortrait,
-  } = useContext(DashboardContext)
+  } = useContext(ArticlesContext)
   const [contentToShow, setContentToShow] = useState<ContentType>("card")
 
   const [portrait, setPortrait] = useState<{ image: string }>({ image: "" })

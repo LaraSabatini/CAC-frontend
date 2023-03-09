@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react"
 import { useRouter } from "next/router"
-import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import { getArticleById } from "services/articles/articles.service"
 import ArticleInterface from "interfaces/content/Article"
 import { TbPencil } from "react-icons/tb"
@@ -46,7 +46,7 @@ function ArticleBody(props: Props) {
   const { article, showImageVisualizer, queries } = props
 
   const { setArticleSelected, discardArticleEdition } = useContext(
-    DashboardContext,
+    ArticlesContext,
   )
 
   const router = useRouter()
