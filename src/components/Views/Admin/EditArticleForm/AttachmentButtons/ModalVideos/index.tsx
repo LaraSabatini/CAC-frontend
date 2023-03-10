@@ -40,8 +40,6 @@ function ModalVideos({ closeModal }: ModalVideosInterface) {
 
   // *** Guardar URL del video
   const addVideoToAttachments = () => {
-    console.log("addVideoToAttachments")
-
     const URL = currentVideoURL.split("www.")
     const domain = URL[1].split(".com")
 

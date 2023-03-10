@@ -37,43 +37,40 @@ function PrevisualizeArticle() {
 
   const originalDocs = JSON.parse(articleSelected?.attachments as string)
 
-  console.log(newAttachmentsForDataBase)
-
   const getURLsForPreview = async () => {
-    const fileArray: any[] = []
+    const filesInDB: any[] = []
     const newFiles: any[] = []
 
-    const attachmentsToTransform = newAttachmentsForDataBase.filter(
+    const imagesAndFiles = newAttachmentsForDataBase.filter(
       item => item.type !== "video",
     )
-
     const attachedVideos = newAttachmentsForDataBase.filter(
       item => item.type === "video",
     )
 
-    for (let i = 0; i < attachmentsToTransform.length; i += 1) {
+    const filesToPreviewArray: DataPrevisualizerInterface[] = []
+
+    for (let i = 0; i < imagesAndFiles.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
       const findFile: any = await getFile(
-        attachmentsToTransform[i].name,
-        attachmentsToTransform[i].extension,
+        imagesAndFiles[i].name,
+        imagesAndFiles[i].extension,
       )
       if (findFile.data !== undefined) {
-        fileArray.push(attachmentsToTransform[i])
+        filesInDB.push(imagesAndFiles[i])
       } else {
-        newFiles.push(attachmentsToTransform[i])
+        newFiles.push(imagesAndFiles[i])
       }
     }
 
-    const filesToPreviewArray: DataPrevisualizerInterface[] = []
-
-    for (let i = 0; i < fileArray.length; i += 1) {
-      const URL = getFiles(fileArray[i].name, fileArray[i].extension)
+    for (let i = 0; i < filesInDB.length; i += 1) {
+      const URL = getFiles(filesInDB[i].name, filesInDB[i].extension)
 
       filesToPreviewArray.push({
         uri: URL,
-        name: fileArray[i].name,
-        extension: fileArray[i].extension,
-        type: fileArray[i].type,
+        name: filesInDB[i].name,
+        extension: filesInDB[i].extension,
+        type: filesInDB[i].type,
       })
     }
 
@@ -86,7 +83,11 @@ function PrevisualizeArticle() {
       })
     }
 
-    setFilesToPreview(filesToPreviewArray.concat(attachedVideos[0]))
+    setFilesToPreview(
+      filesToPreviewArray.concat(
+        attachedVideos as DataPrevisualizerInterface[],
+      ),
+    )
   }
 
   // *** Setear imagen como URL para poder previsualizarla en la carta de articulo
@@ -100,7 +101,6 @@ function PrevisualizeArticle() {
     for (let i = 0; i < newAttachmentsForServer.length; i += 1) {
       docsArray.push({ uri: URL.createObjectURL(newAttachmentsForServer[i]) })
     }
-    // setDocs(docsArray)
 
     if (findImage.length) {
       setCardPortrait(URL.createObjectURL(findImage[0]))

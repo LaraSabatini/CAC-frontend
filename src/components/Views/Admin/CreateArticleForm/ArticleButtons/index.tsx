@@ -74,11 +74,13 @@ function ArticleButtons({
         attachments: JSON.stringify(attachmentsForDataBase),
         regionFilters: JSON.stringify(newArticle.regionFilters),
         themeFilters: JSON.stringify(newArticle.themeFilters),
-        changesHistory: JSON.stringify({
-          date: dateFormated,
-          changedBy: { id: userData.id, email: userData.user },
-          action: "CREATED",
-        }),
+        changesHistory: JSON.stringify([
+          {
+            date: dateFormated,
+            changedBy: { id: userData.id, email: userData.user },
+            action: "CREATED",
+          },
+        ]),
       }
 
       const createArticleReq = await createArticle(data)

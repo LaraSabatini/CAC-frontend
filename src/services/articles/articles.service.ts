@@ -26,7 +26,7 @@ const deleteArticle = async (id: number) => {
 }
 
 const editArticle = async (body: ArticleInterface) => {
-  const res = await axios.put(`${apiURL}/${body.id}`, body, axiosHeader)
+  const res = await axios.put(`${apiURL}/id=${body.id}`, body, axiosHeader)
   return res.data
 }
 
