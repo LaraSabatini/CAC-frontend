@@ -3,8 +3,6 @@ import ArticleInterface, {
 } from "interfaces/content/Article"
 
 interface ArticleContextInterface {
-  articles: ArticleInterface[] | []
-  setArticles(articles: ArticleInterface[] | []): void
   newArticle: ArticleInterface
   setNewArticle(newArticle: ArticleInterface): void
   attachmentsForDataBase: AttachmentInterface[] | []

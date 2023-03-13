@@ -1,9 +1,12 @@
 import React, { useContext, useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import { BsChevronDown, BsChevronUp } from "react-icons/bs"
+import { filterArticles } from "services/articles/articles.service"
 import { DashboardContext } from "contexts/Dashboard"
+import { ArticlesContext } from "contexts/Articles"
 import Checkbox from "components/UI/Checkbox"
 import Button from "components/UI/Button"
+import Scroll from "components/UI/Scroll"
 import {
   FilterContainer,
   FilterSelector,
@@ -18,7 +21,13 @@ import {
 function Filters() {
   const router = useRouter()
 
-  const { regionFilters, themeFilters } = useContext(DashboardContext)
+  const { regionFilters, themeFilters, setArticles } = useContext(
+    DashboardContext,
+  )
+  const { setTriggerArticleListUpdate, triggerArticleListUpdate } = useContext(
+    ArticlesContext,
+  )
+
   const [typeOfFilter, setTypeOfFilter] = useState<"articles" | "partners">(
     "articles",
   )
@@ -31,26 +40,39 @@ function Filters() {
   const [themeFiltersSelected, setThemeFiltersSelected] = useState<number[]>([])
 
   const selectFilter = (id: number, type: "region" | "theme") => {
-    if (type === "region") {
-      const isSelected = regionFiltersSelected.indexOf(id)
-      if (isSelected !== -1) {
-        const newRegionFilters = regionFiltersSelected.filter(
-          item => item !== id,
-        )
-        setRegionFiltersSelected(newRegionFilters)
+    const isSelected =
+      type === "region"
+        ? regionFiltersSelected.indexOf(id)
+        : themeFiltersSelected.indexOf(id)
+    const filterSelected =
+      type === "region" ? regionFiltersSelected : themeFiltersSelected
+    if (isSelected !== -1) {
+      const newFilters = filterSelected.filter(item => item !== id)
+      if (type === "region") {
+        setRegionFiltersSelected(newFilters)
       } else {
-        const newRegionFilters = [...regionFiltersSelected, id]
-        setRegionFiltersSelected(newRegionFilters)
+        setThemeFiltersSelected(newFilters)
       }
     } else {
-      const isSelected = themeFiltersSelected.indexOf(id)
-      if (isSelected !== -1) {
-        const newThemeFilters = themeFiltersSelected.filter(item => item !== id)
-        setThemeFiltersSelected(newThemeFilters)
+      const newFilters = [...filterSelected, id]
+      if (type === "region") {
+        setRegionFiltersSelected(newFilters)
       } else {
-        const newThemeFilters = [...themeFiltersSelected, id]
-        setThemeFiltersSelected(newThemeFilters)
+        setThemeFiltersSelected(newFilters)
       }
+    }
+  }
+
+  const searchArticles = async () => {
+    if (regionFiltersSelected.length || themeFiltersSelected.length) {
+      const filterArticlesCall = await filterArticles({
+        regionIds: regionFiltersSelected,
+        themeIds: themeFiltersSelected,
+      })
+
+      setArticles(filterArticlesCall.data)
+    } else {
+      setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
     }
   }
 
@@ -72,18 +94,23 @@ function Filters() {
               {!regionFilterOpen ? <BsChevronDown /> : <BsChevronUp />}
             </OpenFilters>
             <SelectionContainer>
-              {regionFilterOpen &&
-                regionFilters.map(filter => (
-                  <Filter>
-                    <Checkbox
-                      idParam={filter.value}
-                      ownState
-                      onChange={() => selectFilter(filter.id, "region")}
-                      checked={regionFiltersSelected.indexOf(filter.id) !== -1}
-                    />
-                    {filter.value}
-                  </Filter>
-                ))}
+              {regionFilterOpen && (
+                <Scroll height={150}>
+                  {regionFilters.map(filter => (
+                    <Filter>
+                      <Checkbox
+                        idParam={filter.value}
+                        ownState
+                        onChange={() => selectFilter(filter.id, "region")}
+                        checked={
+                          regionFiltersSelected.indexOf(filter.id) !== -1
+                        }
+                      />
+                      {filter.value}
+                    </Filter>
+                  ))}
+                </Scroll>
+              )}
             </SelectionContainer>
           </FilterSelector>
           <FilterSelector>
@@ -92,18 +119,21 @@ function Filters() {
               {!themeFilterOpen ? <BsChevronDown /> : <BsChevronUp />}
             </OpenFilters>
             <SelectionContainer>
-              {themeFilterOpen &&
-                themeFilters.map(filter => (
-                  <Filter>
-                    <Checkbox
-                      idParam={filter.value}
-                      ownState
-                      onChange={() => selectFilter(filter.id, "theme")}
-                      checked={themeFiltersSelected.indexOf(filter.id) !== -1}
-                    />
-                    {filter.value}
-                  </Filter>
-                ))}
+              {themeFilterOpen && (
+                <Scroll height={100}>
+                  {themeFilters.map(filter => (
+                    <Filter>
+                      <Checkbox
+                        idParam={filter.value}
+                        ownState
+                        onChange={() => selectFilter(filter.id, "theme")}
+                        checked={themeFiltersSelected.indexOf(filter.id) !== -1}
+                      />
+                      {filter.value}
+                    </Filter>
+                  ))}
+                </Scroll>
+              )}
             </SelectionContainer>
           </FilterSelector>
           <ButtonContainer>
@@ -115,7 +145,7 @@ function Filters() {
                 setThemeFiltersSelected([])
               }}
             />
-            <Button content="Aplicar" cta action={() => console.log("apply")} />
+            <Button content="Aplicar" cta action={searchArticles} />
           </ButtonContainer>
         </FilterList>
       ) : (

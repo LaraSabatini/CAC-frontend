@@ -38,6 +38,14 @@ const getRelatedArticles = async (themeId: number, regionId: number) => {
   return res.data
 }
 
+const filterArticles = async (body: {
+  regionIds: number[]
+  themeIds: number[]
+}) => {
+  const res = await defaultPost(`${apiURL}/filterArticles`, body)
+  return res
+}
+
 export {
   createArticle,
   editArticle,
@@ -45,4 +53,5 @@ export {
   getArticles,
   getArticleById,
   getRelatedArticles,
+  filterArticles,
 }
