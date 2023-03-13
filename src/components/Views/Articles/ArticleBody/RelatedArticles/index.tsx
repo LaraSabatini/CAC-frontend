@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { getRelatedArticles } from "services/articles/articles.service"
-import ArticleInterface, {
-  ArticleFiltersInterface,
-} from "interfaces/content/Article"
+import ArticleInterface from "interfaces/content/Article"
 import ArticleView from "../../ArticleCard"
 import { Container, Carousel, Title } from "./styles"
 
 interface RelatedArticlesInterface {
-  regionFilters: ArticleFiltersInterface[]
-  themeFilters: ArticleFiltersInterface[]
+  regionFilters: number[]
+  themeFilters: number[]
 }
 
 function RelatedArticles({
@@ -19,8 +17,8 @@ function RelatedArticles({
 
   const getArticles = async () => {
     const getRelatedArticlesCall = await getRelatedArticles(
-      regionFilters[0].id,
-      themeFilters[0].id,
+      regionFilters[0],
+      themeFilters[0],
     )
 
     if (getRelatedArticlesCall.status === 200) {
@@ -39,8 +37,11 @@ function RelatedArticles({
     <Container>
       <Title>Artículos relacionados</Title>
       <Carousel>
-        {relatedArticles?.length &&
-          relatedArticles.map(article => <ArticleView article={article} />)}
+        {relatedArticles?.length ? (
+          relatedArticles.map(article => <ArticleView article={article} />)
+        ) : (
+          <></>
+        )}
       </Carousel>
     </Container>
   )

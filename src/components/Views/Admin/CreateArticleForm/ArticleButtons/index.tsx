@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react"
 import { ArticlesContext } from "contexts/Articles"
 import { uploadFile } from "services/articles/fileManagement.service"
 import { createArticle } from "services/articles/articles.service"
+import { ArticleFiltersInterface } from "interfaces/content/Article"
 import texts from "strings/articles.json"
 import { dateFormated } from "helpers/dates/getToday"
 import ModalStatus from "components/UI/ModalStatus"
@@ -62,6 +63,19 @@ function ArticleButtons({
   }
 
   const publishArticle = async () => {
+    const regionFilters = newArticle.regionFilters as ArticleFiltersInterface[]
+    const themeFilters = newArticle.themeFilters as ArticleFiltersInterface[]
+
+    const regionFiltersIds: number[] = []
+    regionFilters.map((filter: ArticleFiltersInterface) =>
+      regionFiltersIds.push(filter.id),
+    )
+
+    const themeFiltersIds: number[] = []
+    themeFilters.map((filter: ArticleFiltersInterface) =>
+      themeFiltersIds.push(filter.id),
+    )
+
     if (canPreview) {
       let success: boolean = false
       const data = {
@@ -72,8 +86,8 @@ function ArticleButtons({
           imageSelectedForPortrait.split(".")[1],
         ),
         attachments: JSON.stringify(attachmentsForDataBase),
-        regionFilters: JSON.stringify(newArticle.regionFilters),
-        themeFilters: JSON.stringify(newArticle.themeFilters),
+        regionFilters: JSON.stringify(regionFiltersIds),
+        themeFilters: JSON.stringify(themeFiltersIds),
         changesHistory: JSON.stringify([
           {
             date: dateFormated,
@@ -82,26 +96,19 @@ function ArticleButtons({
           },
         ]),
       }
-
       const createArticleReq = await createArticle(data)
-
       success = createArticleReq.status === 201
-
       for (let i = 0; i < attachmentsForServer.length; i += 1) {
         const fileData = saveFile(i)
-
         const formData = new FormData()
-
         if (fileData !== undefined) {
           formData.append("file", fileData.file)
           formData.append("fileName", fileData.name)
-
           // eslint-disable-next-line no-await-in-loop
           const postFile: any = await sendFile(formData)
           success = postFile.status === 200
         }
       }
-
       setCreatedArticle(success)
     }
   }

@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useContext } from "react"
 import { useRouter } from "next/router"
+import { DashboardContext } from "contexts/Dashboard"
 import texts from "strings/dashboard.json"
 import routes from "routes"
 import ArticleInterface from "interfaces/content/Article"
@@ -21,14 +22,19 @@ interface ArticleViewInterface {
 function ArticleView({ article, URLBlocked }: ArticleViewInterface) {
   const router = useRouter()
 
+  const { regionFilters } = useContext(DashboardContext)
+
   return (
     <ArticleCard>
       <CardInfo>
         <div className="articleHeader">
           <ArticleRegion>
-            {typeof article.regionFilters === "string"
-              ? JSON.parse(article.regionFilters as string)[0].value
-              : article.regionFilters[0].value}
+            {
+              regionFilters.filter(
+                item =>
+                  item.id === JSON.parse(article.regionFilters as string)[0],
+              )[0].value
+            }
           </ArticleRegion>
           <ArticleTitle>{article.title}</ArticleTitle>
         </div>

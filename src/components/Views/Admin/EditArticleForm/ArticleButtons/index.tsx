@@ -87,7 +87,6 @@ function ArticleButtons({
       }
 
       const editArticleCall = await editArticle(data)
-      console.log("editArticleCall", editArticleCall)
       success = editArticleCall.status === 201
 
       for (let i = 0; i < newAttachmentsForServer.length; i += 1) {

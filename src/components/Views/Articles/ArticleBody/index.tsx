@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react"
 import { useRouter } from "next/router"
 import { ArticlesContext } from "contexts/Articles"
+import { DashboardContext } from "contexts/Dashboard"
 import { getArticleById } from "services/articles/articles.service"
 import ArticleInterface from "interfaces/content/Article"
 import { TbPencil } from "react-icons/tb"
@@ -49,6 +50,7 @@ function ArticleBody(props: Props) {
   const { setArticleSelected, discardArticleEdition } = useContext(
     ArticlesContext,
   )
+  const { regionFilters } = useContext(DashboardContext)
 
   const router = useRouter()
   const userData = JSON.parse(localStorage.getItem("userData") as string)
@@ -107,9 +109,12 @@ function ArticleBody(props: Props) {
             )}
             <div className="articleHeader">
               <ArticleRegion>
-                {typeof data.regionFilters === "string"
-                  ? JSON.parse(data.regionFilters as string)[0].value
-                  : data.regionFilters[0].value}
+                {typeof data.regionFilters === "string" &&
+                  data !== undefined &&
+                  regionFilters.filter(
+                    item =>
+                      item.id === JSON.parse(data.regionFilters as string)[0],
+                  )[0]?.value}
               </ArticleRegion>
               <ArticleTitle>{data.title}</ArticleTitle>
               <Subtitle>{data.subtitle}</Subtitle>

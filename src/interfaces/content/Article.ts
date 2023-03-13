@@ -45,8 +45,8 @@ interface ArticleInterface {
   changesHistory: ChangesHistoryInterface[] | string // JSON
   portrait: string
   subtitle: string
-  regionFilters: ArticleFiltersInterface[] | string // JSON
-  themeFilters: ArticleFiltersInterface[] | string // JSON
+  regionFilters: number[] | string | ArticleFiltersInterface[]
+  themeFilters: number[] | string | ArticleFiltersInterface[]
   article: string
   attachments: AttachmentInterface[] | string // urls[]
   author: string
