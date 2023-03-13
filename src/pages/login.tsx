@@ -8,18 +8,8 @@ import ResetPassword from "components/Views/ResetPassword"
 function Login() {
   const router = useRouter()
 
-  // const { user } = router.query
-
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData") as string)
-
-    // if (router.isReady) {
-    //   if (!user) {
-    //     router.replace({
-    //       query: { ...router.query, user: "client" },
-    //     })
-    //   }
-    // }
 
     if (userData?.logged) {
       router.replace(routes.dashboard.name)

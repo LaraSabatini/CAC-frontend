@@ -79,6 +79,7 @@ const InputTextarea = styled.textarea<{
   margin-top: 5px;
   border-radius: 5px;
   border: 1px solid ${theme.colors.blue_alpha};
+  font-weight: 300;
   background-color: transparent;
   padding: 8px 10px;
   ${TextStyled}
@@ -94,6 +95,12 @@ const InputTextarea = styled.textarea<{
     css`
       border: 1px solid ${theme.colors.red};
     `}
+
+  ::placeholder {
+    font-size: ${theme.fontSizes.xs};
+    font-weight: 400;
+    font-family: ${theme.fonts.extra};
+  }
 `
 
 export {

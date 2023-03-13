@@ -4,7 +4,6 @@ import theme from "./index"
 const GlobalStyle = createGlobalStyle`
   body {
           margin: 0px;
-          height: 110vh;
           background-color:  ${theme.colors.light_grey};
         }
 `
@@ -18,6 +17,7 @@ const FlexColumnDiv = () => css`
 const TitleStyles = () => css`
   font-family: ${theme.fonts.titles};
   color: ${theme.colors.blue_dark};
+  margin: 0;
 `
 
 export { GlobalStyle, FlexColumnDiv, TitleStyles }

@@ -16,6 +16,11 @@ const Card = styled.div`
   width: 100%;
   gap: 26px;
 
+  /* button {
+    justify-self: flex-end;
+    
+  } */
+
   @media (max-width: ${theme.screenSize.tablet.height}) {
     width: 40%;
   }

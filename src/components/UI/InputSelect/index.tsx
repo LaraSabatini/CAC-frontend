@@ -33,7 +33,7 @@ function InputSelect({
       </Label>
       <Select width={width} error={error}>
         <Input>
-          {optionSelected.value}
+          <p className="value">{optionSelected?.value}</p>
           <IconContainer onClick={() => setOpenSelect(!openSelect)}>
             <Icon icon="SingleArrow" />
           </IconContainer>

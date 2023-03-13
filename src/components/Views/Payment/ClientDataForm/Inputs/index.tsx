@@ -5,16 +5,16 @@ import identificationTypes from "const/identificationTypes"
 import texts from "strings/payment.json"
 import Input from "components/UI/Input"
 import InputSelect from "components/UI/InputSelect"
-import { HorizontalGroup } from "../styles"
+import { HorizontalGroup, InputContainer } from "../styles"
 
 function Inputs() {
   const { newClient, setNewClient } = useContext(ClientsContext)
 
   return (
-    <>
+    <InputContainer>
       <HorizontalGroup>
         <Input
-          width={200}
+          width={230}
           label={texts.form.name}
           required
           type="text"
@@ -27,7 +27,7 @@ function Inputs() {
           }}
         />
         <Input
-          width={270}
+          width={230}
           label={texts.form.surname}
           required
           type="text"
@@ -43,7 +43,7 @@ function Inputs() {
       <HorizontalGroup>
         <InputSelect
           label={texts.form.identificationType}
-          width={200}
+          width={230}
           options={identificationTypes}
           required
           onClick={(e: { id: number; value: string }) => {
@@ -54,7 +54,7 @@ function Inputs() {
           }}
         />
         <Input
-          width={270}
+          width={230}
           label={texts.form.identificationNumber}
           required
           type="text"
@@ -68,7 +68,7 @@ function Inputs() {
       </HorizontalGroup>
       <HorizontalGroup>
         <Input
-          width={200}
+          width={230}
           label={texts.form.email}
           required
           type="email"
@@ -92,7 +92,7 @@ function Inputs() {
           }}
         />
         <Input
-          width={175}
+          width={150}
           label={texts.form.phone}
           required
           type="number"
@@ -104,7 +104,7 @@ function Inputs() {
           }}
         />
       </HorizontalGroup>
-    </>
+    </InputContainer>
   )
 }
 

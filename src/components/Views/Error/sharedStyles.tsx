@@ -14,6 +14,7 @@ const Container = styled.div`
     color: ${theme.colors.blue};
     font-size: ${theme.fontSizes.xs};
     font-weight: 300;
+    padding-top: 20px;
   }
 `
 

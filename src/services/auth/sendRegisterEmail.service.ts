@@ -1,7 +1,7 @@
 import defaultPost from "services/defaultPost"
 import apiURL from "./route"
 
-const sendRegistarEmail = async (body: {
+const sendRegisterEmail = async (body: {
   recipients: string[]
   name: string
   item: string
@@ -12,4 +12,4 @@ const sendRegistarEmail = async (body: {
   return res
 }
 
-export default sendRegistarEmail
+export default sendRegisterEmail

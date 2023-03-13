@@ -204,7 +204,7 @@ function ResetPassword() {
             cta
             action={() =>
               router.replace(
-                `${routes.login.name}?${routes.login.queries.user}${user}`,
+                `${routes.login.name}?${routes.login.queries.user}client`,
               )
             }
           />

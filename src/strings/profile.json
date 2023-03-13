@@ -2,7 +2,7 @@
     "title": "Perfil",
     "logout": "Cerrar sesión",
     "changePassword": {
-        "title": "Cambiar contraseña:",
+        "title": "Cambiar contraseña",
         "matchingError": "* Las contraseñas no coinciden",
         "requiredError": "* Completa los campos requeridos",
         "wrongPassword": "* La contraseña ingresada es incorrecta",

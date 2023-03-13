@@ -28,7 +28,15 @@ const routes = {
   },
   dashboard: {
     name: "/dashboard",
-    queries: {},
+    queries: {
+      article: "articleId=",
+    },
+  },
+  articles: {
+    name: "/article",
+    queries: {
+      id: "id=",
+    },
   },
   error: {
     name: "/error",

@@ -6,6 +6,16 @@ const Input = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  .value {
+    font-family: ${theme.fonts.extra};
+    font-size: ${theme.fontSizes.xs};
+    line-height: 18px;
+
+    color: ${theme.colors.blue};
+
+    margin: 0;
+  }
 `
 
 const IconContainer = styled.button`

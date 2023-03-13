@@ -16,7 +16,7 @@ function Error() {
         if ((router.query.type as ErrorType) === "error") {
           router.replace(routes.pricing.name)
         } else {
-          router.replace(`${routes.login}?${routes.login.queries.client}`)
+          router.replace(`${routes.login.name}?${routes.login.queries.client}`)
         }
       }}
       type={(router.query.type as ErrorType) ?? ""}
