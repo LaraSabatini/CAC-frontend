@@ -65,7 +65,7 @@ function ModalAttachedFiles({ closeModal }: ModalAttachedFilesInterface) {
                       ) {
                         setImageSelectedForPortrait(null)
                       }
-                      removeFileFromList(file)
+                      removeFileFromList(file, "create")
                     }}
                   >
                     <MdOutlineClose />
