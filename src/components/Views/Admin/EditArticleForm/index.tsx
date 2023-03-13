@@ -6,7 +6,6 @@ import Modal from "components/UI/Modal"
 import Input from "components/UI/Input"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import { OptionsInterface } from "interfaces/content/Article"
-import { FilterInterface } from "interfaces/contexts/DashboardContextInterface"
 import ArticleButtons from "./ArticleButtons"
 import AttachmentButton from "./AttachmentButtons"
 import PrevisualizeArticle from "./PrevisualizeArticle"
@@ -36,6 +35,21 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
     setPortrait,
     setNewAttachmentsForDataBase,
   } = useContext(ArticlesContext)
+
+  const getActiveOptions = (
+    idsSelected: number[],
+    filters: { id: number; value: string }[],
+  ): { id: number; value: string }[] => {
+    const activeOptions = []
+
+    for (let i = 0; i < filters.length; i += 1) {
+      if (idsSelected.includes(filters[i].id)) {
+        activeOptions.push(filters[i])
+      }
+    }
+
+    return activeOptions
+  }
 
   useEffect(() => {
     if (articleSelected !== null) {
@@ -105,14 +119,17 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
                   optionsList="single"
                   width={480}
                   options={regionFilters}
-                  activeOptions={
-                    articleEdited.regionFilters as FilterInterface[]
-                  }
+                  activeOptions={getActiveOptions(
+                    articleEdited.regionFilters as number[],
+                    regionFilters,
+                  )}
                   onChange={(e: OptionsInterface[] | undefined) => {
                     if (e !== undefined) {
+                      const filters: number[] = []
+                      e.map(filter => filters.push(filter.id))
                       setArticleEdited({
                         ...articleEdited,
-                        regionFilters: e,
+                        regionFilters: filters,
                       })
                     }
                   }}
@@ -126,14 +143,17 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
                   optionsList="single"
                   width={475}
                   options={themeFilters}
-                  activeOptions={
-                    articleEdited.themeFilters as FilterInterface[]
-                  }
+                  activeOptions={getActiveOptions(
+                    articleEdited.themeFilters as number[],
+                    themeFilters,
+                  )}
                   onChange={(e: OptionsInterface[] | undefined) => {
                     if (e !== undefined) {
+                      const filters: number[] = []
+                      e.map(filter => filters.push(filter.id))
                       setArticleEdited({
                         ...articleEdited,
-                        themeFilters: e,
+                        themeFilters: filters,
                       })
                     }
                   }}

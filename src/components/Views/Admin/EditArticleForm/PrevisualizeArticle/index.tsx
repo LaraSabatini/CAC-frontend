@@ -139,6 +139,7 @@ function PrevisualizeArticle() {
         {contentToShow === "card" && (
           <ArticleView
             URLBlocked
+            region={articleEdited.regionFilters[0] as number}
             article={{
               ...articleEdited,
               portrait: cardPortrait,
