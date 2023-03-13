@@ -16,8 +16,6 @@ export const ArticlesContext = createContext<ArticleContextInterface>({
   setAttachmentsForServer: () => {},
   discardNewArticle: () => {},
   removeFileFromList: () => {},
-  triggerArticleListUpdate: 0,
-  setTriggerArticleListUpdate: () => {},
   imageSelectedForPortrait: null,
   setImageSelectedForPortrait: () => {},
   articleSelected: null,
@@ -49,11 +47,6 @@ function ArticlesProvider({ children }: any) {
 
   const [previsualize, setPrevisualize] = useState<boolean>(false)
 
-  const [
-    triggerArticleListUpdate,
-    setTriggerArticleListUpdate,
-  ] = useState<number>(0)
-
   const [imageSelectedForPortrait, setImageSelectedForPortrait] = useState<
     string | null
   >(null)
@@ -63,7 +56,6 @@ function ArticlesProvider({ children }: any) {
     setAttachmentsForDataBase([])
     setAttachmentsForServer([])
     setPrevisualize(false)
-    setTriggerArticleListUpdate(0)
     setImageSelectedForPortrait(null)
   }
 
@@ -134,8 +126,6 @@ function ArticlesProvider({ children }: any) {
       setAttachmentsForServer,
       discardNewArticle,
       removeFileFromList,
-      triggerArticleListUpdate,
-      setTriggerArticleListUpdate,
       imageSelectedForPortrait,
       setImageSelectedForPortrait,
       articleSelected,
@@ -158,7 +148,6 @@ function ArticlesProvider({ children }: any) {
       attachmentsForDataBase,
       previsualize,
       attachmentsForServer,
-      triggerArticleListUpdate,
       imageSelectedForPortrait,
       articleSelected,
       articleEdited,

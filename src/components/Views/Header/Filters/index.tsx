@@ -3,7 +3,6 @@ import { useRouter } from "next/router"
 import { BsChevronDown, BsChevronUp } from "react-icons/bs"
 import { filterArticles } from "services/articles/articles.service"
 import { DashboardContext } from "contexts/Dashboard"
-import { ArticlesContext } from "contexts/Articles"
 import Checkbox from "components/UI/Checkbox"
 import Button from "components/UI/Button"
 import Scroll from "components/UI/Scroll"
@@ -21,12 +20,13 @@ import {
 function Filters() {
   const router = useRouter()
 
-  const { regionFilters, themeFilters, setArticles } = useContext(
-    DashboardContext,
-  )
-  const { setTriggerArticleListUpdate, triggerArticleListUpdate } = useContext(
-    ArticlesContext,
-  )
+  const {
+    regionFilters,
+    themeFilters,
+    setArticles,
+    setTriggerArticleListUpdate,
+    triggerArticleListUpdate,
+  } = useContext(DashboardContext)
 
   const [typeOfFilter, setTypeOfFilter] = useState<"articles" | "partners">(
     "articles",
@@ -143,6 +143,7 @@ function Filters() {
               action={() => {
                 setRegionFiltersSelected([])
                 setThemeFiltersSelected([])
+                setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
               }}
             />
             <Button content="Aplicar" cta action={searchArticles} />

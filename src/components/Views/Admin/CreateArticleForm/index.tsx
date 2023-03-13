@@ -23,15 +23,16 @@ interface CreateArticleFormInterface {
 }
 
 function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
-  const { regionFilters, themeFilters } = useContext(DashboardContext)
-
   const {
-    newArticle,
-    setNewArticle,
-    previsualize,
+    regionFilters,
+    themeFilters,
     setTriggerArticleListUpdate,
     triggerArticleListUpdate,
-  } = useContext(ArticlesContext)
+  } = useContext(DashboardContext)
+
+  const { newArticle, setNewArticle, previsualize } = useContext(
+    ArticlesContext,
+  )
 
   const getActiveOptions = (
     idsSelected: number[],

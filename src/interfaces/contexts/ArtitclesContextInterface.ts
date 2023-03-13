@@ -15,8 +15,6 @@ interface ArticleContextInterface {
   setAttachmentsForServer(attachmentsForServer: File[] | []): void
   discardNewArticle(): void
   removeFileFromList(arg: AttachmentInterface, action: "edit" | "create"): void
-  triggerArticleListUpdate: number
-  setTriggerArticleListUpdate(triggerArticleListUpdate: number): void
   imageSelectedForPortrait: string | null
   setImageSelectedForPortrait(imageSelectedForPortrait: string | null): void
   articleSelected: ArticleInterface | null

@@ -23,12 +23,16 @@ interface EditArticleFormInterface {
 }
 
 function EditArticleForm({ closeForm }: EditArticleFormInterface) {
-  const { regionFilters, themeFilters } = useContext(DashboardContext)
+  const {
+    regionFilters,
+    themeFilters,
+    setTriggerArticleListUpdate,
+    triggerArticleListUpdate,
+  } = useContext(DashboardContext)
 
   const {
     previsualizeEdit,
-    setTriggerArticleListUpdate,
-    triggerArticleListUpdate,
+
     articleSelected,
     articleEdited,
     setArticleEdited,

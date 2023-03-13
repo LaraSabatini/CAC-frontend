@@ -11,6 +11,8 @@ export const DashboardContext = createContext<DashboardContextInterface>({
   setRegionFilters: () => {},
   themeFilters: [],
   setThemeFilters: () => {},
+  triggerArticleListUpdate: 0,
+  setTriggerArticleListUpdate: () => {},
 })
 
 function DashboardProvider({ children }: any) {
@@ -20,6 +22,11 @@ function DashboardProvider({ children }: any) {
 
   const [themeFilters, setThemeFilters] = useState<FilterInterface[] | []>([])
 
+  const [
+    triggerArticleListUpdate,
+    setTriggerArticleListUpdate,
+  ] = useState<number>(0)
+
   const value: any = useMemo(
     () => ({
       setArticles,
@@ -28,9 +35,11 @@ function DashboardProvider({ children }: any) {
       setRegionFilters,
       themeFilters,
       setThemeFilters,
+      triggerArticleListUpdate,
+      setTriggerArticleListUpdate,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [regionFilters, themeFilters, articles],
+    [regionFilters, themeFilters, articles, triggerArticleListUpdate],
   )
 
   return (

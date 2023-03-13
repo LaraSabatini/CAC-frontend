@@ -12,6 +12,8 @@ interface DashboardContextInterface {
   setRegionFilters(regionFilters: FilterInterface[] | []): void
   themeFilters: FilterInterface[] | []
   setThemeFilters(themeFilters: FilterInterface[] | []): void
+  triggerArticleListUpdate: number
+  setTriggerArticleListUpdate(triggerArticleListUpdate: number): void
 }
 
 export default DashboardContextInterface
