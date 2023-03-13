@@ -12,6 +12,7 @@ import Icon from "components/UI/Assets/Icon"
 import MediaViewer from "components/UI/MediaViewer"
 import DeleteArticleModal from "./DeleteArticleModal"
 import EditArticleForm from "../../Admin/EditArticleForm"
+import RelatedArticles from "./RelatedArticles"
 import {
   Container,
   LeftContainer,
@@ -82,91 +83,105 @@ function ArticleBody(props: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    setData(undefined)
+    getArticleData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.articleId])
+
   return (
-    <Container>
-      {data !== undefined && (
-        <LeftContainer>
-          {modalDelete && (
-            <DeleteArticleModal cancel={() => setModalDelete(false)} />
-          )}
-          {modalEdit && (
-            <EditArticleForm
-              closeForm={() => {
-                setModalEdit(false)
-                discardArticleEdition()
-              }}
-            />
-          )}
-          <div className="articleHeader">
-            <ArticleRegion>
-              {typeof data.regionFilters === "string"
-                ? JSON.parse(data.regionFilters as string)[0].value
-                : data.regionFilters[0].value}
-            </ArticleRegion>
-            <ArticleTitle>{data.title}</ArticleTitle>
-            <Subtitle>{data.subtitle}</Subtitle>
-          </div>
-          <ArticleContainer>
-            <Scroll height={350}>
-              {articleParagraphs.map((paragraph: string) => (
-                <ArticleParagraph key={Math.floor(Math.random() * 1000)}>
-                  {paragraph}
-                </ArticleParagraph>
-              ))}
-            </Scroll>
-            <RightSubcolumn>
-              <AuthorContainer>
-                <Icon icon="Profile" />
-                <p>
-                  <span>{texts.author}</span>
-                  {data.author}
-                </p>
-              </AuthorContainer>
-              {typeof queries !== "undefined" && userData.type === "admin" && (
-                <Buttons>
-                  <Tooltip title="Editar">
-                    <button
-                      type="button"
-                      className="edit"
-                      onClick={() => {
-                        setArticleSelected(data)
-                        setModalEdit(true)
-                      }}
-                    >
-                      <TbPencil />
-                    </button>
-                  </Tooltip>
-                  <Tooltip title="Eliminar">
-                    <button
-                      type="button"
-                      className="delete"
-                      onClick={() => setModalDelete(true)}
-                    >
-                      <FaRegTrashAlt />
-                    </button>
-                  </Tooltip>
-                </Buttons>
-              )}
-            </RightSubcolumn>
-          </ArticleContainer>
-        </LeftContainer>
+    <div>
+      <Container>
+        {data !== undefined && (
+          <LeftContainer>
+            {modalDelete && (
+              <DeleteArticleModal cancel={() => setModalDelete(false)} />
+            )}
+            {modalEdit && (
+              <EditArticleForm
+                closeForm={() => {
+                  setModalEdit(false)
+                  discardArticleEdition()
+                }}
+              />
+            )}
+            <div className="articleHeader">
+              <ArticleRegion>
+                {typeof data.regionFilters === "string"
+                  ? JSON.parse(data.regionFilters as string)[0].value
+                  : data.regionFilters[0].value}
+              </ArticleRegion>
+              <ArticleTitle>{data.title}</ArticleTitle>
+              <Subtitle>{data.subtitle}</Subtitle>
+            </div>
+            <ArticleContainer>
+              <Scroll height={350}>
+                {articleParagraphs.map((paragraph: string) => (
+                  <ArticleParagraph key={Math.floor(Math.random() * 1000)}>
+                    {paragraph}
+                  </ArticleParagraph>
+                ))}
+              </Scroll>
+              <RightSubcolumn>
+                <AuthorContainer>
+                  <Icon icon="Profile" />
+                  <p>
+                    <span>{texts.author}</span>
+                    {data.author}
+                  </p>
+                </AuthorContainer>
+                {typeof queries !== "undefined" && userData.type === "admin" && (
+                  <Buttons>
+                    <Tooltip title="Editar">
+                      <button
+                        type="button"
+                        className="edit"
+                        onClick={() => {
+                          setArticleSelected(data)
+                          setModalEdit(true)
+                        }}
+                      >
+                        <TbPencil />
+                      </button>
+                    </Tooltip>
+                    <Tooltip title="Eliminar">
+                      <button
+                        type="button"
+                        className="delete"
+                        onClick={() => setModalDelete(true)}
+                      >
+                        <FaRegTrashAlt />
+                      </button>
+                    </Tooltip>
+                  </Buttons>
+                )}
+              </RightSubcolumn>
+            </ArticleContainer>
+          </LeftContainer>
+        )}
+        {showImageVisualizer && data !== undefined && (
+          <RigthContainer>
+            {(typeof data.attachments === "string"
+              ? JSON.parse(data.attachments as string).length
+              : data.attachments.length) && (
+              <MediaViewer
+                urls={
+                  typeof data.attachments === "string"
+                    ? JSON.parse(data.attachments as string)
+                    : data.attachments
+                }
+              />
+            )}
+          </RigthContainer>
+        )}
+      </Container>
+      {queries && data !== undefined && (
+        <RelatedArticles
+          regionFilters={JSON.parse(data.regionFilters as string)}
+          themeFilters={JSON.parse(data.themeFilters as string)}
+        />
       )}
-      {showImageVisualizer && data !== undefined && (
-        <RigthContainer>
-          {(typeof data.attachments === "string"
-            ? JSON.parse(data.attachments as string).length
-            : data.attachments.length) && (
-            <MediaViewer
-              urls={
-                typeof data.attachments === "string"
-                  ? JSON.parse(data.attachments as string)
-                  : data.attachments
-              }
-            />
-          )}
-        </RigthContainer>
-      )}
-    </Container>
+    </div>
   )
 }
 

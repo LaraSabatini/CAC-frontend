@@ -30,10 +30,19 @@ const editArticle = async (body: ArticleInterface) => {
   return res.data
 }
 
+const getRelatedArticles = async (themeId: number, regionId: number) => {
+  const res = await axios.get(
+    `${apiURL}/related-articles/themeId=${themeId}&regionId=${regionId}`,
+    axiosHeader,
+  )
+  return res.data
+}
+
 export {
   createArticle,
   editArticle,
   deleteArticle,
   getArticles,
   getArticleById,
+  getRelatedArticles,
 }
