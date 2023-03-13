@@ -10,6 +10,7 @@ import Icon from "components/UI/Assets/Icon"
 import Button from "components/UI/Button"
 import Tooltip from "components/UI/Tooltip"
 import ModalStatus from "components/UI/ModalStatus"
+import Filters from "./Filters"
 import {
   Container,
   SearchContainer,
@@ -29,6 +30,7 @@ function Header() {
   const [openProfileMenu, setOpenProfileMenu] = useState<boolean>(false)
   const [openWarning, setOpenWarning] = useState<boolean>(false)
   const [deviceIsMobile, setDeviceIsMobile] = useState<boolean>(false)
+  const [openFilters, setOpenFilters] = useState<boolean>(false)
 
   const logout = () => {
     localStorage.removeItem("userData")
@@ -55,7 +57,12 @@ function Header() {
         </GoHomeButton>
         <SearchDiv>
           <SearchBar width={deviceIsMobile ? 200 : 300} />
-          <Button cta content={headerTexts.filter} action={() => {}} />
+          <Button
+            cta
+            content={headerTexts.filter}
+            action={() => setOpenFilters(!openFilters)}
+          />
+          {openFilters && <Filters />}
         </SearchDiv>
       </SearchContainer>
       <ProfileContainer>
