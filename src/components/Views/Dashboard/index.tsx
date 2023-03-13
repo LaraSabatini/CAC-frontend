@@ -47,7 +47,12 @@ function DashboardView() {
       {articleId === undefined ? (
         <ArticlesContainer>
           {articles.length ? (
-            articles.map(article => <ArticleView article={article} />)
+            articles.map(article => (
+              <ArticleView
+                region={JSON.parse(article.regionFilters as string)[0]}
+                article={article}
+              />
+            ))
           ) : (
             <EmptyPage>No hay articulos para mostrar</EmptyPage>
           )}

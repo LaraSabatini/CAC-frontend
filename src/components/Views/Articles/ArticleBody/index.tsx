@@ -86,8 +86,10 @@ function ArticleBody(props: Props) {
   }, [])
 
   useEffect(() => {
-    setData(undefined)
-    getArticleData()
+    if (router.query.articleId !== undefined) {
+      setData(undefined)
+      getArticleData()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.articleId])
 

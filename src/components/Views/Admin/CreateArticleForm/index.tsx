@@ -5,10 +5,7 @@ import { ArticlesContext } from "contexts/Articles"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Modal from "components/UI/Modal"
 import Input from "components/UI/Input"
-import {
-  ArticleFiltersInterface,
-  OptionsInterface,
-} from "interfaces/content/Article"
+import { OptionsInterface } from "interfaces/content/Article"
 import AttachmentButtons from "./AttachmentButtons"
 import ArticleButtons from "./ArticleButtons"
 import PrevisualizeArticle from "./PrevisualizeArticle"
@@ -35,6 +32,21 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
     setTriggerArticleListUpdate,
     triggerArticleListUpdate,
   } = useContext(ArticlesContext)
+
+  const getActiveOptions = (
+    idsSelected: number[],
+    filters: { id: number; value: string }[],
+  ): { id: number; value: string }[] => {
+    const activeOptions = []
+
+    for (let i = 0; i < filters.length; i += 1) {
+      if (idsSelected.includes(filters[i].id)) {
+        activeOptions.push(filters[i])
+      }
+    }
+
+    return activeOptions
+  }
 
   return (
     <Modal>
@@ -80,14 +92,17 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                   optionsList="single"
                   width={480}
                   options={regionFilters}
-                  activeOptions={
-                    newArticle.regionFilters as ArticleFiltersInterface[]
-                  }
+                  activeOptions={getActiveOptions(
+                    newArticle.regionFilters as number[],
+                    regionFilters,
+                  )}
                   onChange={(e: OptionsInterface[] | undefined) => {
                     if (e !== undefined) {
+                      const filters: number[] = []
+                      e.map(filter => filters.push(filter.id))
                       setNewArticle({
                         ...newArticle,
-                        regionFilters: e,
+                        regionFilters: filters,
                       })
                     }
                   }}
@@ -101,14 +116,17 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                   optionsList="single"
                   width={475}
                   options={themeFilters}
-                  activeOptions={
-                    newArticle.themeFilters as ArticleFiltersInterface[]
-                  }
+                  activeOptions={getActiveOptions(
+                    newArticle.themeFilters as number[],
+                    themeFilters,
+                  )}
                   onChange={(e: OptionsInterface[] | undefined) => {
                     if (e !== undefined) {
+                      const filters: number[] = []
+                      e.map(filter => filters.push(filter.id))
                       setNewArticle({
                         ...newArticle,
-                        themeFilters: e,
+                        themeFilters: filters,
                       })
                     }
                   }}

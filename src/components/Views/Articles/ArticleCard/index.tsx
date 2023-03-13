@@ -16,10 +16,11 @@ import {
 
 interface ArticleViewInterface {
   article: ArticleInterface
+  region: number
   URLBlocked?: boolean
 }
 
-function ArticleView({ article, URLBlocked }: ArticleViewInterface) {
+function ArticleView({ article, URLBlocked, region }: ArticleViewInterface) {
   const router = useRouter()
 
   const { regionFilters } = useContext(DashboardContext)
@@ -29,12 +30,7 @@ function ArticleView({ article, URLBlocked }: ArticleViewInterface) {
       <CardInfo>
         <div className="articleHeader">
           <ArticleRegion>
-            {
-              regionFilters.filter(
-                item =>
-                  item.id === JSON.parse(article.regionFilters as string)[0],
-              )[0].value
-            }
+            {regionFilters.filter(item => item.id === region)[0]?.value}
           </ArticleRegion>
           <ArticleTitle>{article.title}</ArticleTitle>
         </div>
