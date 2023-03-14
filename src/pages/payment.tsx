@@ -45,6 +45,9 @@ function Payment() {
       dateCreated: dateFormated,
       preferences: "[]",
       firstLogin: 1,
+      plan: payment.itemId,
+      paymentDate: dateFormated,
+      paymentExpireDate: payment.paymentExpireDate,
     }
 
     const validateEmailReq = await validateEmail({ email: newClientInfo.email })

@@ -1,5 +1,6 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { ClientsContext } from "contexts/Clients"
+import { getFilters } from "services/articles/filters.service"
 import capitalizeFirstLetter from "helpers/formatting/capitalizeFirstLetter"
 import identificationTypes from "const/identificationTypes"
 import texts from "strings/payment.json"
@@ -9,6 +10,19 @@ import { HorizontalGroup, InputContainer } from "../styles"
 
 function Inputs() {
   const { newClient, setNewClient } = useContext(ClientsContext)
+
+  const [regionOptions, setRegionOptions] = useState<
+    { id: number; value: string }[]
+  >([])
+
+  const fillRegionOptions = async () => {
+    const getFiltersCall = await getFilters("regions")
+    setRegionOptions(getFiltersCall.data)
+  }
+
+  useEffect(() => {
+    fillRegionOptions()
+  }, [])
 
   return (
     <InputContainer>
@@ -100,6 +114,20 @@ function Inputs() {
             setNewClient({
               ...newClient,
               phoneNumber: e.target.value,
+            })
+          }}
+        />
+      </HorizontalGroup>
+      <HorizontalGroup>
+        <InputSelect
+          label="Region"
+          width={230}
+          options={regionOptions}
+          required
+          onClick={(e: { id: number; value: string }) => {
+            setNewClient({
+              ...newClient,
+              region: e.id,
             })
           }}
         />
