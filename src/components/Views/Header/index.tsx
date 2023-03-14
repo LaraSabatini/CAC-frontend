@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { AiOutlineLogout, AiFillHome } from "react-icons/ai"
 import { useRouter } from "next/router"
 import routes from "routes"
+import { searchArticles } from "services/articles/articles.service"
+import { DashboardContext } from "contexts/Dashboard"
 import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
 import texts from "strings/profile.json"
 import headerTexts from "strings/header.json"
@@ -27,10 +29,17 @@ function Header() {
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
+  const {
+    setTriggerArticleListUpdate,
+    triggerArticleListUpdate,
+    setArticles,
+  } = useContext(DashboardContext)
+
   const [openProfileMenu, setOpenProfileMenu] = useState<boolean>(false)
   const [openWarning, setOpenWarning] = useState<boolean>(false)
   const [deviceIsMobile, setDeviceIsMobile] = useState<boolean>(false)
   const [openFilters, setOpenFilters] = useState<boolean>(false)
+  const [searchValue, setSearchValue] = useState<string>("")
 
   const logout = () => {
     localStorage.removeItem("userData")
@@ -45,6 +54,11 @@ function Header() {
     }
   }
 
+  const searchArticlesInDB = async () => {
+    const searchArticlesCall = await searchArticles({ search: searchValue })
+    setArticles(searchArticlesCall.data)
+  }
+
   useEffect(() => {
     window.addEventListener("resize", handleResize)
   })
@@ -56,7 +70,24 @@ function Header() {
           <AiFillHome />
         </GoHomeButton>
         <SearchDiv>
-          <SearchBar width={deviceIsMobile ? 200 : 300} />
+          <SearchBar
+            width={deviceIsMobile ? 200 : 300}
+            searchValue={searchValue}
+            onChangeSearch={e => {
+              if (e !== undefined) {
+                if (e.target.value === "") {
+                  setSearchValue("")
+                  setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
+                } else {
+                  setSearchValue(e.target.value)
+                  if (e.target.value.length >= 4) {
+                    searchArticlesInDB()
+                  }
+                }
+              }
+            }}
+            enterSearch={searchArticlesInDB}
+          />
           <Button
             cta
             content={headerTexts.filter}
