@@ -20,7 +20,10 @@ import InputSelect from "components/UI/InputSelect"
 import Button from "components/UI/Button"
 import { Form, HorizontalGroup, ButtonContainer, Error } from "./styles"
 
-function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
+function EditPersonalInfo({
+  cancelChanges,
+  regions,
+}: EditPersonalInfoInterface) {
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const { profileData, triggerUpdate, setTriggerUpdate } = useContext(
@@ -37,6 +40,7 @@ function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
     phoneAreaCode: `${data.phoneAreaCode}`,
     phoneNumber: `${data.phoneNumber}`,
     email: `${data.email}`,
+    region: data.region,
   })
   const [formError, setFormError] = useState<string>("")
 
@@ -177,6 +181,18 @@ function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
         type="email"
         value={newData.email}
         onChange={e => setNewData({ ...newData, email: e.target.value })}
+      />
+      <InputSelect
+        width={270}
+        label="Region"
+        options={regions as { id: number; value: string }[]}
+        required
+        onClick={(e: { id: number; value: string }) => {
+          setNewData({
+            ...newData,
+            region: e.id,
+          })
+        }}
       />
       <ButtonContainer>
         <Button

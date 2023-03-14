@@ -6,8 +6,10 @@ export interface DataInterface {
   phoneAreaCode: string
   phoneNumber: string
   email: string
+  region: number
 }
 
 export interface EditPersonalInfoInterface {
   cancelChanges: (arg?: any) => void
+  regions?: { id: number; value: string }[]
 }

@@ -1,12 +1,14 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { ProfileContext } from "contexts/Profile"
 import ClientInterface from "interfaces/users/Client"
+import { getFilters } from "services/articles/filters.service"
 import {
   AiOutlineUser,
   AiOutlineMail,
   AiOutlinePhone,
   AiOutlineCalendar,
 } from "react-icons/ai"
+import { TfiLocationPin } from "react-icons/tfi"
 import { BiPencil } from "react-icons/bi"
 import texts from "strings/profile.json"
 import Tooltip from "components/UI/Tooltip"
@@ -21,6 +23,17 @@ function PersonalInfo() {
   const data = profileData as ClientInterface
 
   const [activeEdition, setActiveEdition] = useState<boolean>(false)
+
+  const [regions, setRegions] = useState<{ id: number; value: string }[]>([])
+
+  const getFiltersData = async () => {
+    const getFiltersCall = await getFilters("regions")
+    setRegions(getFiltersCall.data)
+  }
+
+  useEffect(() => {
+    getFiltersData()
+  }, [])
 
   return (
     <PersonalDataCard>
@@ -63,9 +76,21 @@ function PersonalInfo() {
             title={texts.personalData.creationDate}
             value={data?.dateCreated}
           />
+          {regions !== undefined && data !== undefined && (
+            <DataSet
+              icon={<TfiLocationPin />}
+              title="Región:"
+              value={
+                regions.filter(region => region.id === data?.region)[0]?.value
+              }
+            />
+          )}
         </Data>
       ) : (
-        <EditPersonalInfo cancelChanges={() => setActiveEdition(false)} />
+        <EditPersonalInfo
+          regions={regions}
+          cancelChanges={() => setActiveEdition(false)}
+        />
       )}
     </PersonalDataCard>
   )
