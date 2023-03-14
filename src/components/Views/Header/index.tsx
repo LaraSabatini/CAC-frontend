@@ -71,7 +71,7 @@ function Header() {
             <Button
               cta={false}
               content={headerTexts.clients}
-              action={() => {}}
+              action={() => router.replace(`${routes.partners.name}`)}
             />
             <CreateArticleButton />
           </>

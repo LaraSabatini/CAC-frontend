@@ -53,6 +53,10 @@ const routes = {
       preferenceError: "preference_error=true",
     },
   },
+  partners: {
+    name: "/partners",
+    queries: {},
+  },
 }
 
 export default routes
