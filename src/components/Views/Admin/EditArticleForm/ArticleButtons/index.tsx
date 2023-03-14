@@ -68,7 +68,9 @@ function ArticleButtons({
 
       const data = {
         ...articleEdited,
-        portrait: getFiles(portrait.split(".")[0], portrait.split(".")[1]),
+        portrait: portrait?.includes("http")
+          ? portrait
+          : getFiles(portrait.split(".")[0], portrait.split(".")[1]),
         attachments: JSON.stringify(newAttachmentsForDataBase),
         regionFilters: JSON.stringify(articleEdited.regionFilters),
         themeFilters: JSON.stringify(articleEdited.themeFilters),

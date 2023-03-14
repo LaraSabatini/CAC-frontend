@@ -3,8 +3,6 @@ import ArticleInterface, {
 } from "interfaces/content/Article"
 
 interface ArticleContextInterface {
-  articles: ArticleInterface[] | []
-  setArticles(articles: ArticleInterface[] | []): void
   newArticle: ArticleInterface
   setNewArticle(newArticle: ArticleInterface): void
   attachmentsForDataBase: AttachmentInterface[] | []
@@ -17,8 +15,6 @@ interface ArticleContextInterface {
   setAttachmentsForServer(attachmentsForServer: File[] | []): void
   discardNewArticle(): void
   removeFileFromList(arg: AttachmentInterface, action: "edit" | "create"): void
-  triggerArticleListUpdate: number
-  setTriggerArticleListUpdate(triggerArticleListUpdate: number): void
   imageSelectedForPortrait: string | null
   setImageSelectedForPortrait(imageSelectedForPortrait: string | null): void
   articleSelected: ArticleInterface | null

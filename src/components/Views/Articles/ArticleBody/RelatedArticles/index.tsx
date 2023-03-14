@@ -38,7 +38,12 @@ function RelatedArticles({
       <Title>Artículos relacionados</Title>
       <Carousel>
         {relatedArticles?.length ? (
-          relatedArticles.map(article => <ArticleView article={article} />)
+          relatedArticles.map(article => (
+            <ArticleView
+              region={JSON.parse(article.regionFilters as string)[0]}
+              article={article}
+            />
+          ))
         ) : (
           <></>
         )}

@@ -97,6 +97,7 @@ const AddButton = styled.button`
 const SearchDiv = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
   gap: 15px;
   @media (max-width: ${theme.screenSize.transition_mobile}) {
     margin-top: 10px;

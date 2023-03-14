@@ -6,8 +6,6 @@ import defaultArticle from "const/defaultArticle"
 import ArticleContextInterface from "interfaces/contexts/ArtitclesContextInterface"
 
 export const ArticlesContext = createContext<ArticleContextInterface>({
-  articles: [],
-  setArticles: () => {},
   newArticle: defaultArticle,
   setNewArticle: () => {},
   attachmentsForDataBase: [],
@@ -18,8 +16,6 @@ export const ArticlesContext = createContext<ArticleContextInterface>({
   setAttachmentsForServer: () => {},
   discardNewArticle: () => {},
   removeFileFromList: () => {},
-  triggerArticleListUpdate: 0,
-  setTriggerArticleListUpdate: () => {},
   imageSelectedForPortrait: null,
   setImageSelectedForPortrait: () => {},
   articleSelected: null,
@@ -38,8 +34,6 @@ export const ArticlesContext = createContext<ArticleContextInterface>({
 })
 
 function ArticlesProvider({ children }: any) {
-  const [articles, setArticles] = useState<ArticleInterface[] | []>([])
-
   // *** Article creation
   const [newArticle, setNewArticle] = useState<ArticleInterface>(defaultArticle)
 
@@ -53,11 +47,6 @@ function ArticlesProvider({ children }: any) {
 
   const [previsualize, setPrevisualize] = useState<boolean>(false)
 
-  const [
-    triggerArticleListUpdate,
-    setTriggerArticleListUpdate,
-  ] = useState<number>(0)
-
   const [imageSelectedForPortrait, setImageSelectedForPortrait] = useState<
     string | null
   >(null)
@@ -67,7 +56,6 @@ function ArticlesProvider({ children }: any) {
     setAttachmentsForDataBase([])
     setAttachmentsForServer([])
     setPrevisualize(false)
-    setTriggerArticleListUpdate(0)
     setImageSelectedForPortrait(null)
   }
 
@@ -128,8 +116,6 @@ function ArticlesProvider({ children }: any) {
 
   const value: any = useMemo(
     () => ({
-      setArticles,
-      articles,
       newArticle,
       setNewArticle,
       attachmentsForDataBase,
@@ -140,8 +126,6 @@ function ArticlesProvider({ children }: any) {
       setAttachmentsForServer,
       discardNewArticle,
       removeFileFromList,
-      triggerArticleListUpdate,
-      setTriggerArticleListUpdate,
       imageSelectedForPortrait,
       setImageSelectedForPortrait,
       articleSelected,
@@ -160,12 +144,10 @@ function ArticlesProvider({ children }: any) {
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
-      articles,
       newArticle,
       attachmentsForDataBase,
       previsualize,
       attachmentsForServer,
-      triggerArticleListUpdate,
       imageSelectedForPortrait,
       articleSelected,
       articleEdited,
