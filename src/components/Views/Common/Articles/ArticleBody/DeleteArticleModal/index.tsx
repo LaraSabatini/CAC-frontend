@@ -9,7 +9,7 @@ import Modal from "components/UI/Modal"
 import ModalStatus from "components/UI/ModalStatus"
 import Icon from "components/UI/Assets/Icon"
 import Button from "components/UI/Button"
-import InternalServerError from "components/Views/Error/InternalServerError"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import Input from "components/UI/Input"
 import {
   ModalContainer,

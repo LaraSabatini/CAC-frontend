@@ -9,7 +9,7 @@ import deletionOptions from "const/deleteProfileOptions"
 import Modal from "components/UI/Modal"
 import Icon from "components/UI/Assets/Icon"
 import Button from "components/UI/Button"
-import InternalServerError from "components/Views/Error/InternalServerError"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import Input from "components/UI/Input"
 import {
   ModalContainer,

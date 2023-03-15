@@ -8,7 +8,7 @@ import login from "services/auth/login.service"
 import texts from "strings/auth.json"
 import errorTexts from "strings/errors.json"
 import { UserType } from "interfaces/users/General"
-import InternalServerError from "components/Views/Error/InternalServerError"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import Input from "components/UI/Input"
 import Button from "components/UI/Button"
 import {

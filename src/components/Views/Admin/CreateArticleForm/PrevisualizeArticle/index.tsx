@@ -7,8 +7,8 @@ import {
   ContentType,
 } from "interfaces/content/Article"
 import MediaViewer from "components/UI/MediaViewer"
-import ArticleView from "components/Views/Articles/ArticleCard"
-import ArticleBody from "components/Views/Articles/ArticleBody"
+import ArticleView from "@components/Views/Common/Articles/ArticleCard"
+import ArticleBody from "@components/Views/Common/Articles/ArticleBody"
 import {
   Container,
   ButtonContainer,

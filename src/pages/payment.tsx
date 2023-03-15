@@ -6,8 +6,8 @@ import {
   validateIdentificationNumber,
 } from "services/auth/validateClient.service"
 import sendRegisterEmail from "services/auth/sendRegisterEmail.service"
-import GenericError from "components/Views/Error/GenericError"
-import SuccessView from "components/Views/Payment/SuccessView"
+import GenericError from "@components/Views/Common/Error/GenericError"
+import SuccessView from "@components/Views/Clients/Payment/SuccessView"
 import texts from "strings/errors.json"
 import routes from "routes"
 import { dateFormated } from "helpers/dates/getToday"

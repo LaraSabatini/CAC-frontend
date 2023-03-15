@@ -2,7 +2,7 @@ import React from "react"
 import { useRouter } from "next/router"
 import routes from "routes"
 import { ErrorType } from "interfaces/components/GenericErrorPage"
-import GenericError from "components/Views/Error/GenericError"
+import GenericError from "@components/Views/Common/Error/GenericError"
 
 function Error() {
   const router = useRouter()

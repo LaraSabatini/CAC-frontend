@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import routes from "routes"
 import ProfileProvider from "contexts/Profile"
-import ProfileView from "components/Views/Profile"
+import ProfileView from "components/Views/Common/Profile"
 import { UserDataType } from "interfaces/users/General"
 import checkLastPayment from "helpers/dates/checkLastPayment"
 

@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import routes from "routes"
 import PaymentProvider from "contexts/Payment"
 import ClientsProvider from "contexts/Clients"
-import PricingView from "components/Views/Pricing"
+import PricingView from "@components/Views/Clients/Pricing"
 
 function Pricing() {
   const router = useRouter()

@@ -2,7 +2,7 @@ import React from "react"
 import { AiOutlineCalendar } from "react-icons/ai"
 import compareDates from "helpers/dates/compareDates"
 import texts from "strings/profile.json"
-import MercadoPagoForm from "components/Views/Payment/MercadoPagoButton"
+import MercadoPagoForm from "@components/Views/Clients/Payment/MercadoPagoButton"
 import { Title } from "../styles"
 import { Card, State, ExpireDate, CardHeader } from "./styles"
 

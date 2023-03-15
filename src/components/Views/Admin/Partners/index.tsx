@@ -1,5 +1,5 @@
 import React from "react"
-import Header from "components/Views/Header"
+import Header from "@components/Views/Common/Header"
 
 function PartnersView() {
   return (

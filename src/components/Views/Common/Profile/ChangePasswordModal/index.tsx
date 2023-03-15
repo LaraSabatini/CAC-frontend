@@ -8,7 +8,7 @@ import errorTexts from "strings/errors.json"
 import texts from "strings/profile.json"
 import Modal from "components/UI/Modal"
 import ModalStatus from "components/UI/ModalStatus"
-import InternalServerError from "components/Views/Error/InternalServerError"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import Input from "components/UI/Input"
 import Button from "components/UI/Button"
 import {

@@ -12,7 +12,7 @@ import Scroll from "components/UI/Scroll"
 import Icon from "components/UI/Assets/Icon"
 import MediaViewer from "components/UI/MediaViewer"
 import DeleteArticleModal from "./DeleteArticleModal"
-import EditArticleForm from "../../Admin/EditArticleForm"
+import EditArticleForm from "../../../Admin/EditArticleForm"
 import RelatedArticles from "./RelatedArticles"
 import {
   Container,
