@@ -1,6 +1,5 @@
-import React, { useContext } from "react"
+import React from "react"
 import { useRouter } from "next/router"
-import { DashboardContext } from "contexts/Dashboard"
 import texts from "strings/dashboard.json"
 import routes from "routes"
 import ArticleInterface from "interfaces/content/Article"
@@ -22,8 +21,9 @@ interface ArticleViewInterface {
 
 function ArticleView({ article, URLBlocked, region }: ArticleViewInterface) {
   const router = useRouter()
-
-  const { regionFilters } = useContext(DashboardContext)
+  const regionFilters: { id: number; value: string }[] = JSON.parse(
+    localStorage.getItem("regions") as string,
+  )
 
   return (
     <ArticleCard>

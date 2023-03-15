@@ -8,8 +8,6 @@ export interface FilterInterface {
 interface DashboardContextInterface {
   articles: ArticleInterface[] | []
   setArticles(articles: ArticleInterface[] | []): void
-  regionFilters: FilterInterface[] | []
-  setRegionFilters(regionFilters: FilterInterface[] | []): void
   themeFilters: FilterInterface[] | []
   setThemeFilters(themeFilters: FilterInterface[] | []): void
   triggerArticleListUpdate: number

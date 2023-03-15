@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import { ClientsContext } from "contexts/Clients"
-import { getFilters } from "services/articles/filters.service"
 import capitalizeFirstLetter from "helpers/formatting/capitalizeFirstLetter"
 import identificationTypes from "const/identificationTypes"
 import texts from "strings/payment.json"
@@ -9,20 +8,9 @@ import InputSelect from "components/UI/InputSelect"
 import { HorizontalGroup, InputContainer } from "../styles"
 
 function Inputs() {
+  const regionOptions = JSON.parse(localStorage.getItem("regions") as string)
+
   const { newClient, setNewClient } = useContext(ClientsContext)
-
-  const [regionOptions, setRegionOptions] = useState<
-    { id: number; value: string }[]
-  >([])
-
-  const fillRegionOptions = async () => {
-    const getFiltersCall = await getFilters("regions")
-    setRegionOptions(getFiltersCall.data)
-  }
-
-  useEffect(() => {
-    fillRegionOptions()
-  }, [])
 
   return (
     <InputContainer>

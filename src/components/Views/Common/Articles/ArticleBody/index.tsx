@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react"
 import { useRouter } from "next/router"
 import { ArticlesContext } from "contexts/Articles"
-import { DashboardContext } from "contexts/Dashboard"
 import { getArticleById } from "services/articles/articles.service"
 import ArticleInterface from "interfaces/content/Article"
 import { TbPencil } from "react-icons/tb"
@@ -45,12 +44,15 @@ interface CommonProps {
 type Props = CommonProps & ConditionalProps
 
 function ArticleBody(props: Props) {
+  const regionFilters: { id: number; value: string }[] = JSON.parse(
+    localStorage.getItem("regions") as string,
+  )
+
   const { article, showImageVisualizer, queries } = props
 
   const { setArticleSelected, discardArticleEdition } = useContext(
     ArticlesContext,
   )
-  const { regionFilters } = useContext(DashboardContext)
 
   const router = useRouter()
   const userData = JSON.parse(localStorage.getItem("userData") as string)

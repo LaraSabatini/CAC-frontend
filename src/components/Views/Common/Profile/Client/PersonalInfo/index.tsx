@@ -1,7 +1,6 @@
-import React, { useState, useContext, useEffect } from "react"
+import React, { useState, useContext } from "react"
 import { ProfileContext } from "contexts/Profile"
 import ClientInterface from "interfaces/users/Client"
-import { getFilters } from "services/articles/filters.service"
 import {
   AiOutlineUser,
   AiOutlineMail,
@@ -18,22 +17,15 @@ import { Title } from "../styles"
 import { PersonalDataCard, Data, CardHeader, EditButton } from "./styles"
 
 function PersonalInfo() {
+  const regions: { id: number; value: string }[] = JSON.parse(
+    localStorage.getItem("regions") as string,
+  )
+
   const { profileData } = useContext(ProfileContext)
 
   const data = profileData as ClientInterface
 
   const [activeEdition, setActiveEdition] = useState<boolean>(false)
-
-  const [regions, setRegions] = useState<{ id: number; value: string }[]>([])
-
-  const getFiltersData = async () => {
-    const getFiltersCall = await getFilters("regions")
-    setRegions(getFiltersCall.data)
-  }
-
-  useEffect(() => {
-    getFiltersData()
-  }, [])
 
   return (
     <PersonalDataCard>

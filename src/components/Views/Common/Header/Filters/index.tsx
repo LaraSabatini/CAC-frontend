@@ -20,8 +20,11 @@ import {
 function Filters() {
   const router = useRouter()
 
+  const regionFilters: { id: number; value: string }[] = JSON.parse(
+    localStorage.getItem("regions") as string,
+  )
+
   const {
-    regionFilters,
     themeFilters,
     setArticles,
     setTriggerArticleListUpdate,

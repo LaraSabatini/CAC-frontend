@@ -23,8 +23,9 @@ interface CreateArticleFormInterface {
 }
 
 function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
+  const regionFilters = JSON.parse(localStorage.getItem("regions") as string)
+
   const {
-    regionFilters,
     themeFilters,
     setTriggerArticleListUpdate,
     triggerArticleListUpdate,

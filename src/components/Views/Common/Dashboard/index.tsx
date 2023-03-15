@@ -15,7 +15,6 @@ function DashboardView() {
   const { articleId } = router.query
 
   const {
-    setRegionFilters,
     setThemeFilters,
     setArticles,
     articles,
@@ -23,10 +22,8 @@ function DashboardView() {
   } = useContext(DashboardContext)
 
   const getFiltersData = async () => {
-    const getFiltersRegion = await getFilters("regions")
     const getFiltersThemes = await getFilters("themes")
 
-    setRegionFilters(getFiltersRegion.data)
     setThemeFilters(getFiltersThemes.data)
 
     const getArticlesReq = await getArticles(1)
