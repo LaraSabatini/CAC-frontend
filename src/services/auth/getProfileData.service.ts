@@ -8,12 +8,12 @@ const getProfileData = async (type: UserType, userId: number) => {
   return res.data
 }
 
-const getProfileDataForTable = async (userId: number) => {
+const getProfileDataForTable = async (page: number) => {
   const res = await axios.get(
-    `${apiURL}/client/user_data&id=${userId}`,
+    `${apiURL}/client/user_data&page=${page}`,
     axiosHeader,
   )
-  return res.data
+  return res
 }
 
 export { getProfileData, getProfileDataForTable }
