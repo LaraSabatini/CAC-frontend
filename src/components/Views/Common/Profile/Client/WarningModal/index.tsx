@@ -59,7 +59,7 @@ function WarningModal({ cancel }: WarningModalInterface) {
         })
 
         if (loginReq.status === 201) {
-          const blockAccountReq = await blockAccount(userData.id)
+          const blockAccountReq = await blockAccount(userData.id, "block")
           const createFeedbackReq = await createFeedback({
             optionId: deleteOptionSelected.id,
             optionValue: deleteOptionSelected.value,

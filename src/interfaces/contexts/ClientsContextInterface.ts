@@ -13,5 +13,7 @@ interface ClientsContextInterface {
   setClients(clients: ClientInterface[]): void
   plans: { id: number; name: string }[]
   setPlans(plans: { id: number; name: string }[]): void
+  profileData: ClientInterface
+  setProfileData(profileData: ClientInterface): void
 }
 export default ClientsContextInterface

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react"
 import { getProfileData } from "services/auth/getProfileData.service"
 import { ClientsContext } from "contexts/Clients"
-import ClientInterface from "interfaces/users/Client"
 import DataItem from "./DataItem"
+import ModalBlockUnblock from "../ModalBlockUnblock"
 import { Card, Title, ActionButton } from "./styles"
 
 function DetailsCard() {
@@ -10,9 +10,11 @@ function DetailsCard() {
     localStorage.getItem("regions") as string,
   )
 
-  const { clientSelected, plans } = useContext(ClientsContext)
+  const { clientSelected, plans, profileData, setProfileData } = useContext(
+    ClientsContext,
+  )
 
-  const [profileData, setProfileData] = useState<ClientInterface>()
+  const [openModal, setOpenModal] = useState<boolean>(false)
 
   const getData = async () => {
     if (clientSelected !== null) {
@@ -75,9 +77,16 @@ function DetailsCard() {
       {profileData !== undefined && (
         <ActionButton
           action={profileData.accountBlocked === 1 ? "unblock" : "block"}
+          onClick={() => setOpenModal(true)}
         >
           {profileData.accountBlocked === 1 ? "Desbloquear" : "Bloquear"}
         </ActionButton>
+      )}
+      {openModal && (
+        <ModalBlockUnblock
+          cancel={() => setOpenModal(false)}
+          action={profileData?.accountBlocked === 1 ? "unblock" : "block"}
+        />
       )}
     </Card>
   )
