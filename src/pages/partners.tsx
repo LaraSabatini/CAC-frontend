@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import routes from "routes"
+import ClientsProvider from "contexts/Clients"
 import PartnersView from "components/Views/Admin/Partners"
 
 function Partners() {
@@ -21,7 +22,15 @@ function Partners() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return <div>{isLogged && <PartnersView />}</div>
+  return (
+    <div>
+      {isLogged && (
+        <ClientsProvider>
+          <PartnersView />
+        </ClientsProvider>
+      )}
+    </div>
+  )
 }
 
 export default Partners
