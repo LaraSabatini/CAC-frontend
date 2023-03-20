@@ -22,7 +22,9 @@ function ModalBlockUnblock({ action, cancel }: ModalBlockUnblockInterface) {
 
   const motives = [{ id: 1, value: "Incumplimiento de las normas de uso" }]
 
-  const [motive, setMotive] = useState<{ id: number; value: string }>()
+  const [motive, setMotive] = useState<{ id: number; value: string }>(
+    motives[0],
+  )
   const [actionSuccess, setActionSuccess] = useState<boolean>(false)
   const [serverError, setServerError] = useState<boolean>(false)
 

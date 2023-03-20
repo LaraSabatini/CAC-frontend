@@ -8,42 +8,55 @@ import { Container, Title, ButtonContainer } from "./styles"
 function ContactSupportView() {
   const router = useRouter()
 
+  const supportOptions = [{ id: 1, value: "Desbloqueo de cuenta" }]
+
   const [requestType, setRequestType] = useState<{
     id: number
     value: string
-  }>()
+  }>(supportOptions[0])
+
+  const [sentEmail, setSentEmail] = useState<boolean>(false)
 
   const sendRequest = async () => {
     if (requestType !== undefined && requestType.id === 1) {
+      const clientName = router.query.clientName as string
+
       const requestUnblockCall = await requestUnblock(
         {
           recipients: ["sabatinilara@gmail.com"],
           name: "Administrador",
-          clientName: router.query.clientName as string,
+          clientName: clientName.replace("20%", " "),
           unblockURL: `http://localhost:3000/contactSupport/unblock?id=${router.query.id}`,
         },
         parseInt(router.query.id as string, 10),
       )
-      // eslint-disable-next-line no-console
-      console.log("requestUnblockCall", requestUnblockCall)
+      if (requestUnblockCall.data.status === 201) {
+        setSentEmail(true)
+      }
     }
   }
 
   return (
     <Container>
-      <Title>Contactar soporte</Title>
-      <InputSelect
-        label="Solicitud"
-        width={440}
-        options={[{ id: 1, value: "Desbloqueo de cuenta" }]}
-        required
-        onClick={(e: { id: number; value: string }) => {
-          setRequestType(e)
-        }}
-      />
-      <ButtonContainer>
-        <Button content="Enviar solicitud" cta action={sendRequest} />
-      </ButtonContainer>
+      {!sentEmail ? (
+        <>
+          <Title>Contactar soporte</Title>
+          <InputSelect
+            label="Solicitud"
+            width={440}
+            options={supportOptions}
+            required
+            onClick={(e: { id: number; value: string }) => {
+              setRequestType(e)
+            }}
+          />
+          <ButtonContainer>
+            <Button content="Enviar solicitud" cta action={sendRequest} />
+          </ButtonContainer>
+        </>
+      ) : (
+        <h1>Excelente! el email se envio correctamente</h1>
+      )}
     </Container>
   )
 }
