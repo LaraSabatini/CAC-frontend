@@ -1,14 +1,18 @@
 import defaultPost from "services/defaultPost"
 import apiURL from "./route"
 
-const sendAccountBlockedEmailNotification = async (body: {
-  recipients: string[]
-  name: string
-  motive: string
-}) => {
+const sendAccountBlockedEmailNotification = async (
+  body: {
+    recipients: string[]
+    name: string
+    motive: string
+  },
+  id: number,
+  clientName: string,
+) => {
   const res = await defaultPost(`${apiURL}/client/block_account_mail`, {
     ...body,
-    supportURL: "http://localhost:3000/contactSupport",
+    supportURL: `http://localhost:3000/contactSupport?id=${id}&clientName=${clientName}`,
   })
   return res
 }

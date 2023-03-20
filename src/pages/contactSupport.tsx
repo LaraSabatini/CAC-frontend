@@ -1,7 +1,8 @@
 import React from "react"
+import ContactSupportView from "components/Views/Clients/ContactSupport"
 
 function ContactSupport() {
-  return <div>ContactSupport</div>
+  return <ContactSupportView />
 }
 
 export default ContactSupport

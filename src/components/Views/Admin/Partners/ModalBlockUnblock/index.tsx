@@ -37,11 +37,15 @@ function ModalBlockUnblock({ action, cancel }: ModalBlockUnblockInterface) {
 
       success = blockAccountCall.status === 201
       if (blockAccountCall.status === 201) {
-        const blockAccountEmail = await sendAccountBlockedEmailNotification({
-          recipients: [profileData.email],
-          name: profileData.name,
-          motive: motive.value,
-        })
+        const blockAccountEmail = await sendAccountBlockedEmailNotification(
+          {
+            recipients: [profileData.email],
+            name: profileData.name,
+            motive: motive.value,
+          },
+          profileData.id as number,
+          `${profileData.name}%20${profileData.lastName}`,
+        )
 
         success = blockAccountEmail.status === 201
       }
