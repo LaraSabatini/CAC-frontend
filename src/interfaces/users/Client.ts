@@ -10,6 +10,10 @@ interface ClientInterface extends UserInterface {
   preferences: string
   subscription: number
   dateCreated: string
+  plan: number
+  region: number
+  paymentDate: string
+  paymentExpireDate: string
 }
 
 export default ClientInterface

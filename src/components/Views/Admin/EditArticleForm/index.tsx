@@ -23,8 +23,9 @@ interface EditArticleFormInterface {
 }
 
 function EditArticleForm({ closeForm }: EditArticleFormInterface) {
+  const regionFilters = JSON.parse(localStorage.getItem("regions") as string)
+
   const {
-    regionFilters,
     themeFilters,
     setTriggerArticleListUpdate,
     triggerArticleListUpdate,

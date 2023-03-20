@@ -5,7 +5,7 @@ import DashboardProvider from "contexts/Dashboard"
 import ArticlesProvider from "contexts/Articles"
 import routes from "routes"
 import checkLastPayment from "helpers/dates/checkLastPayment"
-import DashboardView from "components/Views/Dashboard"
+import DashboardView from "@components/Views/Common/Dashboard"
 
 function Dashboard() {
   const router = useRouter()

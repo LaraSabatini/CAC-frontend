@@ -2,8 +2,8 @@ import React, { useEffect } from "react"
 import { useRouter } from "next/router"
 import routes from "routes"
 import LoginProvider from "contexts/Login"
-import LoginView from "components/Views/LogIn"
-import ResetPassword from "components/Views/ResetPassword"
+import LoginView from "components/Views/Common/LogIn"
+import ResetPassword from "components/Views/Common/ResetPassword"
 
 function Login() {
   const router = useRouter()

@@ -1,7 +1,7 @@
 import React from "react"
 import texts from "strings/errors.json"
 import routes from "routes"
-import GenericError from "components/Views/Error/GenericError"
+import GenericError from "@components/Views/Common/Error/GenericError"
 import { useRouter } from "next/router"
 
 function ErrorPage() {

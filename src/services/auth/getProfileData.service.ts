@@ -8,4 +8,12 @@ const getProfileData = async (type: UserType, userId: number) => {
   return res.data
 }
 
-export default getProfileData
+const getProfileDataForTable = async (page: number) => {
+  const res = await axios.get(
+    `${apiURL}/client/user_data&page=${page}`,
+    axiosHeader,
+  )
+  return res
+}
+
+export { getProfileData, getProfileDataForTable }
