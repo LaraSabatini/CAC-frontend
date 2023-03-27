@@ -1,6 +1,6 @@
 import defaultPost from "services/defaultPost"
 
-const apiURL = "http://localhost:3001/support"
+const apiURL = "http://localhost:3001/software/api/support"
 
 const requestUnblock = async (
   body: {
