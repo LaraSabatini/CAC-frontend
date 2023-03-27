@@ -63,6 +63,8 @@ function Header() {
     window.addEventListener("resize", handleResize)
   })
 
+  console.log(router)
+
   return (
     <Container>
       <SearchContainer>
@@ -88,12 +90,20 @@ function Header() {
             }}
             enterSearch={searchArticlesInDB}
           />
-          <Button
-            cta
-            content={headerTexts.filter}
-            action={() => setOpenFilters(!openFilters)}
-          />
-          {openFilters && <Filters closeTab={() => setOpenFilters(false)} />}
+          {(router.asPath === "/dashboard" ||
+            router.asPath === "/partners") && (
+            <>
+              <Button
+                cta
+                content={headerTexts.filter}
+                action={() => setOpenFilters(!openFilters)}
+              />
+
+              {openFilters && (
+                <Filters closeTab={() => setOpenFilters(false)} />
+              )}
+            </>
+          )}
         </SearchDiv>
       </SearchContainer>
       <ProfileContainer>
