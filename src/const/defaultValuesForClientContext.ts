@@ -16,6 +16,10 @@ const defaultClient: ClientInterface = {
   dateCreated: "",
   loginAttempts: 0,
   firstLogin: 1,
+  plan: 1,
+  region: 1,
+  paymentDate: "",
+  paymentExpireDate: "",
 }
 
 export default defaultClient
