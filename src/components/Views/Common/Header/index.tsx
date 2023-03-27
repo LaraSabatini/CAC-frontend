@@ -93,7 +93,7 @@ function Header() {
             content={headerTexts.filter}
             action={() => setOpenFilters(!openFilters)}
           />
-          {openFilters && <Filters />}
+          {openFilters && <Filters closeTab={() => setOpenFilters(false)} />}
         </SearchDiv>
       </SearchContainer>
       <ProfileContainer>
