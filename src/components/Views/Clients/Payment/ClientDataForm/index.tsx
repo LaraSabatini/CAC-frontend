@@ -61,21 +61,24 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
         validateIdentificationNumberReq.info === "available"
       ) {
         // *** Crear objeto de compra para que MercadoPago genere un id de preferencia
-        const createPreferenceReq = await createPreference({
-          item: [
-            {
-              id: payment.item.id,
-              title: payment.item.title,
-              quantity: 1,
-              unit_price: payment.item.unit_price,
+        const createPreferenceReq = await createPreference(
+          {
+            item: [
+              {
+                id: payment.item.id,
+                title: payment.item.title,
+                quantity: 1,
+                unit_price: payment.item.unit_price,
+              },
+            ],
+            payer: {
+              name: newClient.name,
+              surname: newClient.lastName,
+              email: newClient.email,
             },
-          ],
-          payer: {
-            name: newClient.name,
-            surname: newClient.lastName,
-            email: newClient.email,
           },
-        })
+          "subscription",
+        )
 
         if (createPreferenceReq.status === 201) {
           const paymentData = {
