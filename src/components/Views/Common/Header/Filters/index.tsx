@@ -17,7 +17,7 @@ import {
   ButtonContainer,
 } from "./styles"
 
-function Filters() {
+function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
   const router = useRouter()
 
   const regionFilters: { id: number; value: string }[] = JSON.parse(
@@ -67,6 +67,7 @@ function Filters() {
   }
 
   const searchArticles = async () => {
+    closeTab()
     if (regionFiltersSelected.length || themeFiltersSelected.length) {
       const filterArticlesCall = await filterArticles({
         regionIds: regionFiltersSelected,
@@ -100,7 +101,7 @@ function Filters() {
               {regionFilterOpen && (
                 <Scroll height={150}>
                   {regionFilters.map(filter => (
-                    <Filter>
+                    <Filter key={filter.id}>
                       <Checkbox
                         idParam={filter.value}
                         ownState
@@ -125,7 +126,7 @@ function Filters() {
               {themeFilterOpen && (
                 <Scroll height={100}>
                   {themeFilters.map(filter => (
-                    <Filter>
+                    <Filter key={filter.id}>
                       <Checkbox
                         idParam={filter.value}
                         ownState
@@ -144,6 +145,7 @@ function Filters() {
               content="Limpiar"
               cta={false}
               action={() => {
+                closeTab()
                 setRegionFiltersSelected([])
                 setThemeFiltersSelected([])
                 setTriggerArticleListUpdate(triggerArticleListUpdate + 1)

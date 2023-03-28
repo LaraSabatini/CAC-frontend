@@ -11,7 +11,8 @@
     "build": "next build",
     "test": "jest --watch",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next export"
   },
   "dependencies": {
     "@babel/core": "7.12.10",

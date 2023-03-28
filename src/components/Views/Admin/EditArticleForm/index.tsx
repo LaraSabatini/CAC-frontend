@@ -25,15 +25,11 @@ interface EditArticleFormInterface {
 function EditArticleForm({ closeForm }: EditArticleFormInterface) {
   const regionFilters = JSON.parse(localStorage.getItem("regions") as string)
 
-  const {
-    themeFilters,
-    setTriggerArticleListUpdate,
-    triggerArticleListUpdate,
-  } = useContext(DashboardContext)
+  const { themeFilters } = useContext(DashboardContext)
 
   const {
     previsualizeEdit,
-
+    setPrevisualizeEdit,
     articleSelected,
     articleEdited,
     setArticleEdited,
@@ -57,6 +53,7 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
   }
 
   useEffect(() => {
+    setPrevisualizeEdit(false)
     if (articleSelected !== null) {
       setArticleEdited({
         ...articleSelected,
@@ -174,7 +171,7 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
                     texts.newArticleForm.labels.descriptionPlaceholder
                   }
                   width={700}
-                  max={300}
+                  max={150}
                   onChange={e =>
                     setArticleEdited({
                       ...articleEdited,
@@ -230,7 +227,6 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
             closeForm={closeForm}
             updateList={() => {
               closeForm()
-              setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
             }}
           />
         </ButtonContainer>

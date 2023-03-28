@@ -59,6 +59,8 @@ function ArticleBody(props: Props) {
 
   const [data, setData] = useState<ArticleInterface>()
 
+  const [refresh, setRefresh] = useState<number>(0)
+
   const [articleParagraphs, setArticleParagraphs] = useState<string[]>([])
 
   const [modalDelete, setModalDelete] = useState<boolean>(false)
@@ -85,15 +87,18 @@ function ArticleBody(props: Props) {
       getArticleData()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [article])
 
   useEffect(() => {
-    if (router.query.articleId !== undefined) {
+    if (
+      router.query.articleId !== undefined &&
+      router.query.edition === undefined
+    ) {
       setData(undefined)
       getArticleData()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query.articleId])
+  }, [router.query.articleId, refresh])
 
   return (
     <div>
@@ -108,6 +113,9 @@ function ArticleBody(props: Props) {
                 closeForm={() => {
                   setModalEdit(false)
                   discardArticleEdition()
+                  delete router.query.edition
+                  router.push(router)
+                  setRefresh(refresh + 1)
                 }}
               />
             )}
@@ -148,6 +156,8 @@ function ArticleBody(props: Props) {
                         onClick={() => {
                           setArticleSelected(data)
                           setModalEdit(true)
+                          router.query.edition = "true"
+                          router.push(router)
                         }}
                       >
                         <TbPencil />
