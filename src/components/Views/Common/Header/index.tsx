@@ -63,8 +63,6 @@ function Header() {
     window.addEventListener("resize", handleResize)
   })
 
-  console.log(router)
-
   return (
     <Container>
       <SearchContainer>
