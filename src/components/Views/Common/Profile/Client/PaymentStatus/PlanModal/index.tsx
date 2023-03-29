@@ -1,16 +1,13 @@
 import React, { useEffect, useContext, useState } from "react"
-import { useRouter } from "next/router"
 import { PaymentContext } from "contexts/Payment"
 import { ProfileContext } from "contexts/Profile"
 import routes from "routes"
 import texts from "strings/profile.json"
 import ClientInterface from "interfaces/users/Client"
 import getPlans from "services/pricing/getPlans.service"
-import createPreference from "services/payment/createPreference.service"
 import PricingInterface from "interfaces/content/Pricing"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import MercadoPagoForm from "@components/Views/Clients/Payment/MercadoPagoButton"
-import addMonths from "helpers/dates/addMonths"
 import defaultPaymet from "const/defaultValuesForPaymentContext"
 import Modal from "components/UI/Modal"
 import Button from "components/UI/Button"
@@ -24,20 +21,15 @@ import {
 } from "./styles"
 
 function PlanModal({ close }: { close: (arg?: any) => void }) {
-  const router = useRouter()
-
-  const {
-    setPayment,
-    payment,
-    pricingList,
-    setPricingList,
-    preferenceId,
-    setPreferenceId,
-  } = useContext(PaymentContext)
+  const { setPayment, payment, pricingList, setPricingList } = useContext(
+    PaymentContext,
+  )
 
   const { profileData } = useContext(ProfileContext)
+  const client = profileData as ClientInterface
 
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
+  const [renderMPButton, setRenderMPButton] = useState<boolean>(false)
 
   const selectPlan = (pricingPlan: PricingInterface) => {
     setPayment({
@@ -53,8 +45,6 @@ function PlanModal({ close }: { close: (arg?: any) => void }) {
   }
 
   const getPricingPlans = async () => {
-    const client = profileData as ClientInterface
-
     setPayment({
       item: payment.item,
       payer: {
@@ -76,41 +66,6 @@ function PlanModal({ close }: { close: (arg?: any) => void }) {
     getPricingPlans()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const createPreferenceCall = async () => {
-    const createPreferenceReq = await createPreference(
-      {
-        item: [
-          {
-            id: payment.item.id,
-            title: payment.item.title,
-            quantity: 1,
-            unit_price: payment.item.unit_price,
-          },
-        ],
-        payer: payment.payer,
-      },
-      "update",
-    )
-
-    console.log(createPreferenceReq)
-
-    if (createPreferenceReq.status === 201) {
-      const paymentData = {
-        preferenceId: createPreferenceReq.id,
-        pricePaid: payment.item.unit_price,
-        itemId: payment.item.id,
-        paymentExpireDate: addMonths(payment.item.time as number),
-      }
-
-      localStorage.setItem("payment", JSON.stringify(paymentData))
-      setPreferenceId(createPreferenceReq.id)
-    } else {
-      router.replace(
-        `${routes.profile.name}?${routes.profile.queries.updatePaymentFailure}`,
-      )
-    }
-  }
 
   return (
     <Modal>
@@ -141,13 +96,12 @@ function PlanModal({ close }: { close: (arg?: any) => void }) {
             action={() => {
               close()
               setPayment(defaultPaymet)
-              setPreferenceId("")
             }}
           />
-          {preferenceId === "" ? (
+          {!renderMPButton ? (
             <>
               {payment.item.id !== "" && (
-                <UpdatePaymentButton onClick={createPreferenceCall}>
+                <UpdatePaymentButton onClick={() => setRenderMPButton(true)}>
                   Validar datos
                 </UpdatePaymentButton>
               )}
@@ -155,7 +109,21 @@ function PlanModal({ close }: { close: (arg?: any) => void }) {
           ) : (
             <MercadoPagoForm
               label={texts.paymentData.updatePayment}
-              preference={preferenceId}
+              item={[
+                {
+                  id: payment.item.id,
+                  title: payment.item.title,
+                  quantity: 1,
+                  unit_price: payment.item.unit_price,
+                },
+              ]}
+              payer={{
+                name: client.name,
+                surname: client.lastName,
+                email: client.email,
+              }}
+              type="update"
+              redirectPreferenceError={`${routes.profile.name}?${routes.profile.queries.updatePaymentFailure}`}
             />
           )}
         </ButtonContainer>

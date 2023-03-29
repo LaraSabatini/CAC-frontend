@@ -5,10 +5,8 @@ import {
   validateEmail,
   validateIdentificationNumber,
 } from "services/auth/validateClient.service"
-import createPreference from "services/payment/createPreference.service"
 import { ClientsContext } from "contexts/Clients"
 import { PaymentContext } from "contexts/Payment"
-import addMonths from "helpers/dates/addMonths"
 import frontValidation from "helpers/forms/validateFrontRegistration"
 import texts from "strings/payment.json"
 import Modal from "components/UI/Modal"
@@ -26,7 +24,7 @@ interface ClientDataFormInterface {
 function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   const router = useRouter()
 
-  const { payment, preferenceId, setPreferenceId } = useContext(PaymentContext)
+  const { payment } = useContext(PaymentContext)
   const { newClient } = useContext(ClientsContext)
 
   const [renderMPButton, setRenderMPButton] = useState<boolean>(false)
@@ -60,48 +58,9 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
         validateIdentificationNumberReq.status === 200 &&
         validateIdentificationNumberReq.info === "available"
       ) {
-        // *** Crear objeto de compra para que MercadoPago genere un id de preferencia
-        const createPreferenceReq = await createPreference(
-          {
-            item: [
-              {
-                id: payment.item.id,
-                title: payment.item.title,
-                quantity: 1,
-                unit_price: payment.item.unit_price,
-              },
-            ],
-            payer: {
-              name: newClient.name,
-              surname: newClient.lastName,
-              email: newClient.email,
-            },
-          },
-          "subscription",
-        )
-
-        if (createPreferenceReq.status === 201) {
-          const paymentData = {
-            preferenceId: createPreferenceReq.id,
-            pricePaid: payment.item.unit_price,
-            itemId: payment.item.id,
-            paymentExpireDate: addMonths(payment.item.time as number),
-          }
-          // *** Almacenar datos en localStorage para almacenar pago y cliente en la BDD
-          localStorage.setItem("client", JSON.stringify(newClient))
-          localStorage.setItem("payment", JSON.stringify(paymentData))
-          localStorage.setItem(
-            "item",
-            JSON.stringify({ itemName: payment.item.title }),
-          )
-
-          setPreferenceId(createPreferenceReq.id)
-          setRenderMPButton(true)
-        } else {
-          router.replace(
-            `${routes.payment.name}?${routes.payment.queries.preferenceError}`,
-          )
-        }
+        setRenderMPButton(true)
+        // *** Almacenar datos en localStorage para almacenar pago y cliente en la BDD
+        localStorage.setItem("client", JSON.stringify(newClient))
       } else if (validateEmailReq.status === 500) {
         setServerErrorModal(true)
       } else {
@@ -155,7 +114,21 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           ) : (
             <MercadoPagoForm
               label={texts.actions.pay}
-              preference={preferenceId}
+              item={[
+                {
+                  id: payment.item.id,
+                  title: payment.item.title,
+                  quantity: 1,
+                  unit_price: payment.item.unit_price,
+                },
+              ]}
+              payer={{
+                name: newClient.name,
+                surname: newClient.lastName,
+                email: newClient.email,
+              }}
+              type="subscription"
+              redirectPreferenceError={`${routes.payment.name}?${routes.payment.queries.preferenceError}`}
             />
           )}
         </ButtonContainer>
