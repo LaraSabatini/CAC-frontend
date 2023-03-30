@@ -1,8 +1,8 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useContext } from "react"
 import { useRouter } from "next/router"
+import { PaymentContext } from "contexts/Payment"
 import { ItemInterface, PayerInterface } from "interfaces/payments/Preference"
-import createPreference from "services/payment/createPreference.service"
-import addMonths from "helpers/dates/addMonths"
+import createPreference from "services/mercadoPago/createPreference.service" // getPreferenceData,
 
 interface MercadoPagoFormInterface {
   label: string
@@ -21,6 +21,8 @@ function MercadoPagoForm({
 }: MercadoPagoFormInterface) {
   const router = useRouter()
 
+  const { setPreferenceId } = useContext(PaymentContext)
+
   useEffect(() => {
     const fetchCheckout = async () => {
       const getData = await createPreference(
@@ -37,6 +39,8 @@ function MercadoPagoForm({
         script.src = "https://sdk.mercadopago.com/js/v2"
         script.setAttribute("data-prefetch-id", getData.id)
         document.body.appendChild(script)
+
+        setPreferenceId(getData.id)
 
         script.onload = () => {
           // @ts-ignore
@@ -57,29 +61,7 @@ function MercadoPagoForm({
             },
           })
 
-          if (type === "subscription") {
-            const paymentData = {
-              preferenceId: getData.id,
-              pricePaid: item[0].unit_price,
-              itemId: item[0].id,
-              paymentExpireDate: addMonths(item[0].time as number),
-            }
-            // *** Almacenar datos en localStorage para almacenar pago y cliente en la BDD
-            localStorage.setItem("payment", JSON.stringify(paymentData))
-            localStorage.setItem(
-              "item",
-              JSON.stringify({ itemName: item[0].title }),
-            )
-          } else {
-            const paymentData = {
-              preferenceId: getData.id,
-              pricePaid: item[0].unit_price,
-              itemId: item[0].id,
-              paymentExpireDate: addMonths(item[0].time as number),
-            }
-
-            localStorage.setItem("payment", JSON.stringify(paymentData))
-          }
+          localStorage.setItem("prefenceId", JSON.stringify(getData.id))
         }
       } else {
         router.replace(redirectPreferenceError)

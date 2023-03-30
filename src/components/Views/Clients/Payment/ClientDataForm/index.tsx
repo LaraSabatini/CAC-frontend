@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useContext, useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import routes from "routes"
@@ -5,9 +6,13 @@ import {
   validateEmail,
   validateIdentificationNumber,
 } from "services/auth/validateClient.service"
+import register from "services/auth/register.service"
+import generatePassword from "helpers/users/generatePassword"
+import getClientId from "services/mercadoPago/getClientId.service"
 import { ClientsContext } from "contexts/Clients"
 import { PaymentContext } from "contexts/Payment"
 import frontValidation from "helpers/forms/validateFrontRegistration"
+import { dateFormated } from "helpers/dates/getToday"
 import texts from "strings/payment.json"
 import Modal from "components/UI/Modal"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
@@ -24,7 +29,7 @@ interface ClientDataFormInterface {
 function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   const router = useRouter()
 
-  const { payment } = useContext(PaymentContext)
+  const { payment, preferenceId } = useContext(PaymentContext)
   const { newClient } = useContext(ClientsContext)
 
   const [renderMPButton, setRenderMPButton] = useState<boolean>(false)
@@ -32,6 +37,10 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   const [duplicatedUser, setDuplicatedUser] = useState<boolean>(false)
   const [loginModal, setLoginModal] = useState<boolean>(false)
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
+
+  const checkIfItsAvailable = (response: { status: number; info: string }) => {
+    return response.status === 200 && response.info === "available"
+  }
 
   const validateInputs = async () => {
     const validate = frontValidation(
@@ -53,14 +62,10 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
       )
 
       if (
-        validateEmailReq.status === 200 &&
-        validateEmailReq.info === "available" &&
-        validateIdentificationNumberReq.status === 200 &&
-        validateIdentificationNumberReq.info === "available"
+        checkIfItsAvailable(validateEmailReq) &&
+        checkIfItsAvailable(validateIdentificationNumberReq)
       ) {
         setRenderMPButton(true)
-        // *** Almacenar datos en localStorage para almacenar pago y cliente en la BDD
-        localStorage.setItem("client", JSON.stringify(newClient))
       } else if (validateEmailReq.status === 500) {
         setServerErrorModal(true)
       } else {
@@ -77,6 +82,32 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   useEffect(() => {
     setRenderMPButton(false)
   }, [newClient])
+
+  const saveClientInDB = async () => {
+    const getClientIdCall = await getClientId(preferenceId)
+
+    const registerClient = await register("client", {
+      ...newClient,
+      password: generatePassword(),
+      accountBlocked: 1,
+      subscription: null,
+      dateCreated: dateFormated,
+      loginAttempts: null,
+      plan: null,
+      paymentDate: null,
+      paymentExpireDate: null,
+      mpId: getClientIdCall.clientId,
+    })
+
+    console.log(registerClient)
+  }
+
+  useEffect(() => {
+    if (preferenceId !== "") {
+      saveClientInDB()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [preferenceId])
 
   return (
     <Modal>
