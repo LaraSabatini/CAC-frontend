@@ -56,7 +56,9 @@ function DashboardView() {
       ) : (
         <FullArticle>
           <Chip>
-            <a href="http://localhost:3000/dashboard">Articulos</a>
+            <a href="https://cac-frontend-git-feat-update-payment-larasabatini.vercel.app/dashboard">
+              Articulos
+            </a>
             <BsChevronRight />
             <span>{router.query.title}</span>
           </Chip>
