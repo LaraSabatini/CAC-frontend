@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const apiURL = "http://localhost:3001/software/api/fileManagement"
+const apiURL = "http://camarafederal.com.ar/software/api/fileManagement"
 
 const uploadFile = async (formData: any) => {
   try {
