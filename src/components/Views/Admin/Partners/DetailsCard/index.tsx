@@ -66,11 +66,19 @@ function DetailsCard() {
           />
           <DataItem
             value="Fecha de pago"
-            content={profileData.paymentDate.replace(/-/g, "/")}
+            content={
+              profileData.paymentDate !== null
+                ? profileData.paymentDate.replace(/-/g, "/")
+                : ""
+            }
           />
           <DataItem
             value="Vencimiento de pago"
-            content={profileData.paymentExpireDate.replace(/-/g, "/")}
+            content={
+              profileData.paymentExpireDate !== null
+                ? profileData.paymentExpireDate.replace(/-/g, "/")
+                : ""
+            }
           />
         </div>
       )}
