@@ -2,14 +2,12 @@
 export const defaultPayment = {
   id: 0,
   paymentId: "",
-  collectionId: "",
-  collectionStatus: "",
   status: "",
-  paymentType: "",
-  merchantOrderId: "",
   preferenceId: "",
-  pricePaid: 0,
   clientId: 0,
-  paymentExpireDate: "",
+  mpId: "",
   itemId: "",
+  pricePaid: 0,
+  date: "",
+  paymentExpireDate: "",
 }

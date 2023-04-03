@@ -7,7 +7,6 @@ import {
   validateIdentificationNumber,
 } from "services/auth/validateClient.service"
 import register from "services/auth/register.service"
-import generatePassword from "helpers/users/generatePassword"
 import getClientId from "services/mercadoPago/getClientId.service"
 import { ClientsContext } from "contexts/Clients"
 import { PaymentContext } from "contexts/Payment"
@@ -88,7 +87,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
 
     const registerClient = await register("client", {
       ...newClient,
-      password: generatePassword(),
+      password: "",
       accountBlocked: 1,
       subscription: null,
       dateCreated: dateFormated,
