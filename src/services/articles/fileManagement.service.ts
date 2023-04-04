@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const apiURL = "http://localhost:3001/software/api/fileManagement"
+const apiURL = `${process.env.NEXT_PUBLIC_API_URL}/fileManagement`
 
 const uploadFile = async (formData: any) => {
   try {

@@ -9,6 +9,10 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  button {
+    align-self: flex-end;
+  }
 `
 
 const CardHeader = styled.div`

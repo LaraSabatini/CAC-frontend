@@ -1,6 +1,6 @@
 import defaultPost from "services/defaultPost"
 
-const apiURL = "http://localhost:3001/reCaptcha"
+const apiURL = `${process.env.NEXT_PUBLIC_API_URL}/reCaptcha`
 
 const validateReCaptcha = async (body: { token: string | null }) => {
   const res = await defaultPost(`${apiURL}`, body)

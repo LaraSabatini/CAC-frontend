@@ -1,3 +1,3 @@
-const apiURL = "http://localhost:3001/software/api/payment"
+const apiURL = `${process.env.NEXT_PUBLIC_API_URL}/payment`
 
 export default apiURL

@@ -15,9 +15,9 @@ export interface UserInterface {
   id?: number
   email: string
   password: string
-  loginAttempts: number
+  loginAttempts: number | null
   accountBlocked: number
-  firstLogin: 0 | 1
+  firstLogin: 0 | 1 | null
 }
 
 export type UserDataType = {

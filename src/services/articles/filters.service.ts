@@ -3,7 +3,7 @@ import axiosHeader from "services/axiosHeader"
 import { FilterType } from "interfaces/content/Article"
 import defaultPost from "../defaultPost"
 
-const apiURL = "http://localhost:3001/software/api/filters"
+const apiURL = `${process.env.NEXT_PUBLIC_API_URL}/filters`
 
 const getFilters = async (type: FilterType) => {
   const res = await axios.get(`${apiURL}/type=${type}`, axiosHeader)

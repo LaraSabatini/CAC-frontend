@@ -1,14 +1,12 @@
 export interface PaymentInterface {
-  id?: number
+  id: number
   paymentId: string
-  collectionId: string
-  collectionStatus: string
   status: string
-  paymentType: string
-  merchantOrderId: string
   preferenceId: string
-  pricePaid: number
   clientId: number
-  paymentExpireDate: string
+  mpId: string
   itemId: string
+  pricePaid: number
+  date: string
+  paymentExpireDate: string
 }

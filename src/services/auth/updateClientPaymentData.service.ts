@@ -6,7 +6,6 @@ const updateClientPaymentData = async (
   id: number,
   body: {
     plan: number
-    region: number
     paymentDate: string
     paymentExpireDate: string
   },

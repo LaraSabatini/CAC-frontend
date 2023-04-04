@@ -20,6 +20,7 @@ const defaultClient: ClientInterface = {
   region: 1,
   paymentDate: "",
   paymentExpireDate: "",
+  mpId: "",
 }
 
 export default defaultClient

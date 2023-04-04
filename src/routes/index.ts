@@ -24,6 +24,9 @@ const routes = {
     queries: {
       makePayment: "make_payment=true",
       changePassword: "change_password=true",
+      updatePaymentSuccess: "payment_status=success",
+      updatePaymentPending: "payment_status=pending",
+      updatePaymentFailure: "payment_status=failure",
     },
   },
   dashboard: {
