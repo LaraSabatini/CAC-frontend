@@ -22,7 +22,7 @@ function DashboardView() {
   } = useContext(DashboardContext)
 
   const getFiltersData = async () => {
-    const getFiltersThemes = await getFilters("themes")
+    const getFiltersThemes = await getFilters()
 
     setThemeFilters(getFiltersThemes.data)
 

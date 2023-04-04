@@ -5,6 +5,7 @@ import { getArticleById } from "services/articles/articles.service"
 import ArticleInterface from "interfaces/content/Article"
 import { TbPencil } from "react-icons/tb"
 import { FaRegTrashAlt } from "react-icons/fa"
+import regionFilters from "const/regions"
 import texts from "strings/articles.json"
 import Tooltip from "components/UI/Tooltip"
 import Scroll from "components/UI/Scroll"
@@ -44,10 +45,6 @@ interface CommonProps {
 type Props = CommonProps & ConditionalProps
 
 function ArticleBody(props: Props) {
-  const regionFilters: { id: number; value: string }[] = JSON.parse(
-    localStorage.getItem("regions") as string,
-  )
-
   const { article, showImageVisualizer, queries } = props
 
   const { setArticleSelected, discardArticleEdition } = useContext(

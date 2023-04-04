@@ -1,15 +1,12 @@
 import React, { useContext, useEffect, useState } from "react"
 import { getProfileData } from "services/auth/getProfileData.service"
 import { ClientsContext } from "contexts/Clients"
+import regions from "const/regions"
 import DataItem from "./DataItem"
 import ModalBlockUnblock from "../ModalBlockUnblock"
 import { Card, Title, ActionButton } from "./styles"
 
 function DetailsCard() {
-  const regions: { id: number; value: string }[] = JSON.parse(
-    localStorage.getItem("regions") as string,
-  )
-
   const { clientSelected, plans, profileData, setProfileData } = useContext(
     ClientsContext,
   )

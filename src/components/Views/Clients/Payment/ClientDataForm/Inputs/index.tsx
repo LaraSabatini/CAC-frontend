@@ -3,13 +3,12 @@ import { ClientsContext } from "contexts/Clients"
 import capitalizeFirstLetter from "helpers/formatting/capitalizeFirstLetter"
 import identificationTypes from "const/identificationTypes"
 import texts from "strings/payment.json"
+import regionOptions from "const/regions"
 import Input from "components/UI/Input"
 import InputSelect from "components/UI/InputSelect"
 import { HorizontalGroup, InputContainer } from "../styles"
 
 function Inputs() {
-  const regionOptions = JSON.parse(localStorage.getItem("regions") as string)
-
   const { newClient, setNewClient } = useContext(ClientsContext)
 
   return (

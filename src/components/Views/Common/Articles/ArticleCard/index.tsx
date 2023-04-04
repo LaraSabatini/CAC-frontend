@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import texts from "strings/dashboard.json"
 import routes from "routes"
 import ArticleInterface from "interfaces/content/Article"
+import regionFilters from "const/regions"
 import {
   ArticleCard,
   ArticleTitle,
@@ -21,9 +22,6 @@ interface ArticleViewInterface {
 
 function ArticleView({ article, URLBlocked, region }: ArticleViewInterface) {
   const router = useRouter()
-  const regionFilters: { id: number; value: string }[] = JSON.parse(
-    localStorage.getItem("regions") as string,
-  )
 
   return (
     <ArticleCard>

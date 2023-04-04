@@ -6,6 +6,7 @@ import { DashboardContext } from "contexts/Dashboard"
 import Checkbox from "components/UI/Checkbox"
 import Button from "components/UI/Button"
 import Scroll from "components/UI/Scroll"
+import regionFilters from "const/regions"
 import {
   FilterContainer,
   FilterSelector,
@@ -19,10 +20,6 @@ import {
 
 function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
   const router = useRouter()
-
-  const regionFilters: { id: number; value: string }[] = JSON.parse(
-    localStorage.getItem("regions") as string,
-  )
 
   const {
     themeFilters,
