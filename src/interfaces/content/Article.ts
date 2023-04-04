@@ -48,6 +48,7 @@ interface ArticleInterface {
   article: string
   attachments: AttachmentInterface[] | string // urls[]
   author: string
+  saved: number
 }
 
 export default ArticleInterface

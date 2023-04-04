@@ -15,6 +15,7 @@ interface ClientInterface extends UserInterface {
   paymentDate: string | null
   paymentExpireDate: string | null
   mpId: string
+  savedArticles: number[] | string
 }
 
 export default ClientInterface

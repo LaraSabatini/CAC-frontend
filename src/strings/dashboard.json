@@ -1,3 +1,5 @@
 {
-    "readArticle": "Leer artículo completo" 
+    "readArticle": "Leer artículo completo" ,
+    "saveArticle": "Guardar artículo",
+    "removeArticle": "Eliminar de mis artículos guardados"
 }

@@ -1,7 +1,11 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useRouter } from "next/router"
+import {
+  getSavedArticles,
+  editSavedArticles,
+} from "services/clients/clientActions.service"
 import { BsChevronRight } from "react-icons/bs"
-import { getArticles } from "services/articles/articles.service"
+import { getArticles, editSavedTimes } from "services/articles/articles.service"
 import { DashboardContext } from "contexts/Dashboard"
 import { getFilters } from "services/articles/filters.service"
 import Header from "@components/Views/Common/Header"
@@ -21,13 +25,16 @@ function DashboardView() {
     triggerArticleListUpdate,
   } = useContext(DashboardContext)
 
+  const userData = JSON.parse(localStorage.getItem("userData") as string)
+
+  const [savedArticles, setSavedArticles] = useState<number[]>([])
+  const [updateList, setUpdateList] = useState<number>(0)
+
   const getFiltersData = async () => {
     const getFiltersThemes = await getFilters()
-
     setThemeFilters(getFiltersThemes.data)
 
     const getArticlesReq = await getArticles(1)
-
     setArticles(getArticlesReq.data)
   }
 
@@ -35,6 +42,48 @@ function DashboardView() {
     getFiltersData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerArticleListUpdate])
+
+  const updateSavedArticlesList = async (list: number[]) => {
+    const update = await editSavedArticles(userData.id, JSON.stringify(list))
+
+    if (update.status === 201) {
+      setUpdateList(updateList + 1)
+    }
+  }
+
+  const toggleSave = async (id: number, amountOfSaved: number) => {
+    if (savedArticles.includes(id)) {
+      await editSavedTimes(id, "remove", amountOfSaved)
+      const index = savedArticles.indexOf(id)
+
+      const newArrayOfSavedArticles = savedArticles
+      newArrayOfSavedArticles.splice(index, 1)
+
+      await updateSavedArticlesList(newArrayOfSavedArticles)
+    } else {
+      await editSavedTimes(id, "add", amountOfSaved)
+
+      const newArrayOfSavedArticles = savedArticles
+      newArrayOfSavedArticles.push(id)
+
+      await updateSavedArticlesList(newArrayOfSavedArticles)
+    }
+  }
+
+  const handleSavedArticles = async () => {
+    const getSavedArticlesCall = await getSavedArticles(userData.id)
+    setSavedArticles(
+      getSavedArticlesCall.data !== "" &&
+        getSavedArticlesCall.data !== "undefined"
+        ? JSON.parse(getSavedArticlesCall.data)
+        : [],
+    )
+  }
+
+  useEffect(() => {
+    handleSavedArticles()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
@@ -45,8 +94,12 @@ function DashboardView() {
           {articles.length ? (
             articles.map(article => (
               <ArticleView
+                key={article.id}
                 region={JSON.parse(article.regionFilters as string)[0]}
                 article={article}
+                saved={savedArticles.includes(article.id)}
+                toggleSave={() => toggleSave(article.id, article.saved)}
+                savedTimes={article.saved}
               />
             ))
           ) : (

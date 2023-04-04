@@ -3,21 +3,30 @@ import theme from "theme/index"
 import { Button } from "components/UI/sharedStyles"
 
 const ArticleCard = styled.div`
-  border: 1px solid rgba(70, 105, 149, 0.7);
+  border: 1px solid rgba(70, 106, 149, 0.138);
   border-radius: 18px;
 
-  width: 767px;
-  height: 389px;
+  box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
+
+  transition: 0.3s;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid rgba(70, 106, 149, 0.356);
+    box-shadow: 0px 8px 24px rgba(70, 106, 149, 0.248);
+  }
+
+  padding: 5px 25px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   @media (max-width: 1450px) {
-    width: 650px;
-    height: 350px;
+    width: 630px;
+    height: 320px;
   }
 
+  /* 
   @media (max-width: 1300px) {
     width: 795px;
     height: 441px;
@@ -27,31 +36,28 @@ const ArticleCard = styled.div`
   @media (max-width: ${theme.screenSize.mobile}) {
     width: 90vw;
     height: 578px;
-  }
+  } */
 `
 
 const CardInfo = styled.div`
   display: flex;
   flex-direction: column;
-  /* justify-content: space-around; */
-  align-items: center;
-  height: 78%;
-  /* border: 1px solid red; */
-  width: 60%;
-  gap: 30px;
 
-  .articleHeader {
-    /* padding-top: 41px; */
-  }
+  height: 90%;
 
   @media (max-width: 1450px) {
+    width: 49%;
+    justify-content: space-between;
+
     .articleHeader {
-      /* padding-top: 30px; */
+      height: 112px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    width: 58%;
   }
 
-  @media (max-width: 1300px) {
+  /* @media (max-width: 1300px) {
     width: 96%;
     align-items: flex-start;
     justify-content: space-evenly;
@@ -62,31 +68,33 @@ const CardInfo = styled.div`
     .articleHeader {
       padding-top: 10px;
     }
-  }
+  } */
 
-  @media (max-width: ${theme.screenSize.mobile}) {
+  /* @media (max-width: ${theme.screenSize.mobile}) {
     width: 90%;
     height: 52.5%;
 
     .articleHeader {
       padding-top: 10px;
     }
-  }
+  } */
 `
 
 const CardImageContainer = styled.div`
-  width: 40%;
-  height: 100%;
-  border-radius: 18px;
+  width: 45%;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border-radius: 0px 18px 18px 0;
+  height: 90%;
+
   img {
     height: 100%;
   }
 
-  @media (max-width: 1450px) {
+  /* @media (max-width: 1450px) {
     width: 42%;
   }
 
@@ -108,13 +116,10 @@ const CardImageContainer = styled.div`
     img {
       height: 100%;
     }
-  }
+  } */
 `
 
 const ArticleTitle = styled.h3`
-  width: 390px;
-  /* height: 58px; */
-
   margin: 0;
 
   font-family: ${theme.fonts.titles};
@@ -124,6 +129,12 @@ const ArticleTitle = styled.h3`
 
   color: ${theme.colors.blue_dark};
 
+  @media (max-width: 1450px) {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  /* 
   @media (max-width: 1450px) {
     width: 320px;
     font-size: ${theme.fontSizes.m};
@@ -138,40 +149,40 @@ const ArticleTitle = styled.h3`
   @media (max-width: ${theme.screenSize.mobile}) {
     font-size: 18px;
     line-height: 25px;
-  }
+  } */
 `
 
 const ArticleRegion = styled.span`
-  width: 151px;
-  height: 18px;
   margin: 0;
 
   font-family: ${theme.fonts.titles};
   font-weight: ${theme.fontWeights.light};
   font-size: ${theme.fontSizes.xs};
 
-  line-height: 18px;
-
   color: ${theme.colors.blue_dark};
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #466995;
 `
 
 const ArticleDescription = styled.p`
   margin: 0;
-  width: 390px;
-  height: 134px;
 
   font-family: ${theme.fonts.extra};
   font-weight: ${theme.fontWeights.regular};
   font-size: ${theme.fontSizes.s};
-  line-height: 21px;
-  /* padding-top: 41px; */
+
+  text-align: justify;
 
   color: ${theme.colors.blue_dark};
 
   @media (max-width: 1450px) {
-    width: 320px;
+    height: 105px;
   }
-
+  /*
   @media (max-width: 1300px) {
     width: 95%;
     height: fit-content;
@@ -181,24 +192,28 @@ const ArticleDescription = styled.p`
     font-size: 15px;
     line-height: 20px;
     width: 100%;
-  }
+  } */
 `
 
 const OpenButton = styled.button`
   ${Button}
 
   width: fit-content;
-  height: 19px;
+  height: 20px;
 
-  text-decoration: underline;
-  font-family: ${theme.fonts.content};
-  font-style: italic;
-  font-weight: ${theme.fontWeights.regular};
-  font-size: ${theme.fontSizes.s};
+  font-family: ${theme.fonts.titles};
+  font-weight: ${theme.fontWeights.light};
+  font-size: ${theme.fontSizes.m};
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  position: relative;
 
   color: ${theme.colors.blue};
-  margin-left: 50%;
 
+  /*  
   @media (max-width: ${theme.screenSize.tablet.width}) {
     padding-top: 20px;
   }
@@ -212,6 +227,29 @@ const OpenButton = styled.button`
 
   @media (max-width: ${theme.screenSize.mobile}) {
     font-size: ${theme.fontSizes.xs};
+  }  */
+`
+
+const ButtonContainer = styled.div`
+  justify-content: space-between;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  color: ${theme.colors.blue};
+
+  .saved-times {
+    font-family: ${theme.fonts.extra};
+    font-size: 14px;
+  }
+
+  .buttons,
+  .saved-times {
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 `
 
@@ -223,4 +261,5 @@ export {
   CardImageContainer,
   ArticleDescription,
   OpenButton,
+  ButtonContainer,
 }

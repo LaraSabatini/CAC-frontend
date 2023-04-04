@@ -7,7 +7,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid ${theme.colors.blue_alpha};
+  /* border-bottom: 1px solid ${theme.colors.blue_alpha}; */
+  border-bottom: 1px solid rgba(70, 106, 149, 0.138);
   padding: 0 10px 15px 10px;
 
   @media (max-width: ${theme.screenSize.transition_mobile}) {

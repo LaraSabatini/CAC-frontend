@@ -2,13 +2,20 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const ArticlesContainer = styled.div`
-  width: 95vw;
+  width: 97vw;
   margin: 0 auto;
-  padding-top: 50px;
+  padding-top: 20px;
+  align-items: center;
+  justify-content: space-between;
   display: flex;
   flex-wrap: wrap;
   gap: 50px;
   padding-bottom: 50px;
+
+  @media (max-width: 1450px) {
+    gap: 20px;
+    /* gap: 0px; */
+  }
 `
 
 const FullArticle = styled.div`
