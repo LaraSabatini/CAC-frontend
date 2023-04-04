@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import { ClientsContext } from "contexts/Clients"
 import Pagination from "components/UI/Pagination"
+import regions from "const/regions"
 import {
   TableContainer,
   TableStyled,
@@ -10,10 +11,6 @@ import {
 } from "./styles"
 
 function Table() {
-  const regions: { id: number; value: string }[] = JSON.parse(
-    localStorage.getItem("regions") as string,
-  )
-
   const {
     totalPages,
     currentPage,

@@ -2,6 +2,7 @@ import React, { useContext } from "react"
 import texts from "strings/articles.json"
 import { DashboardContext } from "contexts/Dashboard"
 import { ArticlesContext } from "contexts/Articles"
+import regionFilters from "const/regions"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Modal from "components/UI/Modal"
 import Input from "components/UI/Input"
@@ -23,8 +24,6 @@ interface CreateArticleFormInterface {
 }
 
 function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
-  const regionFilters = JSON.parse(localStorage.getItem("regions") as string)
-
   const {
     themeFilters,
     setTriggerArticleListUpdate,

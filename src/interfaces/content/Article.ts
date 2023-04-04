@@ -3,8 +3,6 @@ export interface CreatedByInterface {
   email: string
 }
 
-export type FilterType = "themes" | "regions"
-
 export type ExtensionType = "file" | "image" | "video"
 
 export type ContentType = "card" | "content" | "attachments"

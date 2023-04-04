@@ -3,6 +3,7 @@ import texts from "strings/articles.json"
 import { DashboardContext } from "contexts/Dashboard"
 import { ArticlesContext } from "contexts/Articles"
 import Modal from "components/UI/Modal"
+import regionFilters from "const/regions"
 import Input from "components/UI/Input"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import { OptionsInterface } from "interfaces/content/Article"
@@ -23,8 +24,6 @@ interface EditArticleFormInterface {
 }
 
 function EditArticleForm({ closeForm }: EditArticleFormInterface) {
-  const regionFilters = JSON.parse(localStorage.getItem("regions") as string)
-
   const { themeFilters } = useContext(DashboardContext)
 
   const {
