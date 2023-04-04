@@ -1,3 +1,3 @@
-const apiURL = "https://camarafederal.com.ar/software/api/payment"
+const apiURL = `${process.env.NEXT_PUBLIC_API_URL}/payment`
 
 export default apiURL

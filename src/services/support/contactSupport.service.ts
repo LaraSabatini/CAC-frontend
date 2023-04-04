@@ -1,6 +1,6 @@
 import defaultPost from "services/defaultPost"
 
-const apiURL = "https://camarafederal.com.ar/software/api/support"
+const apiURL = `${process.env.NEXT_PUBLIC_API_URL}/support`
 
 const requestUnblock = async (
   body: {
