@@ -45,7 +45,7 @@ function MercadoPagoForm({
         script.onload = () => {
           // @ts-ignore
           const mercadopago = new window.MercadoPago(
-            process.env.NEXT_PUBLIC_MP_PUBLIC_KEY_TEST,
+            process.env.NEXT_PUBLIC_MP_PUBLIC_KEY_AS_SELLER,
             {
               locale: "es-AR",
             },
