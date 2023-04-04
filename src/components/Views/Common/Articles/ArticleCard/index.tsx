@@ -83,25 +83,27 @@ function ArticleView({
                 <FaEye />
               </Tooltip>
             </OpenButton>
-            {saved !== undefined && amountOfSavedTimes !== undefined && (
-              <OpenButton
-                onClick={() => {
-                  if (toggleSave !== undefined) {
-                    toggleSave()
-                  }
-                  setAmountOfSavedTimes(
-                    saved ? amountOfSavedTimes - 1 : amountOfSavedTimes + 1,
-                  )
-                }}
-              >
-                <Tooltip
-                  title={!saved ? texts.saveArticle : texts.removeArticle}
-                  placement="top-end"
+            {saved !== undefined &&
+              amountOfSavedTimes !== undefined &&
+              toggleSave !== undefined && (
+                <OpenButton
+                  onClick={() => {
+                    if (toggleSave !== undefined) {
+                      toggleSave()
+                    }
+                    setAmountOfSavedTimes(
+                      saved ? amountOfSavedTimes - 1 : amountOfSavedTimes + 1,
+                    )
+                  }}
                 >
-                  {saved ? <BsFillBookmarkFill /> : <BsBookmark />}
-                </Tooltip>
-              </OpenButton>
-            )}
+                  <Tooltip
+                    title={!saved ? texts.saveArticle : texts.removeArticle}
+                    placement="top-end"
+                  >
+                    {saved ? <BsFillBookmarkFill /> : <BsBookmark />}
+                  </Tooltip>
+                </OpenButton>
+              )}
           </div>
         </ButtonContainer>
       </CardInfo>
