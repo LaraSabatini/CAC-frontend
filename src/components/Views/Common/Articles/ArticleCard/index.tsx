@@ -38,7 +38,7 @@ function ArticleView({
 }: ArticleViewInterface) {
   const router = useRouter()
 
-  const changesHistory = JSON.parse(article.changesHistory as string)
+  // const changesHistory = JSON.parse(article.changesHistory as string)
 
   const [amountOfSavedTimes, setAmountOfSavedTimes] = useState(savedTimes)
 
@@ -51,10 +51,11 @@ function ArticleView({
             {regionFilters.filter(item => item.id === region)[0]?.value}
             <BsDot />
             <FaCalendarMinus />
-            {changesHistory[changesHistory.length - 1].date.replaceAll(
-              "-",
-              "/",
-            )}
+            {/* {changesHistory !== undefined &&
+              changesHistory[changesHistory.length - 1].date.replaceAll(
+                "-",
+                "/",
+              )} */}
           </ArticleRegion>
           <ArticleTitle>{article.title}</ArticleTitle>
         </div>

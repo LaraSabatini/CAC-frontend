@@ -71,13 +71,15 @@ function DashboardView() {
   }
 
   const handleSavedArticles = async () => {
-    const getSavedArticlesCall = await getSavedArticles(userData.id)
-    setSavedArticles(
-      getSavedArticlesCall.data !== "" &&
-        getSavedArticlesCall.data !== "undefined"
-        ? JSON.parse(getSavedArticlesCall.data)
-        : [],
-    )
+    if (userData.type === "client") {
+      const getSavedArticlesCall = await getSavedArticles(userData.id)
+      setSavedArticles(
+        getSavedArticlesCall.data !== "" &&
+          getSavedArticlesCall.data !== "undefined"
+          ? JSON.parse(getSavedArticlesCall.data)
+          : [],
+      )
+    }
   }
 
   useEffect(() => {
@@ -98,7 +100,11 @@ function DashboardView() {
                 region={JSON.parse(article.regionFilters as string)[0]}
                 article={article}
                 saved={savedArticles.includes(article.id)}
-                toggleSave={() => toggleSave(article.id, article.saved)}
+                toggleSave={() => {
+                  if (userData.type === "client") {
+                    toggleSave(article.id, article.saved)
+                  }
+                }}
                 savedTimes={article.saved}
               />
             ))

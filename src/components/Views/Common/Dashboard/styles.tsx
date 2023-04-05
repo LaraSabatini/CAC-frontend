@@ -21,7 +21,7 @@ const ArticlesContainer = styled.div`
 const FullArticle = styled.div`
   width: 95vw;
   margin: 0 auto;
-  padding-top: 30px;
+  padding-top: 10px;
 `
 
 const Chip = styled.div`
@@ -31,7 +31,8 @@ const Chip = styled.div`
   font-family: ${theme.fonts.titles};
   font-size: 14px;
   gap: 10px;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
+
   font-weight: 600;
 
   a {
