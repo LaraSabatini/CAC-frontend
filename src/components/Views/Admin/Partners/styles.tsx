@@ -6,7 +6,7 @@ const Container = styled.div`
   align-items: flex-start;
   margin: 0 auto;
   width: 96vw;
-  padding-top: 67px;
+  padding-top: 15px;
 `
 
 export default Container

@@ -7,6 +7,7 @@ export interface DataInterface {
   phoneNumber: string
   email: string
   region: number
+  realEstateRegistration: string
 }
 
 export interface EditPersonalInfoInterface {
