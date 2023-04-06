@@ -3,7 +3,7 @@ const regions: { id: number; value: string }[] = [
   { id: 2, value: "Catamarca" },
   { id: 3, value: "Chaco" },
   { id: 4, value: "Chubut" },
-  { id: 5, value: "Ciudad Autónoma de Buenos Aires" },
+  { id: 5, value: "CABA" },
   { id: 6, value: "Córdoba" },
   { id: 7, value: "Corrientes" },
   { id: 8, value: "Entre Ríos" },
@@ -21,7 +21,7 @@ const regions: { id: number; value: string }[] = [
   { id: 20, value: "Santa Cruz" },
   { id: 21, value: "Santa Fe" },
   { id: 22, value: "Santiago del Estero" },
-  { id: 23, value: "Tierra del Fuego, Antártida e Islas del Atlántico Sur" },
+  { id: 23, value: "Tierra del Fuego" },
   { id: 24, value: "Tucumán" },
 ]
 

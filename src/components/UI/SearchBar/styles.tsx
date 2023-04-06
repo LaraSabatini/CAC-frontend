@@ -42,13 +42,13 @@ export const InputStyled = styled.input`
   outline: none;
   border: none;
   font-size: ${theme.fontSizes.xs};
-  border: 1px solid ${theme.colors.blue};
+  border: 1px solid rgba(70, 106, 149, 0.235);
   border-radius: 10px;
   background-color: default;
   position: relative;
   padding-right: 35px;
   background-color: transparent;
-  font-family: ${theme.fonts.content};
+  font-family: ${theme.fonts.extra};
   color: ${theme.colors.blue};
   ::placeholder {
     color: ${theme.colors.blue};

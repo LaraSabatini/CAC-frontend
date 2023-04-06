@@ -30,6 +30,18 @@ const editArticle = async (body: ArticleInterface) => {
   return res.data
 }
 
+const editSavedTimes = async (
+  id: number,
+  action: "add" | "remove",
+  prevAmount: number,
+) => {
+  const res = await axios.put(
+    `${apiURL}/saved/id=${id}&action=${action}&prevAmount=${prevAmount}`,
+    axiosHeader,
+  )
+  return res.data
+}
+
 const getRelatedArticles = async (themeId: number, regionId: number) => {
   const res = await axios.get(
     `${apiURL}/related-articles/themeId=${themeId}&regionId=${regionId}`,
@@ -60,4 +72,5 @@ export {
   getRelatedArticles,
   filterArticles,
   searchArticles,
+  editSavedTimes,
 }

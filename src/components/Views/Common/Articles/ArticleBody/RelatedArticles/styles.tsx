@@ -2,7 +2,7 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  margin-top: 44px;
+  margin-top: 50px;
 `
 
 const Title = styled.h3`

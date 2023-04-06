@@ -4,7 +4,8 @@ import theme from "./index"
 const GlobalStyle = createGlobalStyle`
   body {
           margin: 0px;
-          background-color:  ${theme.colors.light_grey};
+          /* background-color:  ${theme.colors.light_grey}; */
+          background-color:  #d6dfed;
         }
 `
 

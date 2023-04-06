@@ -201,14 +201,14 @@ function LoginView() {
             <Button content={texts.login.action} action={validateUser} cta />
             <URLContainer>
               <a
-                href={`https://cac-frontend-git-feat-update-payment-larasabatini.vercel.app${routes.login.name}?${userQuery}&${routes.login.queries.resetPassword}&${routes.login.queries.email}${formData.email}`}
+                href={`${process.env.NEXT_PUBLIC_FRONT_URL}${routes.login.name}?${userQuery}&${routes.login.queries.resetPassword}&${routes.login.queries.email}${formData.email}`}
               >
                 {texts.login.restorePassword}
                 <b>{texts.login.restorePasswordBold}</b>
               </a>
               {userIsClient && (
                 <a
-                  href={`https://cac-frontend-git-feat-update-payment-larasabatini.vercel.app${routes.pricing.name}`}
+                  href={`${process.env.NEXT_PUBLIC_FRONT_URL}${routes.pricing.name}`}
                 >
                   {texts.login.subscribe}
                   <b>{texts.login.subscribeBold}</b>

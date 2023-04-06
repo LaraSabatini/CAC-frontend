@@ -2,19 +2,25 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const ArticlesContainer = styled.div`
-  width: 95vw;
+  width: 97vw;
   margin: 0 auto;
-  padding-top: 50px;
+  padding-top: 20px;
+  align-items: center;
+  justify-content: space-between;
   display: flex;
   flex-wrap: wrap;
   gap: 50px;
   padding-bottom: 50px;
+
+  @media (max-width: 1450px) {
+    gap: 20px;
+  }
 `
 
 const FullArticle = styled.div`
   width: 95vw;
   margin: 0 auto;
-  padding-top: 30px;
+  padding-top: 10px;
 `
 
 const Chip = styled.div`
@@ -24,7 +30,8 @@ const Chip = styled.div`
   font-family: ${theme.fonts.titles};
   font-size: 14px;
   gap: 10px;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
+
   font-weight: 600;
 
   a {
@@ -47,4 +54,11 @@ const EmptyPage = styled.h2`
   padding-top: 20px;
 `
 
-export { ArticlesContainer, FullArticle, Chip, EmptyPage }
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 30px;
+`
+
+export { ArticlesContainer, FullArticle, Chip, EmptyPage, ButtonContainer }

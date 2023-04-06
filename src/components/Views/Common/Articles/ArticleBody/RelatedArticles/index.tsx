@@ -40,8 +40,10 @@ function RelatedArticles({
         {relatedArticles?.length ? (
           relatedArticles.map(article => (
             <ArticleView
+              key={article.id}
               region={JSON.parse(article.regionFilters as string)[0]}
               article={article}
+              savedTimes={article.saved}
             />
           ))
         ) : (

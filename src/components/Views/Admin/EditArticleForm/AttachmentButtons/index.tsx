@@ -10,7 +10,6 @@ import texts from "strings/articles.json"
 import { AiOutlinePaperClip, AiOutlineEye } from "react-icons/ai"
 import { BsFillPlayFill } from "react-icons/bs"
 import { AttachmentInterface, ExtensionType } from "interfaces/content/Article"
-import renameFile from "helpers/formatting/renameFile"
 import getPortraitName from "helpers/media/getPortraitName"
 import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
@@ -42,26 +41,33 @@ function AttachmentButton() {
       // *** Nombres de archivos deben ser asi: nombre.extension (ej: portada.jpeg)
       const { files } = e.target
 
-      if (type === "image" && portrait === null) {
-        setPortrait(getPortraitName(files))
-      }
-
       const filesForDBArray: AttachmentInterface[] = [
         ...newAttachmentsForDataBase,
       ]
       const filesForServerArray: File[] = [...newAttachmentsForServer]
 
+      if (type === "image" && portrait === null) {
+        setPortrait(getPortraitName(files))
+      }
+
       for (let i = 0; i < files.length; i += 1) {
-        const fileRenamed = renameFile(e.target.files[i].name)
+        const originalName = files[i].name
+
+        const fileRenamed = originalName.replaceAll(" ", "-")
 
         filesForDBArray.push({
-          name: fileRenamed,
+          name: fileRenamed.split(".")[0],
           extension: e.target.files[i].name.split(".")[1],
           type,
         })
 
-        filesForServerArray.push(files[i])
+        const newFile = new File([files[i]], fileRenamed, {
+          type: files[i].type,
+        })
+
+        filesForServerArray.push(newFile)
       }
+
       setNewAttachmentsForDataBase(filesForDBArray)
       setNewAttachmentsForServer(filesForServerArray)
     }

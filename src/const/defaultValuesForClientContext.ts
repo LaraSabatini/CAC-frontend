@@ -21,6 +21,7 @@ const defaultClient: ClientInterface = {
   paymentDate: "",
   paymentExpireDate: "",
   mpId: "",
+  savedArticles: [],
 }
 
 export default defaultClient

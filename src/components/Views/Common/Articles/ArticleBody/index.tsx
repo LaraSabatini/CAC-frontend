@@ -2,15 +2,19 @@ import React, { useEffect, useState, useContext } from "react"
 import { useRouter } from "next/router"
 import { ArticlesContext } from "contexts/Articles"
 import { getArticleById } from "services/articles/articles.service"
-import ArticleInterface from "interfaces/content/Article"
+import ArticleInterface, {
+  CreatedByInterface,
+} from "interfaces/content/Article"
 import { TbPencil } from "react-icons/tb"
-import { FaRegTrashAlt } from "react-icons/fa"
+import { ImLocation } from "react-icons/im"
+import { FaRegTrashAlt, FaCalendarMinus } from "react-icons/fa"
+import { BsDot } from "react-icons/bs"
 import regionFilters from "const/regions"
 import texts from "strings/articles.json"
 import Tooltip from "components/UI/Tooltip"
-import Scroll from "components/UI/Scroll"
 import Icon from "components/UI/Assets/Icon"
 import MediaViewer from "components/UI/MediaViewer"
+import { dateFormated } from "helpers/dates/getToday"
 import DeleteArticleModal from "./DeleteArticleModal"
 import EditArticleForm from "../../../Admin/EditArticleForm"
 import RelatedArticles from "./RelatedArticles"
@@ -24,8 +28,8 @@ import {
   ArticleParagraph,
   AuthorContainer,
   RigthContainer,
-  RightSubcolumn,
   Buttons,
+  ArticleContent,
 } from "./styles"
 
 type ConditionalProps =
@@ -51,6 +55,8 @@ function ArticleBody(props: Props) {
     ArticlesContext,
   )
 
+  const [inModal, setInModal] = useState<boolean>(false)
+
   const router = useRouter()
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
@@ -63,6 +69,14 @@ function ArticleBody(props: Props) {
   const [modalDelete, setModalDelete] = useState<boolean>(false)
   const [modalEdit, setModalEdit] = useState<boolean>(false)
 
+  const [changesHistory, setChangesHistory] = useState<
+    {
+      date: string
+      changedBy: CreatedByInterface
+      action: "CREATED" | "MODIFIED"
+    }[]
+  >()
+
   const cleanArticle = (fullArticle: string) => {
     const text = fullArticle.split("\n")
     setArticleParagraphs(text)
@@ -74,12 +88,17 @@ function ArticleBody(props: Props) {
     )
     setData(getArticleByIdReq.data[0])
     cleanArticle(getArticleByIdReq.data[0].article)
+
+    setChangesHistory(
+      JSON.parse(getArticleByIdReq.data[0].changesHistory as string),
+    )
   }
 
   useEffect(() => {
     if (!queries && typeof article !== "undefined") {
       setData(article)
       cleanArticle(article.article)
+      setInModal(true)
     } else {
       getArticleData()
     }
@@ -99,7 +118,7 @@ function ArticleBody(props: Props) {
 
   return (
     <div>
-      <Container>
+      <Container inModal={inModal}>
         {data !== undefined && (
           <LeftContainer>
             {modalDelete && (
@@ -118,32 +137,56 @@ function ArticleBody(props: Props) {
             )}
             <div className="articleHeader">
               <ArticleRegion>
-                {typeof data.regionFilters === "string" &&
-                  data !== undefined &&
-                  regionFilters.filter(
-                    item =>
-                      item.id === JSON.parse(data.regionFilters as string)[0],
-                  )[0]?.value}
+                <p>
+                  <ImLocation />
+                  {typeof data.regionFilters === "string"
+                    ? regionFilters.filter(
+                        item =>
+                          item.id ===
+                          JSON.parse(data.regionFilters as string)[0],
+                      )[0]?.value
+                    : regionFilters.filter(
+                        item => item.id === data.regionFilters[0],
+                      )[0].value}
+                </p>
+                <BsDot />
+                <p>
+                  <FaCalendarMinus />
+                  {changesHistory !== undefined ? (
+                    <>
+                      {changesHistory[
+                        changesHistory.length - 1
+                      ].date?.replaceAll("-", "/")}
+                    </>
+                  ) : (
+                    dateFormated.replaceAll("-", "/")
+                  )}
+                </p>
               </ArticleRegion>
               <ArticleTitle>{data.title}</ArticleTitle>
               <Subtitle>{data.subtitle}</Subtitle>
-            </div>
-            <ArticleContainer>
-              <Scroll height={350}>
-                {articleParagraphs.map((paragraph: string) => (
-                  <ArticleParagraph key={Math.floor(Math.random() * 1000)}>
-                    {paragraph}
-                  </ArticleParagraph>
-                ))}
-              </Scroll>
-              <RightSubcolumn>
-                <AuthorContainer>
-                  <Icon icon="Profile" />
-                  <p>
-                    <span>{texts.author}</span>
-                    {data.author}
-                  </p>
-                </AuthorContainer>
+
+              {showImageVisualizer && data !== undefined && (
+                <RigthContainer>
+                  {(typeof data.attachments === "string"
+                    ? JSON.parse(data.attachments as string).length
+                    : data.attachments.length) && (
+                    <MediaViewer
+                      urls={
+                        typeof data.attachments === "string"
+                          ? JSON.parse(data.attachments as string)
+                          : data.attachments
+                      }
+                    />
+                  )}
+                </RigthContainer>
+              )}
+              <AuthorContainer>
+                <Icon icon="Profile" />
+                <p>
+                  <span>{texts.author}</span>
+                  {data.author}
+                </p>
                 {typeof queries !== "undefined" && userData.type === "admin" && (
                   <Buttons>
                     <Tooltip title="Editar">
@@ -153,6 +196,7 @@ function ArticleBody(props: Props) {
                         onClick={() => {
                           setArticleSelected(data)
                           setModalEdit(true)
+                          setInModal(true)
                           router.query.edition = "true"
                           router.push(router)
                         }}
@@ -171,24 +215,18 @@ function ArticleBody(props: Props) {
                     </Tooltip>
                   </Buttons>
                 )}
-              </RightSubcolumn>
+              </AuthorContainer>
+            </div>
+            <ArticleContainer>
+              <ArticleContent>
+                {articleParagraphs.map((paragraph: string) => (
+                  <ArticleParagraph key={Math.floor(Math.random() * 1000)}>
+                    {paragraph}
+                  </ArticleParagraph>
+                ))}
+              </ArticleContent>
             </ArticleContainer>
           </LeftContainer>
-        )}
-        {showImageVisualizer && data !== undefined && (
-          <RigthContainer>
-            {(typeof data.attachments === "string"
-              ? JSON.parse(data.attachments as string).length
-              : data.attachments.length) && (
-              <MediaViewer
-                urls={
-                  typeof data.attachments === "string"
-                    ? JSON.parse(data.attachments as string)
-                    : data.attachments
-                }
-              />
-            )}
-          </RigthContainer>
         )}
       </Container>
       {queries && data !== undefined && (

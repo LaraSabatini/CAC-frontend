@@ -12,7 +12,7 @@ const sendAccountBlockedEmailNotification = async (
 ) => {
   const res = await defaultPost(`${apiURL}/client/block_account_mail`, {
     ...body,
-    supportURL: `https://cac-frontend-git-feat-update-payment-larasabatini.vercel.app/contactSupport?id=${id}&clientName=${clientName}`,
+    supportURL: `${process.env.NEXT_PUBLIC_FRONT_URL}/contactSupport?id=${id}&clientName=${clientName}`,
   })
   return res
 }
@@ -23,8 +23,7 @@ const sendAccountUnblockedEmailNotification = async (body: {
 }) => {
   const res = await defaultPost(`${apiURL}/client/unblock_account_mail`, {
     ...body,
-    loginURL:
-      "https://cac-frontend-git-feat-update-payment-larasabatini.vercel.app/login?user=client",
+    loginURL: `${process.env.NEXT_PUBLIC_FRONT_URL}/login?user=client`,
   })
   return res
 }

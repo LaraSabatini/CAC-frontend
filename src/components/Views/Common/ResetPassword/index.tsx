@@ -53,7 +53,7 @@ function ResetPassword() {
         {
           recipients: [email],
           name: email.split("@")[0],
-          restorePasswordURL: `https://cac-frontend-git-feat-update-payment-larasabatini.vercel.app${routes.login.name}?${routes.login.queries.user}${user}&${routes.login.queries.resetPassword}&${routes.login.queries.email}${email}&${routes.login.queries.redirected}`,
+          restorePasswordURL: `${process.env.NEXT_PUBLIC_FRONT_URL}${routes.login.name}?${routes.login.queries.user}${user}&${routes.login.queries.resetPassword}&${routes.login.queries.email}${email}&${routes.login.queries.redirected}`,
         },
       )
 
