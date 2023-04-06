@@ -41,6 +41,7 @@ function EditPersonalInfo({
     phoneNumber: `${data.phoneNumber}`,
     email: `${data.email}`,
     region: data.region,
+    realEstateRegistration: data.realEstateRegistration,
   })
   const [formError, setFormError] = useState<string>("")
 
@@ -52,6 +53,7 @@ function EditPersonalInfo({
       newData.phoneAreaCode,
       newData.phoneNumber,
       newData.identificationNumber,
+      newData.realEstateRegistration,
     )
 
     if (validate) {
@@ -193,6 +195,19 @@ function EditPersonalInfo({
             region: e.id,
           })
         }}
+      />
+      <Input
+        width={200}
+        value={newData.realEstateRegistration}
+        label="Matricula"
+        required
+        type="text"
+        onChange={e =>
+          setNewData({
+            ...newData,
+            realEstateRegistration: e.target.value,
+          })
+        }
       />
       <ButtonContainer>
         <Button

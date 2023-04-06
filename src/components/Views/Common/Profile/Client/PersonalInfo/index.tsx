@@ -7,6 +7,8 @@ import {
   AiOutlinePhone,
   AiOutlineCalendar,
 } from "react-icons/ai"
+import regions from "const/regions"
+import { HiIdentification } from "react-icons/hi"
 import { TfiLocationPin } from "react-icons/tfi"
 import { BiPencil } from "react-icons/bi"
 import texts from "strings/profile.json"
@@ -17,10 +19,6 @@ import { Title } from "../styles"
 import { PersonalDataCard, Data, CardHeader, EditButton } from "./styles"
 
 function PersonalInfo() {
-  const regions: { id: number; value: string }[] = JSON.parse(
-    localStorage.getItem("regions") as string,
-  )
-
   const { profileData } = useContext(ProfileContext)
 
   const data = profileData as ClientInterface
@@ -77,6 +75,11 @@ function PersonalInfo() {
               }
             />
           )}
+          <DataSet
+            icon={<HiIdentification />}
+            title="Matricula:"
+            value={data?.realEstateRegistration}
+          />
         </Data>
       ) : (
         <EditPersonalInfo

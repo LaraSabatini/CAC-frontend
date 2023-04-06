@@ -49,6 +49,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
       newClient.phoneAreaCode,
       newClient.phoneNumber,
       newClient.identificationNumber,
+      newClient.realEstateRegistration,
     )
 
     if (validate) {
