@@ -1,8 +1,8 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import theme from "theme/index"
 import { Button } from "components/UI/sharedStyles"
 
-const Container = styled.div`
+const Container = styled.div<{ inModal: boolean }>`
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -16,6 +16,14 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
   }
+
+  ${props =>
+    props.inModal &&
+    css`
+      width: 100%;
+      height: 500px;
+      overflow: auto;
+    `}
 `
 
 const LeftContainer = styled.div``

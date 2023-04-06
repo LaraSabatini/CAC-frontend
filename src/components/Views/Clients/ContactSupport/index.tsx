@@ -26,7 +26,7 @@ function ContactSupportView() {
           recipients: ["sabatinilara@gmail.com"],
           name: "Administrador",
           clientName: clientName.replace("20%", " "),
-          unblockURL: `https://cac-frontend-git-feat-update-payment-larasabatini.vercel.app/contactSupport/unblock?id=${router.query.id}`,
+          unblockURL: `${process.env.NEXT_PUBLIC_FRONT_URL}/contactSupport/unblock?id=${router.query.id}`,
         },
         parseInt(router.query.id as string, 10),
       )

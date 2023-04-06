@@ -8,6 +8,7 @@ import { FaCalendarMinus, FaEye } from "react-icons/fa"
 import routes from "routes"
 import ArticleInterface from "interfaces/content/Article"
 import regionFilters from "const/regions"
+import { dateFormated } from "helpers/dates/getToday"
 import {
   ArticleCard,
   ArticleTitle,
@@ -38,8 +39,12 @@ function ArticleView({
 }: ArticleViewInterface) {
   const router = useRouter()
 
-  // const changesHistory = JSON.parse(article.changesHistory as string)
-
+  const changesHistory =
+    typeof article.changesHistory !== "string"
+      ? article.changesHistory.length === 0
+        ? dateFormated
+        : article.changesHistory
+      : JSON.parse(article.changesHistory as string)
   const [amountOfSavedTimes, setAmountOfSavedTimes] = useState(savedTimes)
 
   return (
@@ -51,11 +56,12 @@ function ArticleView({
             {regionFilters.filter(item => item.id === region)[0]?.value}
             <BsDot />
             <FaCalendarMinus />
-            {/* {changesHistory !== undefined &&
-              changesHistory[changesHistory.length - 1].date.replaceAll(
-                "-",
-                "/",
-              )} */}
+            {article.id === 0 && changesHistory !== undefined
+              ? changesHistory.replaceAll("-", "/")
+              : changesHistory[changesHistory.length - 1].date.replaceAll(
+                  "-",
+                  "/",
+                )}
           </ArticleRegion>
           <ArticleTitle>{article.title}</ArticleTitle>
         </div>

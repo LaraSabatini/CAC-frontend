@@ -38,7 +38,7 @@ function ModalAttachedFiles({ closeModal }: ModalAttachedFilesInterface) {
         </AttachmentsListHead>
         <ItemContainer>
           {attachmentsForDataBase.map(file => (
-            <Item>
+            <Item key={file.name}>
               {file.name}.{file.extension}
               <div className="actions">
                 {file.type === "image" && (

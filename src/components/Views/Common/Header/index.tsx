@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
-import { AiOutlineLogout, AiFillHome } from "react-icons/ai"
+import { AiOutlineLogout } from "react-icons/ai"
 import { useRouter } from "next/router"
 import routes from "routes"
 import { searchArticles } from "services/articles/articles.service"
@@ -11,8 +11,10 @@ import SearchBar from "components/UI/SearchBar"
 import Icon from "components/UI/Assets/Icon"
 import Button from "components/UI/Button"
 import Tooltip from "components/UI/Tooltip"
+import Logo from "components/UI/Assets/Icon/Icons/Logo"
 import ModalStatus from "components/UI/ModalStatus"
 import Filters from "./Filters"
+
 import {
   Container,
   SearchContainer,
@@ -67,7 +69,7 @@ function Header() {
     <Container>
       <SearchContainer>
         <GoHomeButton onClick={() => router.replace(routes.dashboard.name)}>
-          <AiFillHome />
+          <Logo />
         </GoHomeButton>
         <SearchDiv>
           <SearchBar

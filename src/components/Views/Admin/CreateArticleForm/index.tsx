@@ -143,7 +143,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                     texts.newArticleForm.labels.descriptionPlaceholder
                   }
                   width={700}
-                  max={300}
+                  max={150}
                   onChange={e =>
                     setNewArticle({
                       ...newArticle,

@@ -14,7 +14,6 @@ const ArticlesContainer = styled.div`
 
   @media (max-width: 1450px) {
     gap: 20px;
-    /* gap: 0px; */
   }
 `
 
@@ -55,4 +54,11 @@ const EmptyPage = styled.h2`
   padding-top: 20px;
 `
 
-export { ArticlesContainer, FullArticle, Chip, EmptyPage }
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 30px;
+`
+
+export { ArticlesContainer, FullArticle, Chip, EmptyPage, ButtonContainer }

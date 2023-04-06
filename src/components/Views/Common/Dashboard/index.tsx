@@ -9,7 +9,14 @@ import { getArticles, editSavedTimes } from "services/articles/articles.service"
 import { DashboardContext } from "contexts/Dashboard"
 import { getFilters } from "services/articles/filters.service"
 import Header from "@components/Views/Common/Header"
-import { FullArticle, ArticlesContainer, Chip, EmptyPage } from "./styles"
+import Button from "components/UI/Button"
+import {
+  FullArticle,
+  ArticlesContainer,
+  Chip,
+  EmptyPage,
+  ButtonContainer,
+} from "./styles"
 import ArticleView from "../Articles/ArticleCard"
 import ArticleBody from "../Articles/ArticleBody"
 
@@ -29,19 +36,26 @@ function DashboardView() {
 
   const [savedArticles, setSavedArticles] = useState<number[]>([])
   const [updateList, setUpdateList] = useState<number>(0)
+  const [currentPage, setCurrentPage] = useState<number>(1)
 
   const getFiltersData = async () => {
     const getFiltersThemes = await getFilters()
     setThemeFilters(getFiltersThemes.data)
 
-    const getArticlesReq = await getArticles(1)
+    const getArticlesReq = await getArticles(currentPage)
     setArticles(getArticlesReq.data)
+
+    if (articles.length > 0) {
+      setArticles(articles.concat(getArticlesReq.data))
+    } else {
+      setArticles(getArticlesReq.data)
+    }
   }
 
   useEffect(() => {
     getFiltersData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [triggerArticleListUpdate])
+  }, [triggerArticleListUpdate, currentPage])
 
   const updateSavedArticlesList = async (list: number[]) => {
     const update = await editSavedArticles(userData.id, JSON.stringify(list))
@@ -115,7 +129,7 @@ function DashboardView() {
       ) : (
         <FullArticle>
           <Chip>
-            <a href="https://cac-frontend-git-feat-update-payment-larasabatini.vercel.app/dashboard">
+            <a href={`${process.env.NEXT_PUBLIC_FRONT_URL}/dashboard`}>
               Articulos
             </a>
             <BsChevronRight />
@@ -123,6 +137,17 @@ function DashboardView() {
           </Chip>
           <ArticleBody showImageVisualizer queries />
         </FullArticle>
+      )}
+      {articleId === undefined && (
+        <ButtonContainer>
+          <Button
+            content="Cargar mas articulos"
+            cta
+            action={() => {
+              setCurrentPage(currentPage + 1)
+            }}
+          />
+        </ButtonContainer>
       )}
     </>
   )

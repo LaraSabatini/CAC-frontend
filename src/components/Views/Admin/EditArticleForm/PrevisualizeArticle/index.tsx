@@ -56,6 +56,7 @@ function PrevisualizeArticle() {
         imagesAndFiles[i].name,
         imagesAndFiles[i].extension,
       )
+
       if (findFile.data !== undefined) {
         filesInDB.push(imagesAndFiles[i])
       } else {

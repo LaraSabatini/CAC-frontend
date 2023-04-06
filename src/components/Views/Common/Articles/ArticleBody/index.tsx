@@ -14,6 +14,7 @@ import texts from "strings/articles.json"
 import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import MediaViewer from "components/UI/MediaViewer"
+import { dateFormated } from "helpers/dates/getToday"
 import DeleteArticleModal from "./DeleteArticleModal"
 import EditArticleForm from "../../../Admin/EditArticleForm"
 import RelatedArticles from "./RelatedArticles"
@@ -53,6 +54,8 @@ function ArticleBody(props: Props) {
   const { setArticleSelected, discardArticleEdition } = useContext(
     ArticlesContext,
   )
+
+  const [inModal, setInModal] = useState<boolean>(false)
 
   const router = useRouter()
   const userData = JSON.parse(localStorage.getItem("userData") as string)
@@ -95,6 +98,7 @@ function ArticleBody(props: Props) {
     if (!queries && typeof article !== "undefined") {
       setData(article)
       cleanArticle(article.article)
+      setInModal(true)
     } else {
       getArticleData()
     }
@@ -114,7 +118,7 @@ function ArticleBody(props: Props) {
 
   return (
     <div>
-      <Container>
+      <Container inModal={inModal}>
         {data !== undefined && (
           <LeftContainer>
             {modalDelete && (
@@ -135,22 +139,27 @@ function ArticleBody(props: Props) {
               <ArticleRegion>
                 <p>
                   <ImLocation />
-                  {typeof data.regionFilters === "string" &&
-                    data !== undefined &&
-                    regionFilters.filter(
-                      item =>
-                        item.id === JSON.parse(data.regionFilters as string)[0],
-                    )[0]?.value}
+                  {typeof data.regionFilters === "string"
+                    ? regionFilters.filter(
+                        item =>
+                          item.id ===
+                          JSON.parse(data.regionFilters as string)[0],
+                      )[0]?.value
+                    : regionFilters.filter(
+                        item => item.id === data.regionFilters[0],
+                      )[0].value}
                 </p>
                 <BsDot />
                 <p>
                   <FaCalendarMinus />
-                  {changesHistory !== undefined && (
+                  {changesHistory !== undefined ? (
                     <>
                       {changesHistory[
                         changesHistory.length - 1
                       ].date?.replaceAll("-", "/")}
                     </>
+                  ) : (
+                    dateFormated.replaceAll("-", "/")
                   )}
                 </p>
               </ArticleRegion>
@@ -187,6 +196,7 @@ function ArticleBody(props: Props) {
                         onClick={() => {
                           setArticleSelected(data)
                           setModalEdit(true)
+                          setInModal(true)
                           router.query.edition = "true"
                           router.push(router)
                         }}

@@ -95,7 +95,7 @@ function ArticlesProvider({ children }: any) {
   ) => {
     if (action === "create") {
       const fileInDBArray = attachmentsForDataBase.filter(item => item !== file)
-      const fileInServerArray = attachmentsForServer.filter(
+      const fileInServerArray = [...attachmentsForServer].filter(
         item => item.name !== `${file.name}.${file.extension}`,
       )
 
