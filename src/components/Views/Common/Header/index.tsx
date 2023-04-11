@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useContext } from "react"
-import { AiOutlineLogout } from "react-icons/ai"
+import { AiOutlineLogout, AiFillSave, AiOutlineSave } from "react-icons/ai"
 import { FaUserFriends } from "react-icons/fa"
 import { BsFilterCircle } from "react-icons/bs"
 import { useRouter } from "next/router"
 import routes from "routes"
-import { searchArticles } from "services/articles/articles.service"
+import {
+  searchArticles,
+  getArticleById,
+} from "services/articles/articles.service"
+import { getSavedArticles } from "services/clients/clientActions.service"
 import { DashboardContext } from "contexts/Dashboard"
 import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
 import texts from "strings/profile.json"
@@ -44,6 +48,10 @@ function Header() {
   const [openFilters, setOpenFilters] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string>("")
 
+  const [savedArticlesSelected, setSavedArticlesSelected] = useState<boolean>(
+    false,
+  )
+
   const logout = () => {
     localStorage.removeItem("userData")
     router.replace(`${routes.login.name}?${routes.login.queries.client}`)
@@ -65,6 +73,24 @@ function Header() {
   useEffect(() => {
     window.addEventListener("resize", handleResize)
   })
+
+  const getMyArticles = async () => {
+    const getSavedArticlesCall = await getSavedArticles(userData.id)
+    const articleList = JSON.parse(getSavedArticlesCall.data)
+
+    if (!articleList.length) {
+      setArticles(articleList)
+    } else {
+      const articleListArray = []
+      // eslint-disable-next-line no-restricted-syntax
+      for (const articleId of articleList) {
+        // eslint-disable-next-line no-await-in-loop
+        const getArticleByIdCall = await getArticleById(articleId)
+        articleListArray.push(getArticleByIdCall.data[0])
+      }
+      setArticles(articleListArray)
+    }
+  }
 
   return (
     <Container>
@@ -103,11 +129,38 @@ function Header() {
                 </Tooltip>
               </FiltersButton>
 
-              {/* <ClientsProvider> */}
               {openFilters && (
                 <Filters closeTab={() => setOpenFilters(false)} />
               )}
-              {/* </ClientsProvider> */}
+              {userData?.type === "client" && (
+                <FiltersButton
+                  type="button"
+                  onClick={() => {
+                    setSavedArticlesSelected(!savedArticlesSelected)
+                    if (!savedArticlesSelected) {
+                      getMyArticles()
+                    } else {
+                      setArticles([])
+                      setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
+                    }
+                  }}
+                >
+                  <Tooltip
+                    title={
+                      !savedArticlesSelected
+                        ? "Articulos guardados"
+                        : "Todos los articulos"
+                    }
+                    placement="right"
+                  >
+                    {!savedArticlesSelected ? (
+                      <AiFillSave />
+                    ) : (
+                      <AiOutlineSave />
+                    )}
+                  </Tooltip>
+                </FiltersButton>
+              )}
             </>
           )}
         </SearchDiv>
