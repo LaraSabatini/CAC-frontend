@@ -44,6 +44,10 @@ function DetailsCard() {
           />
           <DataItem value="Mail" content={profileData.email} />
           <DataItem
+            value="Matricula"
+            content={profileData.realEstateRegistration}
+          />
+          <DataItem
             value="Telefono"
             content={`${profileData.phoneAreaCode} ${profileData.phoneNumber}`}
           />

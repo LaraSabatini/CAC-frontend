@@ -39,10 +39,16 @@ const filterClients = async (body: {
   return res.data
 }
 
+const searchClients = async (body: { search: string }) => {
+  const res = await defaultPost(`${apiURL}/search`, body)
+  return res
+}
+
 export {
   editSavedArticles,
   getSavedArticles,
   getClientComments,
   createClientComment,
   filterClients,
+  searchClients,
 }
