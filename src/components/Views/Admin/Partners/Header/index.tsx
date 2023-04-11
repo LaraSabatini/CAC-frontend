@@ -14,7 +14,6 @@ import Button from "components/UI/Button"
 import Tooltip from "components/UI/Tooltip"
 import Logo from "components/UI/Assets/Icon/Icons/Logo"
 import ModalStatus from "components/UI/ModalStatus"
-import Filters from "./Filters"
 import {
   Container,
   SearchContainer,
@@ -25,7 +24,8 @@ import {
   SearchDiv,
   SVGButton,
   FiltersButton,
-} from "./styles"
+} from "components/Views/Common/Header/styles"
+import Filters from "./Filters"
 
 function Header() {
   const router = useRouter()
@@ -103,11 +103,9 @@ function Header() {
                 </Tooltip>
               </FiltersButton>
 
-              {/* <ClientsProvider> */}
               {openFilters && (
                 <Filters closeTab={() => setOpenFilters(false)} />
               )}
-              {/* </ClientsProvider> */}
             </>
           )}
         </SearchDiv>

@@ -31,9 +31,18 @@ const createClientComment = async (body: CommentsInterface) => {
   return res
 }
 
+const filterClients = async (body: {
+  regionIds: number[]
+  planIds: number[]
+}) => {
+  const res = await defaultPost(`${apiURL}/filter`, body)
+  return res.data
+}
+
 export {
   editSavedArticles,
   getSavedArticles,
   getClientComments,
   createClientComment,
+  filterClients,
 }

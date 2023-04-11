@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react"
 import { ArticlesContext } from "contexts/Articles"
-import { MdAdd } from "react-icons/md"
+import { BiMessageSquareAdd } from "react-icons/bi"
 import texts from "strings/header.json"
 import Tooltip from "components/UI/Tooltip"
 import CreateArticleForm from "../CreateArticleForm"
@@ -22,7 +22,7 @@ function CreateArticleButton() {
       )}
       <Tooltip title={texts.createArticle} placement="bottom-end">
         <AddButton onClick={() => setOpenForm(true)}>
-          <MdAdd />
+          <BiMessageSquareAdd />
         </AddButton>
       </Tooltip>
     </>

@@ -1,8 +1,10 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { AiFillSave } from "react-icons/ai"
 import { BsFillTrashFill, BsChevronDown, BsChevronUp } from "react-icons/bs"
-import { filterArticles } from "services/articles/articles.service"
-import { DashboardContext } from "contexts/Dashboard"
+import { ClientsContext } from "contexts/Clients"
+import { getPlansForFilters } from "services/pricing/getPlans.service"
+import { FilterInterface } from "interfaces/contexts/DashboardContextInterface"
+import { filterClients } from "services/clients/clientActions.service"
 import Checkbox from "components/UI/Checkbox"
 import Tooltip from "components/UI/Tooltip"
 import Scroll from "components/UI/Scroll"
@@ -20,22 +22,20 @@ import {
 } from "./styles"
 
 function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
-  const {
-    themeFilters,
-    setArticles,
-    setTriggerArticleListUpdate,
-    triggerArticleListUpdate,
-  } = useContext(DashboardContext)
+  const { setClients } = useContext(ClientsContext)
 
   const [regionFilterOpen, setRegionFilterOpen] = useState<boolean>(false)
-  const [themeFilterOpen, setThemeFilterOpen] = useState<boolean>(false)
+
+  const [planFilterOpen, setPlanFilterOpen] = useState<boolean>(false)
+  const [planFilters, setPlanFilters] = useState<FilterInterface[] | []>([])
 
   const [regionFiltersSelected, setRegionFiltersSelected] = useState<number[]>(
     [],
   )
-  const [themeFiltersSelected, setThemeFiltersSelected] = useState<number[]>([])
 
-  const selectFilter = (id: number, type: "region" | "theme" | "plan") => {
+  const [planFiltersSelected, setPlanFiltersSelected] = useState<number[]>([])
+
+  const selectFilter = (id: number, type: "region" | "plan") => {
     let isSelected
     let filterSelected
 
@@ -43,8 +43,8 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
       filterSelected = regionFiltersSelected
       isSelected = regionFiltersSelected.indexOf(id)
     } else {
-      filterSelected = themeFiltersSelected
-      isSelected = themeFiltersSelected.indexOf(id)
+      filterSelected = planFiltersSelected
+      isSelected = planFiltersSelected.indexOf(id)
     }
 
     //
@@ -53,30 +53,47 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
       if (type === "region") {
         setRegionFiltersSelected(newFilters)
       } else {
-        setThemeFiltersSelected(newFilters)
+        setPlanFiltersSelected(newFilters)
       }
     } else {
       const newFilters = [...filterSelected, id]
       if (type === "region") {
         setRegionFiltersSelected(newFilters)
       } else {
-        setThemeFiltersSelected(newFilters)
+        setPlanFiltersSelected(newFilters)
       }
     }
   }
 
-  const searchArticles = async () => {
+  const searchPartners = async () => {
     closeTab()
-    if (regionFiltersSelected.length || themeFiltersSelected.length) {
-      const filterArticlesCall = await filterArticles({
+    if (regionFiltersSelected.length || planFiltersSelected.length) {
+      const filterClientsCall = await filterClients({
         regionIds: regionFiltersSelected,
-        themeIds: themeFiltersSelected,
+        planIds: planFiltersSelected,
       })
-      setArticles(filterArticlesCall.data)
-    } else {
-      setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
+
+      setClients(filterClientsCall)
     }
   }
+
+  const getPlanFilters = async () => {
+    const getPlansForFiltersCall = await getPlansForFilters()
+    const filterList: FilterInterface[] = []
+    getPlansForFiltersCall.data.map((plan: { id: number; name: string }) =>
+      filterList.push({
+        id: plan.id,
+        value: plan.name.split(" ")[1],
+      }),
+    )
+    setPlanFilters(filterList)
+  }
+
+  useEffect(() => {
+    if (!planFilters.length) {
+      getPlanFilters()
+    }
+  }, [planFilters])
 
   return (
     <FilterContainer>
@@ -106,21 +123,22 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
             )}
           </SelectionContainer>
         </FilterSelector>
+
         <FilterSelector>
-          <OpenFilters onClick={() => setThemeFilterOpen(!themeFilterOpen)}>
-            <Title>Tematica</Title>
-            {!themeFilterOpen ? <BsChevronDown /> : <BsChevronUp />}
+          <OpenFilters onClick={() => setPlanFilterOpen(!planFilterOpen)}>
+            <Title>Plan</Title>
+            {!planFilterOpen ? <BsChevronDown /> : <BsChevronUp />}
           </OpenFilters>
           <SelectionContainer>
-            {themeFilterOpen && (
+            {planFilterOpen && (
               <Scroll height={100}>
-                {themeFilters.map(filter => (
+                {planFilters.map(filter => (
                   <Filter key={filter.id}>
                     <Checkbox
                       idParam={filter.value}
                       ownState
-                      onChange={() => selectFilter(filter.id, "theme")}
-                      checked={themeFiltersSelected.indexOf(filter.id) !== -1}
+                      onChange={() => selectFilter(filter.id, "plan")}
+                      checked={planFiltersSelected.indexOf(filter.id) !== -1}
                     />
                     {filter.value}
                   </Filter>
@@ -129,22 +147,20 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
             )}
           </SelectionContainer>
         </FilterSelector>
-
         <ButtonContainer>
           <IconButton
             type="button"
             onClick={() => {
               closeTab()
               setRegionFiltersSelected([])
-              setThemeFiltersSelected([])
-              setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
+              setPlanFiltersSelected([])
             }}
           >
             <Tooltip title="Limpiar" placement="top-end">
               <BsFillTrashFill />
             </Tooltip>
           </IconButton>
-          <IconButton type="button" onClick={searchArticles}>
+          <IconButton type="button" onClick={searchPartners}>
             <Tooltip title="Aplicar" placement="top-end">
               <AiFillSave />
             </Tooltip>

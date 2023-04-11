@@ -7,13 +7,15 @@ const CheckboxContainer = styled.div`
   position: relative;
   height: 22px;
   width: 22px;
+  border-radius: 5px;
+
   input {
     visibility: hidden;
   }
   label {
     align-items: center;
     border-radius: 5px;
-    border: 1px solid ${theme.colors.blue};
+    border: 1px solid rgba(70, 106, 149, 0.235);
     color: ${theme.colors.white};
     display: flex;
     height: 20px;
