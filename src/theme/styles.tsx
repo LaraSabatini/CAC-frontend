@@ -6,6 +6,7 @@ const GlobalStyle = createGlobalStyle`
           margin: 0px;
           /* background-color:  ${theme.colors.light_grey}; */
           background-color:  #d6dfed;
+          padding-bottom: 50px;
         }
 `
 

@@ -117,6 +117,18 @@ const SVGButton = styled.button`
   }
 `
 
+const FiltersButton = styled.button`
+  border: none;
+  color: ${theme.colors.blue};
+  cursor: pointer;
+  background-color: transparent;
+
+  svg {
+    width: 25px;
+    height: 25px;
+  }
+`
+
 export {
   Container,
   SearchContainer,
@@ -127,4 +139,5 @@ export {
   ProfileContainer,
   SearchDiv,
   SVGButton,
+  FiltersButton,
 }

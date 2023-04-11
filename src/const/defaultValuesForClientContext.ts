@@ -22,6 +22,7 @@ const defaultClient: ClientInterface = {
   paymentExpireDate: "",
   mpId: "",
   savedArticles: [],
+  realEstateRegistration: "",
 }
 
 export default defaultClient

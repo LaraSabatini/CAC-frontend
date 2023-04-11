@@ -4,7 +4,8 @@ import { FaUserFriends } from "react-icons/fa"
 import { BsFilterCircle } from "react-icons/bs"
 import { useRouter } from "next/router"
 import routes from "routes"
-import { searchArticles } from "services/articles/articles.service"
+import { searchClients } from "services/clients/clientActions.service"
+import { ClientsContext } from "contexts/Clients"
 import { DashboardContext } from "contexts/Dashboard"
 import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
 import texts from "strings/profile.json"
@@ -14,7 +15,6 @@ import Button from "components/UI/Button"
 import Tooltip from "components/UI/Tooltip"
 import Logo from "components/UI/Assets/Icon/Icons/Logo"
 import ModalStatus from "components/UI/ModalStatus"
-import Filters from "./Filters"
 import {
   Container,
   SearchContainer,
@@ -25,18 +25,19 @@ import {
   SearchDiv,
   SVGButton,
   FiltersButton,
-} from "./styles"
+} from "components/Views/Common/Header/styles"
+import Filters from "./Filters"
 
 function Header() {
   const router = useRouter()
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
-  const {
-    setTriggerArticleListUpdate,
-    triggerArticleListUpdate,
-    setArticles,
-  } = useContext(DashboardContext)
+  const { setClients } = useContext(ClientsContext)
+
+  const { setTriggerArticleListUpdate, triggerArticleListUpdate } = useContext(
+    DashboardContext,
+  )
 
   const [openProfileMenu, setOpenProfileMenu] = useState<boolean>(false)
   const [openWarning, setOpenWarning] = useState<boolean>(false)
@@ -57,9 +58,9 @@ function Header() {
     }
   }
 
-  const searchArticlesInDB = async () => {
-    const searchArticlesCall = await searchArticles({ search: searchValue })
-    setArticles(searchArticlesCall.data)
+  const searchCliensInDb = async () => {
+    const searchClientsCall = await searchClients({ search: searchValue })
+    setClients(searchClientsCall.data)
   }
 
   useEffect(() => {
@@ -84,12 +85,12 @@ function Header() {
                 } else {
                   setSearchValue(e.target.value)
                   if (e.target.value.length >= 4) {
-                    searchArticlesInDB()
+                    searchCliensInDb()
                   }
                 }
               }
             }}
-            enterSearch={searchArticlesInDB}
+            enterSearch={searchCliensInDb}
           />
           {(router.asPath === "/dashboard" ||
             router.asPath === "/partners") && (
@@ -103,11 +104,9 @@ function Header() {
                 </Tooltip>
               </FiltersButton>
 
-              {/* <ClientsProvider> */}
               {openFilters && (
                 <Filters closeTab={() => setOpenFilters(false)} />
               )}
-              {/* </ClientsProvider> */}
             </>
           )}
         </SearchDiv>

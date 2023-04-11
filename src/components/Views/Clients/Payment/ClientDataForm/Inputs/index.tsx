@@ -118,6 +118,18 @@ function Inputs() {
             })
           }}
         />
+        <Input
+          width={230}
+          label="Matricula"
+          required
+          type="text"
+          onChange={e => {
+            setNewClient({
+              ...newClient,
+              realEstateRegistration: e.target.value,
+            })
+          }}
+        />
       </HorizontalGroup>
     </InputContainer>
   )

@@ -3,8 +3,9 @@ import { ClientsContext } from "contexts/Clients"
 import getPlans from "services/pricing/getPlans.service"
 import { getProfileDataForTable } from "services/auth/getProfileData.service"
 import ProductsInterface from "interfaces/content/Pricing"
-import Header from "components/Views/Common/Header"
+import Header from "./Header"
 import Table from "./Table"
+import CommentSection from "./CommentSection"
 import DetailsCard from "./DetailsCard"
 import Container from "./styles"
 
@@ -54,6 +55,7 @@ function PartnersView() {
         <Table />
         {clientSelected !== null && <DetailsCard />}
       </Container>
+      <CommentSection clientId={clientSelected} />
     </>
   )
 }

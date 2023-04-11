@@ -2,7 +2,7 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const AddButton = styled.button`
-  background-color: #0d6163;
+  background-color: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,7 +12,7 @@ const AddButton = styled.button`
   cursor: pointer;
 
   svg {
-    color: ${theme.colors.white};
+    color: ${theme.colors.blue};
     width: 30px;
     height: 30px;
   }

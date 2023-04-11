@@ -12,7 +12,7 @@ const TableStyled = styled.div`
   box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
   border-radius: 18px;
   width: 100%;
-  height: 500px;
+  height: 400px;
 
   .name-tag {
     width: 170px;
@@ -55,7 +55,10 @@ const TableHead = styled.div`
   }
 `
 
-const TableContent = styled.div``
+const TableContent = styled.div`
+  height: 350px;
+  overflow: auto;
+`
 
 const Client = styled.div<{ selected: boolean }>`
   padding: 11px 26px 11px 26px;

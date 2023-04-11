@@ -10,4 +10,14 @@ const getPlans = async () => {
     return err.response.status
   }
 }
+
+export const getPlansForFilters = async () => {
+  try {
+    const res = await axios.get(`${apiURL}/filters`, axiosHeader)
+    return res.data
+  } catch (err: any) {
+    return err.response.status
+  }
+}
+
 export default getPlans
