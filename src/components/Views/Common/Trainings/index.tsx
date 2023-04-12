@@ -61,9 +61,11 @@ function TrainingsView() {
             trainingsList.map(training => (
               <TrainingCard
                 key={training.id}
+                id={training.id as number}
                 youtubeURL={training.youtubeURL}
                 title={training.title}
                 description={training.description}
+                updateList={() => setUpdateList(updateList + 1)}
               />
             ))}
         </Content>

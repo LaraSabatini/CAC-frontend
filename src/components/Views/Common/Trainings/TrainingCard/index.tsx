@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { useRouter } from "next/router"
+import { deleteTraining } from "services/trainings/trainingActions.service"
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai"
 import { GrClose } from "react-icons/gr"
 import { BsFillPlayFill } from "react-icons/bs"
@@ -15,15 +16,19 @@ import {
 } from "./styles"
 
 interface TrainingCardInterface {
+  id: number
   youtubeURL: string
   title: string
   description: string
+  updateList: (arg?: any) => void
 }
 
 function TrainingCard({
+  id,
   youtubeURL,
   title,
   description,
+  updateList,
 }: TrainingCardInterface) {
   const router = useRouter()
   const userData = JSON.parse(localStorage.getItem("userData") as string)
@@ -31,8 +36,15 @@ function TrainingCard({
   const [openModal, setOpenModal] = useState<boolean>(false)
 
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
+  const [successModal, setSuccessModal] = useState<boolean>(false)
 
   const videoId = youtubeURL.split("v=")[1].split("&")[0]
+
+  const deleteTrainingAction = async () => {
+    const deleteTrainingCall = await deleteTraining(id)
+    setSuccessModal(deleteTrainingCall.status === 200)
+    setOpenDeleteModal(false)
+  }
 
   return (
     <Card background={`http://img.youtube.com/vi/${videoId}/hqdefault.jpg`}>
@@ -46,11 +58,24 @@ function TrainingCard({
                 status="warning"
                 ctaButton={{
                   content: "Eliminar",
-                  action: () => console.log("eliminar"),
+                  action: deleteTrainingAction,
                 }}
                 secondaryButton={{
                   content: "Cancelar",
                   action: () => setOpenDeleteModal(false),
+                }}
+              />
+            )}
+            {successModal && (
+              <ModalStatus
+                title="Excelente"
+                description="La capacitacion se ha eliminado con exito"
+                status="success"
+                selfClose
+                selfCloseAction={() => {
+                  setSuccessModal(false)
+                  setOpenModal(false)
+                  updateList()
                 }}
               />
             )}
