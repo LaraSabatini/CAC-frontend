@@ -179,7 +179,10 @@ function Header() {
               <AiOutlineVideoCamera />
             </Tooltip>
           </FiltersButton>
-          <FiltersButton type="button" onClick={() => console.log("hola")}>
+          <FiltersButton
+            type="button"
+            onClick={() => router.replace("/consultancies")}
+          >
             <Tooltip title="Agenda tu asesoria" placement="bottom-end">
               <FaCalendarWeek />
             </Tooltip>
