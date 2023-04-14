@@ -4,10 +4,11 @@ import { TrainingsContext } from "contexts/Trainings"
 import { AiOutlineVideoCameraAdd } from "react-icons/ai"
 import { getTrainings } from "@services/trainings/trainingActions.service"
 import Header from "components/Views/Common/Header"
+import Button from "components/UI/Button"
 import Tooltip from "components/UI/Tooltip"
 import TrainingCard from "./TrainingCard"
 import AddTraining from "./AddTraining"
-import { Container, Content, CreateTraining } from "./styles"
+import { Container, Content, CreateTraining, ButtonContainer } from "./styles"
 
 function TrainingsView() {
   const userData = JSON.parse(localStorage.getItem("userData") as string)
@@ -17,6 +18,7 @@ function TrainingsView() {
     setTrainingsList,
     trainingsList,
     setThemeFilters,
+    setCurrentPage,
   } = useContext(TrainingsContext)
 
   const [openModal, setOpenModal] = useState<boolean>()
@@ -24,7 +26,12 @@ function TrainingsView() {
 
   const getTrainingsData = async () => {
     const getTrainingsCall = await getTrainings(currentPage)
-    setTrainingsList(getTrainingsCall.data)
+
+    if (trainingsList.length > 0) {
+      setTrainingsList(trainingsList.concat(getTrainingsCall.data))
+    } else {
+      setTrainingsList(getTrainingsCall.data)
+    }
   }
 
   const getThemeFilters = async () => {
@@ -80,6 +87,17 @@ function TrainingsView() {
               setUpdateList(updateList + 1)
             }}
           />
+        )}
+        {trainingsList.length >= 25 && (
+          <ButtonContainer>
+            <Button
+              content="Cargar mas capacitaciones"
+              cta
+              action={() => {
+                setCurrentPage(currentPage + 1)
+              }}
+            />
+          </ButtonContainer>
         )}
       </Container>
     </>

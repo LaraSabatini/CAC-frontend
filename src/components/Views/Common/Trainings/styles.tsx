@@ -38,11 +38,6 @@ const CreateTraining = styled.button`
 
   align-self: flex-end;
 
-  /* margin: 0 5px 20px 0; */
-
-  /* right: 0;
-  bottom: 0; */
-
   color: ${theme.colors.white};
 
   display: flex;
@@ -62,4 +57,12 @@ const CreateTraining = styled.button`
   }
 `
 
-export { Container, Content, CreateTraining }
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 30px;
+  padding-top: 50px;
+`
+
+export { Container, Content, CreateTraining, ButtonContainer }
