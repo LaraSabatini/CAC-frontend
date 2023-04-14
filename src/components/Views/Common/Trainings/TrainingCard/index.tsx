@@ -7,6 +7,7 @@ import { BsFillPlayFill } from "react-icons/bs"
 import ModalStatus from "components/UI/ModalStatus"
 import Tooltip from "components/UI/Tooltip"
 import Modal from "components/UI/Modal"
+import EditTraining from "../EditTraining"
 import {
   Card,
   WatchButton,
@@ -21,6 +22,9 @@ interface TrainingCardInterface {
   title: string
   description: string
   updateList: (arg?: any) => void
+  author: string
+  theme: number[]
+  region: number[]
 }
 
 function TrainingCard({
@@ -29,6 +33,9 @@ function TrainingCard({
   title,
   description,
   updateList,
+  author,
+  theme,
+  region,
 }: TrainingCardInterface) {
   const router = useRouter()
   const userData = JSON.parse(localStorage.getItem("userData") as string)
@@ -36,6 +43,7 @@ function TrainingCard({
   const [openModal, setOpenModal] = useState<boolean>(false)
 
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false)
   const [successModal, setSuccessModal] = useState<boolean>(false)
 
   const videoId = youtubeURL.split("v=")[1].split("&")[0]
@@ -50,7 +58,7 @@ function TrainingCard({
     <Card background={`http://img.youtube.com/vi/${videoId}/hqdefault.jpg`}>
       {openModal && (
         <Modal>
-          <Player>
+          <Player isEditing={openEditModal}>
             {openDeleteModal && (
               <ModalStatus
                 title="Estas seguro de que deseas eliminar esta capacitacion?"
@@ -80,47 +88,74 @@ function TrainingCard({
               />
             )}
             <div className="player-header">
-              <h3>{router.query.title}</h3>
-              <ButtonContainer>
-                {userData?.type === "admin" && (
-                  <>
-                    <IconButton
-                      className="delete"
-                      onClick={() => setOpenDeleteModal(true)}
-                    >
-                      <Tooltip title="Eliminar capacitacion">
-                        <AiOutlineDelete />
-                      </Tooltip>
-                    </IconButton>
-                    <IconButton className="edit">
-                      <Tooltip title="Eliminar capacitacion">
-                        <AiOutlineEdit />
-                      </Tooltip>
-                    </IconButton>
-                  </>
-                )}
-                <IconButton
-                  type="button"
-                  onClick={() => {
-                    delete router.query.watch
-                    delete router.query.title
-                    router.push(router)
-                    setOpenModal(false)
-                  }}
-                >
-                  <GrClose />
-                </IconButton>
-              </ButtonContainer>
+              {!openEditModal ? (
+                <h3>{router.query.title}</h3>
+              ) : (
+                <h3>Editar capacitacion:</h3>
+              )}
+              {!openEditModal && (
+                <ButtonContainer>
+                  {userData?.type === "admin" && (
+                    <>
+                      <IconButton
+                        className="delete"
+                        onClick={() => setOpenDeleteModal(true)}
+                      >
+                        <Tooltip title="Eliminar capacitacion">
+                          <AiOutlineDelete />
+                        </Tooltip>
+                      </IconButton>
+                      <IconButton
+                        className="edit"
+                        onClick={() => setOpenEditModal(true)}
+                      >
+                        <Tooltip title="Eliminar capacitacion">
+                          <AiOutlineEdit />
+                        </Tooltip>
+                      </IconButton>
+                    </>
+                  )}
+                  <IconButton
+                    type="button"
+                    onClick={() => {
+                      delete router.query.watch
+                      delete router.query.title
+                      router.push(router)
+                      setOpenModal(false)
+                    }}
+                  >
+                    <GrClose />
+                  </IconButton>
+                </ButtonContainer>
+              )}
             </div>
-            <iframe
-              width="90%"
-              height="90%"
-              src={`https://www.youtube.com/embed/${router.query.watch}`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            />
+            {!openEditModal ? (
+              <iframe
+                width="90%"
+                height="90%"
+                src={`https://www.youtube.com/embed/${router.query.watch}`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            ) : (
+              <EditTraining
+                id={id}
+                youtubeURL={youtubeURL}
+                title={title}
+                description={description}
+                author={author}
+                theme={theme}
+                region={region}
+                cancel={() => setOpenEditModal(false)}
+                updateList={() => {
+                  setOpenEditModal(false)
+                  setOpenModal(false)
+                  updateList()
+                }}
+              />
+            )}
           </Player>
         </Modal>
       )}

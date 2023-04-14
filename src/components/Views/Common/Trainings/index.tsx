@@ -57,7 +57,7 @@ function TrainingsView() {
           )}
         </div>
         <Content>
-          {trainingsList.length &&
+          {trainingsList.length > 0 &&
             trainingsList.map(training => (
               <TrainingCard
                 key={training.id}
@@ -66,6 +66,9 @@ function TrainingsView() {
                 title={training.title}
                 description={training.description}
                 updateList={() => setUpdateList(updateList + 1)}
+                author={training.author}
+                theme={training.theme}
+                region={training.region}
               />
             ))}
         </Content>

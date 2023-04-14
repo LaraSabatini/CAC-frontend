@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import theme from "theme"
 
 const Card = styled.div<{ background: string }>`
@@ -82,13 +82,21 @@ const WatchButton = styled.button`
   }
 `
 
-const Player = styled.div`
+const Player = styled.div<{ isEditing: boolean }>`
   width: 80vw;
   height: 80vh;
   background-color: ${theme.colors.white};
   border-radius: 18px;
 
   padding-bottom: 20px;
+
+  ${props =>
+    props.isEditing &&
+    css`
+      width: 475px;
+      padding: 25px;
+      height: fit-content;
+    `}
 
   display: flex;
   flex-direction: column;
