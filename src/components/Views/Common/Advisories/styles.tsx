@@ -18,7 +18,7 @@ const Calendar = styled.div`
   flex-direction: column;
 `
 
-const DateInfo = styled.p`
+const DateInfo = styled.div`
   margin: 0;
 
   font-family: ${theme.fonts.titles};
@@ -47,7 +47,12 @@ const CalendarInfo = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 40px;
-  /* border: 1px solid red; */
+
+  .admin-buttons {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
 `
 
 const NavigateButtons = styled.div`
@@ -70,7 +75,7 @@ const NavigateButtons = styled.div`
   }
 `
 
-const ScheduleConsultancy = styled.button`
+const ScheduleAdvisory = styled.button`
   display: flex;
   align-items: center;
   gap: 5px;
@@ -108,6 +113,10 @@ const DateView = styled.div<{ past?: boolean }>`
   text-align: center;
   cursor: pointer;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   p {
     margin: 0;
     padding-top: 5px;
@@ -140,14 +149,61 @@ const Days = styled.div`
   }
 `
 
+const AdvisoryEvent = styled.button<{ eventType: "event" | "advisory" }>`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+
+  .marker {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    padding-left: 8px;
+  }
+
+  p {
+    font-family: ${theme.fonts.extra};
+    margin: 0;
+    font-size: 12px;
+
+    b {
+      font-weight: ${theme.fontWeights.medium};
+    }
+  }
+
+  ${props =>
+    props.eventType === "advisory" &&
+    css`
+      .marker {
+        background-color: ${theme.colors.orange};
+      }
+    `}
+
+  ${props =>
+    props.eventType === "event" &&
+    css`
+      .marker {
+        background-color: ${theme.colors.blue};
+      }
+    `}
+`
+
 export {
   Container,
   Calendar,
   DateInfo,
   CalendarInfo,
   NavigateButtons,
-  ScheduleConsultancy,
+  ScheduleAdvisory,
   CalendarDisplay,
   DateView,
   Days,
+  AdvisoryEvent,
 }

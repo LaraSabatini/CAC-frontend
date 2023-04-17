@@ -3,10 +3,10 @@ import { useRouter } from "next/router"
 import { UserDataType } from "interfaces/users/General"
 import checkLastPayment from "helpers/dates/checkLastPayment"
 import routes from "routes"
-import ConsultanciesProvider from "contexts/Consultancies"
-import ConsultanciesView from "components/Views/Common/Consultancies"
+import AdvisoriesProvider from "contexts/Advisories"
+import AdvisoriesView from "@components/Views/Common/Advisories"
 
-function Consultancies() {
+function Advisories() {
   const router = useRouter()
   const [isLogged, setIsLogged] = useState<boolean>(false)
 
@@ -42,12 +42,12 @@ function Consultancies() {
   return (
     <>
       {isLogged && (
-        <ConsultanciesProvider>
-          <ConsultanciesView />
-        </ConsultanciesProvider>
+        <AdvisoriesProvider>
+          <AdvisoriesView />
+        </AdvisoriesProvider>
       )}
     </>
   )
 }
 
-export default Consultancies
+export default Advisories

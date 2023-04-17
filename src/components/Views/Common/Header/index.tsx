@@ -181,9 +181,16 @@ function Header() {
           </FiltersButton>
           <FiltersButton
             type="button"
-            onClick={() => router.replace("/consultancies")}
+            onClick={() => router.replace("/advisories")}
           >
-            <Tooltip title="Agenda tu asesoria" placement="bottom-end">
+            <Tooltip
+              title={
+                userData?.type === "client"
+                  ? "Agenda tu asesoria"
+                  : "Ver asesorias & eventos"
+              }
+              placement="bottom-end"
+            >
               <FaCalendarWeek />
             </Tooltip>
           </FiltersButton>
