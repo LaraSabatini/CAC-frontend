@@ -63,19 +63,25 @@ const changeAdvisoryStatus = async (
   return res
 }
 
-const createAvailability = async (body: AdvisoryAvailavilityInterface) => {
+const createAvailability = async (body: {
+  adminId: number
+  availability: string
+}) => {
   const res = await defaultPost(`${apiURL}/availability`, body)
-  return res
+  return res.data
 }
 
 const getAvailability = async (id: number) => {
-  const res = await axios.get(`${apiURL}/availability?id=${id}`, axiosHeader)
+  const res = await axios.get(
+    `${apiURL}/availability/adminId=${id}`,
+    axiosHeader,
+  )
   return res.data
 }
 
 const changeAvailability = async (body: AdvisoryAvailavilityInterface) => {
   const res = await axios.put(`${apiURL}/availability`, body, axiosHeader)
-  return res
+  return res.data
 }
 
 export {

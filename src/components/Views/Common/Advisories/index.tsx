@@ -11,7 +11,8 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
 import { FaCalendarWeek, FaCalendarPlus } from "react-icons/fa"
 import getCalendarMonth from "helpers/dates/getCalendarMonth"
 import compareDates from "helpers/dates/compareDates"
-import months from "const/months"
+import { months, days } from "const/dates"
+import Availability from "./Availability"
 import {
   Container,
   Calendar,
@@ -39,6 +40,8 @@ function AdvisoriesView() {
   const [currentMonth, setCurrentMonth] = useState<number>(today.getMonth() + 1)
   const [currentYear, setCurrentYear] = useState<number>(today.getFullYear())
 
+  const [availabilityModal, setAvailabilityModal] = useState<boolean>(false)
+
   const [dates, setDates] = useState<Date[]>(
     getCalendarMonth(today.getFullYear(), today.getMonth() + 1),
   )
@@ -50,10 +53,6 @@ function AdvisoriesView() {
       userData?.type,
     )
     setAdvisoryList(getAdvisoriesCall.data)
-
-    const hola = new Date(stringToDate(getAdvisoriesCall.data[0].date))
-    const otra = new Date(dates[15])
-    console.log(hola.getTime() === otra.getTime())
 
     const getEventsByMonthCall = await getEventsByMonth(currentMonth)
     setPublicEventList(getEventsByMonthCall.data)
@@ -150,7 +149,7 @@ function AdvisoriesView() {
                   <FaCalendarPlus />
                   Crear evento publico
                 </ScheduleAdvisory>
-                <ScheduleAdvisory>
+                <ScheduleAdvisory onClick={() => setAvailabilityModal(true)}>
                   <AiFillSchedule />
                   Agregar / Modificar disponibilidad
                 </ScheduleAdvisory>
@@ -158,19 +157,15 @@ function AdvisoriesView() {
             )}
           </CalendarInfo>
           <Days>
-            <p>DOM</p>
-            <p>LUN</p>
-            <p>MAR</p>
-            <p>MIE</p>
-            <p>JUE</p>
-            <p>VIE</p>
-            <p>SAB</p>
+            {days.map(day => (
+              <p key={day.id}>{day.nameAbb}</p>
+            ))}
           </Days>
           <CalendarDisplay>
             {dates.map((date, index) => (
               <DateView
                 // eslint-disable-next-line react/no-array-index-key
-                key={index + 1}
+                key={index}
                 past={
                   !compareDates(formatDateToCompare(dates[index], currentYear))
                 }
@@ -202,6 +197,9 @@ function AdvisoriesView() {
             ))}
           </CalendarDisplay>
         </Calendar>
+        {availabilityModal && (
+          <Availability closeModal={() => setAvailabilityModal(false)} />
+        )}
       </Container>
     </>
   )
