@@ -6,11 +6,17 @@ interface ButtonInterface {
   cta: boolean
   danger?: boolean
   action: (arg?: any) => void
+  disabled?: boolean
 }
 
-function Button({ content, cta, action, danger }: ButtonInterface) {
+function Button({ content, cta, action, danger, disabled }: ButtonInterface) {
   return (
-    <ButtonStyled cta={cta} onClick={action} danger={danger}>
+    <ButtonStyled
+      disabled={disabled}
+      cta={cta}
+      onClick={action}
+      danger={danger}
+    >
       {content}
     </ButtonStyled>
   )

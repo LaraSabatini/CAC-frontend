@@ -44,6 +44,11 @@ const searchClients = async (body: { search: string }) => {
   return res
 }
 
+const getClientEmails = async () => {
+  const res = await axios.get(`${apiURL}/emails`, axiosHeader)
+  return res.data
+}
+
 export {
   editSavedArticles,
   getSavedArticles,
@@ -51,4 +56,5 @@ export {
   createClientComment,
   filterClients,
   searchClients,
+  getClientEmails,
 }

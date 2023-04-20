@@ -162,7 +162,6 @@ const AdvisoryEvent = styled.button<{ eventType: "event" | "advisory" }>`
   width: 100%;
 
   .marker {
-    width: 8px;
     height: 8px;
     border-radius: 50%;
     padding-left: 8px;

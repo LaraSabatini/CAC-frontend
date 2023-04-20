@@ -18,13 +18,13 @@ export interface AdvisoryAvailavilityInterface {
 }
 
 export interface PublicEventsInterface {
-  id: number
+  id?: number
   title: string
   description: string
   date: string
   hour: string
   month: number
   eventURL: string
-  attendant: string // JSON id[]
+  attendant: number[]
   createdBy: number
 }

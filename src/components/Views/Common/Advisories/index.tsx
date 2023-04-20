@@ -13,6 +13,7 @@ import getCalendarMonth from "helpers/dates/getCalendarMonth"
 import compareDates from "helpers/dates/compareDates"
 import { months, days } from "const/dates"
 import Availability from "./Availability"
+import CreateEvent from "./CreateEvent"
 import {
   Container,
   Calendar,
@@ -41,6 +42,9 @@ function AdvisoriesView() {
   const [currentYear, setCurrentYear] = useState<number>(today.getFullYear())
 
   const [availabilityModal, setAvailabilityModal] = useState<boolean>(false)
+  const [createEventModal, setCreateEvent] = useState<boolean>(false)
+
+  const [updateList, setUpdateList] = useState<number>(0)
 
   const [dates, setDates] = useState<Date[]>(
     getCalendarMonth(today.getFullYear(), today.getMonth() + 1),
@@ -56,6 +60,8 @@ function AdvisoriesView() {
 
     const getEventsByMonthCall = await getEventsByMonth(currentMonth)
     setPublicEventList(getEventsByMonthCall.data)
+
+    console.log(getEventsByMonthCall)
   }
 
   const searchAdvisory = (index: number) => {
@@ -78,19 +84,25 @@ function AdvisoriesView() {
         stringToDate(eventDate.date).getTime() === dates[index].getTime(),
     )
 
-    return event.length === 0
-      ? null
-      : {
-          hour: event[0].hour,
-          title: event[0].title,
-        }
+    const eventList: { hour: string; title: string }[] = []
+
+    if (event.length) {
+      event.map(ev =>
+        eventList.push({
+          hour: ev.hour,
+          title: ev.title,
+        }),
+      )
+    }
+
+    return eventList
   }
 
   useEffect(() => {
     setDates(getCalendarMonth(currentYear, currentMonth))
     getAdvisoryList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentMonth])
+  }, [currentMonth, updateList])
 
   return (
     <>
@@ -145,7 +157,7 @@ function AdvisoriesView() {
               </ScheduleAdvisory>
             ) : (
               <div className="admin-buttons">
-                <ScheduleAdvisory>
+                <ScheduleAdvisory onClick={() => setCreateEvent(true)}>
                   <FaCalendarPlus />
                   Crear evento publico
                 </ScheduleAdvisory>
@@ -183,13 +195,18 @@ function AdvisoriesView() {
                   <></>
                 )}
                 {searchEvent(index) !== null ? (
-                  <AdvisoryEvent type="button" eventType="event">
-                    <div className="marker" />
-                    <p>
-                      {searchEvent(index)?.hour}{" "}
-                      <b>{searchEvent(index)?.title}</b>
-                    </p>
-                  </AdvisoryEvent>
+                  searchEvent(index).map(event => (
+                    <AdvisoryEvent
+                      key={event.hour}
+                      type="button"
+                      eventType="event"
+                    >
+                      <div className="marker" />
+                      <p>
+                        {event.hour} <b>{event.title}</b>
+                      </p>
+                    </AdvisoryEvent>
+                  ))
                 ) : (
                   <></>
                 )}
@@ -199,6 +216,14 @@ function AdvisoriesView() {
         </Calendar>
         {availabilityModal && (
           <Availability closeModal={() => setAvailabilityModal(false)} />
+        )}
+        {createEventModal && (
+          <CreateEvent
+            closeModal={() => {
+              setCreateEvent(false)
+              setUpdateList(updateList + 1)
+            }}
+          />
         )}
       </Container>
     </>
