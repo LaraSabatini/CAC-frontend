@@ -25,6 +25,6 @@ export interface PublicEventsInterface {
   hour: string
   month: number
   eventURL: string
-  attendant: number[]
+  attendant: number[] | string
   createdBy: number
 }

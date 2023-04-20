@@ -78,27 +78,27 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
       },
     }
 
-    console.log("eventData", eventData)
-
-    const request = gapi.client.calendar.events.insert({
-      calendarId: "primary",
-      sendNotifications: true,
-      conferenceDataVersion: 1,
-      resource: eventData,
-    })
-
-    request.execute(async (event: any) => {
-      console.log("execute")
-
-      const createEventCall = await createEvent({
-        ...newEvent,
-        createdBy: userData.id,
-        date: `${splitDate[0]}-${splitDate[1]}-${splitDate[2]}`,
-        month: parseInt(splitDate[1], 10),
-        eventURL: event.htmlLink,
+    if (gapi.client.calendar !== undefined) {
+      const request = gapi.client.calendar.events.insert({
+        calendarId: "primary",
+        sendNotifications: true,
+        conferenceDataVersion: 1,
+        resource: eventData,
       })
-      setModalSuccess(createEventCall.status === 201)
-    })
+
+      request.execute(async (event: any) => {
+        const createEventCall = await createEvent({
+          ...newEvent,
+          createdBy: userData.id,
+          date: `${splitDate[0]}-${splitDate[1]}-${splitDate[2]}`,
+          month: parseInt(splitDate[1], 10),
+          eventURL: event.htmlLink,
+        })
+        setModalSuccess(createEventCall.status === 201)
+      })
+    } else {
+      console.log("events esta undefined", gapi.client)
+    }
   }
 
   const handleClientLoad = () => {
@@ -119,12 +119,12 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
           },
           (res: any) => {
             if (res) {
-              if (res.access_token)
+              if (res.access_token) {
                 localStorage.setItem("access_token", res.access_token)
+                gapi.client.load("calendar", "v3", createEventFunction)
+              }
 
-              gapi.client.load("calendar", "v3", console.log(""))
-
-              createEventFunction()
+              // createEventFunction()
             }
           },
         )

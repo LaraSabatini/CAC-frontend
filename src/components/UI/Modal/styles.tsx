@@ -7,7 +7,7 @@ export const Overlay = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(36, 38, 42, 0.9);
+  background: rgba(36, 38, 42, 0.202);
   z-index: 100;
 `
 
