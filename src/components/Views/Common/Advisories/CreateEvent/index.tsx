@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react"
 import { PublicEventsInterface } from "interfaces/content/Advisories"
 import { createEvent } from "services/advisories/events.service"
-// import { getClientEmails } from "services/clients/clientActions.service"
+import { getClientEmails } from "services/clients/clientActions.service"
 import Modal from "components/UI/Modal"
 import ModalStatus from "components/UI/ModalStatus"
 import Input from "components/UI/Input"
@@ -48,7 +48,7 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
       parseInt(splitHour[0], 10) + 1
     }:${splitHour[1]}:00-03:00`
 
-    // const clientEmails = await getClientEmails()
+    const clientEmails = await getClientEmails()
 
     const eventData = {
       summary: newEvent.title,
@@ -67,8 +67,7 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
           requestId: uuid(),
         },
       },
-      // attendees: [...clientEmails.data, { email: userData.user }],
-      attendees: [{ email: "sabatinilara@gmail.com" }],
+      attendees: [...clientEmails.data, { email: userData.user }],
       reminders: {
         useDefault: false,
         overrides: [
@@ -123,15 +122,16 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
                 localStorage.setItem("access_token", res.access_token)
                 gapi.client.load("calendar", "v3", createEventFunction)
               }
-
-              // createEventFunction()
             }
           },
         )
       }
 
       const initClient = () => {
-        if (!localStorage.getItem("access_token")) {
+        if (
+          !localStorage.getItem("access_token") ||
+          gapi.client.calendar === undefined
+        ) {
           openSignInPopup()
         } else {
           createEventFunction()

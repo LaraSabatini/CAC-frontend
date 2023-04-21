@@ -320,6 +320,33 @@ const EventContainer = styled.div`
   }
 `
 
+const EventDataEdit = styled.div`
+  background-color: ${theme.colors.white};
+  width: 400px;
+  border-radius: 18px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+
+  .input-container {
+    padding-top: 20px;
+  }
+
+  .horizontal {
+    padding-top: 65px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .required {
+    color: ${theme.colors.red};
+    margin: 0;
+    font-family: ${theme.fonts.extra};
+    font-size: 12px;
+  }
+`
+
 export {
   Container,
   Calendar,
@@ -333,4 +360,5 @@ export {
   AdvisoryEvent,
   EventData,
   EventContainer,
+  EventDataEdit,
 }

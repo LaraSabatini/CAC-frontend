@@ -20,4 +20,21 @@ const signUpToEvent = async (body: { id: number; clientIds: string }) => {
   return res
 }
 
-export { createEvent, getEventsByMonth, signUpToEvent }
+const deleteEvent = async (id: number) => {
+  const res = await axios.delete(`${apiURL}/id=${id}`, axiosHeader)
+  return res.data
+}
+
+const editEvent = async (body: {
+  id: number
+  description: string
+  title: string
+  date: string
+  month: number
+  hour: string
+}) => {
+  const res = await axios.put(`${apiURL}/edit`, body, axiosHeader)
+  return res
+}
+
+export { createEvent, getEventsByMonth, signUpToEvent, deleteEvent, editEvent }
