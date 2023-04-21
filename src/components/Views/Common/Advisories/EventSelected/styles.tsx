@@ -20,7 +20,7 @@ const EventContainer = styled.div`
 const EventData = styled.div`
   background-color: white;
 
-  width: 400px;
+  width: 450px;
   /* height: 200px; */
   border-radius: 18px;
   padding: 25px;
@@ -42,6 +42,12 @@ const EventData = styled.div`
     /* align-self: flex-end; */
     justify-content: space-between;
     padding-top: 15px;
+  }
+
+  .calendar-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
   .admin-buttons {

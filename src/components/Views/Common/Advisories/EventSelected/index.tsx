@@ -43,6 +43,7 @@ function EventSelected({
   const [modalSuccess, setModalSuccess] = useState<boolean>(false)
 
   const [allowClick, setAllowClick] = useState<boolean>(false)
+  const [canJoinEvent, setCanJoinEvent] = useState<boolean>(false)
 
   const [
     eventDataModal,
@@ -55,8 +56,6 @@ function EventSelected({
   )
 
   const editEventFunction = () => {
-    console.log("SE EDITA")
-
     const eventData = eventDataEdited as EventDataInterface
 
     const url = eventData.eventURL.split("eid=")
@@ -114,7 +113,6 @@ function EventSelected({
   }
 
   const deleteEventFunction = () => {
-    console.log("SE ELIMINA")
     const eventData = eventDataModal as EventDataInterface
 
     const url = eventData.eventURL.split("eid=")
@@ -140,7 +138,28 @@ function EventSelected({
       )
   }
 
-  const authenticate = (action: "delete" | "edit") => {
+  const getMeetURL = () => {
+    const eventData = eventDataModal as EventDataInterface
+
+    const url = eventData.eventURL.split("eid=")
+    const decodeEventId = atob(url[1])
+    gapi.client.calendar.events
+      .get({
+        calendarId: "primary",
+        eventId: decodeEventId.split(" ")[0],
+      })
+
+      .then(
+        (response: any) => {
+          window.open(response.result.hangoutLink)
+        },
+        (err: any) => {
+          console.error("Execute error", err)
+        },
+      )
+  }
+
+  const authenticate = (action: "delete" | "edit" | "meet") => {
     const openSignInPopup = () => {
       gapi.auth2.authorize(
         {
@@ -151,14 +170,17 @@ function EventSelected({
         (res: any) => {
           if (res) {
             if (res.access_token) {
-              console.log("ACTION", action)
-
               localStorage.setItem("access_token", res.access_token)
-              gapi.client.load(
-                "calendar",
-                "v3",
-                action === "delete" ? deleteEventFunction : editEventFunction,
-              )
+              let functionToExecute
+              if (action === "delete") {
+                functionToExecute = deleteEventFunction
+              } else if (action === "edit") {
+                functionToExecute = editEventFunction
+              } else {
+                functionToExecute = getMeetURL
+              }
+
+              gapi.client.load("calendar", "v3", functionToExecute)
             }
           }
         },
@@ -171,13 +193,10 @@ function EventSelected({
         gapi.client.calendar === undefined
       ) {
         openSignInPopup()
+      } else if (openEditModal) {
+        editEventFunction()
       } else {
-        console.log("esta logueado")
-        if (openEditModal) {
-          editEventFunction()
-        } else {
-          deleteEventFunction()
-        }
+        deleteEventFunction()
       }
     }
 
@@ -197,6 +216,23 @@ function EventSelected({
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gapi])
+
+  useEffect(() => {
+    const today = new Date()
+    const month =
+      today.getMonth() + 1 > 9
+        ? today.getMonth() + 1
+        : `0${today.getMonth() + 1}`
+    const day = today.getDate()
+    const year = today.getFullYear()
+
+    if (
+      eventDataModal !== null &&
+      eventDataModal.date === `${day}-${month}-${year}`
+    ) {
+      setCanJoinEvent(true)
+    }
+  }, [eventDataModal])
 
   return (
     <EventContainer>
@@ -258,11 +294,24 @@ function EventSelected({
                     />
                   </div>
                 )}
-                <Button
-                  content="Ver en Google Calendar"
-                  cta
-                  action={() => window.open(event.eventURL)}
-                />
+                <div className="calendar-buttons">
+                  {canJoinEvent && (
+                    <Button
+                      content="Unirme"
+                      cta
+                      action={
+                        () => authenticate("meet")
+
+                        // window.open(meetURL)
+                      }
+                    />
+                  )}
+                  <Button
+                    content="Ver en Google Calendar"
+                    cta={false}
+                    action={() => window.open(event.eventURL)}
+                  />
+                </div>
               </div>
             </EventData>
           ) : (
