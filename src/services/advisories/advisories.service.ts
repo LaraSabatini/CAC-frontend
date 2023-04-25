@@ -79,8 +79,34 @@ const getAvailability = async (id: number) => {
   return res.data
 }
 
+const getAllAvailability = async () => {
+  const res = await axios.get(`${apiURL}/all-availability`, axiosHeader)
+  return res.data
+}
+
 const changeAvailability = async (body: AdvisoryAvailavilityInterface) => {
   const res = await axios.put(`${apiURL}/availability`, body, axiosHeader)
+  return res.data
+}
+
+const getAdminList = async () => {
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/admins`,
+    axiosHeader,
+  )
+  return res.data
+}
+
+const getAdvisoriesByMonthAndAdmin = async (month: number, adminId: number) => {
+  const res = await axios.get(
+    `${apiURL}/month-admin/month=${month}&adminId=${adminId}`,
+    axiosHeader,
+  )
+  return res.data
+}
+
+const getAllAdvisoriesByMonth = async (month: number) => {
+  const res = await axios.get(`${apiURL}/month/month=${month}`, axiosHeader)
   return res.data
 }
 
@@ -92,4 +118,8 @@ export {
   createAvailability,
   getAvailability,
   changeAvailability,
+  getAdminList,
+  getAdvisoriesByMonthAndAdmin,
+  getAllAdvisoriesByMonth,
+  getAllAvailability,
 }

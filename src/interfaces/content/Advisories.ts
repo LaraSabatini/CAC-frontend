@@ -1,8 +1,8 @@
 export interface AdvisoryInterface {
-  id: number
+  id?: number
   adminId: number
   clientId: number
-  clientName: string
+  clientName?: string
   date: string
   hour: string
   month: number
@@ -14,7 +14,7 @@ export interface AdvisoryInterface {
 export interface AdvisoryAvailavilityInterface {
   id: number
   adminId: number
-  availability: string
+  availability: number[] | string
 }
 
 export interface PublicEventsInterface {

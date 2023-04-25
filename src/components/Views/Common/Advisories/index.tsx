@@ -13,7 +13,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
 import getCalendarMonth from "helpers/dates/getCalendarMonth"
 import compareDates from "helpers/dates/compareDates"
 import { months, days } from "const/dates"
-
+import RequestAdvisory from "./RequestConsultancy"
 import Availability from "./Availability"
 import CreateEvent from "./CreateEvent"
 import EventSelected from "./EventSelected"
@@ -58,6 +58,10 @@ function AdvisoriesView() {
 
   const [availabilityModal, setAvailabilityModal] = useState<boolean>(false)
   const [createEventModal, setCreateEvent] = useState<boolean>(false)
+
+  const [requestAdvisoryModal, setRequestAdvisoryModal] = useState<boolean>(
+    false,
+  )
 
   const [updateList, setUpdateList] = useState<number>(0)
 
@@ -170,7 +174,7 @@ function AdvisoriesView() {
             </DateInfo>
 
             {userData?.type === "client" ? (
-              <ScheduleAdvisory>
+              <ScheduleAdvisory onClick={() => setRequestAdvisoryModal(true)}>
                 <FaCalendarWeek />
                 Solicitar asesoria
               </ScheduleAdvisory>
@@ -234,6 +238,14 @@ function AdvisoriesView() {
           <CreateEvent
             closeModal={() => {
               setCreateEvent(false)
+              setUpdateList(updateList + 1)
+            }}
+          />
+        )}
+        {requestAdvisoryModal && (
+          <RequestAdvisory
+            close={() => {
+              setRequestAdvisoryModal(false)
               setUpdateList(updateList + 1)
             }}
           />
