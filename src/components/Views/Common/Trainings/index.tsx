@@ -29,10 +29,14 @@ function TrainingsView() {
   const getTrainingsData = async () => {
     const getTrainingsCall = await getTrainings(currentPage)
 
-    if (trainingsList.length > 0) {
-      setTrainingsList(trainingsList.concat(getTrainingsCall.data))
+    if (getTrainingsCall.status === 200) {
+      if (trainingsList.length > 0) {
+        setTrainingsList(trainingsList.concat(getTrainingsCall.data))
+      } else {
+        setTrainingsList(getTrainingsCall.data)
+      }
     } else {
-      setTrainingsList(getTrainingsCall.data)
+      setServerError(true)
     }
   }
 
