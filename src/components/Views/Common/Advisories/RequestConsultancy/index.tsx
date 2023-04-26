@@ -3,6 +3,7 @@ import { GrFormClose } from "react-icons/gr"
 import { getAdminList } from "services/advisories/advisories.service"
 import InputSelect from "components/UI/InputSelect"
 import Modal from "components/UI/Modal"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import SearchByAdmin from "./ByAdmin"
 import SearchByAvailability from "./ByAvailability"
 import { Container, Title, InputContainer } from "./styles"
@@ -10,6 +11,8 @@ import { Container, Title, InputContainer } from "./styles"
 type AdminType = { id: number; userName: string; email: string }
 
 function RequestAdvisory({ close }: { close: (arg?: any) => void }) {
+  const [serverError, setServerError] = useState<boolean>(false)
+
   const [searchBy, setSearchBy] = useState<number>(14983)
   const [adminList, setAdminList] = useState<AdminType[]>([])
   const [adminListForSelect, setAdminListForSelect] = useState<
@@ -18,13 +21,17 @@ function RequestAdvisory({ close }: { close: (arg?: any) => void }) {
 
   const getAdmins = async () => {
     const getAdminListCall = await getAdminList()
-    setAdminList(getAdminListCall.data)
+    if (getAdminListCall.status === 200) {
+      setAdminList(getAdminListCall.data)
 
-    const list: { id: number; value: string }[] = []
-    getAdminListCall.data.forEach((admin: AdminType) =>
-      list.push({ id: admin.id, value: admin.userName }),
-    )
-    setAdminListForSelect(list)
+      const list: { id: number; value: string }[] = []
+      getAdminListCall.data.forEach((admin: AdminType) =>
+        list.push({ id: admin.id, value: admin.userName }),
+      )
+      setAdminListForSelect(list)
+    } else {
+      setServerError(true)
+    }
   }
 
   useEffect(() => {
@@ -34,6 +41,12 @@ function RequestAdvisory({ close }: { close: (arg?: any) => void }) {
   return (
     <Modal>
       <Container>
+        {serverError && (
+          <InternalServerError
+            visible
+            changeVisibility={() => setServerError(false)}
+          />
+        )}
         <button type="button" className="close" onClick={close}>
           <GrFormClose />
         </button>

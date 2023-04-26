@@ -6,6 +6,7 @@ import Input from "components/UI/Input"
 import getNextSevenDates from "helpers/dates/getNextSixDays"
 import { AdvisoryInterface } from "interfaces/content/Advisories"
 import ModalStatus from "components/UI/ModalStatus"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import {
   getAvailability,
   getAdvisoriesByMonthAndAdmin,
@@ -26,6 +27,7 @@ function SearchByAdmin({
   )
   const [canRequest, setCanRequest] = useState<boolean>(false)
   const [success, setSuccess] = useState<boolean>(false)
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const [adminSelected, setAdminSelected] = useState<{
     id: number
@@ -65,140 +67,161 @@ function SearchByAdmin({
 
       const getAvailabilityCall = await getAvailability(adminSelected.id)
 
-      const getAdvisoriesByMonthAndAdminCall = await getAdvisoriesByMonthAndAdmin(
-        today.getMonth() + 1,
-        adminSelected.id,
-      )
-
-      const daysForList: {
-        id: number
-        name: string
-        day: string
-        hours: number[]
-      }[] = []
-      const parseAvailability = JSON.parse(
-        getAvailabilityCall.data[0].availability as string,
-      )
-
-      days.forEach(day => {
-        const splitDate = day.split("/")
-        const date = new Date(`${splitDate[2]}-${splitDate[1]}/${splitDate[0]}`)
-
-        const dayName: any = keysOfDays[date.getDay()].value
-
-        daysForList.push({
-          id: keysOfDaysSpa[date.getDay()].id,
-          name: keysOfDaysSpa[date.getDay()].value,
-          day,
-          hours: parseAvailability[dayName],
-        })
-      })
-
-      const leaveOnlyDaysWithHours = daysForList.filter(
-        day => day.hours.length > 0,
-      )
-
-      const adminAgenda = getAdvisoriesByMonthAndAdminCall.data
-
-      if (adminAgenda.length > 0) {
-        const daysToRemoveAvailability: AdvisoryInterface[] = []
-        leaveOnlyDaysWithHours.forEach(
-          (day: { id: number; name: string; day: string; hours: number[] }) => {
-            const filterAgenda = adminAgenda.filter(
-              (advisory: AdvisoryInterface) =>
-                advisory.date === day.day.replaceAll("/", "-"),
-            )
-
-            for (let i = 0; i < filterAgenda.length; i += 1) {
-              daysToRemoveAvailability.push(filterAgenda[i])
-            }
-          },
+      if (getAvailabilityCall.status === 200) {
+        const getAdvisoriesByMonthAndAdminCall = await getAdvisoriesByMonthAndAdmin(
+          today.getMonth() + 1,
+          adminSelected.id,
         )
 
-        if (daysToRemoveAvailability.length) {
-          const dayAndHourIdentifiers: {
-            day: string
-            hours: number[]
-          }[] = []
+        const daysForList: {
+          id: number
+          name: string
+          day: string
+          hours: number[]
+        }[] = []
+        const parseAvailability = JSON.parse(
+          getAvailabilityCall.data[0].availability as string,
+        )
 
-          for (let i = 0; i < daysToRemoveAvailability.length; i += 1) {
-            const filterArray = dayAndHourIdentifiers.filter(
-              dayAndHour => dayAndHour.day === daysToRemoveAvailability[i].date,
+        days.forEach(day => {
+          const splitDate = day.split("/")
+          const date = new Date(
+            `${splitDate[2]}-${splitDate[1]}/${splitDate[0]}`,
+          )
+
+          const dayName: any = keysOfDays[date.getDay()].value
+
+          daysForList.push({
+            id: keysOfDaysSpa[date.getDay()].id,
+            name: keysOfDaysSpa[date.getDay()].value,
+            day,
+            hours: parseAvailability[dayName],
+          })
+        })
+
+        const leaveOnlyDaysWithHours = daysForList.filter(
+          day => day.hours.length > 0,
+        )
+
+        if (getAdvisoriesByMonthAndAdminCall.status === 200) {
+          const adminAgenda = getAdvisoriesByMonthAndAdminCall.data
+          if (adminAgenda.length > 0) {
+            const daysToRemoveAvailability: AdvisoryInterface[] = []
+            leaveOnlyDaysWithHours.forEach(
+              (day: {
+                id: number
+                name: string
+                day: string
+                hours: number[]
+              }) => {
+                const filterAgenda = adminAgenda.filter(
+                  (advisory: AdvisoryInterface) =>
+                    advisory.date === day.day.replaceAll("/", "-"),
+                )
+
+                for (let i = 0; i < filterAgenda.length; i += 1) {
+                  daysToRemoveAvailability.push(filterAgenda[i])
+                }
+              },
             )
 
-            if (filterArray.length) {
-              const index = dayAndHourIdentifiers.findIndex(
-                dayAndHour => dayAndHour === filterArray[0],
-              )
+            if (daysToRemoveAvailability.length) {
+              const dayAndHourIdentifiers: {
+                day: string
+                hours: number[]
+              }[] = []
 
-              dayAndHourIdentifiers[index].hours.push(
-                listHours.filter(
-                  hour => hour.value === daysToRemoveAvailability[i].hour,
-                )[0].id,
-              )
-            } else {
-              dayAndHourIdentifiers.push({
-                day: daysToRemoveAvailability[i].date,
-                hours: [
-                  listHours.filter(
-                    hour => hour.value === daysToRemoveAvailability[i].hour,
-                  )[0].id,
-                ],
-              })
+              for (let i = 0; i < daysToRemoveAvailability.length; i += 1) {
+                const filterArray = dayAndHourIdentifiers.filter(
+                  dayAndHour =>
+                    dayAndHour.day === daysToRemoveAvailability[i].date,
+                )
+
+                if (filterArray.length) {
+                  const index = dayAndHourIdentifiers.findIndex(
+                    dayAndHour => dayAndHour === filterArray[0],
+                  )
+
+                  dayAndHourIdentifiers[index].hours.push(
+                    listHours.filter(
+                      hour => hour.value === daysToRemoveAvailability[i].hour,
+                    )[0].id,
+                  )
+                } else {
+                  dayAndHourIdentifiers.push({
+                    day: daysToRemoveAvailability[i].date,
+                    hours: [
+                      listHours.filter(
+                        hour => hour.value === daysToRemoveAvailability[i].hour,
+                      )[0].id,
+                    ],
+                  })
+                }
+              }
+
+              const indexOfDatesToEdit: number[] = []
+
+              for (let i = 0; i < dayAndHourIdentifiers.length; i += 1) {
+                const filterLeaveOnlyDaysWithHours = leaveOnlyDaysWithHours.filter(
+                  day =>
+                    day.day.replaceAll("/", "-") ===
+                    dayAndHourIdentifiers[i].day,
+                )
+
+                const indexOfDate = leaveOnlyDaysWithHours.findIndex(
+                  date => date === filterLeaveOnlyDaysWithHours[0],
+                )
+                indexOfDatesToEdit.push(indexOfDate)
+
+                for (
+                  let a = 0;
+                  a < dayAndHourIdentifiers[i].hours.length;
+                  a += 1
+                ) {
+                  const indexOfId = filterLeaveOnlyDaysWithHours[0].hours.findIndex(
+                    hola => hola === dayAndHourIdentifiers[i].hours[a],
+                  )
+                  filterLeaveOnlyDaysWithHours[0].hours.splice(indexOfId, 1)
+                }
+              }
             }
           }
-
-          const indexOfDatesToEdit: number[] = []
-
-          for (let i = 0; i < dayAndHourIdentifiers.length; i += 1) {
-            const filterLeaveOnlyDaysWithHours = leaveOnlyDaysWithHours.filter(
-              day =>
-                day.day.replaceAll("/", "-") === dayAndHourIdentifiers[i].day,
-            )
-
-            const indexOfDate = leaveOnlyDaysWithHours.findIndex(
-              date => date === filterLeaveOnlyDaysWithHours[0],
-            )
-            indexOfDatesToEdit.push(indexOfDate)
-
-            for (let a = 0; a < dayAndHourIdentifiers[i].hours.length; a += 1) {
-              const indexOfId = filterLeaveOnlyDaysWithHours[0].hours.findIndex(
-                hola => hola === dayAndHourIdentifiers[i].hours[a],
-              )
-              filterLeaveOnlyDaysWithHours[0].hours.splice(indexOfId, 1)
-            }
-          }
+        } else {
+          setServerError(true)
         }
+
+        setAvailableDays(leaveOnlyDaysWithHours)
+
+        const otherList: { id: number; value: string }[] = []
+
+        leaveOnlyDaysWithHours?.forEach(day =>
+          otherList.push({
+            id: day.id,
+            value: `${day.name} - ${day.day}`,
+          }),
+        )
+
+        setAvailableDaysList(otherList)
+        setDaySelected(otherList[0])
+
+        const newList: { id: number; value: string }[] = []
+
+        const { hours } = leaveOnlyDaysWithHours[0]
+        hours.forEach(hour =>
+          newList.push(listHours.filter(item => item.id === hour)[0]),
+        )
+        setAvailableHoursList(newList)
+        setHourSelected(newList[0])
+      } else {
+        setServerError(true)
       }
-      setAvailableDays(leaveOnlyDaysWithHours)
-
-      const otherList: { id: number; value: string }[] = []
-
-      leaveOnlyDaysWithHours?.forEach(day =>
-        otherList.push({
-          id: day.id,
-          value: `${day.name} - ${day.day}`,
-        }),
-      )
-
-      setAvailableDaysList(otherList)
-      setDaySelected(otherList[0])
-
-      const newList: { id: number; value: string }[] = []
-
-      const { hours } = leaveOnlyDaysWithHours[0]
-      hours.forEach(hour =>
-        newList.push(listHours.filter(item => item.id === hour)[0]),
-      )
-      setAvailableHoursList(newList)
-      setHourSelected(newList[0])
     }
   }
 
   const requestAdvisoryCall = async () => {
     if (daySelected !== undefined && hourSelected !== undefined) {
       const date: string[] = daySelected.value.split("-")
-      // console.log(date[1].trim())
+
       const requestAdvisoryData: AdvisoryInterface = {
         adminId: adminSelected?.id as number,
         clientId: userData.id as number,
@@ -212,6 +235,7 @@ function SearchByAdmin({
 
       const requestAdvisoryReq = await requestAdvisory(requestAdvisoryData)
       setSuccess(requestAdvisoryReq.status === 201)
+      setServerError(requestAdvisoryReq.status !== 201)
     }
   }
 
@@ -219,6 +243,12 @@ function SearchByAdmin({
     <div>
       {requiredFiledsError && (
         <p className="req-fields">*Completa los campos requeridos</p>
+      )}
+      {serverError && (
+        <InternalServerError
+          visible
+          changeVisibility={() => setServerError(false)}
+        />
       )}
       {success && (
         <ModalStatus

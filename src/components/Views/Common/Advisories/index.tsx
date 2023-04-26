@@ -14,6 +14,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
 import getCalendarMonth from "helpers/dates/getCalendarMonth"
 import compareDates from "helpers/dates/compareDates"
 import { months, days } from "const/dates"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import RequestAdvisory from "./RequestConsultancy"
 import Availability from "./Availability"
 import CreateEvent from "./CreateEvent"
@@ -53,6 +54,7 @@ function AdvisoriesView() {
   } = useContext(AdvisoriesContext)
 
   const today = new Date()
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const [currentMonth, setCurrentMonth] = useState<number>(today.getMonth() + 1)
   const [currentYear, setCurrentYear] = useState<number>(today.getFullYear())
@@ -76,10 +78,17 @@ function AdvisoriesView() {
       currentMonth,
       userData?.type,
     )
-    setAdvisoryList(getAdvisoriesCall.data)
+
+    setAdvisoryList(getAdvisoriesCall.status === 201 && getAdvisoriesCall.data)
 
     const getEventsByMonthCall = await getEventsByMonth(currentMonth)
-    setPublicEventList(getEventsByMonthCall.data)
+    setPublicEventList(
+      getEventsByMonthCall.status === 200 && getEventsByMonthCall.data,
+    )
+
+    setServerError(
+      getAdvisoriesCall.status !== 201 || getEventsByMonthCall.status !== 200,
+    )
   }
 
   const searchAdvisory = (index: number) => {
@@ -131,7 +140,14 @@ function AdvisoriesView() {
   return (
     <>
       <Header />
+
       <Container>
+        {serverError && (
+          <InternalServerError
+            visible
+            changeVisibility={() => setServerError(false)}
+          />
+        )}
         <Calendar>
           <CalendarInfo>
             <DateInfo>
@@ -197,6 +213,7 @@ function AdvisoriesView() {
               <p key={day.id}>{day.nameAbb}</p>
             ))}
           </Days>
+
           <CalendarDisplay>
             {dates.map((date, index) => (
               <DateView
@@ -207,7 +224,7 @@ function AdvisoriesView() {
                 }
               >
                 <p>{date.getDate()}</p>
-                {searchAdvisory(index) !== null ? (
+                {advisoryList.length && searchAdvisory(index) !== null ? (
                   searchAdvisory(index).map(event => (
                     <AdvisorySelected
                       key={event.id}
@@ -218,7 +235,7 @@ function AdvisoriesView() {
                 ) : (
                   <></>
                 )}
-                {searchEvent(index) !== null ? (
+                {publicEventList.length && searchEvent(index) !== null ? (
                   searchEvent(index).map(event => (
                     <EventSelected
                       key={event.id}

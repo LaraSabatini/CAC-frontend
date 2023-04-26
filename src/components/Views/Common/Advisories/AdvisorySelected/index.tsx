@@ -12,6 +12,7 @@ import createEventFunction from "helpers/google/createEvent"
 import getMeetURL from "helpers/google/getMeetURL"
 import Modal from "components/UI/Modal"
 import ModalStatus from "components/UI/ModalStatus"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import Button from "components/UI/Button"
 import { AdvisoryInterface } from "interfaces/content/Advisories"
 import { AdvisoryEvent } from "../styles"
@@ -28,6 +29,7 @@ function AdvisorySelected({
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const gapi = typeof window !== "undefined" && window.gapi
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const [openModalEvent, setOpenModalEvent] = useState<boolean>(false)
   const [eventData, setEventData] = useState<AdvisoryInterface>(event)
@@ -40,7 +42,11 @@ function AdvisorySelected({
     const getAdvisoriesCall = await getAdvisoryData(
       parseInt(router.query.id as string, 10),
     )
-    setEventData(getAdvisoriesCall.data[0])
+    if (getAdvisoriesCall.status === 200) {
+      setEventData(getAdvisoriesCall.data[0])
+    } else {
+      setServerError(true)
+    }
   }
 
   useEffect(() => {
@@ -97,6 +103,7 @@ function AdvisorySelected({
     )
 
     setModalSuccess(changeAdvisoryStatusCall.status === 201)
+    setServerError(changeAdvisoryStatusCall.status !== 201)
   }
 
   useEffect(() => {
@@ -133,6 +140,12 @@ function AdvisorySelected({
       {openModalEvent && (
         <Modal>
           <ModalContent>
+            {serverError && (
+              <InternalServerError
+                visible
+                changeVisibility={() => setServerError(false)}
+              />
+            )}
             {modalSuccess && (
               <ModalStatus
                 title="Excelente!"

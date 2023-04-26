@@ -86,7 +86,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   const saveClientInDB = async () => {
     const getClientIdCall = await getClientId(preferenceId)
 
-    const registerClient = await register("client", {
+    await register("client", {
       ...newClient,
       password: "",
       accountBlocked: 1,
@@ -98,8 +98,6 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
       paymentExpireDate: null,
       mpId: getClientIdCall.clientId,
     })
-
-    console.log(registerClient)
   }
 
   useEffect(() => {

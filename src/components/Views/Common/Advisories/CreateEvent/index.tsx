@@ -77,27 +77,23 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
       },
     }
 
-    if (gapi.client.calendar !== undefined) {
-      const request = gapi.client.calendar.events.insert({
-        calendarId: "primary",
-        sendNotifications: true,
-        conferenceDataVersion: 1,
-        resource: eventData,
-      })
+    const request = gapi.client.calendar.events.insert({
+      calendarId: "primary",
+      sendNotifications: true,
+      conferenceDataVersion: 1,
+      resource: eventData,
+    })
 
-      request.execute(async (event: any) => {
-        const createEventCall = await createEvent({
-          ...newEvent,
-          createdBy: userData.id,
-          date: `${splitDate[0]}-${splitDate[1]}-${splitDate[2]}`,
-          month: parseInt(splitDate[1], 10),
-          eventURL: event.htmlLink,
-        })
-        setModalSuccess(createEventCall.status === 201)
+    request.execute(async (event: any) => {
+      const createEventCall = await createEvent({
+        ...newEvent,
+        createdBy: userData.id,
+        date: `${splitDate[0]}-${splitDate[1]}-${splitDate[2]}`,
+        month: parseInt(splitDate[1], 10),
+        eventURL: event.htmlLink,
       })
-    } else {
-      console.log("events esta undefined", gapi.client)
-    }
+      setModalSuccess(createEventCall.status === 201)
+    })
   }
 
   const handleClientLoad = () => {

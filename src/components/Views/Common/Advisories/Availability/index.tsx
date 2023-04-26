@@ -7,12 +7,14 @@ import {
 import ModalStatus from "components/UI/ModalStatus"
 import Modal from "components/UI/Modal"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { days, hours } from "const/dates"
 import Button from "components/UI/Button"
 import { Container, Title, SelectionContainer, Option } from "./styles"
 
 function Availability({ closeModal }: { closeModal: (arg?: any) => void }) {
   const userData = JSON.parse(localStorage.getItem("userData") as string)
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const virginList = {
     sunday: [],
@@ -41,15 +43,19 @@ function Availability({ closeModal }: { closeModal: (arg?: any) => void }) {
 
   const getAdminData = async () => {
     const getAvailabilityCall = await getAvailability(userData?.id)
-    setAvailabilityList(
-      !getAvailabilityCall.data.length
-        ? virginList
-        : JSON.parse(getAvailabilityCall.data[0].availability),
-    )
-    setIsEditing(getAvailabilityCall.data.length)
-    setAvailabilityId(
-      !getAvailabilityCall.data.length ? 0 : getAvailabilityCall.data[0].id,
-    )
+    if (getAvailabilityCall.status === 200) {
+      setAvailabilityList(
+        !getAvailabilityCall.data.length
+          ? virginList
+          : JSON.parse(getAvailabilityCall.data[0].availability),
+      )
+      setIsEditing(getAvailabilityCall.data.length)
+      setAvailabilityId(
+        !getAvailabilityCall.data.length ? 0 : getAvailabilityCall.data[0].id,
+      )
+    } else {
+      setServerError(true)
+    }
   }
 
   useEffect(() => {
@@ -80,12 +86,14 @@ function Availability({ closeModal }: { closeModal: (arg?: any) => void }) {
         availability: JSON.stringify(availabilityList),
       })
       setSuccess(changeAvailabilityCall.status === 201)
+      setServerError(changeAvailabilityCall.status !== 201)
     } else {
       const createAvailabilityCall = await createAvailability({
         adminId: userData?.id,
         availability: JSON.stringify(availabilityList),
       })
       setSuccess(createAvailabilityCall.status === 201)
+      setServerError(createAvailabilityCall.status !== 201)
     }
   }
 
@@ -99,6 +107,12 @@ function Availability({ closeModal }: { closeModal: (arg?: any) => void }) {
             status="success"
             selfClose
             selfCloseAction={closeModal}
+          />
+        )}
+        {serverError && (
+          <InternalServerError
+            visible
+            changeVisibility={() => setServerError(false)}
           />
         )}
         <Title>Agregar o modificar disponibilidad horaria</Title>
