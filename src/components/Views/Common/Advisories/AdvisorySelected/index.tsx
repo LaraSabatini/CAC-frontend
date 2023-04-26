@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
+import { AdvisoriesContext } from "contexts/Advisories"
 import { GrFormClose } from "react-icons/gr"
 import { BsCalendar3 } from "react-icons/bs"
 import {
@@ -12,7 +13,6 @@ import createEventFunction from "helpers/google/createEvent"
 import getMeetURL from "helpers/google/getMeetURL"
 import Modal from "components/UI/Modal"
 import ModalStatus from "components/UI/ModalStatus"
-import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import Button from "components/UI/Button"
 import { AdvisoryInterface } from "interfaces/content/Advisories"
 import { AdvisoryEvent } from "../styles"
@@ -25,11 +25,11 @@ function AdvisorySelected({
   event: AdvisoryInterface
   updateList: (arg?: any) => void
 }) {
+  const { setServerError } = useContext(AdvisoriesContext)
   const router = useRouter()
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const gapi = typeof window !== "undefined" && window.gapi
-  const [serverError, setServerError] = useState<boolean>(false)
 
   const [openModalEvent, setOpenModalEvent] = useState<boolean>(false)
   const [eventData, setEventData] = useState<AdvisoryInterface>(event)
@@ -140,12 +140,6 @@ function AdvisorySelected({
       {openModalEvent && (
         <Modal>
           <ModalContent>
-            {serverError && (
-              <InternalServerError
-                visible
-                changeVisibility={() => setServerError(false)}
-              />
-            )}
             {modalSuccess && (
               <ModalStatus
                 title="Excelente!"

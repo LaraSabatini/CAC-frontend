@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
+import { AdvisoriesContext } from "contexts/Advisories"
 import Modal from "components/UI/Modal"
 import { GrFormClose } from "react-icons/gr"
 import { BsDot } from "react-icons/bs"
@@ -34,6 +35,8 @@ function EventSelected({
   event: EventDataInterface
   updateList: (arg?: any) => void
 }) {
+  const { setServerError } = useContext(AdvisoriesContext)
+
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const gapi = typeof window !== "undefined" && window.gapi
@@ -105,6 +108,9 @@ function EventSelected({
           setModalSuccess(
             editEventCall.status === 201 && response.status === 200,
           )
+          setServerError(
+            editEventCall.status !== 201 && response.status !== 200,
+          )
         },
         (err: any) => {
           console.error("Execute error", err)
@@ -130,6 +136,9 @@ function EventSelected({
           const deleteEventCall = await deleteEvent(eventData.id)
           setModalSuccess(
             deleteEventCall.status === 200 && response.status === 204,
+          )
+          setServerError(
+            deleteEventCall.status !== 200 || response.status !== 204,
           )
         },
         (err: any) => {
@@ -250,6 +259,7 @@ function EventSelected({
           }}
         />
       )}
+
       {eventDataModal !== null && (
         <Modal>
           {!openEditModal ? (

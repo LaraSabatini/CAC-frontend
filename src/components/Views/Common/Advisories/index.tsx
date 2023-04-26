@@ -51,10 +51,11 @@ function AdvisoriesView() {
     setAdvisoryList,
     setPublicEventList,
     publicEventList,
+    serverError,
+    setServerError,
   } = useContext(AdvisoriesContext)
 
   const today = new Date()
-  const [serverError, setServerError] = useState<boolean>(false)
 
   const [currentMonth, setCurrentMonth] = useState<number>(today.getMonth() + 1)
   const [currentYear, setCurrentYear] = useState<number>(today.getFullYear())

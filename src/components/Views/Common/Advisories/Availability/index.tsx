@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import {
   getAvailability,
   createAvailability,
   changeAvailability,
 } from "services/advisories/advisories.service"
+import { AdvisoriesContext } from "contexts/Advisories"
 import ModalStatus from "components/UI/ModalStatus"
 import Modal from "components/UI/Modal"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
-import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { days, hours } from "const/dates"
 import Button from "components/UI/Button"
 import { Container, Title, SelectionContainer, Option } from "./styles"
 
 function Availability({ closeModal }: { closeModal: (arg?: any) => void }) {
+  const { setServerError } = useContext(AdvisoriesContext)
+
   const userData = JSON.parse(localStorage.getItem("userData") as string)
-  const [serverError, setServerError] = useState<boolean>(false)
 
   const virginList = {
     sunday: [],
@@ -109,12 +110,7 @@ function Availability({ closeModal }: { closeModal: (arg?: any) => void }) {
             selfCloseAction={closeModal}
           />
         )}
-        {serverError && (
-          <InternalServerError
-            visible
-            changeVisibility={() => setServerError(false)}
-          />
-        )}
+
         <Title>Agregar o modificar disponibilidad horaria</Title>
         <SelectionContainer key={days[0].id}>
           <Option>{days[0].name}</Option>

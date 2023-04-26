@@ -8,5 +8,7 @@ interface AdvisoryContextInterface {
   setAdvisoryList(advisoryList: AdvisoryInterface[] | []): void
   publicEventList: PublicEventsInterface[] | []
   setPublicEventList(publicEventList: PublicEventsInterface[] | []): void
+  serverError: boolean
+  setServerError(serverError: boolean): void
 }
 export default AdvisoryContextInterface

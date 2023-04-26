@@ -1,15 +1,15 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import {
   getAllAdvisoriesByMonth,
   getAllAvailability,
   requestAdvisory,
 } from "services/advisories/advisories.service"
+import { AdvisoriesContext } from "contexts/Advisories"
 import {
   AdvisoryInterface,
   AdvisoryAvailavilityInterface,
 } from "interfaces/content/Advisories"
 import ModalStatus from "components/UI/ModalStatus"
-import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import InputSelect from "components/UI/InputSelect"
 import Input from "components/UI/Input"
 import Button from "components/UI/Button"
@@ -25,8 +25,9 @@ function SearchByAvailability({
   adminList: AdminType[]
   close: (arg?: any) => void
 }) {
+  const { setServerError } = useContext(AdvisoriesContext)
+
   const userData = JSON.parse(localStorage.getItem("userData") as string)
-  const [serverError, setServerError] = useState<boolean>(false)
 
   const [searchValues, setSearchValues] = useState<{
     date: string
@@ -214,12 +215,7 @@ function SearchByAvailability({
           }}
         />
       )}
-      {serverError && (
-        <InternalServerError
-          visible
-          changeVisibility={() => setServerError(false)}
-        />
-      )}
+
       {requiredFiledsError && (
         <p className="req-fields">*Completa los campos requeridos</p>
       )}

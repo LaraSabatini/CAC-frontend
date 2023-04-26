@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { PublicEventsInterface } from "interfaces/content/Advisories"
+import { AdvisoriesContext } from "contexts/Advisories"
 import { createEvent } from "services/advisories/events.service"
 import { getClientEmails } from "services/clients/clientActions.service"
 import Modal from "components/UI/Modal"
@@ -17,6 +18,8 @@ declare global {
 }
 
 function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
+  const { setServerError } = useContext(AdvisoriesContext)
+
   const [allowClick, setAllowClick] = useState<boolean>(false)
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
@@ -93,6 +96,7 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
         eventURL: event.htmlLink,
       })
       setModalSuccess(createEventCall.status === 201)
+      setServerError(createEventCall.status !== 201)
     })
   }
 
@@ -164,6 +168,7 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
             selfCloseAction={closeModal}
           />
         )}
+
         <Title>Crear evento publico</Title>
         {requiredError && (
           <p className="required">* Completa los campos requeridos</p>

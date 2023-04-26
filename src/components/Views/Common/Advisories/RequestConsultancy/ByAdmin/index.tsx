@@ -1,12 +1,12 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import InputSelect from "components/UI/InputSelect"
 import { listHours, keysOfDays, keysOfDaysSpa } from "const/dates"
+import { AdvisoriesContext } from "contexts/Advisories"
 import Button from "components/UI/Button"
 import Input from "components/UI/Input"
 import getNextSevenDates from "helpers/dates/getNextSixDays"
 import { AdvisoryInterface } from "interfaces/content/Advisories"
 import ModalStatus from "components/UI/ModalStatus"
-import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import {
   getAvailability,
   getAdvisoriesByMonthAndAdmin,
@@ -20,6 +20,8 @@ function SearchByAdmin({
   adminListForSelect: { id: number; value: string }[]
   close: (arg?: any) => void
 }) {
+  const { setServerError } = useContext(AdvisoriesContext)
+
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const [disableRequestButton, setDisableRequestButton] = useState<boolean>(
@@ -27,7 +29,6 @@ function SearchByAdmin({
   )
   const [canRequest, setCanRequest] = useState<boolean>(false)
   const [success, setSuccess] = useState<boolean>(false)
-  const [serverError, setServerError] = useState<boolean>(false)
 
   const [adminSelected, setAdminSelected] = useState<{
     id: number
@@ -244,12 +245,7 @@ function SearchByAdmin({
       {requiredFiledsError && (
         <p className="req-fields">*Completa los campos requeridos</p>
       )}
-      {serverError && (
-        <InternalServerError
-          visible
-          changeVisibility={() => setServerError(false)}
-        />
-      )}
+
       {success && (
         <ModalStatus
           title="Excelente!"
