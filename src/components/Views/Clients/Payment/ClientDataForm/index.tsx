@@ -89,20 +89,24 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   const saveClientInDB = async () => {
     const getClientIdCall = await getClientId(preferenceId)
 
-    const registerClient = await register("client", {
-      ...newClient,
-      password: "",
-      accountBlocked: 1,
-      subscription: null,
-      dateCreated: dateFormated,
-      loginAttempts: null,
-      plan: null,
-      paymentDate: null,
-      paymentExpireDate: null,
-      mpId: getClientIdCall.clientId,
-    })
+    if (getClientIdCall.status === 200) {
+      const registerClient = await register("client", {
+        ...newClient,
+        password: "",
+        accountBlocked: 1,
+        subscription: null,
+        dateCreated: dateFormated,
+        loginAttempts: null,
+        plan: null,
+        paymentDate: null,
+        paymentExpireDate: null,
+        mpId: getClientIdCall.clientId,
+      })
 
-    if (registerClient.status === 500) {
+      if (registerClient.status === 500) {
+        setServerErrorModal(true)
+      }
+    } else {
       setServerErrorModal(true)
     }
   }
