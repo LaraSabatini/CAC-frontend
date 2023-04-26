@@ -71,10 +71,11 @@ function ChangePasswordModal({
       }
 
       localStorage.setItem("userData", JSON.stringify(newUserData))
-    } else if (changePasswordReq === 401) {
+    } else if (changePasswordReq.status === 401) {
       setFormError(`${texts.changePassword.wrongPassword}`)
       setLoginError(true)
-    } else {
+    }
+    if (changePasswordReq.status === 500) {
       setServerErrorModal(true)
     }
   }

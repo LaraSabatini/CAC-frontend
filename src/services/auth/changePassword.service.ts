@@ -8,16 +8,12 @@ const changePassword = async (
   body: ChangePasswordInterface,
   encrypted: boolean,
 ) => {
-  try {
-    const res = await axios.put(
-      `${apiURL}/${type}/change-password&encrypted=${encrypted}`,
-      body,
-      axiosHeader,
-    )
-    return res.data
-  } catch (err: any) {
-    return err.response.status
-  }
+  const res = await axios.put(
+    `${apiURL}/${type}/change-password&encrypted=${encrypted}`,
+    body,
+    axiosHeader,
+  )
+  return res
 }
 
 export default changePassword

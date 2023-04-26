@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react"
 import { getProfileData } from "services/auth/getProfileData.service"
 import { ClientsContext } from "contexts/Clients"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import regions from "const/regions"
 import DataItem from "./DataItem"
 import ModalBlockUnblock from "../ModalBlockUnblock"
+
 import { Card, Title, ActionButton } from "./styles"
 
 function DetailsCard() {
@@ -12,11 +14,16 @@ function DetailsCard() {
   )
 
   const [openModal, setOpenModal] = useState<boolean>(false)
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const getData = async () => {
     if (clientSelected !== null) {
       const getProfileDataCall = await getProfileData("client", clientSelected)
-      setProfileData(getProfileDataCall.data[0])
+      if (getProfileDataCall.status === 200) {
+        setProfileData(getProfileDataCall.data[0])
+      } else {
+        setServerError(true)
+      }
     }
   }
 
@@ -28,6 +35,10 @@ function DetailsCard() {
 
   return (
     <Card>
+      <InternalServerError
+        visible={serverError}
+        changeVisibility={() => setServerError(false)}
+      />
       <Title>Detalles</Title>
       {profileData !== undefined && (
         <div className="personal-data">

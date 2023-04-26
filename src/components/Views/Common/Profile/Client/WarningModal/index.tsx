@@ -66,6 +66,10 @@ function WarningModal({ cancel }: WarningModalInterface) {
             clientId: userData.id,
           })
 
+          if (blockAccountReq.status === 500) {
+            setServerErrorModal(true)
+          }
+
           if (
             blockAccountReq.status === 201 &&
             createFeedbackReq.status === 201
@@ -75,8 +79,9 @@ function WarningModal({ cancel }: WarningModalInterface) {
           }
         } else if (loginReq.status === 401) {
           setFormError(`${texts.changePassword.wrongPassword}`)
+        } else if (loginReq.status === 500) {
+          setServerErrorModal(true)
         }
-        setServerErrorModal(true)
       }
       setFormError(`${texts.changePassword.matchingError}`)
     }

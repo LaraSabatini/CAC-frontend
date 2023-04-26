@@ -66,7 +66,7 @@ function DeleteArticleModal({ cancel }: WarningModalInterface) {
           }
         } else if (loginReq.status === 401) {
           setFormError(`${profileTexts.changePassword.wrongPassword}`)
-        } else {
+        } else if (loginReq.status === 500) {
           setServerErrorModal(true)
         }
       } else {
