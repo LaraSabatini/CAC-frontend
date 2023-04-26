@@ -65,7 +65,7 @@ const IconContainer = styled.button<{ error?: boolean }>`
 const TextareaContainer = styled.div<{ width?: number; height?: number }>`
   ${TextStyled}
   width: ${({ width }) => (width as number) - 25 || 200}px !important;
-  height: ${({ height }) => (height as number) - 25 || 60}px !important;
+  /* height: ${({ height }) => (height as number) - 25 || 60}px !important; */
 `
 
 const InputTextarea = styled.textarea<{

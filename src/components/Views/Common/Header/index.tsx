@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useContext } from "react"
-import { AiOutlineLogout, AiFillSave, AiOutlineSave } from "react-icons/ai"
-import { FaUserFriends } from "react-icons/fa"
+import {
+  AiOutlineLogout,
+  AiFillSave,
+  AiOutlineSave,
+  AiOutlineVideoCamera,
+} from "react-icons/ai"
+import { FaUserFriends, FaCalendarWeek } from "react-icons/fa"
 import { BsFilterCircle } from "react-icons/bs"
 import { useRouter } from "next/router"
 import routes from "routes"
@@ -29,6 +34,7 @@ import {
   SearchDiv,
   SVGButton,
   FiltersButton,
+  ButtonContainer,
 } from "./styles"
 
 function Header() {
@@ -98,74 +104,97 @@ function Header() {
         <GoHomeButton onClick={() => router.replace(routes.dashboard.name)}>
           <Logo />
         </GoHomeButton>
-        <SearchDiv>
-          <SearchBar
-            width={deviceIsMobile ? 200 : 300}
-            searchValue={searchValue}
-            onChangeSearch={e => {
-              if (e !== undefined) {
-                if (e.target.value === "") {
-                  setSearchValue("")
-                  setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
-                } else {
-                  setSearchValue(e.target.value)
-                  if (e.target.value.length >= 4) {
-                    searchArticlesInDB()
+        {(router.asPath === "/dashboard" || router.asPath === "/partners") && (
+          <SearchDiv>
+            <SearchBar
+              width={deviceIsMobile ? 200 : 300}
+              searchValue={searchValue}
+              onChangeSearch={e => {
+                if (e !== undefined) {
+                  if (e.target.value === "") {
+                    setSearchValue("")
+                    setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
+                  } else {
+                    setSearchValue(e.target.value)
+                    if (e.target.value.length >= 4) {
+                      searchArticlesInDB()
+                    }
                   }
                 }
-              }
-            }}
-            enterSearch={searchArticlesInDB}
-          />
-          {(router.asPath === "/dashboard" ||
-            router.asPath === "/partners") && (
-            <>
-              <FiltersButton
-                type="button"
-                onClick={() => setOpenFilters(!openFilters)}
-              >
-                <Tooltip title="Filtrar" placement="right">
-                  <BsFilterCircle />
-                </Tooltip>
-              </FiltersButton>
-
-              {openFilters && (
-                <Filters closeTab={() => setOpenFilters(false)} />
-              )}
-              {userData?.type === "client" && (
+              }}
+              enterSearch={searchArticlesInDB}
+            />
+            {(router.asPath === "/dashboard" ||
+              router.asPath === "/partners") && (
+              <>
                 <FiltersButton
                   type="button"
-                  onClick={() => {
-                    setSavedArticlesSelected(!savedArticlesSelected)
-                    if (!savedArticlesSelected) {
-                      getMyArticles()
-                    } else {
-                      setArticles([])
-                      setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
-                    }
-                  }}
+                  onClick={() => setOpenFilters(!openFilters)}
                 >
-                  <Tooltip
-                    title={
-                      !savedArticlesSelected
-                        ? "Articulos guardados"
-                        : "Todos los articulos"
-                    }
-                    placement="right"
-                  >
-                    {!savedArticlesSelected ? (
-                      <AiFillSave />
-                    ) : (
-                      <AiOutlineSave />
-                    )}
+                  <Tooltip title="Filtrar" placement="right">
+                    <BsFilterCircle />
                   </Tooltip>
                 </FiltersButton>
-              )}
-            </>
-          )}
-        </SearchDiv>
+
+                {openFilters && (
+                  <Filters closeTab={() => setOpenFilters(false)} />
+                )}
+              </>
+            )}
+          </SearchDiv>
+        )}
       </SearchContainer>
       <ProfileContainer>
+        <ButtonContainer>
+          {userData?.type === "client" && (
+            <FiltersButton
+              type="button"
+              onClick={() => {
+                setSavedArticlesSelected(!savedArticlesSelected)
+                if (!savedArticlesSelected) {
+                  getMyArticles()
+                } else {
+                  setArticles([])
+                  setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
+                }
+              }}
+            >
+              <Tooltip
+                title={
+                  !savedArticlesSelected
+                    ? "Articulos guardados"
+                    : "Todos los articulos"
+                }
+                placement="bottom-end"
+              >
+                {!savedArticlesSelected ? <AiFillSave /> : <AiOutlineSave />}
+              </Tooltip>
+            </FiltersButton>
+          )}
+          <FiltersButton
+            type="button"
+            onClick={() => router.replace("/trainings")}
+          >
+            <Tooltip title="Capacitaciones" placement="bottom-end">
+              <AiOutlineVideoCamera />
+            </Tooltip>
+          </FiltersButton>
+          <FiltersButton
+            type="button"
+            onClick={() => router.replace("/advisories")}
+          >
+            <Tooltip
+              title={
+                userData?.type === "client"
+                  ? "Agenda tu asesoria"
+                  : "Ver asesorias & eventos"
+              }
+              placement="bottom-end"
+            >
+              <FaCalendarWeek />
+            </Tooltip>
+          </FiltersButton>
+        </ButtonContainer>
         {userData?.type !== "client" && (
           <>
             <FiltersButton

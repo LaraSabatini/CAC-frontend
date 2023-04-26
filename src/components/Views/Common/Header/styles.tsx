@@ -129,6 +129,12 @@ const FiltersButton = styled.button`
   }
 `
 
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 15px;
+  align-items: center;
+`
+
 export {
   Container,
   SearchContainer,
@@ -140,4 +146,5 @@ export {
   SearchDiv,
   SVGButton,
   FiltersButton,
+  ButtonContainer,
 }

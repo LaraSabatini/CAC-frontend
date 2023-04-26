@@ -628,7 +628,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
         >
           {props.optionsList === "single" && (
             <>
-              {props.placeholder !== undefined && (
+              {props.placeholder !== undefined && !selectedOptions.length && (
                 <PlaceHolder>{props.placeholder}</PlaceHolder>
               )}
             </>
