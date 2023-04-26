@@ -3,12 +3,14 @@ import { useRouter } from "next/router"
 import InputSelect from "components/UI/InputSelect"
 import requestUnblock from "services/support/contactSupport.service"
 import Button from "components/UI/Button"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { Container, Title, ButtonContainer } from "./styles"
 
 function ContactSupportView() {
   const router = useRouter()
 
   const supportOptions = [{ id: 1, value: "Desbloqueo de cuenta" }]
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const [requestType, setRequestType] = useState<{
     id: number
@@ -32,12 +34,18 @@ function ContactSupportView() {
       )
       if (requestUnblockCall.data.status === 201) {
         setSentEmail(true)
+      } else {
+        setServerError(true)
       }
     }
   }
 
   return (
     <Container>
+      <InternalServerError
+        visible={serverError}
+        changeVisibility={() => setServerError(false)}
+      />
       {!sentEmail ? (
         <>
           <Title>Contactar soporte</Title>
