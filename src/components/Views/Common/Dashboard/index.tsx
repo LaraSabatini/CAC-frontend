@@ -74,6 +74,8 @@ function DashboardView() {
 
     if (update.status === 201) {
       setUpdateList(updateList + 1)
+    } else {
+      setServerError(true)
     }
   }
 
@@ -105,12 +107,17 @@ function DashboardView() {
   const handleSavedArticles = async () => {
     if (userData.type === "client") {
       const getSavedArticlesCall = await getSavedArticles(userData.id)
-      setSavedArticles(
-        getSavedArticlesCall.data !== "" &&
-          getSavedArticlesCall.data !== "undefined"
-          ? JSON.parse(getSavedArticlesCall.data)
-          : [],
-      )
+
+      if (getSavedArticlesCall.status === 200) {
+        setSavedArticles(
+          getSavedArticlesCall.data !== "" &&
+            getSavedArticlesCall.data !== "undefined"
+            ? JSON.parse(getSavedArticlesCall.data)
+            : [],
+        )
+      } else {
+        setServerError(false)
+      }
     }
   }
 

@@ -4,6 +4,7 @@ import { PublicEventsInterface } from "interfaces/content/Advisories"
 import { AdvisoriesContext } from "contexts/Advisories"
 import { createEvent } from "services/advisories/events.service"
 import { getClientEmails } from "services/clients/clientActions.service"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import Modal from "components/UI/Modal"
 import ModalStatus from "components/UI/ModalStatus"
 import Input from "components/UI/Input"
@@ -21,6 +22,7 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
   const { setServerError } = useContext(AdvisoriesContext)
 
   const [allowClick, setAllowClick] = useState<boolean>(false)
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
@@ -53,51 +55,55 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
 
     const clientEmails = await getClientEmails()
 
-    const eventData = {
-      summary: newEvent.title,
-      location: "",
-      description: newEvent.description,
-      start: {
-        dateTime: dateFormated,
-        timeZone: "America/Buenos_Aires",
-      },
-      end: {
-        dateTime: endDateFormated,
-        timeZone: "America/Buenos_Aires",
-      },
-      conferenceData: {
-        createRequest: {
-          requestId: uuid(),
+    if (clientEmails.status === 200) {
+      const eventData = {
+        summary: newEvent.title,
+        location: "",
+        description: newEvent.description,
+        start: {
+          dateTime: dateFormated,
+          timeZone: "America/Buenos_Aires",
         },
-      },
-      attendees: [...clientEmails.data, { email: userData.user }],
-      reminders: {
-        useDefault: false,
-        overrides: [
-          { method: "email", minutes: 24 * 60 },
-          { method: "popup", minutes: 10 },
-        ],
-      },
-    }
+        end: {
+          dateTime: endDateFormated,
+          timeZone: "America/Buenos_Aires",
+        },
+        conferenceData: {
+          createRequest: {
+            requestId: uuid(),
+          },
+        },
+        attendees: [...clientEmails.data, { email: userData.user }],
+        reminders: {
+          useDefault: false,
+          overrides: [
+            { method: "email", minutes: 24 * 60 },
+            { method: "popup", minutes: 10 },
+          ],
+        },
+      }
 
-    const request = gapi.client.calendar.events.insert({
-      calendarId: "primary",
-      sendNotifications: true,
-      conferenceDataVersion: 1,
-      resource: eventData,
-    })
-
-    request.execute(async (event: any) => {
-      const createEventCall = await createEvent({
-        ...newEvent,
-        createdBy: userData.id,
-        date: `${splitDate[0]}-${splitDate[1]}-${splitDate[2]}`,
-        month: parseInt(splitDate[1], 10),
-        eventURL: event.htmlLink,
+      const request = gapi.client.calendar.events.insert({
+        calendarId: "primary",
+        sendNotifications: true,
+        conferenceDataVersion: 1,
+        resource: eventData,
       })
-      setModalSuccess(createEventCall.status === 201)
-      setServerError(createEventCall.status !== 201)
-    })
+
+      request.execute(async (event: any) => {
+        const createEventCall = await createEvent({
+          ...newEvent,
+          createdBy: userData.id,
+          date: `${splitDate[0]}-${splitDate[1]}-${splitDate[2]}`,
+          month: parseInt(splitDate[1], 10),
+          eventURL: event.htmlLink,
+        })
+        setModalSuccess(createEventCall.status === 201)
+        setServerError(createEventCall.status !== 201)
+      })
+    } else {
+      setServerErrorModal(true)
+    }
   }
 
   const handleClientLoad = () => {
@@ -159,6 +165,10 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
   return (
     <Modal>
       <Container>
+        <InternalServerError
+          visible={serverErrorModal}
+          changeVisibility={() => setServerErrorModal(false)}
+        />
         {modalSuccess && (
           <ModalStatus
             title="Excelente!"

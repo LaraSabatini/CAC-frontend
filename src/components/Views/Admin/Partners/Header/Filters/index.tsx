@@ -5,6 +5,7 @@ import { ClientsContext } from "contexts/Clients"
 import { getPlansForFilters } from "services/pricing/getPlans.service"
 import { FilterInterface } from "interfaces/contexts/DashboardContextInterface"
 import { filterClients } from "services/clients/clientActions.service"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import Checkbox from "components/UI/Checkbox"
 import Tooltip from "components/UI/Tooltip"
 import Scroll from "components/UI/Scroll"
@@ -25,6 +26,7 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
   const { setClients } = useContext(ClientsContext)
 
   const [regionFilterOpen, setRegionFilterOpen] = useState<boolean>(false)
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const [planFilterOpen, setPlanFilterOpen] = useState<boolean>(false)
   const [planFilters, setPlanFilters] = useState<FilterInterface[] | []>([])
@@ -73,7 +75,11 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
         planIds: planFiltersSelected,
       })
 
-      setClients(filterClientsCall)
+      if (filterClientsCall.status === 200) {
+        setClients(filterClientsCall.data)
+      } else {
+        setServerErrorModal(true)
+      }
     }
   }
 
@@ -97,6 +103,10 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
 
   return (
     <FilterContainer>
+      <InternalServerError
+        visible={serverErrorModal}
+        changeVisibility={() => setServerErrorModal(false)}
+      />
       <FilterList>
         <FilterSelector>
           <OpenFilters onClick={() => setRegionFilterOpen(!regionFilterOpen)}>

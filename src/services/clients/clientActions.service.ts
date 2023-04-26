@@ -36,7 +36,7 @@ const filterClients = async (body: {
   planIds: number[]
 }) => {
   const res = await defaultPost(`${apiURL}/filter`, body)
-  return res.data
+  return res
 }
 
 const searchClients = async (body: { search: string }) => {

@@ -89,24 +89,28 @@ function Header() {
 
   const getMyArticles = async () => {
     const getSavedArticlesCall = await getSavedArticles(userData.id)
-    const articleList = JSON.parse(getSavedArticlesCall.data)
+    if (getSavedArticlesCall.status === 200) {
+      const articleList = JSON.parse(getSavedArticlesCall.data)
 
-    if (!articleList.length) {
-      setArticles(articleList)
-    } else {
-      const articleListArray = []
-      // eslint-disable-next-line no-restricted-syntax
-      for (const articleId of articleList) {
-        // eslint-disable-next-line no-await-in-loop
-        const getArticleByIdCall = await getArticleById(articleId)
+      if (!articleList.length) {
+        setArticles(articleList)
+      } else {
+        const articleListArray = []
+        // eslint-disable-next-line no-restricted-syntax
+        for (const articleId of articleList) {
+          // eslint-disable-next-line no-await-in-loop
+          const getArticleByIdCall = await getArticleById(articleId)
 
-        if (getArticleByIdCall.status === 200) {
-          articleListArray.push(getArticleByIdCall.data[0])
-        } else {
-          setServerErrorModal(true)
+          if (getArticleByIdCall.status === 200) {
+            articleListArray.push(getArticleByIdCall.data[0])
+          } else {
+            setServerErrorModal(true)
+          }
         }
+        setArticles(articleListArray)
       }
-      setArticles(articleListArray)
+    } else {
+      setServerErrorModal(true)
     }
   }
 

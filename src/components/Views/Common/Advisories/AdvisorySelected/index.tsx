@@ -8,6 +8,7 @@ import {
   changeAdvisoryStatus,
 } from "services/advisories/advisories.service"
 import { getClientEmail } from "services/clients/clientActions.service"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import authenticate from "helpers/google/authenticate"
 import createEventFunction from "helpers/google/createEvent"
 import getMeetURL from "helpers/google/getMeetURL"
@@ -34,6 +35,8 @@ function AdvisorySelected({
   const [openModalEvent, setOpenModalEvent] = useState<boolean>(false)
   const [eventData, setEventData] = useState<AdvisoryInterface>(event)
   const [allowClick, setAllowClick] = useState<boolean>(false)
+
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const [canJoinEvent, setCanJoinEvent] = useState<boolean>(false)
   const [modalSuccess, setModalSuccess] = useState<boolean>(false)
@@ -62,25 +65,29 @@ function AdvisorySelected({
     if (action === "confirm") {
       const clientEmail = await getClientEmail(eventData.clientId)
 
-      const eventDataForGoogle: {
-        summary: string
-        description: string
-        attendees: { email: string }[]
-      } = {
-        summary: `Asesoria con ${eventData.clientName}`,
-        description: eventData.brief,
-        attendees: [
-          { email: userData.user },
-          { email: clientEmail.data[0].email },
-        ],
-      }
+      if (clientEmail.status === 200) {
+        const eventDataForGoogle: {
+          summary: string
+          description: string
+          attendees: { email: string }[]
+        } = {
+          summary: `Asesoria con ${eventData.clientName}`,
+          description: eventData.brief,
+          attendees: [
+            { email: userData.user },
+            { email: clientEmail.data[0].email },
+          ],
+        }
 
-      eventURL = await createEventFunction(
-        gapi,
-        eventDataForGoogle,
-        eventData.date.replaceAll("-", "/"),
-        eventData.hour,
-      )
+        eventURL = await createEventFunction(
+          gapi,
+          eventDataForGoogle,
+          eventData.date.replaceAll("-", "/"),
+          eventData.hour,
+        )
+      } else {
+        setServerError(true)
+      }
     }
 
     const advisoryData: {
@@ -137,6 +144,10 @@ function AdvisorySelected({
 
   return (
     <>
+      <InternalServerError
+        visible={serverErrorModal}
+        changeVisibility={() => setServerErrorModal(false)}
+      />
       {openModalEvent && (
         <Modal>
           <ModalContent>
