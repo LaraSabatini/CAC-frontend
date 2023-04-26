@@ -66,7 +66,10 @@ function WarningModal({ cancel }: WarningModalInterface) {
             clientId: userData.id,
           })
 
-          if (blockAccountReq.status === 500) {
+          if (
+            blockAccountReq.status === 500 ||
+            createFeedbackReq.status === 500
+          ) {
             setServerErrorModal(true)
           }
 
