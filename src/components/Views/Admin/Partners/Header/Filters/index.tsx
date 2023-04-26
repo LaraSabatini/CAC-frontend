@@ -85,14 +85,19 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
 
   const getPlanFilters = async () => {
     const getPlansForFiltersCall = await getPlansForFilters()
-    const filterList: FilterInterface[] = []
-    getPlansForFiltersCall.data.map((plan: { id: number; name: string }) =>
-      filterList.push({
-        id: plan.id,
-        value: plan.name.split(" ")[1],
-      }),
-    )
-    setPlanFilters(filterList)
+
+    if (getPlansForFiltersCall.status === 200) {
+      const filterList: FilterInterface[] = []
+      getPlansForFiltersCall.data.map((plan: { id: number; name: string }) =>
+        filterList.push({
+          id: plan.id,
+          value: plan.name.split(" ")[1],
+        }),
+      )
+      setPlanFilters(filterList)
+    } else {
+      setServerErrorModal(true)
+    }
   }
 
   useEffect(() => {

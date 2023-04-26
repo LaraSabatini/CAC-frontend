@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react"
 import { ClientsContext } from "contexts/Clients"
 import getPlans from "services/pricing/getPlans.service"
 import { getProfileDataForTable } from "services/auth/getProfileData.service"
-import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import ProductsInterface from "interfaces/content/Pricing"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import Header from "./Header"
 import Table from "./Table"
 import CommentSection from "./CommentSection"
@@ -36,17 +36,21 @@ function PartnersView() {
 
     const getPlansCall = await getPlans()
 
-    const cleanedPlans: { id: number; name: string }[] = []
+    if (getPlansCall.status === 200) {
+      const cleanedPlans: { id: number; name: string }[] = []
 
-    getPlansCall.data.map((plan: ProductsInterface) =>
-      cleanedPlans.push({
-        id: plan.id,
-        name: plan.name.replace(/plan/gi, "").trim(),
-      }),
-    )
-    setPlans(cleanedPlans)
+      getPlansCall.data.map((plan: ProductsInterface) =>
+        cleanedPlans.push({
+          id: plan.id,
+          name: plan.name.replace(/plan/gi, "").trim(),
+        }),
+      )
+      setPlans(cleanedPlans)
 
-    setClientSelected(null)
+      setClientSelected(null)
+    } else {
+      setServerError(true)
+    }
   }
 
   useEffect(() => {
