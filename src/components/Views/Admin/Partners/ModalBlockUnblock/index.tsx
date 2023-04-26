@@ -97,9 +97,7 @@ function ModalBlockUnblock({ action, cancel }: ModalBlockUnblockInterface) {
             }}
           />
         )}
-        {serverError && (
-          <InternalServerError visible changeVisibility={cancel} />
-        )}
+        <InternalServerError visible={serverError} changeVisibility={cancel} />
         {action === "unblock" ? (
           <ModalContainer>
             <Title>

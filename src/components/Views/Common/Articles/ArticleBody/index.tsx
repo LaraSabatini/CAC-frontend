@@ -15,6 +15,7 @@ import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import MediaViewer from "components/UI/MediaViewer"
 import { dateFormated } from "helpers/dates/getToday"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import DeleteArticleModal from "./DeleteArticleModal"
 import EditArticleForm from "../../../Admin/EditArticleForm"
 import RelatedArticles from "./RelatedArticles"
@@ -54,6 +55,7 @@ function ArticleBody(props: Props) {
   const { setArticleSelected, discardArticleEdition } = useContext(
     ArticlesContext,
   )
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const [inModal, setInModal] = useState<boolean>(false)
 
@@ -86,12 +88,16 @@ function ArticleBody(props: Props) {
     const getArticleByIdReq = await getArticleById(
       parseInt(router.query.articleId as string, 10),
     )
-    setData(getArticleByIdReq.data[0])
-    cleanArticle(getArticleByIdReq.data[0].article)
+    if (getArticleByIdReq.status === 200) {
+      setData(getArticleByIdReq.data[0])
+      cleanArticle(getArticleByIdReq.data[0].article)
 
-    setChangesHistory(
-      JSON.parse(getArticleByIdReq.data[0].changesHistory as string),
-    )
+      setChangesHistory(
+        JSON.parse(getArticleByIdReq.data[0].changesHistory as string),
+      )
+    } else {
+      setServerErrorModal(true)
+    }
   }
 
   useEffect(() => {
@@ -119,6 +125,10 @@ function ArticleBody(props: Props) {
   return (
     <div>
       <Container inModal={inModal}>
+        <InternalServerError
+          visible={serverErrorModal}
+          changeVisibility={() => setServerErrorModal(false)}
+        />
         {data !== undefined && (
           <LeftContainer>
             {modalDelete && (

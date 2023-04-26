@@ -11,6 +11,8 @@ export const DashboardContext = createContext<DashboardContextInterface>({
   setThemeFilters: () => {},
   triggerArticleListUpdate: 0,
   setTriggerArticleListUpdate: () => {},
+  serverError: false,
+  setServerError: () => {},
 })
 
 function DashboardProvider({ children }: any) {
@@ -23,6 +25,8 @@ function DashboardProvider({ children }: any) {
     setTriggerArticleListUpdate,
   ] = useState<number>(0)
 
+  const [serverError, setServerError] = useState<boolean>(false)
+
   const value: any = useMemo(
     () => ({
       setArticles,
@@ -31,9 +35,11 @@ function DashboardProvider({ children }: any) {
       setThemeFilters,
       triggerArticleListUpdate,
       setTriggerArticleListUpdate,
+      serverError,
+      setServerError,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [themeFilters, articles, triggerArticleListUpdate],
+    [themeFilters, articles, triggerArticleListUpdate, serverError],
   )
 
   return (

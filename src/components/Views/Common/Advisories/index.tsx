@@ -143,12 +143,10 @@ function AdvisoriesView() {
       <Header />
 
       <Container>
-        {serverError && (
-          <InternalServerError
-            visible
-            changeVisibility={() => setServerError(false)}
-          />
-        )}
+        <InternalServerError
+          visible={serverError}
+          changeVisibility={() => setServerError(false)}
+        />
         <Calendar>
           <CalendarInfo>
             <DateInfo>

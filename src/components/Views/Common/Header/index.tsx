@@ -16,6 +16,7 @@ import {
 import { getSavedArticles } from "services/clients/clientActions.service"
 import { DashboardContext } from "contexts/Dashboard"
 import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import texts from "strings/profile.json"
 import SearchBar from "components/UI/SearchBar"
 import Icon from "components/UI/Assets/Icon"
@@ -54,6 +55,8 @@ function Header() {
   const [openFilters, setOpenFilters] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string>("")
 
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
+
   const [savedArticlesSelected, setSavedArticlesSelected] = useState<boolean>(
     false,
   )
@@ -73,7 +76,11 @@ function Header() {
 
   const searchArticlesInDB = async () => {
     const searchArticlesCall = await searchArticles({ search: searchValue })
-    setArticles(searchArticlesCall.data)
+    if (searchArticlesCall.status === 200) {
+      setArticles(searchArticlesCall.data)
+    } else {
+      setServerErrorModal(true)
+    }
   }
 
   useEffect(() => {
@@ -92,7 +99,12 @@ function Header() {
       for (const articleId of articleList) {
         // eslint-disable-next-line no-await-in-loop
         const getArticleByIdCall = await getArticleById(articleId)
-        articleListArray.push(getArticleByIdCall.data[0])
+
+        if (getArticleByIdCall.status === 200) {
+          articleListArray.push(getArticleByIdCall.data[0])
+        } else {
+          setServerErrorModal(true)
+        }
       }
       setArticles(articleListArray)
     }
@@ -100,6 +112,10 @@ function Header() {
 
   return (
     <Container>
+      <InternalServerError
+        visible={serverErrorModal}
+        changeVisibility={() => setServerErrorModal(false)}
+      />
       <SearchContainer>
         <GoHomeButton onClick={() => router.replace(routes.dashboard.name)}>
           <Logo />

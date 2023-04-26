@@ -6,6 +6,7 @@ import { getTrainings } from "@services/trainings/trainingActions.service"
 import Header from "components/Views/Common/Header"
 import Button from "components/UI/Button"
 import Tooltip from "components/UI/Tooltip"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import TrainingCard from "./TrainingCard"
 import AddTraining from "./AddTraining"
 import { Container, Content, CreateTraining, ButtonContainer } from "./styles"
@@ -23,6 +24,7 @@ function TrainingsView() {
 
   const [openModal, setOpenModal] = useState<boolean>()
   const [updateList, setUpdateList] = useState<number>(0)
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const getTrainingsData = async () => {
     const getTrainingsCall = await getTrainings(currentPage)
@@ -36,7 +38,11 @@ function TrainingsView() {
 
   const getThemeFilters = async () => {
     const getFiltersCall = await getFilters()
-    setThemeFilters(getFiltersCall.data)
+    if (getFiltersCall.status === 200) {
+      setThemeFilters(getFiltersCall.data)
+    } else {
+      setServerError(true)
+    }
   }
 
   useEffect(() => {
@@ -53,6 +59,10 @@ function TrainingsView() {
     <>
       <Header />
       <Container>
+        <InternalServerError
+          visible={serverError}
+          changeVisibility={() => setServerError(false)}
+        />
         <div className="container-head">
           <h3>Capacitaciones</h3>
           {userData?.type === "admin" && (

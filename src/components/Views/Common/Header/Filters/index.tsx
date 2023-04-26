@@ -5,6 +5,7 @@ import { filterArticles } from "services/articles/articles.service"
 import { DashboardContext } from "contexts/Dashboard"
 import Checkbox from "components/UI/Checkbox"
 import Tooltip from "components/UI/Tooltip"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import Scroll from "components/UI/Scroll"
 import regionFilters from "const/regions"
 import {
@@ -29,6 +30,8 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
 
   const [regionFilterOpen, setRegionFilterOpen] = useState<boolean>(false)
   const [themeFilterOpen, setThemeFilterOpen] = useState<boolean>(false)
+
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const [regionFiltersSelected, setRegionFiltersSelected] = useState<number[]>(
     [],
@@ -72,7 +75,11 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
         regionIds: regionFiltersSelected,
         themeIds: themeFiltersSelected,
       })
-      setArticles(filterArticlesCall.data)
+      if (filterArticlesCall.status === 200) {
+        setArticles(filterArticlesCall.data)
+      } else {
+        setServerErrorModal(true)
+      }
     } else {
       setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
     }
@@ -80,6 +87,10 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
 
   return (
     <FilterContainer>
+      <InternalServerError
+        visible={serverErrorModal}
+        changeVisibility={() => setServerErrorModal(false)}
+      />
       <FilterList>
         <FilterSelector>
           <OpenFilters onClick={() => setRegionFilterOpen(!regionFilterOpen)}>

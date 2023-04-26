@@ -61,6 +61,8 @@ function DeleteArticleModal({ cancel }: WarningModalInterface) {
 
           if (deleteArticleReq.status === 200) {
             setModalSuccess(true)
+          } else {
+            setServerErrorModal(true)
           }
         } else if (loginReq.status === 401) {
           setFormError(`${profileTexts.changePassword.wrongPassword}`)
