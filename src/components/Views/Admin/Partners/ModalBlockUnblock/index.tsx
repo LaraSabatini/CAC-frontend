@@ -50,10 +50,12 @@ function ModalBlockUnblock({ action, cancel }: ModalBlockUnblockInterface) {
         )
 
         success = blockAccountEmail.status === 201
+        setServerError(blockAccountEmail.status !== 201)
+      } else {
+        setServerError(true)
       }
 
       setActionSuccess(success)
-      setServerError(!success)
     }
   }
 
@@ -74,10 +76,12 @@ function ModalBlockUnblock({ action, cancel }: ModalBlockUnblockInterface) {
       })
 
       success = unblockAccountEmail.status === 201
+      setServerError(unblockAccountEmail.status !== 201)
+    } else {
+      setServerError(true)
     }
 
     setActionSuccess(success)
-    setServerError(!success)
   }
 
   return (
@@ -97,9 +101,7 @@ function ModalBlockUnblock({ action, cancel }: ModalBlockUnblockInterface) {
             }}
           />
         )}
-        {serverError && (
-          <InternalServerError visible changeVisibility={cancel} />
-        )}
+        <InternalServerError visible={serverError} changeVisibility={cancel} />
         {action === "unblock" ? (
           <ModalContainer>
             <Title>

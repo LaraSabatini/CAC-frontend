@@ -5,6 +5,7 @@ import ModalStatus from "components/UI/ModalStatus"
 import { createClientComment } from "services/clients/clientActions.service"
 import Input from "components/UI/Input"
 import Button from "components/UI/Button"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import { dateFormated } from "helpers/dates/getToday"
 import { Title } from "../styles"
 import { Container, ButtonContainer } from "./styles"
@@ -19,6 +20,7 @@ function AddComment({
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const [success, setSuccess] = useState<boolean>(false)
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const now = new Date()
 
@@ -38,11 +40,16 @@ function AddComment({
     if (newComment.comment !== "") {
       const createClientCommentCall = await createClientComment(newComment)
       setSuccess(createClientCommentCall.status === 201)
+      setServerErrorModal(createClientCommentCall.status !== 201)
     }
   }
 
   return (
     <Modal>
+      <InternalServerError
+        visible={serverErrorModal}
+        changeVisibility={() => setServerErrorModal(false)}
+      />
       <Container>
         <Title>Agregar comentario</Title>
         <Input

@@ -8,6 +8,7 @@ import Input from "components/UI/Input"
 import regionFilters from "const/regions"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import { OptionsInterface } from "interfaces/content/Article"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { TrainingsInterface } from "interfaces/trainings/Trainings"
 import {
   Container,
@@ -37,6 +38,7 @@ function EditTraining({
   updateList: (arg?: any) => void
 }) {
   const { themeFilters } = useContext(TrainingsContext)
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const [trainingEdited, setTrainingEdited] = useState<TrainingsInterface>({
     id,
@@ -77,6 +79,7 @@ function EditTraining({
       const editTrainingCall = await editTraining(trainingEdited)
 
       setSuccess(editTrainingCall.status === 201)
+      setServerError(editTrainingCall.status !== 201)
     } else {
       setRequiredError(true)
     }
@@ -85,6 +88,10 @@ function EditTraining({
   return (
     <Modal>
       <Container>
+        <InternalServerError
+          visible={serverError}
+          changeVisibility={() => setServerError(false)}
+        />
         <h3>Crear capacitacion</h3>
         {requiredError && (
           <p className="required-error">

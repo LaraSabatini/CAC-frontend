@@ -10,6 +10,8 @@ export const AdvisoriesContext = createContext<AdvisoryContextInterface>({
   setAdvisoryList: () => {},
   publicEventList: [],
   setPublicEventList: () => {},
+  serverError: false,
+  setServerError: () => {},
 })
 
 function AdvisoriesProvider({ children }: any) {
@@ -17,6 +19,7 @@ function AdvisoriesProvider({ children }: any) {
   const [publicEventList, setPublicEventList] = useState<
     PublicEventsInterface[] | []
   >([])
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const value: any = useMemo(
     () => ({
@@ -24,8 +27,10 @@ function AdvisoriesProvider({ children }: any) {
       setAdvisoryList,
       publicEventList,
       setPublicEventList,
+      serverError,
+      setServerError,
     }),
-    [advisoryList, publicEventList],
+    [advisoryList, publicEventList, serverError],
   )
 
   return (

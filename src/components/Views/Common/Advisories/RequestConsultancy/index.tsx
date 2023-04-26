@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { GrFormClose } from "react-icons/gr"
 import { getAdminList } from "services/advisories/advisories.service"
+import { AdvisoriesContext } from "contexts/Advisories"
 import InputSelect from "components/UI/InputSelect"
 import Modal from "components/UI/Modal"
 import SearchByAdmin from "./ByAdmin"
@@ -10,6 +11,8 @@ import { Container, Title, InputContainer } from "./styles"
 type AdminType = { id: number; userName: string; email: string }
 
 function RequestAdvisory({ close }: { close: (arg?: any) => void }) {
+  const { setServerError } = useContext(AdvisoriesContext)
+
   const [searchBy, setSearchBy] = useState<number>(14983)
   const [adminList, setAdminList] = useState<AdminType[]>([])
   const [adminListForSelect, setAdminListForSelect] = useState<
@@ -18,17 +21,22 @@ function RequestAdvisory({ close }: { close: (arg?: any) => void }) {
 
   const getAdmins = async () => {
     const getAdminListCall = await getAdminList()
-    setAdminList(getAdminListCall.data)
+    if (getAdminListCall.status === 200) {
+      setAdminList(getAdminListCall.data)
 
-    const list: { id: number; value: string }[] = []
-    getAdminListCall.data.forEach((admin: AdminType) =>
-      list.push({ id: admin.id, value: admin.userName }),
-    )
-    setAdminListForSelect(list)
+      const list: { id: number; value: string }[] = []
+      getAdminListCall.data.forEach((admin: AdminType) =>
+        list.push({ id: admin.id, value: admin.userName }),
+      )
+      setAdminListForSelect(list)
+    } else {
+      setServerError(true)
+    }
   }
 
   useEffect(() => {
     getAdmins()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

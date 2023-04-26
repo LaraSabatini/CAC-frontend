@@ -5,6 +5,7 @@ import texts from "strings/articles.json"
 import ModalStatus from "components/UI/ModalStatus"
 import Button from "components/UI/Button"
 import getFiles from "helpers/media/getFiles"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { dateFormated } from "helpers/dates/getToday"
 import { editArticle } from "services/articles/articles.service"
 import { uploadFile } from "services/articles/fileManagement.service"
@@ -30,6 +31,7 @@ function ArticleButtons({
 
   const [warningMessage, setWarningMessage] = useState<string>("")
   const [editedArticle, setEditedArticle] = useState<boolean>(false)
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const canPreview =
     articleEdited.title !== "" &&
@@ -103,15 +105,21 @@ function ArticleButtons({
           // eslint-disable-next-line no-await-in-loop
           const postFile: any = await sendFile(formData)
           success = postFile.status === 200
+          setServerError(postFile.status !== 200)
         }
       }
     }
 
     setEditedArticle(success)
+    setServerError(!success)
   }
 
   return (
     <ActionButtons>
+      <InternalServerError
+        visible={serverError}
+        changeVisibility={() => setServerError(false)}
+      />
       {editedArticle && (
         <ModalStatus
           title={texts.newArticleForm.success.title}

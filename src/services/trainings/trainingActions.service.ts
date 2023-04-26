@@ -11,12 +11,8 @@ const createTraining = async (body: TrainingsInterface) => {
 }
 
 const getTrainings = async (page: number) => {
-  try {
-    const res = await axios.get(`${apiURL}/page=${page}`, axiosHeader)
-    return res.data
-  } catch (err: any) {
-    return err.response.status
-  }
+  const res = await axios.get(`${apiURL}/page=${page}`, axiosHeader)
+  return res.data
 }
 
 const deleteTraining = async (id: number) => {

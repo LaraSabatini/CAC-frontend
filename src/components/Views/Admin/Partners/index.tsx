@@ -1,8 +1,9 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { ClientsContext } from "contexts/Clients"
 import getPlans from "services/pricing/getPlans.service"
 import { getProfileDataForTable } from "services/auth/getProfileData.service"
 import ProductsInterface from "interfaces/content/Pricing"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import Header from "./Header"
 import Table from "./Table"
 import CommentSection from "./CommentSection"
@@ -18,29 +19,38 @@ function PartnersView() {
     setPlans,
     setClientSelected,
   } = useContext(ClientsContext)
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const getDataForTable = async () => {
     const getProfileDataForTableCall = await getProfileDataForTable(currentPage)
-    setClients(getProfileDataForTableCall.data.data)
-    setTotalPages(
-      getProfileDataForTableCall.data.meta.totalPages === 0
-        ? 1
-        : getProfileDataForTableCall.data.meta.totalPages,
-    )
+    if (getProfileDataForTableCall.status === 200) {
+      setClients(getProfileDataForTableCall.data)
+      setTotalPages(
+        getProfileDataForTableCall.meta.totalPages === 0
+          ? 1
+          : getProfileDataForTableCall.meta.totalPages,
+      )
+    } else {
+      setServerError(true)
+    }
 
     const getPlansCall = await getPlans()
 
-    const cleanedPlans: { id: number; name: string }[] = []
+    if (getPlansCall.status === 200) {
+      const cleanedPlans: { id: number; name: string }[] = []
 
-    getPlansCall.data.map((plan: ProductsInterface) =>
-      cleanedPlans.push({
-        id: plan.id,
-        name: plan.name.replace(/plan/gi, "").trim(),
-      }),
-    )
-    setPlans(cleanedPlans)
+      getPlansCall.data.map((plan: ProductsInterface) =>
+        cleanedPlans.push({
+          id: plan.id,
+          name: plan.name.replace(/plan/gi, "").trim(),
+        }),
+      )
+      setPlans(cleanedPlans)
 
-    setClientSelected(null)
+      setClientSelected(null)
+    } else {
+      setServerError(true)
+    }
   }
 
   useEffect(() => {
@@ -51,6 +61,10 @@ function PartnersView() {
   return (
     <>
       <Header />
+      <InternalServerError
+        visible={serverError}
+        changeVisibility={() => setServerError(false)}
+      />
       <Container>
         <Table />
         {clientSelected !== null && <DetailsCard />}

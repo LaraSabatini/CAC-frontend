@@ -12,6 +12,8 @@ interface DashboardContextInterface {
   setThemeFilters(themeFilters: FilterInterface[] | []): void
   triggerArticleListUpdate: number
   setTriggerArticleListUpdate(triggerArticleListUpdate: number): void
+  serverError: boolean
+  setServerError(serverError: boolean): void
 }
 
 export default DashboardContextInterface

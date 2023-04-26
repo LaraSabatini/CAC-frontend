@@ -6,6 +6,7 @@ import { GrClose } from "react-icons/gr"
 import { BsFillPlayFill } from "react-icons/bs"
 import ModalStatus from "components/UI/ModalStatus"
 import Tooltip from "components/UI/Tooltip"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import Modal from "components/UI/Modal"
 import EditTraining from "../EditTraining"
 import {
@@ -41,6 +42,7 @@ function TrainingCard({
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const [openModal, setOpenModal] = useState<boolean>(false)
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
   const [openEditModal, setOpenEditModal] = useState<boolean>(false)
@@ -51,11 +53,16 @@ function TrainingCard({
   const deleteTrainingAction = async () => {
     const deleteTrainingCall = await deleteTraining(id)
     setSuccessModal(deleteTrainingCall.status === 200)
+    setServerError(deleteTrainingCall.status !== 200)
     setOpenDeleteModal(false)
   }
 
   return (
     <Card background={`http://img.youtube.com/vi/${videoId}/hqdefault.jpg`}>
+      <InternalServerError
+        visible={serverError}
+        changeVisibility={() => setServerError(false)}
+      />
       {openModal && (
         <Modal>
           <Player isEditing={openEditModal}>

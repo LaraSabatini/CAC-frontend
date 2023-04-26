@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
+import { AdvisoriesContext } from "contexts/Advisories"
 import { GrFormClose } from "react-icons/gr"
 import { BsCalendar3 } from "react-icons/bs"
 import {
@@ -7,6 +8,7 @@ import {
   changeAdvisoryStatus,
 } from "services/advisories/advisories.service"
 import { getClientEmail } from "services/clients/clientActions.service"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import authenticate from "helpers/google/authenticate"
 import createEventFunction from "helpers/google/createEvent"
 import getMeetURL from "helpers/google/getMeetURL"
@@ -24,6 +26,7 @@ function AdvisorySelected({
   event: AdvisoryInterface
   updateList: (arg?: any) => void
 }) {
+  const { setServerError } = useContext(AdvisoriesContext)
   const router = useRouter()
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
@@ -33,6 +36,8 @@ function AdvisorySelected({
   const [eventData, setEventData] = useState<AdvisoryInterface>(event)
   const [allowClick, setAllowClick] = useState<boolean>(false)
 
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
+
   const [canJoinEvent, setCanJoinEvent] = useState<boolean>(false)
   const [modalSuccess, setModalSuccess] = useState<boolean>(false)
 
@@ -40,7 +45,11 @@ function AdvisorySelected({
     const getAdvisoriesCall = await getAdvisoryData(
       parseInt(router.query.id as string, 10),
     )
-    setEventData(getAdvisoriesCall.data[0])
+    if (getAdvisoriesCall.status === 200) {
+      setEventData(getAdvisoriesCall.data[0])
+    } else {
+      setServerError(true)
+    }
   }
 
   useEffect(() => {
@@ -56,25 +65,29 @@ function AdvisorySelected({
     if (action === "confirm") {
       const clientEmail = await getClientEmail(eventData.clientId)
 
-      const eventDataForGoogle: {
-        summary: string
-        description: string
-        attendees: { email: string }[]
-      } = {
-        summary: `Asesoria con ${eventData.clientName}`,
-        description: eventData.brief,
-        attendees: [
-          { email: userData.user },
-          { email: clientEmail.data[0].email },
-        ],
-      }
+      if (clientEmail.status === 200) {
+        const eventDataForGoogle: {
+          summary: string
+          description: string
+          attendees: { email: string }[]
+        } = {
+          summary: `Asesoria con ${eventData.clientName}`,
+          description: eventData.brief,
+          attendees: [
+            { email: userData.user },
+            { email: clientEmail.data[0].email },
+          ],
+        }
 
-      eventURL = await createEventFunction(
-        gapi,
-        eventDataForGoogle,
-        eventData.date.replaceAll("-", "/"),
-        eventData.hour,
-      )
+        eventURL = await createEventFunction(
+          gapi,
+          eventDataForGoogle,
+          eventData.date.replaceAll("-", "/"),
+          eventData.hour,
+        )
+      } else {
+        setServerError(true)
+      }
     }
 
     const advisoryData: {
@@ -97,6 +110,7 @@ function AdvisorySelected({
     )
 
     setModalSuccess(changeAdvisoryStatusCall.status === 201)
+    setServerError(changeAdvisoryStatusCall.status !== 201)
   }
 
   useEffect(() => {
@@ -130,6 +144,10 @@ function AdvisorySelected({
 
   return (
     <>
+      <InternalServerError
+        visible={serverErrorModal}
+        changeVisibility={() => setServerErrorModal(false)}
+      />
       {openModalEvent && (
         <Modal>
           <ModalContent>

@@ -10,6 +10,7 @@ import {
   EditPersonalInfoInterface,
 } from "interfaces/components/PersonalInfoInterface"
 import capitalizeFirstLetter from "helpers/formatting/capitalizeFirstLetter"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import texts from "strings/payment.json"
 import profileTexts from "strings/profile.json"
 import ClientInterface from "interfaces/users/Client"
@@ -29,6 +30,7 @@ function EditPersonalInfo({
   const { profileData, triggerUpdate, setTriggerUpdate } = useContext(
     ProfileContext,
   )
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const data = profileData as ClientInterface
 
@@ -68,6 +70,10 @@ function EditPersonalInfo({
         emailValidation =
           validateEmailReq.status === 200 &&
           validateEmailReq.info === "available"
+
+        if (validateEmailReq.status === 500) {
+          setServerError(true)
+        }
       }
 
       if (newData.identificationNumber !== data.identificationNumber) {
@@ -79,6 +85,10 @@ function EditPersonalInfo({
         identificationNumberValidation =
           validateIdentificationNumberReq.status === 200 &&
           validateIdentificationNumberReq.info === "available"
+
+        if (validateIdentificationNumberReq.status === 500) {
+          setServerError(true)
+        }
       }
 
       if (emailValidation && identificationNumberValidation) {
@@ -89,6 +99,8 @@ function EditPersonalInfo({
         if (editProfileReq.status === 201) {
           cancelChanges()
           setTriggerUpdate(triggerUpdate + 1)
+        } else {
+          setServerError(true)
         }
       } else {
         setFormError(texts.form.duplicatedError)
@@ -101,7 +113,10 @@ function EditPersonalInfo({
   return (
     <Form>
       {formError !== "" && <Error>{formError}</Error>}
-
+      <InternalServerError
+        visible={serverError}
+        changeVisibility={() => setServerError(false)}
+      />
       <HorizontalGroup>
         <Input
           width={200}

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import {
   getAvailability,
   createAvailability,
   changeAvailability,
 } from "services/advisories/advisories.service"
+import { AdvisoriesContext } from "contexts/Advisories"
 import ModalStatus from "components/UI/ModalStatus"
 import Modal from "components/UI/Modal"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
@@ -12,6 +13,8 @@ import Button from "components/UI/Button"
 import { Container, Title, SelectionContainer, Option } from "./styles"
 
 function Availability({ closeModal }: { closeModal: (arg?: any) => void }) {
+  const { setServerError } = useContext(AdvisoriesContext)
+
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const virginList = {
@@ -41,15 +44,19 @@ function Availability({ closeModal }: { closeModal: (arg?: any) => void }) {
 
   const getAdminData = async () => {
     const getAvailabilityCall = await getAvailability(userData?.id)
-    setAvailabilityList(
-      !getAvailabilityCall.data.length
-        ? virginList
-        : JSON.parse(getAvailabilityCall.data[0].availability),
-    )
-    setIsEditing(getAvailabilityCall.data.length)
-    setAvailabilityId(
-      !getAvailabilityCall.data.length ? 0 : getAvailabilityCall.data[0].id,
-    )
+    if (getAvailabilityCall.status === 200) {
+      setAvailabilityList(
+        !getAvailabilityCall.data.length
+          ? virginList
+          : JSON.parse(getAvailabilityCall.data[0].availability),
+      )
+      setIsEditing(getAvailabilityCall.data.length)
+      setAvailabilityId(
+        !getAvailabilityCall.data.length ? 0 : getAvailabilityCall.data[0].id,
+      )
+    } else {
+      setServerError(true)
+    }
   }
 
   useEffect(() => {
@@ -80,12 +87,14 @@ function Availability({ closeModal }: { closeModal: (arg?: any) => void }) {
         availability: JSON.stringify(availabilityList),
       })
       setSuccess(changeAvailabilityCall.status === 201)
+      setServerError(changeAvailabilityCall.status !== 201)
     } else {
       const createAvailabilityCall = await createAvailability({
         adminId: userData?.id,
         availability: JSON.stringify(availabilityList),
       })
       setSuccess(createAvailabilityCall.status === 201)
+      setServerError(createAvailabilityCall.status !== 201)
     }
   }
 
@@ -101,6 +110,7 @@ function Availability({ closeModal }: { closeModal: (arg?: any) => void }) {
             selfCloseAction={closeModal}
           />
         )}
+
         <Title>Agregar o modificar disponibilidad horaria</Title>
         <SelectionContainer key={days[0].id}>
           <Option>{days[0].name}</Option>

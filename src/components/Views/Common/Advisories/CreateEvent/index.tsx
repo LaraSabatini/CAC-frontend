@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { PublicEventsInterface } from "interfaces/content/Advisories"
+import { AdvisoriesContext } from "contexts/Advisories"
 import { createEvent } from "services/advisories/events.service"
 import { getClientEmails } from "services/clients/clientActions.service"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import Modal from "components/UI/Modal"
 import ModalStatus from "components/UI/ModalStatus"
 import Input from "components/UI/Input"
@@ -17,7 +19,10 @@ declare global {
 }
 
 function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
+  const { setServerError } = useContext(AdvisoriesContext)
+
   const [allowClick, setAllowClick] = useState<boolean>(false)
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
@@ -50,34 +55,34 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
 
     const clientEmails = await getClientEmails()
 
-    const eventData = {
-      summary: newEvent.title,
-      location: "",
-      description: newEvent.description,
-      start: {
-        dateTime: dateFormated,
-        timeZone: "America/Buenos_Aires",
-      },
-      end: {
-        dateTime: endDateFormated,
-        timeZone: "America/Buenos_Aires",
-      },
-      conferenceData: {
-        createRequest: {
-          requestId: uuid(),
+    if (clientEmails.status === 200) {
+      const eventData = {
+        summary: newEvent.title,
+        location: "",
+        description: newEvent.description,
+        start: {
+          dateTime: dateFormated,
+          timeZone: "America/Buenos_Aires",
         },
-      },
-      attendees: [...clientEmails.data, { email: userData.user }],
-      reminders: {
-        useDefault: false,
-        overrides: [
-          { method: "email", minutes: 24 * 60 },
-          { method: "popup", minutes: 10 },
-        ],
-      },
-    }
+        end: {
+          dateTime: endDateFormated,
+          timeZone: "America/Buenos_Aires",
+        },
+        conferenceData: {
+          createRequest: {
+            requestId: uuid(),
+          },
+        },
+        attendees: [...clientEmails.data, { email: userData.user }],
+        reminders: {
+          useDefault: false,
+          overrides: [
+            { method: "email", minutes: 24 * 60 },
+            { method: "popup", minutes: 10 },
+          ],
+        },
+      }
 
-    if (gapi.client.calendar !== undefined) {
       const request = gapi.client.calendar.events.insert({
         calendarId: "primary",
         sendNotifications: true,
@@ -94,9 +99,10 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
           eventURL: event.htmlLink,
         })
         setModalSuccess(createEventCall.status === 201)
+        setServerError(createEventCall.status !== 201)
       })
     } else {
-      console.log("events esta undefined", gapi.client)
+      setServerErrorModal(true)
     }
   }
 
@@ -159,6 +165,10 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
   return (
     <Modal>
       <Container>
+        <InternalServerError
+          visible={serverErrorModal}
+          changeVisibility={() => setServerErrorModal(false)}
+        />
         {modalSuccess && (
           <ModalStatus
             title="Excelente!"
@@ -168,6 +178,7 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
             selfCloseAction={closeModal}
           />
         )}
+
         <Title>Crear evento publico</Title>
         {requiredError && (
           <p className="required">* Completa los campos requeridos</p>

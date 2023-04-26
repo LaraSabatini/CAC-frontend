@@ -8,6 +8,7 @@ import { searchClients } from "services/clients/clientActions.service"
 import { ClientsContext } from "contexts/Clients"
 import { DashboardContext } from "contexts/Dashboard"
 import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import texts from "strings/profile.json"
 import SearchBar from "components/UI/SearchBar"
 import Icon from "components/UI/Assets/Icon"
@@ -38,6 +39,7 @@ function Header() {
   const { setTriggerArticleListUpdate, triggerArticleListUpdate } = useContext(
     DashboardContext,
   )
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const [openProfileMenu, setOpenProfileMenu] = useState<boolean>(false)
   const [openWarning, setOpenWarning] = useState<boolean>(false)
@@ -60,7 +62,11 @@ function Header() {
 
   const searchCliensInDb = async () => {
     const searchClientsCall = await searchClients({ search: searchValue })
-    setClients(searchClientsCall.data)
+    if (searchClientsCall.status === 200) {
+      setClients(searchClientsCall.data)
+    } else {
+      setServerErrorModal(true)
+    }
   }
 
   useEffect(() => {
@@ -69,6 +75,10 @@ function Header() {
 
   return (
     <Container>
+      <InternalServerError
+        visible={serverErrorModal}
+        changeVisibility={() => setServerErrorModal(false)}
+      />
       <SearchContainer>
         <GoHomeButton onClick={() => router.replace(routes.dashboard.name)}>
           <Logo />

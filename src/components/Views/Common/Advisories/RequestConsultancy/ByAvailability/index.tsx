@@ -1,9 +1,10 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import {
   getAllAdvisoriesByMonth,
   getAllAvailability,
   requestAdvisory,
 } from "services/advisories/advisories.service"
+import { AdvisoriesContext } from "contexts/Advisories"
 import {
   AdvisoryInterface,
   AdvisoryAvailavilityInterface,
@@ -24,6 +25,8 @@ function SearchByAvailability({
   adminList: AdminType[]
   close: (arg?: any) => void
 }) {
+  const { setServerError } = useContext(AdvisoriesContext)
+
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const [searchValues, setSearchValues] = useState<{
@@ -72,93 +75,104 @@ function SearchByAvailability({
 
     const getAllAvailabilityCall = await getAllAvailability()
 
-    const searchBlockedDates = getAdvisoriesCall.data.filter(
-      (advisory: AdvisoryInterface) =>
-        advisory.date === searchValues.date.replaceAll("/", "-"),
-    )
-
-    if (searchBlockedDates.length > 0) {
-      // chequear el horario
-      const blockedDayAndHour: AdvisoryInterface[] = []
-      searchBlockedDates.forEach(
+    if (getAdvisoriesCall.status === 201) {
+      const searchBlockedDates = getAdvisoriesCall.data.filter(
         (advisory: AdvisoryInterface) =>
-          advisory.hour === searchValues.hour.value &&
-          blockedDayAndHour.push(advisory),
+          advisory.date === searchValues.date.replaceAll("/", "-"),
       )
-
-      if (blockedDayAndHour.length > 0) {
-        const adminIds: number[] = []
-        blockedDayAndHour.forEach((advisory: AdvisoryInterface) =>
-          adminIds.push(advisory.adminId),
+      if (searchBlockedDates.length > 0) {
+        // chequear el horario
+        const blockedDayAndHour: AdvisoryInterface[] = []
+        searchBlockedDates.forEach(
+          (advisory: AdvisoryInterface) =>
+            advisory.hour === searchValues.hour.value &&
+            blockedDayAndHour.push(advisory),
         )
 
-        const removeAdminsById = (
-          admins: { id: number; userName: string; email: string }[],
-          idsToRemove: number[],
-        ): { id: number; userName: string; email: string }[] => {
-          return admins.filter(admin => !idsToRemove.includes(admin.id))
-        }
+        if (blockedDayAndHour.length > 0) {
+          const adminIds: number[] = []
+          blockedDayAndHour.forEach((advisory: AdvisoryInterface) =>
+            adminIds.push(advisory.adminId),
+          )
 
-        const list: AdminType[] = removeAdminsById(adminList, adminIds)
-        adminsAvailableForAdvisory = list
+          const removeAdminsById = (
+            admins: { id: number; userName: string; email: string }[],
+            idsToRemove: number[],
+          ): { id: number; userName: string; email: string }[] => {
+            return admins.filter(admin => !idsToRemove.includes(admin.id))
+          }
+
+          const list: AdminType[] = removeAdminsById(adminList, adminIds)
+          adminsAvailableForAdvisory = list
+        }
       }
+    } else {
+      setServerError(true)
     }
 
     const adminIds: number[] = []
     adminsAvailableForAdvisory.forEach(admin => adminIds.push(admin.id))
 
-    const filterAdminsToCheck = getAllAvailabilityCall.data.filter(
-      (availability: AdvisoryAvailavilityInterface) =>
-        adminIds.includes(availability.adminId),
-    )
+    if (getAllAvailabilityCall.status === 200) {
+      const filterAdminsToCheck = getAllAvailabilityCall.data.filter(
+        (availability: AdvisoryAvailavilityInterface) =>
+          adminIds.includes(availability.adminId),
+      )
+      const date = new Date(`${year}/${month}/${day}`)
 
-    const date = new Date(`${year}/${month}/${day}`)
+      const dayName: any = keysOfDays[date.getDay()].value
 
-    const dayName: any = keysOfDays[date.getDay()].value
+      const availabilityList: AdvisoryAvailavilityInterface[] = []
+      filterAdminsToCheck.map((availability: AdvisoryAvailavilityInterface) =>
+        availabilityList.push({
+          id: availability.id,
+          adminId: availability.adminId,
+          availability: JSON.parse(availability.availability as string),
+        }),
+      )
 
-    const availabilityList: AdvisoryAvailavilityInterface[] = []
-    filterAdminsToCheck.map((availability: AdvisoryAvailavilityInterface) =>
-      availabilityList.push({
-        id: availability.id,
-        adminId: availability.adminId,
-        availability: JSON.parse(availability.availability as string),
-      }),
-    )
+      const finalAvailabilityList: {
+        available: boolean
+        adminId: number
+      }[] = []
 
-    const finalAvailabilityList: {
-      available: boolean
-      adminId: number
-    }[] = []
+      availabilityList.forEach(
+        (availability: AdvisoryAvailavilityInterface) => {
+          const key: any = availability.availability[dayName]
+          finalAvailabilityList.push({
+            available: key.indexOf(searchValues.hour.id) !== -1,
+            adminId: availability.adminId,
+          })
+        },
+      )
 
-    availabilityList.forEach((availability: AdvisoryAvailavilityInterface) => {
-      const key: any = availability.availability[dayName]
-      finalAvailabilityList.push({
-        available: key.indexOf(searchValues.hour.id) !== -1,
-        adminId: availability.adminId,
-      })
-    })
+      const filterAdminsAvailable = finalAvailabilityList.filter(
+        availability => availability.available,
+      )
 
-    const filterAdminsAvailable = finalAvailabilityList.filter(
-      availability => availability.available,
-    )
+      const idsOfAdminsAvailable: number[] = []
+      filterAdminsAvailable.forEach(admin =>
+        idsOfAdminsAvailable.push(admin.adminId),
+      )
 
-    const idsOfAdminsAvailable: number[] = []
-    filterAdminsAvailable.forEach(admin =>
-      idsOfAdminsAvailable.push(admin.adminId),
-    )
+      const finalListOfAdmins = adminList.filter(
+        admin => idsOfAdminsAvailable.indexOf(admin.id) !== -1,
+      )
 
-    const finalListOfAdmins = adminList.filter(
-      admin => idsOfAdminsAvailable.indexOf(admin.id) !== -1,
-    )
+      setAdminsAvailable(finalListOfAdmins)
 
-    setAdminsAvailable(finalListOfAdmins)
-
-    setNoResults(finalListOfAdmins.length === 0)
-    setAdminSelected(
-      finalListOfAdmins.length
-        ? { id: finalListOfAdmins[0].id, value: finalListOfAdmins[0].userName }
-        : undefined,
-    )
+      setNoResults(finalListOfAdmins.length === 0)
+      setAdminSelected(
+        finalListOfAdmins.length
+          ? {
+              id: finalListOfAdmins[0].id,
+              value: finalListOfAdmins[0].userName,
+            }
+          : undefined,
+      )
+    } else {
+      setServerError(true)
+    }
   }
 
   const cleanOptions = () => {
@@ -184,6 +198,7 @@ function SearchByAvailability({
 
     const requestAdvisoryReq = await requestAdvisory(requestAdvisoryData)
     setSuccess(requestAdvisoryReq.status === 201)
+    setServerError(requestAdvisoryReq.status !== 201)
   }
 
   return (
@@ -200,6 +215,7 @@ function SearchByAvailability({
           }}
         />
       )}
+
       {requiredFiledsError && (
         <p className="req-fields">*Completa los campos requeridos</p>
       )}

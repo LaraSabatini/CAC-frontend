@@ -13,7 +13,7 @@ const getProfileDataForTable = async (page: number) => {
     `${apiURL}/client/user_data&page=${page}`,
     axiosHeader,
   )
-  return res
+  return res.data
 }
 
 export { getProfileData, getProfileDataForTable }

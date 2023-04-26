@@ -3,6 +3,7 @@ import { BsDot } from "react-icons/bs"
 import { BiCommentAdd } from "react-icons/bi"
 import CommentsInterface from "interfaces/users/Comments"
 import { getClientComments } from "services/clients/clientActions.service"
+import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import AddComment from "./AddComment"
 import {
   CommentContainer,
@@ -17,9 +18,15 @@ function CommentSection({ clientId }: { clientId: number | null }) {
   const [addCommentModal, setAddCommentModal] = useState<boolean>(false)
   const [updateList, setUpdateList] = useState<number>(0)
 
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
+
   const getComments = async () => {
     const getClientCommentsCall = await getClientComments(clientId as number)
-    setComments(getClientCommentsCall.data)
+    if (getClientCommentsCall.status === 200) {
+      setComments(getClientCommentsCall.data)
+    } else {
+      setServerErrorModal(true)
+    }
   }
 
   useEffect(() => {
@@ -31,6 +38,10 @@ function CommentSection({ clientId }: { clientId: number | null }) {
 
   return (
     <>
+      <InternalServerError
+        visible={serverErrorModal}
+        changeVisibility={() => setServerErrorModal(false)}
+      />
       {clientId !== null ? (
         <CommentContainer>
           <Title>Comentarios</Title>

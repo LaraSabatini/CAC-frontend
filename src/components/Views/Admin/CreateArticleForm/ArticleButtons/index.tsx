@@ -5,6 +5,7 @@ import { createArticle } from "services/articles/articles.service"
 import texts from "strings/articles.json"
 import { dateFormated } from "helpers/dates/getToday"
 import ModalStatus from "components/UI/ModalStatus"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import Button from "components/UI/Button"
 import getFiles from "helpers/media/getFiles"
 import { ActionButtons, WarningMessage } from "../styles"
@@ -31,6 +32,7 @@ function ArticleButtons({
 
   const [warningMessage, setWarningMessage] = useState<string>("")
   const [createdArticle, setCreatedArticle] = useState<boolean>(false)
+  const [serverError, setServerError] = useState<boolean>(false)
 
   const canPreview =
     newArticle.title !== "" &&
@@ -93,14 +95,20 @@ function ArticleButtons({
           // eslint-disable-next-line no-await-in-loop
           const postFile: any = await sendFile(formData)
           success = postFile.status === 200
+          setServerError(postFile.status !== 200)
         }
       }
       setCreatedArticle(success)
+      setServerError(!success)
     }
   }
 
   return (
     <ActionButtons>
+      <InternalServerError
+        visible={serverError}
+        changeVisibility={() => setServerError(false)}
+      />
       {createdArticle && (
         <ModalStatus
           title={texts.newArticleForm.success.title}

@@ -7,6 +7,7 @@ import {
 import { BsChevronRight } from "react-icons/bs"
 import { getArticles, editSavedTimes } from "services/articles/articles.service"
 import { DashboardContext } from "contexts/Dashboard"
+import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { getFilters } from "services/articles/filters.service"
 import Header from "@components/Views/Common/Header"
 import Button from "components/UI/Button"
@@ -30,6 +31,8 @@ function DashboardView() {
     setArticles,
     articles,
     triggerArticleListUpdate,
+    serverError,
+    setServerError,
   } = useContext(DashboardContext)
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
@@ -40,15 +43,24 @@ function DashboardView() {
 
   const getFiltersData = async () => {
     const getFiltersThemes = await getFilters()
-    setThemeFilters(getFiltersThemes.data)
+    if (getFiltersThemes.status === 200) {
+      setThemeFilters(getFiltersThemes.data)
+    } else {
+      setServerError(true)
+    }
 
     const getArticlesReq = await getArticles(currentPage)
-    setArticles(getArticlesReq.data)
 
-    if (articles.length > 0) {
-      setArticles(articles.concat(getArticlesReq.data))
-    } else {
+    if (getArticlesReq.status === 200) {
       setArticles(getArticlesReq.data)
+
+      if (articles.length > 0) {
+        setArticles(articles.concat(getArticlesReq.data))
+      } else {
+        setArticles(getArticlesReq.data)
+      }
+    } else {
+      setServerError(true)
     }
   }
 
@@ -62,12 +74,17 @@ function DashboardView() {
 
     if (update.status === 201) {
       setUpdateList(updateList + 1)
+    } else {
+      setServerError(true)
     }
   }
 
   const toggleSave = async (id: number, amountOfSaved: number) => {
     if (savedArticles.includes(id)) {
-      await editSavedTimes(id, "remove", amountOfSaved)
+      const edit = await editSavedTimes(id, "remove", amountOfSaved)
+      if (edit.status !== 201) {
+        setServerError(true)
+      }
       const index = savedArticles.indexOf(id)
 
       const newArrayOfSavedArticles = savedArticles
@@ -75,7 +92,10 @@ function DashboardView() {
 
       await updateSavedArticlesList(newArrayOfSavedArticles)
     } else {
-      await editSavedTimes(id, "add", amountOfSaved)
+      const edit = await editSavedTimes(id, "add", amountOfSaved)
+      if (edit.status !== 201) {
+        setServerError(true)
+      }
 
       const newArrayOfSavedArticles = savedArticles
       newArrayOfSavedArticles.push(id)
@@ -87,12 +107,17 @@ function DashboardView() {
   const handleSavedArticles = async () => {
     if (userData.type === "client") {
       const getSavedArticlesCall = await getSavedArticles(userData.id)
-      setSavedArticles(
-        getSavedArticlesCall.data !== "" &&
-          getSavedArticlesCall.data !== "undefined"
-          ? JSON.parse(getSavedArticlesCall.data)
-          : [],
-      )
+
+      if (getSavedArticlesCall.status === 200) {
+        setSavedArticles(
+          getSavedArticlesCall.data !== "" &&
+            getSavedArticlesCall.data !== "undefined"
+            ? JSON.parse(getSavedArticlesCall.data)
+            : [],
+        )
+      } else {
+        setServerError(false)
+      }
     }
   }
 
@@ -104,7 +129,10 @@ function DashboardView() {
   return (
     <>
       <Header />
-
+      <InternalServerError
+        visible={serverError}
+        changeVisibility={() => setServerError(false)}
+      />
       {articleId === undefined ? (
         <ArticlesContainer>
           {articles.length ? (

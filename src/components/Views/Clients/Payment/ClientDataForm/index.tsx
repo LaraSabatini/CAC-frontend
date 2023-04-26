@@ -66,7 +66,10 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
         checkIfItsAvailable(validateIdentificationNumberReq)
       ) {
         setRenderMPButton(true)
-      } else if (validateEmailReq.status === 500) {
+      } else if (
+        validateEmailReq.status === 500 ||
+        validateIdentificationNumberReq.status === 500
+      ) {
         setServerErrorModal(true)
       } else {
         // *** Error: ya existe un usuario con ese email o DNI
@@ -86,20 +89,26 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   const saveClientInDB = async () => {
     const getClientIdCall = await getClientId(preferenceId)
 
-    const registerClient = await register("client", {
-      ...newClient,
-      password: "",
-      accountBlocked: 1,
-      subscription: null,
-      dateCreated: dateFormated,
-      loginAttempts: null,
-      plan: null,
-      paymentDate: null,
-      paymentExpireDate: null,
-      mpId: getClientIdCall.clientId,
-    })
+    if (getClientIdCall.status === 200) {
+      const registerClient = await register("client", {
+        ...newClient,
+        password: "",
+        accountBlocked: 1,
+        subscription: null,
+        dateCreated: dateFormated,
+        loginAttempts: null,
+        plan: null,
+        paymentDate: null,
+        paymentExpireDate: null,
+        mpId: getClientIdCall.clientId,
+      })
 
-    console.log(registerClient)
+      if (registerClient.status === 500) {
+        setServerErrorModal(true)
+      }
+    } else {
+      setServerErrorModal(true)
+    }
   }
 
   useEffect(() => {
