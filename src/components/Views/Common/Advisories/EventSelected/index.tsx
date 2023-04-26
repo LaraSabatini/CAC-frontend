@@ -299,11 +299,7 @@ function EventSelected({
                     <Button
                       content="Unirme"
                       cta
-                      action={
-                        () => authenticate("meet")
-
-                        // window.open(meetURL)
-                      }
+                      action={() => authenticate("meet")}
                     />
                   )}
                   <Button

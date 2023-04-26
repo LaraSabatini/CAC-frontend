@@ -8,7 +8,7 @@ export interface AdvisoryInterface {
   month: number
   brief: string
   eventURL: string
-  status: "pending" | "confirmed" | "cancelled"
+  status: string
 }
 
 export interface AdvisoryAvailavilityInterface {

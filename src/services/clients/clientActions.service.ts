@@ -49,6 +49,11 @@ const getClientEmails = async () => {
   return res.data
 }
 
+const getClientEmail = async (id: number) => {
+  const res = await axios.get(`${apiURL}/email/id=${id}`, axiosHeader)
+  return res.data
+}
+
 export {
   editSavedArticles,
   getSavedArticles,
@@ -57,4 +62,5 @@ export {
   filterClients,
   searchClients,
   getClientEmails,
+  getClientEmail,
 }

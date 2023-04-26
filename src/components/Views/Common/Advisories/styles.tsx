@@ -149,7 +149,10 @@ const Days = styled.div`
   }
 `
 
-const AdvisoryEvent = styled.button<{ eventType: "event" | "advisory" }>`
+const AdvisoryEvent = styled.button<{
+  eventType: "event" | "advisory"
+  cancelled: boolean
+}>`
   display: flex;
   align-items: center;
   gap: 5px;
@@ -191,6 +194,13 @@ const AdvisoryEvent = styled.button<{ eventType: "event" | "advisory" }>`
       .marker {
         background-color: ${theme.colors.blue};
       }
+    `}
+
+    ${props =>
+    props.cancelled &&
+    css`
+      opacity: 0.3;
+      cursor: not-allowed;
     `}
 `
 

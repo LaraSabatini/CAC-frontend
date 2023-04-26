@@ -39,7 +39,7 @@ const requestAdvisoryChange = async (
   },
 ) => {
   const res = await axios.put(
-    `${apiURL}/change?from=${from}`,
+    `${apiURL}/change/from=${from}`,
     body,
     axiosHeader,
   )
@@ -53,10 +53,11 @@ const changeAdvisoryStatus = async (
     adminId: number
     clientId: number
     status: string
+    googleCalendarEvent: string
   },
 ) => {
   const res = await axios.put(
-    `${apiURL}/status?from=${from}`,
+    `${apiURL}/status/from=${from}`,
     body,
     axiosHeader,
   )
@@ -110,6 +111,11 @@ const getAllAdvisoriesByMonth = async (month: number) => {
   return res.data
 }
 
+const getAdvisoryData = async (id: number) => {
+  const res = await axios.get(`${apiURL}/advisory-data/id=${id}`, axiosHeader)
+  return res.data
+}
+
 export {
   getAdvisories,
   requestAdvisory,
@@ -122,4 +128,5 @@ export {
   getAdvisoriesByMonthAndAdmin,
   getAllAdvisoriesByMonth,
   getAllAvailability,
+  getAdvisoryData,
 }

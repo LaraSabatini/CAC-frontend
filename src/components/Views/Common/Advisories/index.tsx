@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import React, { useState, useEffect, useContext } from "react"
 import Header from "components/Views/Common/Header"
+import { AdvisoryInterface } from "interfaces/content/Advisories"
 import { AdvisoriesContext } from "contexts/Advisories"
 import { getAdvisories } from "services/advisories/advisories.service"
 import { getEventsByMonth } from "services/advisories/events.service"
@@ -17,6 +18,7 @@ import RequestAdvisory from "./RequestConsultancy"
 import Availability from "./Availability"
 import CreateEvent from "./CreateEvent"
 import EventSelected from "./EventSelected"
+import AdvisorySelected from "./AdvisorySelected"
 
 import {
   Container,
@@ -28,7 +30,6 @@ import {
   CalendarDisplay,
   DateView,
   Days,
-  AdvisoryEvent,
 } from "./styles"
 
 interface EventDataInterface {
@@ -86,13 +87,13 @@ function AdvisoriesView() {
       advisoryEvent =>
         stringToDate(advisoryEvent.date).getTime() === dates[index].getTime(),
     )
+    const advisoryListArray: AdvisoryInterface[] = []
 
-    return advisory.length === 0
-      ? null
-      : {
-          hour: advisory[0].hour,
-          client: advisory[0].clientName,
-        }
+    if (advisory.length) {
+      advisory.map(ev => advisoryListArray.push(ev))
+    }
+
+    return advisoryListArray
   }
 
   const searchEvent = (index: number) => {
@@ -207,19 +208,20 @@ function AdvisoriesView() {
               >
                 <p>{date.getDate()}</p>
                 {searchAdvisory(index) !== null ? (
-                  <AdvisoryEvent type="button" eventType="advisory">
-                    <div className="marker" />
-                    <p>
-                      {searchAdvisory(index)?.hour} asesoria con{" "}
-                      <b>{searchAdvisory(index)?.client}</b>
-                    </p>
-                  </AdvisoryEvent>
+                  searchAdvisory(index).map(event => (
+                    <AdvisorySelected
+                      key={event.id}
+                      event={event}
+                      updateList={() => setUpdateList(updateList + 1)}
+                    />
+                  ))
                 ) : (
                   <></>
                 )}
                 {searchEvent(index) !== null ? (
                   searchEvent(index).map(event => (
                     <EventSelected
+                      key={event.id}
                       event={event}
                       updateList={() => setUpdateList(updateList + 1)}
                     />
