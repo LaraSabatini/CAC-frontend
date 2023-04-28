@@ -24,7 +24,6 @@ import texts from "strings/profile.json"
 import Icon from "components/UI/Assets/Icon"
 import Tooltip from "components/UI/Tooltip"
 import Logo from "components/UI/Assets/Icon/Icons/Logo"
-
 import Filters from "./Filters"
 import {
   Container,

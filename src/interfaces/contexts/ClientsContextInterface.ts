@@ -15,5 +15,7 @@ interface ClientsContextInterface {
   setPlans(plans: { id: number; name: string }[]): void
   profileData: ClientInterface
   setProfileData(profileData: ClientInterface): void
+  triggerListUpdate: number
+  setTriggerListUpdate(triggerListUpdate: number): void
 }
 export default ClientsContextInterface

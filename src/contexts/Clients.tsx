@@ -18,6 +18,8 @@ export const ClientsContext = createContext<ClientsContextInterface>({
   setPlans: () => {},
   profileData: defaultClient,
   setProfileData: () => {},
+  triggerListUpdate: 0,
+  setTriggerListUpdate: () => {},
 })
 
 function ClientsProvider({ children }: any) {
@@ -33,6 +35,8 @@ function ClientsProvider({ children }: any) {
   const [plans, setPlans] = useState<{ id: number; name: string }[]>()
 
   const [profileData, setProfileData] = useState<ClientInterface>()
+
+  const [triggerListUpdate, setTriggerListUpdate] = useState<number>(0)
 
   const value: any = useMemo(
     () => ({
@@ -50,6 +54,8 @@ function ClientsProvider({ children }: any) {
       setPlans,
       profileData,
       setProfileData,
+      triggerListUpdate,
+      setTriggerListUpdate,
     }),
     [
       newClient,
@@ -59,6 +65,7 @@ function ClientsProvider({ children }: any) {
       clients,
       plans,
       profileData,
+      triggerListUpdate,
     ],
   )
 

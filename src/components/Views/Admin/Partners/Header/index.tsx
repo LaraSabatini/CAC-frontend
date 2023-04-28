@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useContext } from "react"
-import { AiOutlineLogout } from "react-icons/ai"
-import { FaUserFriends } from "react-icons/fa"
-import { BsFilterCircle } from "react-icons/bs"
+import React, { useState, useContext } from "react"
 import { useRouter } from "next/router"
 import routes from "routes"
 import { searchClients } from "services/clients/clientActions.service"
 import { ClientsContext } from "contexts/Clients"
-import { DashboardContext } from "contexts/Dashboard"
 import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import texts from "strings/profile.json"
-import SearchBar from "components/UI/SearchBar"
 import Icon from "components/UI/Assets/Icon"
-import Button from "components/UI/Button"
 import Tooltip from "components/UI/Tooltip"
 import Logo from "components/UI/Assets/Icon/Icons/Logo"
-import ModalStatus from "components/UI/ModalStatus"
+import { Input, Button, Modal } from "antd"
+import {
+  UsergroupAddOutlined,
+  CalendarOutlined,
+  LogoutOutlined,
+  FilterFilled,
+} from "@ant-design/icons"
 import {
   Container,
   SearchContainer,
@@ -24,54 +24,47 @@ import {
   GoHomeButton,
   ProfileContainer,
   SearchDiv,
-  SVGButton,
   FiltersButton,
+  ButtonContainer,
+  Menu,
+  Option,
 } from "components/Views/Common/Header/styles"
 import Filters from "./Filters"
+
+const { Search } = Input
 
 function Header() {
   const router = useRouter()
 
-  const userData = JSON.parse(localStorage.getItem("userData") as string)
-
-  const { setClients } = useContext(ClientsContext)
-
-  const { setTriggerArticleListUpdate, triggerArticleListUpdate } = useContext(
-    DashboardContext,
+  const { setClients, triggerListUpdate, setTriggerListUpdate } = useContext(
+    ClientsContext,
   )
+
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const [openProfileMenu, setOpenProfileMenu] = useState<boolean>(false)
   const [openWarning, setOpenWarning] = useState<boolean>(false)
-  const [deviceIsMobile, setDeviceIsMobile] = useState<boolean>(false)
   const [openFilters, setOpenFilters] = useState<boolean>(false)
-  const [searchValue, setSearchValue] = useState<string>("")
+
+  const [openActionsMenu, setOpenActionsMenu] = useState<boolean>(false)
 
   const logout = () => {
     localStorage.removeItem("userData")
     router.replace(`${routes.login.name}?${routes.login.queries.client}`)
   }
 
-  const handleResize = () => {
-    if (window.innerWidth < 560) {
-      setDeviceIsMobile(true)
+  const onSearch = async (value: string) => {
+    if (value !== "") {
+      const searchClientsCall = await searchClients({ search: value })
+      if (searchClientsCall.status === 200) {
+        setClients(searchClientsCall.data)
+      } else {
+        setServerErrorModal(true)
+      }
     } else {
-      setDeviceIsMobile(false)
+      setTriggerListUpdate(triggerListUpdate + 1)
     }
   }
-
-  const searchCliensInDb = async () => {
-    const searchClientsCall = await searchClients({ search: searchValue })
-    if (searchClientsCall.status === 200) {
-      setClients(searchClientsCall.data)
-    } else {
-      setServerErrorModal(true)
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize)
-  })
 
   return (
     <Container>
@@ -84,23 +77,11 @@ function Header() {
           <Logo />
         </GoHomeButton>
         <SearchDiv>
-          <SearchBar
-            width={deviceIsMobile ? 200 : 300}
-            searchValue={searchValue}
-            onChangeSearch={e => {
-              if (e !== undefined) {
-                if (e.target.value === "") {
-                  setSearchValue("")
-                  setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
-                } else {
-                  setSearchValue(e.target.value)
-                  if (e.target.value.length >= 4) {
-                    searchCliensInDb()
-                  }
-                }
-              }
-            }}
-            enterSearch={searchCliensInDb}
+          <Search
+            placeholder="Buscar cliente..."
+            onSearch={onSearch}
+            allowClear
+            style={{ width: 300 }}
           />
           {(router.asPath === "/dashboard" ||
             router.asPath === "/partners") && (
@@ -110,7 +91,7 @@ function Header() {
                 onClick={() => setOpenFilters(!openFilters)}
               >
                 <Tooltip title="Filtrar" placement="right">
-                  <BsFilterCircle />
+                  <FilterFilled />
                 </Tooltip>
               </FiltersButton>
 
@@ -122,52 +103,58 @@ function Header() {
         </SearchDiv>
       </SearchContainer>
       <ProfileContainer>
-        {userData?.type !== "client" && (
-          <>
-            <FiltersButton
+        <ButtonContainer>
+          <Tooltip title="Menu" placement="left">
+            <button
               type="button"
-              onClick={() => router.replace(`${routes.partners.name}`)}
+              className="menu"
+              onClick={() => setOpenActionsMenu(!openActionsMenu)}
             >
-              <Tooltip title="Socios" placement="bottom-end">
-                <FaUserFriends />
-              </Tooltip>
-            </FiltersButton>
-            <CreateArticleButton />
-          </>
-        )}
+              <div className="line" />
+              <div className="line" />
+              <div className="line" />
+            </button>
+          </Tooltip>
+          {openActionsMenu && (
+            <Menu>
+              <Option onClick={() => router.replace(`${routes.partners.name}`)}>
+                <UsergroupAddOutlined />
+                Socios
+              </Option>
+              <CreateArticleButton />
+              <Option onClick={() => router.replace("/advisories")}>
+                <CalendarOutlined />
+                Asesorias y eventos
+              </Option>
+            </Menu>
+          )}
+        </ButtonContainer>
+
         <ProfilePic onClick={() => setOpenProfileMenu(!openProfileMenu)}>
           <Icon icon="Profile" />
           {openProfileMenu && (
             <ProfileOptions>
               <Button
-                cta
-                action={() => router.replace(routes.profile.name)}
-                content={texts.title}
-              />
-              <Tooltip title={texts.logout} placement="bottom-end">
-                <SVGButton onClick={() => setOpenWarning(true)}>
-                  <AiOutlineLogout />
-                </SVGButton>
-              </Tooltip>
+                type="primary"
+                onClick={() => router.replace(routes.profile.name)}
+              >
+                Mi perfil
+              </Button>
+              <Button onClick={() => setOpenWarning(true)}>
+                <LogoutOutlined /> {texts.logout}
+              </Button>
             </ProfileOptions>
           )}
         </ProfilePic>
       </ProfileContainer>
-      {openWarning && (
-        <ModalStatus
-          title={texts.logoutModal.title}
-          description=""
-          status="notice"
-          ctaButton={{
-            content: `${texts.logout}`,
-            action: logout,
-          }}
-          secondaryButton={{
-            content: `${texts.logoutModal.cancel}`,
-            action: () => setOpenWarning(false),
-          }}
-        />
-      )}
+      <Modal
+        title={texts.logoutModal.title}
+        open={openWarning}
+        onOk={logout}
+        onCancel={() => setOpenWarning(false)}
+        okText={texts.logout}
+        cancelText="Cancelar"
+      />
     </Container>
   )
 }
