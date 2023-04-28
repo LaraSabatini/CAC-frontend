@@ -198,11 +198,13 @@ function LoginView() {
             />
           )}
           <ActionDiv>
-            {loginAttempts >= 1 && (
-              <RemainingAttempts>
-                {texts.login.remainingAttempts} {5 - loginAttempts}
-              </RemainingAttempts>
-            )}
+            <RemainingAttempts>
+              {loginAttempts >= 1 && (
+                <p>
+                  {texts.login.remainingAttempts} {5 - loginAttempts}
+                </p>
+              )}
+            </RemainingAttempts>
             <Button type="primary" onClick={validateUser}>
               {texts.login.action}
             </Button>

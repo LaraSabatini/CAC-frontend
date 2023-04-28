@@ -108,11 +108,12 @@ const RequiredError = styled.p`
 
 const RemainingAttempts = styled.p`
   margin: 0;
-  font-size: ${theme.fontSizes.xs};
-  color: #466a95c4;
+  font-size: ${theme.fontSizes.xxs};
+  color: ${theme.colors.blue};
   font-family: ${theme.fonts.extra};
   font-style: italic;
   margin: 0;
+  height: 17px;
 `
 
 export {

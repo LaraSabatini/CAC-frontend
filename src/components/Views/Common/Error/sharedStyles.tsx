@@ -3,41 +3,43 @@ import { TitleStyles } from "theme/styles"
 import theme from "theme/index"
 
 const Container = styled.div`
-  width: 70%;
-  margin: 0 auto;
-  padding-top: 10%;
+  background-color: #f2f8ff;
+  width: 300px;
+  border-radius: 15px;
+  padding: 30px 35px;
+  margin: 100px auto;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
-  span {
-    font-family: ${theme.fonts.titles};
+  border: 1px solid rgba(70, 106, 149, 0.138);
+  border-radius: 18px;
+
+  box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
+
+  transition: 0.3s;
+
+  .span {
+    font-weight: ${theme.fontWeights.light};
     color: ${theme.colors.blue};
-    font-size: ${theme.fontSizes.xs};
-    font-weight: 300;
-    padding-top: 20px;
+    font-family: ${theme.fonts.extra};
+    display: block;
+    font-size: 13px;
+    padding-top: 10px;
   }
 `
 
 const Title = styled.h1`
   ${TitleStyles}
+  margin: 0;
+  font-weight: ${theme.fontWeights.medium};
+  font-size: 20px;
 `
 
 const Description = styled.p`
-  font-family: ${theme.fonts.content};
+  font-family: ${theme.fonts.extra};
   color: ${theme.colors.blue};
+  font-size: 14px;
 `
 
-const Button = styled.button`
-  background-color: ${theme.colors.blue};
-  color: ${theme.colors.white};
-  border: 1px solid transparent;
-  font-family: ${theme.fonts.titles};
-  font-weight: 400;
-  font-size: ${theme.fontSizes.xs};
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  align-self: flex-end;
-`
-
-export { Container, Title, Description, Button }
+export { Container, Title, Description }

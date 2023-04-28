@@ -6,7 +6,6 @@ import GenericError from "@components/Views/Common/Error/GenericError"
 
 function Error() {
   const router = useRouter()
-
   return (
     <GenericError
       title={(router.query.title as string) ?? ""}
