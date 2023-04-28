@@ -1,15 +1,21 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from "react"
 import { useRouter } from "next/router"
-import { GrStatusGood, GrCircleAlert } from "react-icons/gr"
 import restorePassword from "services/auth/restorePassword.service"
 import changePassword from "services/auth/changePassword.service"
 import texts from "strings/auth.json"
 import routes from "routes"
 import { UserType } from "interfaces/users/General"
 import inputTexts from "strings/inputMessages.json"
-import Input from "components/UI/Input"
-import Button from "components/UI/Button"
+import { Input, Button } from "antd"
+import {
+  UserOutlined,
+  ArrowLeftOutlined,
+  InfoCircleOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+  CheckCircleOutlined,
+} from "@ant-design/icons"
 import {
   Form,
   Title,
@@ -17,6 +23,7 @@ import {
   MessageContainer,
   MessageTitle,
   InputContainer,
+  ErrorMessage,
 } from "./styles"
 
 function ResetPassword() {
@@ -114,26 +121,51 @@ function ResetPassword() {
     <div>
       {!redirected && !send_email && !restore_password && (
         <Form>
-          <Title>{texts.restorePassword.title}</Title>
+          <Title>
+            ¿Olvidaste tu contraseña?
+            <span>Aqui te enviaremos instrucciones para recuperarla</span>
+          </Title>
+
           <Input
+            status={error ? "error" : ""}
+            placeholder={texts.login.email}
+            prefix={<UserOutlined />}
+            required
             value={email}
             onChange={e => {
               setEmail(e.target.value)
               setError(false)
             }}
-            type="email"
-            label={texts.login.email}
-            required
-            width={250}
-            backError={error}
-            backErrorMessage={errorMessage}
-            keyDown={sendRestorePasswordEmail}
+            onPressEnter={sendRestorePasswordEmail}
           />
-          <Button
-            content={texts.restorePassword.sendEmail}
-            cta
-            action={sendRestorePasswordEmail}
-          />
+          <ErrorMessage transparent={errorMessage === ""}>
+            {errorMessage !== "" && (
+              <p>
+                <InfoCircleOutlined /> {errorMessage}
+              </p>
+            )}
+          </ErrorMessage>
+          <div className="buttons">
+            <Button type="primary" onClick={sendRestorePasswordEmail}>
+              {texts.restorePassword.sendEmail}
+            </Button>
+            <Button
+              onClick={() =>
+                router.replace(
+                  `${routes.login.name}?${routes.login.queries.client}`,
+                )
+              }
+            >
+              <ArrowLeftOutlined />
+              Volver a Inicio de sesión
+            </Button>
+            <a
+              href={`${process.env.NEXT_PUBLIC_FRONT_URL}${routes.pricing.name}`}
+            >
+              {texts.login.subscribe}
+              <b>{texts.login.subscribeBold}</b>
+            </a>
+          </div>
         </Form>
       )}
 
@@ -141,89 +173,144 @@ function ResetPassword() {
         <Form>
           <Title>{texts.login.restorePasswordBold}</Title>
           <InputContainer>
-            <Input
+            <Input.Password
+              placeholder={texts.login.password}
+              status={error ? "error" : ""}
+              iconRender={visible =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
+              required
               onChange={e => {
                 setPasswordForm({ ...passwordForm, first: e.target.value })
               }}
-              type="password"
-              label={texts.login.password}
-              required
-              width={270}
-              backError={error}
             />
-            <Input
+            <Input.Password
+              placeholder={texts.restorePassword.newPassword}
+              status={error ? "error" : ""}
+              iconRender={visible =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
+              required
               onChange={e => {
                 setPasswordForm({ ...passwordForm, confirm: e.target.value })
               }}
-              type="password"
-              label={texts.restorePassword.newPassword}
-              required
-              width={270}
-              backError={error}
-              backErrorMessage={errorMessage}
-              keyDown={validateChangePassword}
+              onPressEnter={validateChangePassword}
             />
           </InputContainer>
-          <Button
-            content={texts.restorePassword.changePassword}
-            cta
-            action={validateChangePassword}
-          />
+          <ErrorMessage transparent={errorMessage === ""}>
+            {errorMessage !== "" && (
+              <p>
+                <InfoCircleOutlined /> {errorMessage}
+              </p>
+            )}
+          </ErrorMessage>
+          <div className="buttons">
+            <Button type="primary" onClick={validateChangePassword}>
+              {texts.restorePassword.changePassword}
+            </Button>
+          </div>
         </Form>
       )}
 
       {send_email === "success" && (
-        <MessageContainer>
-          <GrStatusGood />
-          <MessageTitle>
-            {texts.restorePassword.successEmail.title}
-          </MessageTitle>
-          <Description>
-            {texts.restorePassword.successEmail.description}
-          </Description>
-        </MessageContainer>
+        <Form>
+          <MessageContainer>
+            <div className="title">
+              <CheckCircleOutlined />
+              <MessageTitle>El mail ha sido enviado con exito!</MessageTitle>
+            </div>
+            <Description>
+              {texts.restorePassword.successEmail.description}
+            </Description>
+          </MessageContainer>
+          <div className="buttons">
+            <Button
+              type="primary"
+              onClick={() =>
+                router.replace(
+                  `${routes.login.name}?${routes.login.queries.client}`,
+                )
+              }
+            >
+              Ir a iniciar sesión
+            </Button>
+          </div>
+        </Form>
       )}
       {send_email === "failure" && (
-        <MessageContainer>
-          <GrCircleAlert />
-          <MessageTitle>
-            {texts.restorePassword.failureEmail.title}
-          </MessageTitle>
-          <Description>
-            {texts.restorePassword.failureEmail.description}
-          </Description>
-        </MessageContainer>
+        <Form>
+          <MessageContainer>
+            <div className="title">
+              <InfoCircleOutlined />
+              <MessageTitle>
+                {texts.restorePassword.failureEmail.title}
+              </MessageTitle>
+            </div>
+            <Description>
+              {texts.restorePassword.failureEmail.description}
+            </Description>
+          </MessageContainer>
+          <div className="buttons">
+            <Button
+              type="primary"
+              onClick={() =>
+                router.replace(
+                  `${routes.login.name}?${routes.login.queries.client}`,
+                )
+              }
+            >
+              Ir a iniciar sesión
+            </Button>
+          </div>
+        </Form>
       )}
 
       {restore_password === "success" && (
-        <MessageContainer>
-          <GrStatusGood />
-          <MessageTitle>{texts.restorePassword.success.title}</MessageTitle>
-          <Button
-            content={texts.login.action}
-            cta
-            action={() =>
-              router.replace(
-                `${routes.login.name}?${routes.login.queries.user}client`,
-              )
-            }
-          />
-        </MessageContainer>
+        <Form>
+          <MessageContainer>
+            <div className="title">
+              <CheckCircleOutlined />
+              <MessageTitle>{texts.restorePassword.success.title}</MessageTitle>
+            </div>
+            <Description>
+              Tu contraseña se ha establecido con exito!
+            </Description>
+          </MessageContainer>
+          <div className="buttons">
+            <Button
+              type="primary"
+              onClick={() =>
+                router.replace(
+                  `${routes.login.name}?${routes.login.queries.client}`,
+                )
+              }
+            >
+              {texts.login.action}
+            </Button>
+          </div>
+        </Form>
       )}
       {restore_password === "failure" && (
-        <MessageContainer>
-          <GrCircleAlert />
-          <MessageTitle>
-            {texts.restorePassword.failureEmail.title}
-          </MessageTitle>
-          <Description>{texts.restorePassword.error.description}</Description>
-          <Button
-            content={texts.restorePassword.error.action}
-            cta
-            // eslint-disable-next-line no-console
-            action={() => console.log("redirect to landing")}
-          />
-        </MessageContainer>
+        <Form>
+          <MessageContainer>
+            <div className="title">
+              <InfoCircleOutlined />
+              <MessageTitle>
+                {texts.restorePassword.failureEmail.title}
+              </MessageTitle>
+            </div>
+            <Description>{texts.restorePassword.error.description}</Description>
+          </MessageContainer>
+          <div className="buttons">
+            <Button
+              type="primary"
+              // eslint-disable-next-line no-console
+              onClick={() => console.log("redirect to landing")}
+            >
+              {texts.restorePassword.error.action}
+            </Button>
+          </div>
+        </Form>
       )}
     </div>
   )

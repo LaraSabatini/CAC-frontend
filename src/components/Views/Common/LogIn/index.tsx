@@ -9,8 +9,12 @@ import texts from "strings/auth.json"
 import errorTexts from "strings/errors.json"
 import { UserType } from "interfaces/users/General"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
-import Input from "components/UI/Input"
-import Button from "components/UI/Button"
+import {
+  UserOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+} from "@ant-design/icons"
+import { Button, Input } from "antd"
 import {
   Container,
   Title,
@@ -45,17 +49,7 @@ function LoginView() {
 
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
-  const [isMobile, setIsMobile] = useState(false)
-
   const captchaRef = useRef<ReCAPTCHA>(null)
-
-  const handleResize = () => {
-    if (window.innerWidth < 414) {
-      setIsMobile(true)
-    } else {
-      setIsMobile(false)
-    }
-  }
 
   const tryLogin = async () => {
     const loginReq = await login(userQuery.split("=")[1] as UserType, formData)
@@ -144,10 +138,6 @@ function LoginView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [revalidate])
 
-  useEffect(() => {
-    window.addEventListener("resize", handleResize)
-  })
-
   return (
     <>
       <Container>
@@ -157,33 +147,48 @@ function LoginView() {
         />
         <div>
           <Title>{texts.login.title}</Title>
-          {requiredError && (
-            <RequiredError>{texts.requiredError}</RequiredError>
-          )}
+          <RequiredError>
+            {requiredError && `${texts.requiredError}`}
+          </RequiredError>
         </div>
         <>
           <InputContainer>
             <Input
-              width={isMobile ? 280 : 321}
-              label={texts.login.email}
+              status={requiredError || loginError ? "error" : ""}
+              placeholder={texts.login.email}
+              prefix={<UserOutlined />}
               required
-              type="email"
-              onChange={e =>
+              onChange={e => {
                 setFormData({ ...formData, email: e.target.value })
-              }
-              backError={requiredError || loginError}
+                if (e.target.value !== "") {
+                  setRequiredError(false)
+                  setLoginError(false)
+                }
+              }}
             />
-            <Input
-              width={isMobile ? 315 : 356}
-              label={texts.login.password}
-              required
-              type="password"
-              onChange={e =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              backError={requiredError || loginError}
-              keyDown={validateUser}
-            />
+            <div className="input-password">
+              <Input.Password
+                placeholder={texts.login.password}
+                status={requiredError || loginError ? "error" : ""}
+                iconRender={visible =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
+                required
+                onChange={e => {
+                  setFormData({ ...formData, password: e.target.value })
+                  if (e.target.value !== "") {
+                    setRequiredError(false)
+                    setLoginError(false)
+                  }
+                }}
+                onPressEnter={validateUser}
+              />
+              <a
+                href={`${process.env.NEXT_PUBLIC_FRONT_URL}${routes.login.name}?${userQuery}&${routes.login.queries.resetPassword}&${routes.login.queries.email}${formData.email}`}
+              >
+                {texts.login.restorePassword}
+              </a>
+            </div>
             <ErrorMessage>{loginError && texts.login.error}</ErrorMessage>
           </InputContainer>
           {loginAttempts >= 3 && (
@@ -198,14 +203,10 @@ function LoginView() {
                 {texts.login.remainingAttempts} {5 - loginAttempts}
               </RemainingAttempts>
             )}
-            <Button content={texts.login.action} action={validateUser} cta />
+            <Button type="primary" onClick={validateUser}>
+              {texts.login.action}
+            </Button>
             <URLContainer>
-              <a
-                href={`${process.env.NEXT_PUBLIC_FRONT_URL}${routes.login.name}?${userQuery}&${routes.login.queries.resetPassword}&${routes.login.queries.email}${formData.email}`}
-              >
-                {texts.login.restorePassword}
-                <b>{texts.login.restorePasswordBold}</b>
-              </a>
               {userIsClient && (
                 <a
                   href={`${process.env.NEXT_PUBLIC_FRONT_URL}${routes.pricing.name}`}
