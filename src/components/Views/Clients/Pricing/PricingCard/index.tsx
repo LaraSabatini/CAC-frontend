@@ -2,7 +2,8 @@ import React from "react"
 import PricingInterface from "interfaces/content/Pricing"
 import texts from "strings/pricing.json"
 import numberWithCommas from "helpers/formatting/formatPrice"
-import Button from "components/UI/Button"
+// import Button from "components/UI/Button"
+import { Button } from "antd"
 import { Card, Title, Price, Detail, Description } from "./styles"
 
 interface PricingCardInterface extends PricingInterface {
@@ -17,16 +18,18 @@ function PricingCard({
   selectPlan,
 }: PricingCardInterface) {
   return (
-    <Card>
+    <Card onClick={selectPlan}>
       <div>
         <Title>{name}</Title>
         <Price>${numberWithCommas(price)}</Price>
       </div>
       <Detail>
-        {texts.detail} ${numberWithCommas(price / time)}
+        <b>{texts.detail}</b> ${numberWithCommas(price / time)} ARS
       </Detail>
       <Description>{description}</Description>
-      <Button action={selectPlan} content={texts.subscribe} cta />
+      <Button type="primary" size="large" onClick={selectPlan}>
+        {texts.subscribe}
+      </Button>
     </Card>
   )
 }

@@ -5,7 +5,7 @@ const GlobalStyle = createGlobalStyle`
   body {
           margin: 0px;
           /* background-color:  ${theme.colors.light_grey}; */
-          background-color:  #d6dfed;
+          background-color:  #ebf1fa;
           padding-bottom: 50px;
         }
 `

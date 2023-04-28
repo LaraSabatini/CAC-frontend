@@ -11,6 +11,8 @@ export const PaymentContext = createContext<PaymentContextInterface>({
   setPricingList: () => {},
   preferenceId: "",
   setPreferenceId: () => {},
+  formError: "",
+  setFormError: () => {},
 })
 
 function PaymentProvider({ children }: any) {
@@ -18,6 +20,7 @@ function PaymentProvider({ children }: any) {
     item: ItemInterface
     payer: PayerInterface
   }>(defaultPaymet)
+  const [formError, setFormError] = useState<string>("")
 
   const [pricingList, setPricingList] = useState<PricingInterface[]>([])
 
@@ -31,8 +34,10 @@ function PaymentProvider({ children }: any) {
       setPricingList,
       preferenceId,
       setPreferenceId,
+      formError,
+      setFormError,
     }),
-    [payment, pricingList, preferenceId],
+    [payment, pricingList, preferenceId, formError],
   )
 
   return (

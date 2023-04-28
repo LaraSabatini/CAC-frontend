@@ -70,9 +70,7 @@ function PersonalInfo() {
             <DataSet
               icon={<TfiLocationPin />}
               title="Región:"
-              value={
-                regions.filter(region => region.id === data?.region)[0]?.value
-              }
+              value={data.region}
             />
           )}
           <DataSet

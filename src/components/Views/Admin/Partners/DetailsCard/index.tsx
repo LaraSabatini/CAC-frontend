@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react"
 import { getProfileData } from "services/auth/getProfileData.service"
 import { ClientsContext } from "contexts/Clients"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
-import regions from "const/regions"
 import DataItem from "./DataItem"
 import ModalBlockUnblock from "../ModalBlockUnblock"
 
@@ -46,13 +45,7 @@ function DetailsCard() {
             value="Nombre"
             content={`${profileData.name} ${profileData.lastName}`}
           />
-          <DataItem
-            value="Region"
-            content={
-              regions?.filter(region => profileData.region === region.id)[0]
-                ?.value
-            }
-          />
+          <DataItem value="Region" content={profileData.region} />
           <DataItem value="Mail" content={profileData.email} />
           <DataItem
             value="Matricula"

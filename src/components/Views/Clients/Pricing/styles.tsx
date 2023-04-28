@@ -1,13 +1,13 @@
 import styled from "styled-components"
 import theme from "theme/index"
-import { FlexColumnDiv, TitleStyles } from "theme/styles"
+import { TitleStyles } from "theme/styles"
 
 const Container = styled.div`
-  ${FlexColumnDiv}
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   width: 90%;
-  height: 80vh;
   margin: 0 auto;
-  gap: 15%;
   padding-top: 9%;
 
   @media (max-width: ${theme.screenSize.tablet.height}) {
@@ -18,17 +18,17 @@ const Container = styled.div`
 
 const Title = styled.h1`
   ${TitleStyles}
-  font-size: ${theme.fontSizes.xl};
-  font-weight: 800;
+  font-size: 30px;
+  font-weight: 700;
   margin: 0;
   padding-bottom: 10px;
 `
 
 const SubTitle = styled.span`
-  font-family: ${theme.fonts.content};
+  font-family: ${theme.fonts.extra};
   font-weight: 400;
-  font-size: ${theme.fontSizes.m};
-  color: ${theme.colors.blue_dark};
+  font-size: 16px;
+  color: ${theme.colors.blue};
 `
 
 const CardsContainer = styled.div`
