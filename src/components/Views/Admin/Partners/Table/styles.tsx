@@ -13,6 +13,7 @@ const TableStyled = styled.div`
   border-radius: 18px;
   width: 100%;
   height: 400px;
+  background-color: #fffffff5;
 
   .name-tag {
     width: 170px;
@@ -68,13 +69,13 @@ const Client = styled.div<{ selected: boolean }>`
   cursor: pointer;
 
   &:hover {
-    background-color: rgba(70, 105, 149, 0.15);
+    background-color: #c9d6ea14;
   }
 
   ${props =>
     props.selected &&
     css`
-      background-color: rgba(70, 105, 149, 0.15);
+      background-color: #c9d6ea14;
     `}
 
   p {
