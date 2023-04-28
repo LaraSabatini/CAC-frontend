@@ -41,6 +41,12 @@ function DashboardView() {
   const [updateList, setUpdateList] = useState<number>(0)
   const [currentPage, setCurrentPage] = useState<number>(1)
 
+  const removeDuplicates = (array: any[]): any[] => {
+    return [
+      ...new Set(array.map((object: any) => JSON.stringify(object))),
+    ].map((object: string) => JSON.parse(object))
+  }
+
   const getFiltersData = async () => {
     const getFiltersThemes = await getFilters()
     if (getFiltersThemes.status === 200) {
@@ -55,7 +61,9 @@ function DashboardView() {
       setArticles(getArticlesReq.data)
 
       if (articles.length > 0) {
-        setArticles(articles.concat(getArticlesReq.data))
+        const newList = removeDuplicates(articles.concat(getArticlesReq.data))
+
+        setArticles(newList)
       } else {
         setArticles(getArticlesReq.data)
       }

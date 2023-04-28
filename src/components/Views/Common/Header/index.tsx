@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useContext } from "react"
 import {
-  AiOutlineLogout,
-  AiFillSave,
-  AiOutlineSave,
-  AiOutlineVideoCamera,
-} from "react-icons/ai"
-import { FaUserFriends, FaCalendarWeek } from "react-icons/fa"
-import { BsFilterCircle } from "react-icons/bs"
+  SaveFilled,
+  VideoCameraFilled,
+  CalendarFilled,
+  SaveOutlined,
+  UsergroupAddOutlined,
+  CalendarOutlined,
+  FilterFilled,
+  LogoutOutlined,
+} from "@ant-design/icons"
+import { Input, Button, Modal } from "antd"
 import { useRouter } from "next/router"
 import routes from "routes"
 import {
@@ -18,12 +21,10 @@ import { DashboardContext } from "contexts/Dashboard"
 import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import texts from "strings/profile.json"
-import SearchBar from "components/UI/SearchBar"
 import Icon from "components/UI/Assets/Icon"
-import Button from "components/UI/Button"
 import Tooltip from "components/UI/Tooltip"
 import Logo from "components/UI/Assets/Icon/Icons/Logo"
-import ModalStatus from "components/UI/ModalStatus"
+
 import Filters from "./Filters"
 import {
   Container,
@@ -33,10 +34,13 @@ import {
   GoHomeButton,
   ProfileContainer,
   SearchDiv,
-  SVGButton,
   FiltersButton,
   ButtonContainer,
+  Menu,
+  Option,
 } from "./styles"
+
+const { Search } = Input
 
 function Header() {
   const router = useRouter()
@@ -50,10 +54,12 @@ function Header() {
   } = useContext(DashboardContext)
 
   const [openProfileMenu, setOpenProfileMenu] = useState<boolean>(false)
+
+  const [openActionsMenu, setOpenActionsMenu] = useState<boolean>(false)
+
   const [openWarning, setOpenWarning] = useState<boolean>(false)
-  const [deviceIsMobile, setDeviceIsMobile] = useState<boolean>(false)
+  // const [deviceIsMobile, setDeviceIsMobile] = useState<boolean>(false)
   const [openFilters, setOpenFilters] = useState<boolean>(false)
-  const [searchValue, setSearchValue] = useState<string>("")
 
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
@@ -66,26 +72,17 @@ function Header() {
     router.replace(`${routes.login.name}?${routes.login.queries.client}`)
   }
 
-  const handleResize = () => {
-    if (window.innerWidth < 560) {
-      setDeviceIsMobile(true)
-    } else {
-      setDeviceIsMobile(false)
-    }
-  }
+  // const handleResize = () => {
+  //   if (window.innerWidth < 560) {
+  //     setDeviceIsMobile(true)
+  //   } else {
+  //     setDeviceIsMobile(false)
+  //   }
+  // }
 
-  const searchArticlesInDB = async () => {
-    const searchArticlesCall = await searchArticles({ search: searchValue })
-    if (searchArticlesCall.status === 200) {
-      setArticles(searchArticlesCall.data)
-    } else {
-      setServerErrorModal(true)
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize)
-  })
+  // useEffect(() => {
+  //   window.addEventListener("resize", handleResize)
+  // })
 
   const getMyArticles = async () => {
     const getSavedArticlesCall = await getSavedArticles(userData.id)
@@ -114,6 +111,19 @@ function Header() {
     }
   }
 
+  const onSearch = async (value: string) => {
+    if (value !== "") {
+      const searchArticlesCall = await searchArticles({ search: value })
+      if (searchArticlesCall.status === 200) {
+        setArticles(searchArticlesCall.data)
+      } else {
+        setServerErrorModal(true)
+      }
+    } else {
+      setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
+    }
+  }
+
   return (
     <Container>
       <InternalServerError
@@ -126,24 +136,13 @@ function Header() {
         </GoHomeButton>
         {(router.asPath === "/dashboard" || router.asPath === "/partners") && (
           <SearchDiv>
-            <SearchBar
-              width={deviceIsMobile ? 200 : 300}
-              searchValue={searchValue}
-              onChangeSearch={e => {
-                if (e !== undefined) {
-                  if (e.target.value === "") {
-                    setSearchValue("")
-                    setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
-                  } else {
-                    setSearchValue(e.target.value)
-                    if (e.target.value.length >= 4) {
-                      searchArticlesInDB()
-                    }
-                  }
-                }
-              }}
-              enterSearch={searchArticlesInDB}
+            <Search
+              placeholder="Buscar articulo..."
+              onSearch={onSearch}
+              allowClear
+              style={{ width: 300 }}
             />
+
             {(router.asPath === "/dashboard" ||
               router.asPath === "/partners") && (
               <>
@@ -152,7 +151,7 @@ function Header() {
                   onClick={() => setOpenFilters(!openFilters)}
                 >
                   <Tooltip title="Filtrar" placement="right">
-                    <BsFilterCircle />
+                    <FilterFilled />
                   </Tooltip>
                 </FiltersButton>
 
@@ -166,101 +165,95 @@ function Header() {
       </SearchContainer>
       <ProfileContainer>
         <ButtonContainer>
-          {userData?.type === "client" && (
-            <FiltersButton
+          <Tooltip title="Menu" placement="left">
+            <button
               type="button"
-              onClick={() => {
-                setSavedArticlesSelected(!savedArticlesSelected)
-                if (!savedArticlesSelected) {
-                  getMyArticles()
-                } else {
-                  setArticles([])
-                  setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
-                }
-              }}
+              className="menu"
+              onClick={() => setOpenActionsMenu(!openActionsMenu)}
             >
-              <Tooltip
-                title={
-                  !savedArticlesSelected
-                    ? "Articulos guardados"
-                    : "Todos los articulos"
-                }
-                placement="bottom-end"
-              >
-                {!savedArticlesSelected ? <AiFillSave /> : <AiOutlineSave />}
-              </Tooltip>
-            </FiltersButton>
+              <div className="line" />
+              <div className="line" />
+              <div className="line" />
+            </button>
+          </Tooltip>
+          {openActionsMenu && (
+            <Menu>
+              {userData?.type === "client" ? (
+                <>
+                  <Option
+                    onClick={() => {
+                      setOpenActionsMenu(false)
+                      setSavedArticlesSelected(!savedArticlesSelected)
+                      if (!savedArticlesSelected) {
+                        getMyArticles()
+                      } else {
+                        setArticles([])
+                        setTriggerArticleListUpdate(
+                          triggerArticleListUpdate + 1,
+                        )
+                      }
+                    }}
+                  >
+                    {!savedArticlesSelected ? <SaveFilled /> : <SaveOutlined />}
+
+                    {!savedArticlesSelected
+                      ? "Mis articulos guardados"
+                      : "Todos los articulos"}
+                  </Option>
+                  <Option onClick={() => router.replace("/trainings")}>
+                    <VideoCameraFilled />
+                    Capacitaciones
+                  </Option>
+                  <Option onClick={() => router.replace("/advisories")}>
+                    <CalendarFilled />
+                    Agenda tu asesoria
+                  </Option>
+                </>
+              ) : (
+                <>
+                  <Option
+                    onClick={() => router.replace(`${routes.partners.name}`)}
+                  >
+                    <UsergroupAddOutlined />
+                    Socios
+                  </Option>
+                  <CreateArticleButton />
+                  <Option onClick={() => router.replace("/advisories")}>
+                    <CalendarOutlined />
+                    Asesorias y eventos
+                  </Option>
+                </>
+              )}
+            </Menu>
           )}
-          <FiltersButton
-            type="button"
-            onClick={() => router.replace("/trainings")}
-          >
-            <Tooltip title="Capacitaciones" placement="bottom-end">
-              <AiOutlineVideoCamera />
-            </Tooltip>
-          </FiltersButton>
-          <FiltersButton
-            type="button"
-            onClick={() => router.replace("/advisories")}
-          >
-            <Tooltip
-              title={
-                userData?.type === "client"
-                  ? "Agenda tu asesoria"
-                  : "Ver asesorias & eventos"
-              }
-              placement="bottom-end"
-            >
-              <FaCalendarWeek />
-            </Tooltip>
-          </FiltersButton>
         </ButtonContainer>
-        {userData?.type !== "client" && (
-          <>
-            <FiltersButton
-              type="button"
-              onClick={() => router.replace(`${routes.partners.name}`)}
-            >
-              <Tooltip title="Socios" placement="bottom-end">
-                <FaUserFriends />
-              </Tooltip>
-            </FiltersButton>
-            <CreateArticleButton />
-          </>
-        )}
+
         <ProfilePic onClick={() => setOpenProfileMenu(!openProfileMenu)}>
           <Icon icon="Profile" />
           {openProfileMenu && (
             <ProfileOptions>
               <Button
-                cta
-                action={() => router.replace(routes.profile.name)}
-                content={texts.title}
-              />
-              <Tooltip title={texts.logout} placement="bottom-end">
-                <SVGButton onClick={() => setOpenWarning(true)}>
-                  <AiOutlineLogout />
-                </SVGButton>
-              </Tooltip>
+                type="primary"
+                onClick={() => router.replace(routes.profile.name)}
+              >
+                Mi perfil
+              </Button>
+              <Button onClick={() => setOpenWarning(true)}>
+                <LogoutOutlined /> {texts.logout}
+              </Button>
             </ProfileOptions>
           )}
         </ProfilePic>
       </ProfileContainer>
-      {openWarning && (
-        <ModalStatus
-          title={texts.logoutModal.title}
-          description=""
-          status="notice"
-          ctaButton={{
-            content: `${texts.logout}`,
-            action: logout,
-          }}
-          secondaryButton={{
-            content: `${texts.logoutModal.cancel}`,
-            action: () => setOpenWarning(false),
-          }}
-        />
-      )}
+
+      <Modal
+        title={texts.logoutModal.title}
+        open={openWarning}
+        onOk={logout}
+        onCancel={() => setOpenWarning(false)}
+        okText={texts.logout}
+        cancelText="Cancelar"
+      />
     </Container>
   )
 }

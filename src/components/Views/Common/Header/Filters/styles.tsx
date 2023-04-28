@@ -3,13 +3,14 @@ import theme from "theme/index"
 
 const FilterContainer = styled.div`
   position: absolute;
-  background-color: #d6dfed;
+  background-color: #fffffff5;
+
   box-shadow: 0px 3px 6px #00000029; /* Not in the theme */
 
   right: 0;
   top: 125%;
   z-index: 100;
-  width: 210px;
+  width: 250px;
   padding: 10px;
   border-radius: 5px;
   font-family: ${theme.fonts.extra};
@@ -41,10 +42,12 @@ const OpenFilters = styled.button`
 
 const Filter = styled.div`
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   gap: 5px;
   padding-top: 10px;
   padding-left: 5px;
+
+  flex-direction: column;
 `
 
 const SelectionContainer = styled.div`
@@ -62,7 +65,8 @@ const FilterList = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  align-items: center;
+  gap: 20px;
   padding: 0 10px;
 `
 
@@ -81,6 +85,17 @@ const IconButton = styled.button`
   }
 `
 
+const SubFilters = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  padding-left: 20px;
+
+  .ant-checkbox-wrapper + .ant-checkbox-wrapper {
+    margin-left: 0;
+  }
+`
+
 export {
   FilterContainer,
   FilterSelector,
@@ -91,4 +106,5 @@ export {
   FilterList,
   ButtonContainer,
   IconButton,
+  SubFilters,
 }

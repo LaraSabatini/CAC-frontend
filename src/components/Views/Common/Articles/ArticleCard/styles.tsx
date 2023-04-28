@@ -21,10 +21,8 @@ const ArticleCard = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  @media (max-width: 1450px) {
-    width: 630px;
-    height: 320px;
-  }
+  width: 600px;
+  height: 320px;
 
   /* 
   @media (max-width: 1300px) {

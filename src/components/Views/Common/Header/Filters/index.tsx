@@ -1,13 +1,17 @@
 import React, { useContext, useState } from "react"
-import { AiFillSave } from "react-icons/ai"
-import { BsFillTrashFill, BsChevronDown, BsChevronUp } from "react-icons/bs"
 import { filterArticles } from "services/articles/articles.service"
 import { DashboardContext } from "contexts/Dashboard"
-import Checkbox from "components/UI/Checkbox"
 import Tooltip from "components/UI/Tooltip"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import Scroll from "components/UI/Scroll"
 import regionFilters from "const/regions"
+import filterValues from "const/filters"
+import { Checkbox, Button } from "antd"
+import {
+  DeleteOutlined,
+  CaretDownOutlined,
+  CaretUpOutlined,
+} from "@ant-design/icons"
 import {
   FilterContainer,
   FilterSelector,
@@ -18,11 +22,11 @@ import {
   FilterList,
   ButtonContainer,
   IconButton,
+  SubFilters,
 } from "./styles"
 
 function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
   const {
-    themeFilters,
     setArticles,
     setTriggerArticleListUpdate,
     triggerArticleListUpdate,
@@ -85,6 +89,13 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
     }
   }
 
+  const filtersWithoutSubFilters = filterValues.filter(
+    item => !item.subfilters.length,
+  )
+  const filtersWithSubFilters = filterValues.filter(
+    item => item.subfilters.length > 0,
+  )
+
   return (
     <FilterContainer>
       <InternalServerError
@@ -93,9 +104,54 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
       />
       <FilterList>
         <FilterSelector>
+          <OpenFilters onClick={() => setThemeFilterOpen(!themeFilterOpen)}>
+            <Title>Temática</Title>
+            {!themeFilterOpen ? <CaretDownOutlined /> : <CaretUpOutlined />}
+          </OpenFilters>
+          <SelectionContainer>
+            {themeFilterOpen && (
+              <Scroll height={180}>
+                <>
+                  {filtersWithoutSubFilters.map(filter => (
+                    <Filter key={filter.id}>
+                      <Checkbox
+                        onChange={() => {
+                          selectFilter(filter.id, "theme")
+                        }}
+                        checked={themeFiltersSelected.indexOf(filter.id) !== -1}
+                      >
+                        {filter.value}
+                      </Checkbox>
+                    </Filter>
+                  ))}
+                  {filtersWithSubFilters.map(filter => (
+                    <Filter key={filter.id}>
+                      {filter.value}
+                      <SubFilters>
+                        {filter.subfilters.map(subfilter => (
+                          <Checkbox
+                            onChange={() => {
+                              selectFilter(subfilter.id, "theme")
+                            }}
+                            checked={
+                              themeFiltersSelected.indexOf(subfilter.id) !== -1
+                            }
+                          >
+                            {subfilter.value}
+                          </Checkbox>
+                        ))}
+                      </SubFilters>
+                    </Filter>
+                  ))}
+                </>
+              </Scroll>
+            )}
+          </SelectionContainer>
+        </FilterSelector>
+        <FilterSelector>
           <OpenFilters onClick={() => setRegionFilterOpen(!regionFilterOpen)}>
-            <Title>Region</Title>
-            {!regionFilterOpen ? <BsChevronDown /> : <BsChevronUp />}
+            <Title>Región</Title>
+            {!regionFilterOpen ? <CaretDownOutlined /> : <CaretUpOutlined />}
           </OpenFilters>
           <SelectionContainer>
             {regionFilterOpen && (
@@ -103,37 +159,12 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
                 {regionFilters.map(filter => (
                   <Filter key={filter.id}>
                     <Checkbox
-                      idParam={filter.value}
-                      ownState
                       onChange={() => {
                         selectFilter(filter.id, "region")
                       }}
-                      checked={regionFiltersSelected.indexOf(filter.id) !== -1}
-                    />
-                    {filter.value}
-                  </Filter>
-                ))}
-              </Scroll>
-            )}
-          </SelectionContainer>
-        </FilterSelector>
-        <FilterSelector>
-          <OpenFilters onClick={() => setThemeFilterOpen(!themeFilterOpen)}>
-            <Title>Tematica</Title>
-            {!themeFilterOpen ? <BsChevronDown /> : <BsChevronUp />}
-          </OpenFilters>
-          <SelectionContainer>
-            {themeFilterOpen && (
-              <Scroll height={100}>
-                {themeFilters.map(filter => (
-                  <Filter key={filter.id}>
-                    <Checkbox
-                      idParam={filter.value}
-                      ownState
-                      onChange={() => selectFilter(filter.id, "theme")}
-                      checked={themeFiltersSelected.indexOf(filter.id) !== -1}
-                    />
-                    {filter.value}
+                    >
+                      {filter.value}
+                    </Checkbox>
                   </Filter>
                 ))}
               </Scroll>
@@ -152,14 +183,12 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
             }}
           >
             <Tooltip title="Limpiar" placement="top-end">
-              <BsFillTrashFill />
+              <DeleteOutlined />
             </Tooltip>
           </IconButton>
-          <IconButton type="button" onClick={searchArticles}>
-            <Tooltip title="Aplicar" placement="top-end">
-              <AiFillSave />
-            </Tooltip>
-          </IconButton>
+          <Button onClick={searchArticles} size="small" type="primary">
+            Aplicar
+          </Button>
         </ButtonContainer>
       </FilterList>
     </FilterContainer>
