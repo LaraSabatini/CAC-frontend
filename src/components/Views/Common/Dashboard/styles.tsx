@@ -61,4 +61,41 @@ const ButtonContainer = styled.div`
   padding-bottom: 30px;
 `
 
-export { ArticlesContainer, FullArticle, Chip, EmptyPage, ButtonContainer }
+const CardPlaceholder = styled.div`
+  border: 1px solid rgba(70, 106, 149, 0.138);
+  border-radius: 18px;
+
+  box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
+
+  transition: 0.3s;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid rgba(70, 106, 149, 0.356);
+    box-shadow: 0px 8px 24px rgba(70, 106, 149, 0.248);
+  }
+
+  padding: 5px 25px;
+
+  width: 600px;
+  height: 320px;
+
+  animation: skeleton-loading 1s linear infinite alternate;
+
+  @keyframes skeleton-loading {
+    0% {
+      background-color: hsl(200, 20%, 80%);
+    }
+    100% {
+      background-color: hsl(200, 20%, 95%);
+    }
+  }
+`
+
+export {
+  ArticlesContainer,
+  FullArticle,
+  Chip,
+  EmptyPage,
+  ButtonContainer,
+  CardPlaceholder,
+}

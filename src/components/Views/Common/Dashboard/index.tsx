@@ -17,6 +17,7 @@ import {
   Chip,
   EmptyPage,
   ButtonContainer,
+  CardPlaceholder,
 } from "./styles"
 import ArticleView from "../Articles/ArticleCard"
 import ArticleBody from "../Articles/ArticleBody"
@@ -37,6 +38,8 @@ function DashboardView() {
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
+  const [loading, setLoading] = useState<boolean>(false)
+
   const [savedArticles, setSavedArticles] = useState<number[]>([])
   const [updateList, setUpdateList] = useState<number>(0)
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -48,6 +51,8 @@ function DashboardView() {
   }
 
   const getFiltersData = async () => {
+    setLoading(true)
+
     const getFiltersThemes = await getFilters()
     if (getFiltersThemes.status === 200) {
       setThemeFilters(getFiltersThemes.data)
@@ -56,9 +61,9 @@ function DashboardView() {
     }
 
     const getArticlesReq = await getArticles(currentPage)
-
     if (getArticlesReq.status === 200) {
       setArticles(getArticlesReq.data)
+      setLoading(false)
 
       if (articles.length > 0) {
         const newList = removeDuplicates(articles.concat(getArticlesReq.data))
@@ -141,9 +146,19 @@ function DashboardView() {
         visible={serverError}
         changeVisibility={() => setServerError(false)}
       />
+      {loading && !articles.length && (
+        <ArticlesContainer>
+          <CardPlaceholder />
+          <CardPlaceholder />
+          <CardPlaceholder />
+          <CardPlaceholder />
+          <CardPlaceholder />
+          <CardPlaceholder />
+        </ArticlesContainer>
+      )}
       {articleId === undefined ? (
         <ArticlesContainer>
-          {articles.length ? (
+          {articles.length &&
             articles.map(article => (
               <ArticleView
                 key={article.id}
@@ -157,9 +172,11 @@ function DashboardView() {
                 }}
                 savedTimes={article.saved}
               />
-            ))
-          ) : (
+            ))}
+          {!articles.length && !loading ? (
             <EmptyPage>No hay articulos para mostrar</EmptyPage>
+          ) : (
+            <></>
           )}
         </ArticlesContainer>
       ) : (
