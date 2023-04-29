@@ -3,7 +3,6 @@ export const filterList = [
     id: 1,
     value: "Sindicato / Encargados",
   },
-
   {
     id: 21,
     value: "Mantenimiento de partes comunes",

@@ -27,6 +27,8 @@ const InputContainer = styled.div`
 const HorizontalGroup = styled.div`
   display: flex;
   gap: 40px;
+
+  padding-bottom: 15px;
 `
 
 const FiltersTitle = styled.p`
