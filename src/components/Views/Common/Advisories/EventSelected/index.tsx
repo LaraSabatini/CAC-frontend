@@ -186,6 +186,7 @@ function EventSelected({
           window.open(response.result.hangoutLink)
         },
         (err: any) => {
+          // eslint-disable-next-line no-console
           console.error("Execute error", err)
         },
       )
