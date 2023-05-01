@@ -75,7 +75,7 @@ function PersonalInfo() {
           )}
           <DataSet
             icon={<HiIdentification />}
-            title="Matricula:"
+            title="Matrícula:"
             value={data?.realEstateRegistration}
           />
         </Data>

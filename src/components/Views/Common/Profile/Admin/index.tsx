@@ -1,47 +1,47 @@
 /* eslint-disable no-console */
-import React, { useContext, useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useRouter } from "next/router"
-import { ProfileContext } from "contexts/Profile"
-import { AdminInterface, AccessPermitsInterface } from "interfaces/users/Admin"
+// import { ProfileContext } from "contexts/Profile"
+// import { AdminInterface, AccessPermitsInterface } from "interfaces/users/Admin"
 import Button from "components/UI/Button"
-import ToggleSwitch from "components/UI/ToggleSwitch"
+// import ToggleSwitch from "components/UI/ToggleSwitch"
 import ChangePasswordModal from "../ChangePasswordModal"
-import { Title } from "../Client/styles"
+// import { Title } from "../Client/styles"
 import {
   Container,
-  PermitsCard,
-  PermitTitle,
-  Permit,
-  Option,
-  ButtonContainer,
+  // PermitsCard,
+  // PermitTitle,
+  // Permit,
+  // Option,
+  // ButtonContainer,
 } from "./styles"
 
 function AdminProfile() {
   const router = useRouter()
 
-  const { profileData } = useContext(ProfileContext)
+  // const { profileData } = useContext(ProfileContext)
 
-  const profile = profileData as AdminInterface
+  // const profile = profileData as AdminInterface
 
   const [changePasswordView, setChangePasswordView] = useState<boolean>(false)
-  const [
-    accessPermitsModified,
-    setAccessPermitsModified,
-  ] = useState<AccessPermitsInterface | null>(null)
+  // const [
+  // accessPermitsModified,
+  //   setAccessPermitsModified,
+  // ] = useState<AccessPermitsInterface | null>(null)
 
-  const permitRequest = () => {
-    // crear request que envia mail a super usuario pidiendo permisos
-    // pagina usuarios => usuario preseleccionado
-    //                      => permisos requeridos pre-seleccionados
-    //                      => otorgar permisos
-    //                      => email notificacion permisos dados a usuario que lo pidio
-  }
+  // const permitRequest = () => {
+  // crear request que envia mail a super usuario pidiendo permisos
+  // pagina usuarios => usuario preseleccionado
+  //                      => permisos requeridos pre-seleccionados
+  //                      => otorgar permisos
+  //                      => email notificacion permisos dados a usuario que lo pidio
+  // }
 
-  useEffect(() => {
-    if (typeof profile.accessPermits !== "string") {
-      setAccessPermitsModified(profile.accessPermits)
-    }
-  }, [profile])
+  // useEffect(() => {
+  //   if (typeof profile.accessPermits !== "string") {
+  //     setAccessPermitsModified(profile.accessPermits)
+  //   }
+  // }, [profile])
 
   return (
     <Container>
@@ -51,7 +51,7 @@ function AdminProfile() {
           cantCancel={router.query.change_password === "true"}
         />
       )}
-      {accessPermitsModified !== null && accessPermitsModified !== undefined && (
+      {/* {accessPermitsModified !== null && accessPermitsModified !== undefined && (
         <PermitsCard>
           <Title>Permisos:</Title>
           <Permit>
@@ -132,7 +132,7 @@ function AdminProfile() {
             </ButtonContainer>
           )}
         </PermitsCard>
-      )}
+      )} */}
       <Button
         content="Cambiar contraseña"
         cta

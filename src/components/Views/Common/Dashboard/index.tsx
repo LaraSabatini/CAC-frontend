@@ -169,7 +169,7 @@ function DashboardView() {
               />
             ))}
           {!articles.length && !loading ? (
-            <EmptyPage>No hay articulos para mostrar</EmptyPage>
+            <EmptyPage>No hay artículos para mostrar</EmptyPage>
           ) : (
             <></>
           )}
@@ -178,7 +178,7 @@ function DashboardView() {
         <FullArticle>
           <Chip>
             <a href={`${process.env.NEXT_PUBLIC_FRONT_URL}/dashboard`}>
-              Articulos
+              Artículos
             </a>
             <BsChevronRight />
             <span>{router.query.title}</span>
@@ -189,7 +189,7 @@ function DashboardView() {
       {articleId === undefined && articles.length >= 25 && (
         <ButtonContainer>
           <Button
-            content="Cargar mas articulos"
+            content="Cargar mas artículos"
             cta
             action={() => {
               setCurrentPage(currentPage + 1)

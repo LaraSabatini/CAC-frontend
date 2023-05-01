@@ -52,7 +52,7 @@ function Table() {
           <p className="id-tag">N° de socio</p>
           <p className="plan-tag">Plan</p>
           <p className="identification-tag">Documento</p>
-          <p className="region-tag">Region</p>
+          <p className="region-tag">Región</p>
           <p className="partner-tag">Socio desde</p>
         </TableHead>
         <TableContent>

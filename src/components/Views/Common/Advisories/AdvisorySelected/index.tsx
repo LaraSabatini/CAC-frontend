@@ -39,7 +39,7 @@ function AdvisorySelected({
 
   const success = () => {
     Modal.success({
-      content: "Accion realizada con exito",
+      content: "Acción realizada con éxito",
       onOk() {
         setOpenModalEvent(false)
         if (router.query.id !== undefined) {
@@ -81,7 +81,7 @@ function AdvisorySelected({
           description: string
           attendees: { email: string }[]
         } = {
-          summary: `Asesoria con ${eventData.clientName}`,
+          summary: `Asesoría con ${eventData.clientName}`,
           description: eventData.brief,
           attendees: [
             { email: userData.user },
@@ -162,7 +162,7 @@ function AdvisorySelected({
         changeVisibility={() => setServerErrorModal(false)}
       />
       <Modal
-        title={`Asesoria con: ${eventData.clientName}`}
+        title={`Asesoría con: ${eventData.clientName}`}
         open={openModalEvent}
         onCancel={() => {
           setOpenModalEvent(false)
@@ -175,7 +175,7 @@ function AdvisorySelected({
           eventData.status === "pending" && (
             <>
               <Button onClick={() => changeStatus("cancel")}>
-                Cancelar Asesoria
+                Cancelar Asesoría
               </Button>
               {userData?.type === "admin" && (
                 <Button
@@ -185,7 +185,7 @@ function AdvisorySelected({
                     authenticate(gapi, () => changeStatus("confirm"))
                   }
                 >
-                  Confirmar Asesoria
+                  Confirmar Asesoría
                 </Button>
               )}
             </>
@@ -193,7 +193,7 @@ function AdvisorySelected({
           eventData.status === "confirmed" && (
             <>
               <Button onClick={() => changeStatus("cancel")}>
-                Cancelar Asesoria
+                Cancelar Asesoría
               </Button>
               {canJoinEvent ? (
                 <Button
@@ -223,7 +223,7 @@ function AdvisorySelected({
             <CalendarOutlined />
             {eventData.date.replaceAll("-", "/")} - {eventData.hour} hs
           </span>
-          <p>Descripcion: {eventData.brief}</p>
+          <p>Descripción: {eventData.brief}</p>
         </ModalContent>
       </Modal>
 
@@ -239,7 +239,7 @@ function AdvisorySelected({
       >
         <div className="marker" />
         <p>
-          {event.hour} asesoria con <b>{event.clientName}</b>
+          {event.hour} asesoría con <b>{event.clientName}</b>
         </p>
       </AdvisoryEvent>
     </>

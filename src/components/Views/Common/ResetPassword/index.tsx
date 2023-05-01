@@ -123,7 +123,7 @@ function ResetPassword() {
         <Form>
           <Title>
             ¿Olvidaste tu contraseña?
-            <span>Aqui te enviaremos instrucciones para recuperarla</span>
+            <span>Aquí te enviaremos instrucciones para recuperarla</span>
           </Title>
 
           <Input
@@ -217,7 +217,7 @@ function ResetPassword() {
           <MessageContainer>
             <div className="title">
               <CheckCircleOutlined />
-              <MessageTitle>El mail ha sido enviado con exito!</MessageTitle>
+              <MessageTitle>¡El mail ha sido enviado con éxito!</MessageTitle>
             </div>
             <Description>
               {texts.restorePassword.successEmail.description}

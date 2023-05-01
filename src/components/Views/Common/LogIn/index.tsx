@@ -49,6 +49,8 @@ function LoginView() {
 
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
+  const [loading, setLoading] = useState<boolean>(false)
+
   const captchaRef = useRef<ReCAPTCHA>(null)
 
   const tryLogin = async () => {
@@ -85,11 +87,13 @@ function LoginView() {
 
       router.replace(routes.dashboard.name)
     }
+    setLoading(false)
   }
 
   const validateUser = async (e?: any) => {
     e?.preventDefault()
 
+    setLoading(true)
     let token: string | null
 
     if (formData.email !== "" && formData.password !== "") {
@@ -113,6 +117,7 @@ function LoginView() {
       }
     } else {
       setRequiredError(true)
+      setLoading(false)
     }
   }
 
@@ -205,7 +210,7 @@ function LoginView() {
                 </p>
               )}
             </RemainingAttempts>
-            <Button type="primary" onClick={validateUser}>
+            <Button loading={loading} type="primary" onClick={validateUser}>
               {texts.login.action}
             </Button>
             <URLContainer>

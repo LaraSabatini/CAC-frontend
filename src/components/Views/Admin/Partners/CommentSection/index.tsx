@@ -43,7 +43,7 @@ function CommentSection({ clientId }: { clientId: number | null }) {
 
   const success = () => {
     Modal.success({
-      content: "El comentario se ha creado con exito",
+      content: "El comentario se ha creado con éxito",
       onOk() {
         setAddCommentModal(false)
         setUpdateList(updateList + 1)

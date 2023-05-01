@@ -232,15 +232,6 @@ function AdvisoriesView() {
             ))}
           </CalendarDisplay>
         </Calendar>
-
-        {/* {requestAdvisoryModal && (
-          <RequestAdvisory
-            close={() => {
-              setRequestAdvisoryModal(false)
-              setUpdateList(updateList + 1)
-            }}
-          />
-        )} */}
       </Container>
     </>
   )

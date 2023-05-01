@@ -120,7 +120,7 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
       <FilterList>
         <FilterSelector>
           <OpenFilters onClick={() => setRegionFilterOpen(!regionFilterOpen)}>
-            <Title>Region</Title>
+            <Title>Región</Title>
             {!regionFilterOpen ? <CaretDownOutlined /> : <CaretUpOutlined />}
           </OpenFilters>
           <SelectionContainer>

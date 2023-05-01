@@ -21,7 +21,7 @@ function CreateArticleButton() {
 
       <Option onClick={() => setOpenForm(true)}>
         <FolderAddOutlined />
-        Crear articulo
+        Crear artículo
       </Option>
     </>
   )

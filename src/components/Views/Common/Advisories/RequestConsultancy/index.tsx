@@ -57,10 +57,10 @@ function RequestAdvisory({ updateList }: { updateList: (arg?: any) => void }) {
     <>
       <ScheduleAdvisory onClick={() => setRequestAdvisoryModal(true)}>
         <CalendarOutlined />
-        Solicitar asesoria
+        Solicitar asesoría
       </ScheduleAdvisory>
       <Modal
-        title="Agendar asesoria"
+        title="Agendar asesoría"
         width={420}
         open={requestAdvisoryModal}
         footer={null}

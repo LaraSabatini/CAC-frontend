@@ -104,7 +104,7 @@ function Header() {
       </SearchContainer>
       <ProfileContainer>
         <ButtonContainer>
-          <Tooltip title="Menu" placement="left">
+          <Tooltip title="Menú" placement="left">
             <button
               type="button"
               className="menu"
@@ -124,7 +124,7 @@ function Header() {
               <CreateArticleButton />
               <Option onClick={() => router.replace("/advisories")}>
                 <CalendarOutlined />
-                Asesorias y eventos
+                Asesorías y eventos
               </Option>
             </Menu>
           )}

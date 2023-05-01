@@ -220,8 +220,8 @@ function SearchByAdmin({
 
   const success = () => {
     Modal.success({
-      title: "Excelente!",
-      content: "Tu solicitud se ha enviado con exito",
+      title: "¡Excelente!",
+      content: "Tu solicitud se ha enviado con éxito",
       onOk() {
         close()
       },
@@ -350,7 +350,7 @@ function SearchByAdmin({
           <div style={{ paddingTop: "15px" }}>
             <TextArea
               rows={2}
-              placeholder="Breve descripcion de la asesoria"
+              placeholder="Breve descripción de la asesoría"
               value={brief}
               style={{ width: 350 }}
               status={requiredFiledsError && brief === "" ? "error" : ""}
@@ -369,7 +369,7 @@ function SearchByAdmin({
               searchAvailabilityAdmin()
             }}
           >
-            Consulta disponibilidad
+            Consultar disponibilidad
           </Button>
         )}
         {canRequest && (
@@ -388,7 +388,7 @@ function SearchByAdmin({
               }
             }}
           >
-            Solicitar asesoria
+            Solicitar asesoría
           </Button>
         )}
       </div>

@@ -42,7 +42,7 @@ function AddTraining({ updateList }: { updateList: (arg?: any) => void }) {
 
   const success = () => {
     Modal.success({
-      content: "La capacitacion se ha creado con exito",
+      content: "La capacitación se ha creado con éxito",
       onOk() {
         updateList()
         setOpenModal(false)
@@ -81,12 +81,12 @@ function AddTraining({ updateList }: { updateList: (arg?: any) => void }) {
       {userData?.type === "admin" && (
         <CreateTraining>
           <Button type="primary" onClick={() => setOpenModal(true)}>
-            Crear capacitacion
+            Crear capacitación
           </Button>
         </CreateTraining>
       )}
       <Modal
-        title="Crear capacitacion"
+        title="Crear capacitación"
         open={openModal}
         onOk={createTrainingFuncion}
         onCancel={() => {
@@ -109,7 +109,7 @@ function AddTraining({ updateList }: { updateList: (arg?: any) => void }) {
           )}
           <div className="sub-container">
             <Input
-              placeholder="Titulo"
+              placeholder="Título"
               required
               value={newTraining.title}
               status={requiredError && newTraining.title === "" ? "error" : ""}
@@ -135,7 +135,7 @@ function AddTraining({ updateList }: { updateList: (arg?: any) => void }) {
           <div className="sub-container">
             <TextArea
               rows={2}
-              placeholder="Descripcion"
+              placeholder="Descripción"
               value={newTraining.description}
               status={
                 requiredError && newTraining.description === "" ? "error" : ""
@@ -167,7 +167,7 @@ function AddTraining({ updateList }: { updateList: (arg?: any) => void }) {
               mode="multiple"
               allowClear
               style={{ width: 475 }}
-              placeholder="Tematicas"
+              placeholder="Temáticas"
               defaultValue={themesSelected}
               onChange={value => {
                 setThemesSelected(value)

@@ -40,7 +40,7 @@ function DetailsCard() {
 
   const success = () => {
     Modal.success({
-      content: "Accion realizada con exito",
+      content: "Acción realizada con éxito",
       onOk() {
         setOpenModal(false)
       },
@@ -123,14 +123,14 @@ function DetailsCard() {
             value="Nombre"
             content={`${profileData.name} ${profileData.lastName}`}
           />
-          <DataItem value="Region" content={profileData.region} />
+          <DataItem value="Región" content={profileData.region} />
           <DataItem value="Mail" content={profileData.email} />
           <DataItem
-            value="Matricula"
+            value="Matrícula"
             content={profileData.realEstateRegistration}
           />
           <DataItem
-            value="Telefono"
+            value="Teléfono"
             content={`${profileData.phoneAreaCode} ${profileData.phoneNumber}`}
           />
           <DataItem
@@ -179,8 +179,8 @@ function DetailsCard() {
         <Modal
           title={
             profileData.accountBlocked === 1
-              ? `Estas seguro de que deseas desbloquear a ${profileData.name} ${profileData.lastName}?`
-              : `Estas seguro de que deseas bloquear a ${profileData.name} ${profileData.lastName}?`
+              ? `¿Estás seguro de que deseas desbloquear a ${profileData.name} ${profileData.lastName}?`
+              : `¿Estás seguro de que deseas bloquear a ${profileData.name} ${profileData.lastName}?`
           }
           open={openModal}
           onOk={blockAction}
@@ -192,8 +192,8 @@ function DetailsCard() {
           confirmLoading={loading}
         >
           <p>
-            Al bloquearlo/desbloquearlo le llegara un mail al usuario
-            notificandolo de esta accion.
+            Al bloquearlo/desbloquearlo le llegará un mail al usuario
+            notificándolo de esta acción.
           </p>
           {profileData.accountBlocked === 0 ? (
             <Space style={{ paddingTop: "15px" }}>

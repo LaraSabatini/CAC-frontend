@@ -60,7 +60,7 @@ function EventSelected({
 
   const success = () => {
     Modal.success({
-      content: "Accion realizada con exito",
+      content: "Acción realizada con éxito",
       onOk() {
         setEventDataModal(null)
         setOpenEditModal(false)
@@ -163,6 +163,7 @@ function EventSelected({
           }
         },
         (err: any) => {
+          // eslint-disable-next-line no-console
           console.error("Execute error", err)
         },
       )
@@ -192,7 +193,7 @@ function EventSelected({
 
   const showConfirm = () => {
     confirm({
-      title: "Estas seguro de que deseas eliminar el evento?",
+      title: "¿Estás seguro de que deseas eliminar el evento?",
       icon: <ExclamationCircleFilled />,
       onOk() {
         authenticate(gapi, () => deleteEventFunction())
@@ -282,7 +283,6 @@ function EventSelected({
                 Cancelar
               </Button>
               <Button
-                // loading={loading}
                 onClick={() => {
                   if (
                     eventDataEdited.title === "" ||

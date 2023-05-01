@@ -15,7 +15,7 @@
     },
     "userError": {
         "title": "¡UPS!",
-        "description": "Ocurrio un error al crear el usuario."
+        "description": "Ocurrió un error al crear el usuario."
     },
     "pageNotFound": {
         "title": "¡UPS!",

@@ -43,6 +43,7 @@ function Header() {
   const router = useRouter()
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const {
     setTriggerArticleListUpdate,
@@ -64,6 +65,7 @@ function Header() {
   )
 
   const logout = () => {
+    setLoading(true)
     localStorage.removeItem("userData")
     router.replace(`${routes.login.name}?${routes.login.queries.client}`)
   }
@@ -121,7 +123,7 @@ function Header() {
         {(router.asPath === "/dashboard" || router.asPath === "/partners") && (
           <SearchDiv>
             <Search
-              placeholder="Buscar articulo..."
+              placeholder="Buscar artículo..."
               onSearch={onSearch}
               allowClear
               style={{ width: 300 }}
@@ -144,7 +146,7 @@ function Header() {
       </SearchContainer>
       <ProfileContainer>
         <ButtonContainer>
-          <Tooltip title="Menu" placement="left">
+          <Tooltip title="Menú" placement="left">
             <button
               type="button"
               className="menu"
@@ -176,8 +178,8 @@ function Header() {
                     {!savedArticlesSelected ? <SaveFilled /> : <SaveOutlined />}
 
                     {!savedArticlesSelected
-                      ? "Mis articulos guardados"
-                      : "Todos los articulos"}
+                      ? "Mis artículos guardados"
+                      : "Todos los artículos"}
                   </Option>
                   <Option onClick={() => router.replace("/trainings")}>
                     <VideoCameraFilled />
@@ -185,7 +187,7 @@ function Header() {
                   </Option>
                   <Option onClick={() => router.replace("/advisories")}>
                     <CalendarFilled />
-                    Agenda tu asesoria
+                    Agenda tu asesoría
                   </Option>
                 </>
               ) : (
@@ -203,7 +205,7 @@ function Header() {
                   </Option>
                   <Option onClick={() => router.replace("/advisories")}>
                     <CalendarOutlined />
-                    Asesorias y eventos
+                    Asesoría y eventos
                   </Option>
                 </>
               )}
@@ -221,7 +223,7 @@ function Header() {
               >
                 Mi perfil
               </Button>
-              <Button onClick={() => setOpenWarning(true)}>
+              <Button loading={loading} onClick={() => setOpenWarning(true)}>
                 <LogoutOutlined /> {texts.logout}
               </Button>
             </ProfileOptions>

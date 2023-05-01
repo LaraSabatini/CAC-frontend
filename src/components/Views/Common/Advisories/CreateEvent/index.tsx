@@ -59,7 +59,7 @@ function CreateEvent({ updateList }: { updateList: (arg?: any) => void }) {
 
   const success = () => {
     Modal.success({
-      content: "El evento se ha creado con exito",
+      content: "El evento se ha creado con éxito",
       onOk() {
         setCreateEventModal(false)
         cleanStates()
@@ -205,10 +205,10 @@ function CreateEvent({ updateList }: { updateList: (arg?: any) => void }) {
     <>
       <ScheduleAdvisory onClick={() => setCreateEventModal(true)}>
         <CalendarOutlined />
-        Crear evento publico
+        Crear evento público
       </ScheduleAdvisory>
       <Modal
-        title="Crear evento publico"
+        title="Crear evento público"
         open={createEventModal}
         onOk={handleClientLoad}
         onCancel={() => {
@@ -230,7 +230,7 @@ function CreateEvent({ updateList }: { updateList: (arg?: any) => void }) {
           )}
           <div className="input-container">
             <Input
-              placeholder="Titulo"
+              placeholder="Título"
               status={requiredError && newEvent.title === "" ? "error" : ""}
               value={newEvent.title}
               required
@@ -244,7 +244,7 @@ function CreateEvent({ updateList }: { updateList: (arg?: any) => void }) {
           <div className="input-container">
             <TextArea
               rows={2}
-              placeholder="Descripcion"
+              placeholder="Descripción"
               value={newEvent.description}
               status={
                 requiredError && newEvent.description === "" ? "error" : ""

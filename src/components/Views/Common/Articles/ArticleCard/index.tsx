@@ -68,7 +68,7 @@ function ArticleView({
         <ArticleDescription>{article.description}</ArticleDescription>
         <ButtonContainer>
           <Tooltip
-            title={`Articulo guardado por ${amountOfSavedTimes} usuario/s`}
+            title={`Artículo guardado por ${amountOfSavedTimes} usuario/s`}
           >
             <div className="saved-times">
               <BsFillBookmarkFill />{" "}

@@ -70,8 +70,8 @@ function Availability() {
 
   const success = () => {
     Modal.success({
-      title: "Excelente!",
-      content: "Tu disponibilidad se ha modificado con exito",
+      title: "¡Excelente!",
+      content: "Tu disponibilidad se ha modificado con éxito",
       onOk() {
         setAvailabilityModal(false)
       },

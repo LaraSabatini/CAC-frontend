@@ -142,7 +142,7 @@ function TrainingsView() {
           ) : (
             <EmptyResults>
               <SearchOutlined />
-              <p>No hay resultados para tu busqueda</p>
+              <p>No hay resultados para tu búsqueda</p>
             </EmptyResults>
           )}
         </Content>
@@ -155,7 +155,7 @@ function TrainingsView() {
                 setCurrentPage(currentPage + 1)
               }}
             >
-              Cargar mas capacitaciones
+              Cargar más capacitaciones
             </Button>
           </ButtonContainer>
         )}

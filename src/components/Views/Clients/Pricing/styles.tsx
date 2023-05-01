@@ -9,12 +9,66 @@ const Container = styled.div`
   width: 90%;
   margin: 0 auto;
   padding-top: 5%;
+  position: relative;
 
   @media (max-width: ${theme.screenSize.tablet.height}) {
     padding-top: 3%;
     gap: 5%;
   }
 `
+
+// const Miscelaneous = styled.div`
+//   position: absolute;
+//   z-index: 5 !important;
+//   right: 0px;
+//   top: 0;
+//   right: -72px;
+//   width: 111%;
+//   height: 100%;
+//   .line {
+//     margin-left: 1035px;
+//     margin-top: 20px;
+//     width: 400px;
+//     height: 20px;
+//     display: flex;
+
+//     .blue {
+//       width: 90px;
+//       background-color: #466995;
+//     }
+
+//     .green {
+//       width: 90px;
+//       background-color: #2c8c89;
+//     }
+
+//     .light-green {
+//       width: 220px;
+//       background-color: #a9d3cf;
+//     }
+//   }
+
+//   .squares {
+//     .square-1 {
+//       margin-top: 400px;
+//       margin-left: 0px;
+
+//       width: 50%;
+//       /* height: 1px; */
+//       border-top: 1px dashed black;
+//     }
+//     .square-2 {
+//       /* margin-top: 200px; */
+//       margin-left: 43%;
+//       margin-top: 2px;
+
+//       height: 345px;
+//       width: 100px;
+//       /* height: 1px; */
+//       border-right: 1px dashed black;
+//     }
+//   }
+// `
 
 const Title = styled.h1`
   ${TitleStyles}

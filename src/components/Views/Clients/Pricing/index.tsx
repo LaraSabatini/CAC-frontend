@@ -8,7 +8,13 @@ import InternalServerError from "@components/Views/Common/Error/InternalServerEr
 import Logo from "components/UI/Assets/Icon/Icons/Logo"
 import PricingCard from "./PricingCard"
 import ClientDataForm from "../Payment/ClientDataForm"
-import { Container, Title, CardsContainer, SubTitle } from "./styles"
+import {
+  Container,
+  Title,
+  CardsContainer,
+  SubTitle,
+  // Miscelaneous,
+} from "./styles"
 
 function PricingView() {
   const { setPayment, payment, pricingList, setPricingList } = useContext(
@@ -49,6 +55,7 @@ function PricingView() {
         visible={serverErrorModal}
         changeVisibility={() => setServerErrorModal(false)}
       />
+
       <div>
         <Title>
           <Logo />
@@ -57,6 +64,17 @@ function PricingView() {
         <SubTitle>{texts.description}</SubTitle>
       </div>
 
+      {/* <Miscelaneous>
+        <div className="line">
+          <div className="blue" />
+          <div className="green" />
+          <div className="light-green" />
+        </div>
+        <div className="squares">
+          <div className="square-1" />
+          <div className="square-2" />
+        </div>
+      </Miscelaneous> */}
       <CardsContainer>
         {pricingList.length > 0 &&
           pricingList.map((pricingPlan: PricingInterface) => (

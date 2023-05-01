@@ -2,7 +2,6 @@ import React from "react"
 import PricingInterface from "interfaces/content/Pricing"
 import texts from "strings/pricing.json"
 import numberWithCommas from "helpers/formatting/formatPrice"
-// import Button from "components/UI/Button"
 import { Button } from "antd"
 import { Card, Title, Price, Detail, Description } from "./styles"
 

@@ -81,7 +81,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                   mode="multiple"
                   allowClear
                   style={{ width: 475 }}
-                  placeholder="Region"
+                  placeholder="Región"
                   defaultValue={regionsSelected}
                   onChange={value => {
                     setRegionsSelected(value)
@@ -105,7 +105,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                   mode="multiple"
                   allowClear
                   style={{ width: 475 }}
-                  placeholder="Tematica"
+                  placeholder="Temática"
                   defaultValue={themesSelected}
                   onChange={value => {
                     setThemesSelected(value)

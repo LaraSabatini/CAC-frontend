@@ -201,20 +201,20 @@ function EditPersonalInfo({
       />
       <InputSelect
         width={270}
-        label="Region"
+        label="Región"
         options={regions as { id: number; value: string }[]}
         required
         onClick={(e: { id: number; value: string }) => {
           setNewData({
             ...newData,
-            region: e.id,
+            region: e.value,
           })
         }}
       />
       <Input
         width={200}
         value={newData.realEstateRegistration}
-        label="Matricula"
+        label="Matrícula"
         required
         type="text"
         onChange={e =>

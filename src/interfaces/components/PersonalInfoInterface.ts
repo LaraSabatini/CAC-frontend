@@ -6,7 +6,7 @@ export interface DataInterface {
   phoneAreaCode: string
   phoneNumber: string
   email: string
-  region: number
+  region: string
   realEstateRegistration: string
 }
 

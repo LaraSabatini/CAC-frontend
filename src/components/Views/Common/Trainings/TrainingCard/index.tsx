@@ -79,7 +79,7 @@ function TrainingCard({
 
   const success = () => {
     Modal.success({
-      content: "Accion realizada con exito con exito",
+      content: "Acción realizada con éxito con éxito",
       onOk() {
         setOpenModal(false)
         delete router.query.watch
@@ -100,9 +100,9 @@ function TrainingCard({
 
   const showConfirm = () => {
     confirm({
-      title: "Estas seguro de que deseas eliminar esta capacitacion?",
+      title: "¿Estás seguro de que deseas eliminar esta capacitación?",
       icon: <ExclamationCircleFilled />,
-      content: "Al eliminarla se borraran todos los registros",
+      content: "Al eliminarla se borrarán todos los registros",
       okText: "Eliminar",
       okType: "danger",
       cancelText: "Cancelar",
@@ -141,7 +141,7 @@ function TrainingCard({
         title={
           modalContent === "view"
             ? router.query.title
-            : `Editar capacitacion: ${router.query.title}`
+            : `Editar capacitación: ${router.query.title}`
         }
         open={openModal}
         onCancel={() => {
@@ -218,7 +218,7 @@ function TrainingCard({
             <InputContainer>
               <div className="sub-container">
                 <Input
-                  placeholder="Titulo"
+                  placeholder="Título"
                   required
                   status={
                     requiredError && trainingEdited.title === "" ? "error" : ""
@@ -254,7 +254,7 @@ function TrainingCard({
               <div className="sub-container">
                 <TextArea
                   rows={2}
-                  placeholder="Descripcion"
+                  placeholder="Descripción"
                   value={trainingEdited.description}
                   status={
                     requiredError && trainingEdited.description === ""
@@ -293,7 +293,7 @@ function TrainingCard({
                   mode="multiple"
                   allowClear
                   style={{ width: 475 }}
-                  placeholder="Tematicas"
+                  placeholder="Temáticas"
                   defaultValue={themesSelected}
                   onChange={value => {
                     setThemesSelected(value)
