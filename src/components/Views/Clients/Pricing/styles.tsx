@@ -8,7 +8,7 @@ const Container = styled.div`
   gap: 20px;
   width: 90%;
   margin: 0 auto;
-  padding-top: 9%;
+  padding-top: 5%;
 
   @media (max-width: ${theme.screenSize.tablet.height}) {
     padding-top: 3%;
@@ -22,6 +22,13 @@ const Title = styled.h1`
   font-weight: 700;
   margin: 0;
   padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  svg {
+    width: 50px;
+    height: 50px;
+  }
 `
 
 const SubTitle = styled.span`
@@ -29,9 +36,11 @@ const SubTitle = styled.span`
   font-weight: 400;
   font-size: 16px;
   color: ${theme.colors.blue};
+  margin-left: 60px;
 `
 
 const CardsContainer = styled.div`
+  margin-top: 120px;
   display: flex;
   gap: 1.6%;
   @media (max-width: ${theme.screenSize.tablet.height}) {

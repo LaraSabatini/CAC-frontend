@@ -5,6 +5,7 @@ import texts from "strings/pricing.json"
 import PricingInterface from "interfaces/content/Pricing"
 import defaultPaymet from "const/defaultValuesForPaymentContext"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
+import Logo from "components/UI/Assets/Icon/Icons/Logo"
 import PricingCard from "./PricingCard"
 import ClientDataForm from "../Payment/ClientDataForm"
 import { Container, Title, CardsContainer, SubTitle } from "./styles"
@@ -49,9 +50,13 @@ function PricingView() {
         changeVisibility={() => setServerErrorModal(false)}
       />
       <div>
-        <Title>{texts.title}</Title>
+        <Title>
+          <Logo />
+          {texts.title}
+        </Title>
         <SubTitle>{texts.description}</SubTitle>
       </div>
+
       <CardsContainer>
         {pricingList.length > 0 &&
           pricingList.map((pricingPlan: PricingInterface) => (

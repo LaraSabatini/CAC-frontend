@@ -25,4 +25,15 @@ const editTraining = async (body: TrainingsInterface) => {
   return res.data
 }
 
-export { createTraining, getTrainings, deleteTraining, editTraining }
+const filterTrainings = async (body: { themeIds: number[] }) => {
+  const res = await defaultPost(`${apiURL}/filter`, body)
+  return res
+}
+
+export {
+  createTraining,
+  getTrainings,
+  deleteTraining,
+  editTraining,
+  filterTrainings,
+}

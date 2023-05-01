@@ -6,7 +6,6 @@ import {
   SaveOutlined,
   UsergroupAddOutlined,
   CalendarOutlined,
-  FilterFilled,
   LogoutOutlined,
 } from "@ant-design/icons"
 import { Input, Button, Modal } from "antd"
@@ -33,7 +32,6 @@ import {
   GoHomeButton,
   ProfileContainer,
   SearchDiv,
-  FiltersButton,
   ButtonContainer,
   Menu,
   Option,
@@ -57,7 +55,6 @@ function Header() {
   const [openActionsMenu, setOpenActionsMenu] = useState<boolean>(false)
 
   const [openWarning, setOpenWarning] = useState<boolean>(false)
-  // const [deviceIsMobile, setDeviceIsMobile] = useState<boolean>(false)
   const [openFilters, setOpenFilters] = useState<boolean>(false)
 
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
@@ -70,18 +67,6 @@ function Header() {
     localStorage.removeItem("userData")
     router.replace(`${routes.login.name}?${routes.login.queries.client}`)
   }
-
-  // const handleResize = () => {
-  //   if (window.innerWidth < 560) {
-  //     setDeviceIsMobile(true)
-  //   } else {
-  //     setDeviceIsMobile(false)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   window.addEventListener("resize", handleResize)
-  // })
 
   const getMyArticles = async () => {
     const getSavedArticlesCall = await getSavedArticles(userData.id)
@@ -145,14 +130,9 @@ function Header() {
             {(router.asPath === "/dashboard" ||
               router.asPath === "/partners") && (
               <>
-                <FiltersButton
-                  type="button"
-                  onClick={() => setOpenFilters(!openFilters)}
-                >
-                  <Tooltip title="Filtrar" placement="right">
-                    <FilterFilled />
-                  </Tooltip>
-                </FiltersButton>
+                <Button onClick={() => setOpenFilters(!openFilters)}>
+                  Filtrar
+                </Button>
 
                 {openFilters && (
                   <Filters closeTab={() => setOpenFilters(false)} />
@@ -217,6 +197,10 @@ function Header() {
                     Socios
                   </Option>
                   <CreateArticleButton />
+                  <Option onClick={() => router.replace("/trainings")}>
+                    <VideoCameraFilled />
+                    Capacitaciones
+                  </Option>
                   <Option onClick={() => router.replace("/advisories")}>
                     <CalendarOutlined />
                     Asesorias y eventos

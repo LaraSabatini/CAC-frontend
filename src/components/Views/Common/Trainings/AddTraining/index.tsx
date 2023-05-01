@@ -1,25 +1,15 @@
-import React, { useState, useContext } from "react"
-import { TrainingsContext } from "contexts/Trainings"
+import React, { useState } from "react"
 import { createTraining } from "services/trainings/trainingActions.service"
-import Modal from "components/UI/Modal"
-import ModalStatus from "components/UI/ModalStatus"
-import Button from "components/UI/Button"
-import Input from "components/UI/Input"
-import regionFilters from "const/regions"
-import ComboBoxSelect from "components/UI/ComboBoxSelect"
-import { OptionsInterface } from "interfaces/content/Article"
-import { TrainingsInterface } from "interfaces/trainings/Trainings"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
-import { Container, ButtonContainer, InputContainer } from "./styles"
+import { Button, Modal, Input, Select } from "antd"
+import { TrainingsInterface } from "interfaces/trainings/Trainings"
+import { filterList } from "const/filters"
+import { CreateTraining } from "../styles"
+import { InputContainer } from "./styles"
 
-function AddTraining({
-  closeModal,
-  updateList,
-}: {
-  closeModal: (arg?: any) => void
-  updateList: (arg?: any) => void
-}) {
-  const { themeFilters } = useContext(TrainingsContext)
+function AddTraining({ updateList }: { updateList: (arg?: any) => void }) {
+  const userData = JSON.parse(localStorage.getItem("userData") as string)
+  const [openModal, setOpenModal] = useState<boolean>()
 
   const [newTraining, setNewTraining] = useState<TrainingsInterface>({
     youtubeURL: "",
@@ -30,71 +20,100 @@ function AddTraining({
     region: [],
   })
   const [requiredError, setRequiredError] = useState<boolean>(false)
-  const [success, setSuccess] = useState<boolean>(false)
+  const [themesSelected, setThemesSelected] = useState<string[]>()
+  const [loading, setLoading] = useState<boolean>(false)
   const [serverError, setServerError] = useState<boolean>(false)
 
-  const getActiveOptions = (
-    idsSelected: number[],
-    filters: { id: number; value: string }[],
-  ): { id: number; value: string }[] => {
-    const activeOptions = []
+  const { TextArea } = Input
 
-    for (let i = 0; i < filters.length; i += 1) {
-      if (idsSelected.includes(filters[i].id)) {
-        activeOptions.push(filters[i])
-      }
-    }
+  const cleanStates = () => {
+    setThemesSelected([])
+    setRequiredError(false)
+    setLoading(false)
+    setNewTraining({
+      youtubeURL: "",
+      title: "",
+      author: "",
+      description: "",
+      theme: [],
+      region: [],
+    })
+  }
 
-    return activeOptions
+  const success = () => {
+    Modal.success({
+      content: "La capacitacion se ha creado con exito",
+      onOk() {
+        updateList()
+        setOpenModal(false)
+        cleanStates()
+      },
+    })
   }
 
   const createTrainingFuncion = async () => {
-    // validar inputs
     if (
       newTraining.title !== "" &&
       newTraining.author !== "" &&
       newTraining.description !== "" &&
       newTraining.youtubeURL !== ""
     ) {
+      setLoading(true)
       setRequiredError(false)
-      const createTrainingCall = await createTraining(newTraining)
+      const createTrainingCall = await createTraining({
+        ...newTraining,
+        region: JSON.stringify(newTraining.region),
+        theme: JSON.stringify(newTraining.theme),
+      })
 
-      setSuccess(createTrainingCall.status === 201)
-      setServerError(createTrainingCall.status !== 201)
+      if (createTrainingCall.status === 201) {
+        success()
+      } else {
+        setServerError(true)
+      }
     } else {
       setRequiredError(true)
     }
   }
 
   return (
-    <Modal>
-      <Container>
+    <div className="container-head">
+      {userData?.type === "admin" && (
+        <CreateTraining>
+          <Button type="primary" onClick={() => setOpenModal(true)}>
+            Crear capacitacion
+          </Button>
+        </CreateTraining>
+      )}
+      <Modal
+        title="Crear capacitacion"
+        open={openModal}
+        onOk={createTrainingFuncion}
+        onCancel={() => {
+          setOpenModal(false)
+          cleanStates()
+        }}
+        okText="Crear"
+        cancelText="Cancelar"
+        confirmLoading={loading}
+      >
         <InternalServerError
           visible={serverError}
           changeVisibility={() => setServerError(false)}
         />
-        <h3>Crear capacitacion</h3>
-        {requiredError && (
-          <p className="required-error">
-            *Completa todos los campos requeridos
-          </p>
-        )}
-        {success && (
-          <ModalStatus
-            title="Excelente"
-            description="La capacitacion se ha subido con exito"
-            status="success"
-            selfClose
-            selfCloseAction={updateList}
-          />
-        )}
         <InputContainer>
+          {requiredError && (
+            <p className="required-error">
+              *Completa todos los campos requeridos
+            </p>
+          )}
           <div className="sub-container">
             <Input
-              label="Titulo"
+              placeholder="Titulo"
               required
+              value={newTraining.title}
+              status={requiredError && newTraining.title === "" ? "error" : ""}
               type="text"
-              width={495}
               onChange={e =>
                 setNewTraining({ ...newTraining, title: e.target.value })
               }
@@ -102,85 +121,76 @@ function AddTraining({
           </div>
           <div className="sub-container">
             <Input
-              label="Autor"
+              placeholder="Autor"
               required
               type="text"
-              width={250}
+              value={newTraining.author}
+              status={requiredError && newTraining.author === "" ? "error" : ""}
+              style={{ width: "300px" }}
               onChange={e =>
                 setNewTraining({ ...newTraining, author: e.target.value })
               }
             />
-            <Input
-              label="Descripcion"
-              required
-              type="text"
-              width={250}
+          </div>
+          <div className="sub-container">
+            <TextArea
+              rows={2}
+              placeholder="Descripcion"
+              value={newTraining.description}
+              status={
+                requiredError && newTraining.description === "" ? "error" : ""
+              }
               onChange={e =>
                 setNewTraining({ ...newTraining, description: e.target.value })
               }
             />
           </div>
-          <Input
-            label="URL de YouTube"
-            required
-            type="text"
-            width={495}
-            onChange={e =>
-              setNewTraining({
-                ...newTraining,
-                youtubeURL: e.target.value,
-              })
-            }
-          />
           <div className="sub-container">
-            <ComboBoxSelect
-              placeholder="Region"
-              optionsList="single"
-              width={225}
-              options={regionFilters}
-              activeOptions={getActiveOptions(
-                newTraining.region as number[],
-                regionFilters,
-              )}
-              onChange={(e: OptionsInterface[] | undefined) => {
-                if (e !== undefined) {
-                  const filters: number[] = []
-                  e.map(filter => filters.push(filter.id))
-                  setNewTraining({
-                    ...newTraining,
-                    region: filters,
-                  })
-                }
-              }}
+            <Input
+              placeholder="URL de YouTube"
+              required
+              type="text"
+              value={newTraining.youtubeURL}
+              status={
+                requiredError && newTraining.youtubeURL === "" ? "error" : ""
+              }
+              onChange={e =>
+                setNewTraining({
+                  ...newTraining,
+                  youtubeURL: e.target.value,
+                })
+              }
             />
-            <ComboBoxSelect
-              placeholder="Tematica"
-              optionsList="single"
-              width={225}
-              options={themeFilters}
-              activeOptions={getActiveOptions(
-                newTraining.theme as number[],
-                themeFilters,
-              )}
-              onChange={(e: OptionsInterface[] | undefined) => {
-                if (e !== undefined) {
-                  const filters: number[] = []
-                  e.map(filter => filters.push(filter.id))
-                  setNewTraining({
-                    ...newTraining,
-                    theme: filters,
-                  })
-                }
+          </div>
+          <div className="sub-container">
+            <Select
+              mode="multiple"
+              allowClear
+              style={{ width: 475 }}
+              placeholder="Tematicas"
+              defaultValue={themesSelected}
+              onChange={value => {
+                setThemesSelected(value)
+                const ids: number[] = []
+                value.forEach(item => {
+                  const filterItem = filterList.filter(
+                    region => region.value === item,
+                  )
+                  if (filterItem.length > 0) {
+                    ids.push(filterItem[0].id)
+                  }
+                })
+                setNewTraining({
+                  ...newTraining,
+                  theme: ids,
+                })
               }}
+              options={filterList}
             />
           </div>
         </InputContainer>
-        <ButtonContainer>
-          <Button content="Cancelar" cta={false} action={closeModal} />
-          <Button content="Crear" cta action={createTrainingFuncion} />
-        </ButtonContainer>
-      </Container>
-    </Modal>
+      </Modal>
+    </div>
   )
 }
 

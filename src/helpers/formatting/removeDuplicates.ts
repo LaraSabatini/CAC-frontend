@@ -1,4 +1,7 @@
-const removeDuplicates = (arr: any) => {
-  return arr.filter((item: any, index: any) => arr.indexOf(item) === index)
+const removeDuplicates = (array: any[]): any[] => {
+  return [
+    ...new Set(array.map((object: any) => JSON.stringify(object))),
+  ].map((object: string) => JSON.parse(object))
 }
+
 export default removeDuplicates
