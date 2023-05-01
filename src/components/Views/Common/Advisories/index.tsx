@@ -5,8 +5,7 @@ import { AdvisoryInterface } from "interfaces/content/Advisories"
 import { AdvisoriesContext } from "contexts/Advisories"
 import { getAdvisories } from "services/advisories/advisories.service"
 import { getEventsByMonth } from "services/advisories/events.service"
-import { AiFillSchedule } from "react-icons/ai"
-import { FaCalendarWeek, FaCalendarPlus } from "react-icons/fa"
+import { FaCalendarWeek } from "react-icons/fa"
 import formatDateToCompare, {
   stringToDate,
 } from "helpers/dates/formatDateToCompare"
@@ -59,9 +58,6 @@ function AdvisoriesView() {
 
   const [currentMonth, setCurrentMonth] = useState<number>(today.getMonth() + 1)
   const [currentYear, setCurrentYear] = useState<number>(today.getFullYear())
-
-  const [availabilityModal, setAvailabilityModal] = useState<boolean>(false)
-  const [createEventModal, setCreateEvent] = useState<boolean>(false)
 
   const [requestAdvisoryModal, setRequestAdvisoryModal] = useState<boolean>(
     false,
@@ -196,14 +192,8 @@ function AdvisoriesView() {
               </ScheduleAdvisory>
             ) : (
               <div className="admin-buttons">
-                <ScheduleAdvisory onClick={() => setCreateEvent(true)}>
-                  <FaCalendarPlus />
-                  Crear evento publico
-                </ScheduleAdvisory>
-                <ScheduleAdvisory onClick={() => setAvailabilityModal(true)}>
-                  <AiFillSchedule />
-                  Agregar / Modificar disponibilidad
-                </ScheduleAdvisory>
+                <CreateEvent updateList={() => setUpdateList(updateList + 1)} />
+                <Availability />
               </div>
             )}
           </CalendarInfo>
@@ -249,17 +239,7 @@ function AdvisoriesView() {
             ))}
           </CalendarDisplay>
         </Calendar>
-        {availabilityModal && (
-          <Availability closeModal={() => setAvailabilityModal(false)} />
-        )}
-        {createEventModal && (
-          <CreateEvent
-            closeModal={() => {
-              setCreateEvent(false)
-              setUpdateList(updateList + 1)
-            }}
-          />
-        )}
+
         {requestAdvisoryModal && (
           <RequestAdvisory
             close={() => {

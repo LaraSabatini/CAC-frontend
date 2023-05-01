@@ -18,13 +18,6 @@ const EventContainer = styled.div`
 `
 
 const EventData = styled.div`
-  background-color: white;
-
-  width: 450px;
-  /* height: 200px; */
-  border-radius: 18px;
-  padding: 25px;
-
   display: flex;
   flex-direction: column;
 
@@ -134,22 +127,24 @@ const EventData = styled.div`
 `
 
 const EventDataEdit = styled.div`
-  background-color: ${theme.colors.white};
+  /* background-color: ${theme.colors.white};
   width: 400px;
   border-radius: 18px;
-  padding: 25px;
+  padding: 25px; */
   display: flex;
   flex-direction: column;
 
   .input-container {
-    padding-top: 20px;
+    /* padding-top: 20px; */
   }
 
   .horizontal {
-    padding-top: 65px;
+    padding-bottom: 15px;
+    /* padding-top: 65px; */
     display: flex;
     align-items: center;
-    gap: 20px;
+    justify-content: space-between;
+    /* gap: 20px; */
   }
 
   .required {

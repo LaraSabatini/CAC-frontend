@@ -14,13 +14,13 @@ export const months = [
 ]
 
 export const days = [
-  { id: 18, nameAbb: "DOM", name: "Domingo" },
-  { id: 11, nameAbb: "LUN", name: "Lunes" },
-  { id: 22, nameAbb: "MAR", name: "Martes" },
-  { id: 34, nameAbb: "MIE", name: "Miercoles" },
-  { id: 42, nameAbb: "JUE", name: "Jueves" },
-  { id: 52, nameAbb: "VIE", name: "Viernes" },
-  { id: 55, nameAbb: "SAB", name: "Sabado" },
+  { id: 18, nameAbb: "DOM", name: "Domingo", value: "sunday" },
+  { id: 11, nameAbb: "LUN", name: "Lunes", value: "monday" },
+  { id: 22, nameAbb: "MAR", name: "Martes", value: "tuesday" },
+  { id: 34, nameAbb: "MIE", name: "Miercoles", value: "wednesday" },
+  { id: 42, nameAbb: "JUE", name: "Jueves", value: "thursday" },
+  { id: 52, nameAbb: "VIE", name: "Viernes", value: "friday" },
+  { id: 55, nameAbb: "SAB", name: "Sabado", value: "saturday" },
 ]
 
 export const hours = [

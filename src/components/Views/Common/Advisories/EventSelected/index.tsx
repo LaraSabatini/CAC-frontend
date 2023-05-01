@@ -1,22 +1,23 @@
-/* eslint-disable no-console */
 import React, { useState, useEffect, useContext } from "react"
 import { AdvisoriesContext } from "contexts/Advisories"
-import Modal from "components/UI/Modal"
-import { GrFormClose } from "react-icons/gr"
 import { BsDot } from "react-icons/bs"
-import { TbPencil } from "react-icons/tb"
-import Button from "components/UI/Button"
-import Input from "components/UI/Input"
-import ModalStatus from "components/UI/ModalStatus"
+
+import { Modal, Button, Input, DatePicker, TimePicker } from "antd"
+import authenticate from "helpers/google/authenticate"
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons"
 import { deleteEvent, editEvent } from "services/advisories/events.service"
-import DeleteEvent from "../DeleteEvent"
+import dayjs from "dayjs"
+
 import {
   EventContainer,
   EventData,
   EventDataEdit,
   AdvisoryEvent,
 } from "./styles"
-import { Title, ButtonContainer } from "../CreateEvent/styles"
 
 interface EventDataInterface {
   id: number
@@ -40,10 +41,10 @@ function EventSelected({
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const gapi = typeof window !== "undefined" && window.gapi
-  const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
-  const SCOPES = "https://www.googleapis.com/auth/calendar"
+  // const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+  // const SCOPES = "https://www.googleapis.com/auth/calendar"
 
-  const [modalSuccess, setModalSuccess] = useState<boolean>(false)
+  const { confirm } = Modal
 
   const [allowClick, setAllowClick] = useState<boolean>(false)
   const [canJoinEvent, setCanJoinEvent] = useState<boolean>(false)
@@ -57,6 +58,22 @@ function EventSelected({
   const [eventDataEdited, setEventDataEdited] = useState<EventDataInterface>(
     eventDataModal as EventDataInterface,
   )
+  const [requiredError, setRequiredError] = useState<boolean>(false)
+
+  const success = () => {
+    Modal.success({
+      content: "Accion realizada con exito",
+      onOk() {
+        setEventDataModal(null)
+        setOpenEditModal(false)
+        updateList()
+      },
+    })
+  }
+
+  const dateFormat = "DD/MM/YYYY"
+  const { TextArea } = Input
+  const timeFormat = "HH:mm"
 
   const editEventFunction = () => {
     const eventData = eventDataEdited as EventDataInterface
@@ -64,7 +81,13 @@ function EventSelected({
     const url = eventData.eventURL.split("eid=")
     const decodeEventId = atob(url[1])
 
-    const splitDate = eventData.date.split("/")
+    let splitDate: string[] = []
+    if (eventData.date.split("/").length === 1) {
+      splitDate = eventData.date.split("-")
+    } else {
+      splitDate = eventData.date.split("/")
+    }
+
     const splitHour = eventData.hour.split(":")
 
     const dateFormated = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}T${splitHour[0]}:${splitHour[1]}:00-03:00`
@@ -105,14 +128,15 @@ function EventSelected({
             date: `${splitDate[0]}-${splitDate[1]}-${splitDate[2]}`,
             month: parseInt(splitDate[1], 10),
           })
-          setModalSuccess(
-            editEventCall.status === 201 && response.status === 200,
-          )
-          setServerError(
-            editEventCall.status !== 201 && response.status !== 200,
-          )
+
+          if (editEventCall.status === 201 && response.status === 200) {
+            success()
+          } else {
+            setServerError(true)
+          }
         },
         (err: any) => {
+          // eslint-disable-next-line no-console
           console.error("Execute error", err)
         },
       )
@@ -134,12 +158,11 @@ function EventSelected({
       .then(
         async (response: any) => {
           const deleteEventCall = await deleteEvent(eventData.id)
-          setModalSuccess(
-            deleteEventCall.status === 200 && response.status === 204,
-          )
-          setServerError(
-            deleteEventCall.status !== 200 || response.status !== 204,
-          )
+          if (deleteEventCall.status === 200 && response.status === 204) {
+            success()
+          } else {
+            setServerError(true)
+          }
         },
         (err: any) => {
           console.error("Execute error", err)
@@ -168,48 +191,16 @@ function EventSelected({
       )
   }
 
-  const authenticate = (action: "delete" | "edit" | "meet") => {
-    const openSignInPopup = () => {
-      gapi.auth2.authorize(
-        {
-          client_id: CLIENT_ID,
-          scope: SCOPES,
-          plugin_name: "camara-federal-consorcio",
-        },
-        (res: any) => {
-          if (res) {
-            if (res.access_token) {
-              localStorage.setItem("access_token", res.access_token)
-              let functionToExecute
-              if (action === "delete") {
-                functionToExecute = deleteEventFunction
-              } else if (action === "edit") {
-                functionToExecute = editEventFunction
-              } else {
-                functionToExecute = getMeetURL
-              }
-
-              gapi.client.load("calendar", "v3", functionToExecute)
-            }
-          }
-        },
-      )
-    }
-
-    const initClient = () => {
-      if (
-        !localStorage.getItem("access_token") ||
-        gapi.client.calendar === undefined
-      ) {
-        openSignInPopup()
-      } else if (openEditModal) {
-        editEventFunction()
-      } else {
-        deleteEventFunction()
-      }
-    }
-
-    gapi.load("client:auth2", initClient)
+  const showConfirm = () => {
+    confirm({
+      title: "Estas seguro de que deseas eliminar el evento?",
+      icon: <ExclamationCircleFilled />,
+      onOk() {
+        authenticate(gapi, () => deleteEventFunction())
+      },
+      okText: "Eliminar",
+      cancelText: "Cancelar",
+    })
   }
 
   useEffect(() => {
@@ -232,7 +223,7 @@ function EventSelected({
       today.getMonth() + 1 > 9
         ? today.getMonth() + 1
         : `0${today.getMonth() + 1}`
-    const day = today.getDate()
+    const day = today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`
     const year = today.getFullYear()
 
     if (
@@ -241,95 +232,105 @@ function EventSelected({
     ) {
       setCanJoinEvent(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventDataModal])
 
   return (
     <EventContainer>
-      {modalSuccess && (
-        <ModalStatus
-          title="Excelente!"
-          description="El evento se ha modificado exitosamente"
-          status="success"
-          selfClose
-          selfCloseAction={() => {
-            setEventDataModal(null)
-            setOpenEditModal(false)
-            setModalSuccess(false)
-            updateList()
-          }}
-        />
-      )}
-
-      {eventDataModal !== null && (
-        <Modal>
-          {!openEditModal ? (
-            <EventData>
-              <div className="title">
-                <p>{eventDataModal.title}</p>
-                <button
-                  onClick={() => {
-                    setEventDataModal(null)
-                  }}
-                  type="button"
-                  className="close"
-                >
-                  <GrFormClose />
-                </button>
-              </div>
-              <span>
-                {eventDataModal.date.replaceAll("-", "/")}
-                <BsDot />
-                {eventDataModal.hour} hs
-              </span>
-              <p className="description">{eventDataModal.description}</p>
-              <div className="buttons">
-                {userData.type === "admin" && (
-                  <div className="admin-buttons">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setOpenEditModal(true)
-                        setEventDataEdited({
-                          ...eventDataModal,
-                          date: eventDataModal.date.replaceAll("-", "/"),
-                        })
-                      }}
-                    >
-                      <TbPencil />
-                    </button>
-
-                    <DeleteEvent
-                      allowClick={allowClick}
-                      authenticate={() => authenticate("delete")}
-                    />
-                  </div>
-                )}
-                <div className="calendar-buttons">
-                  {canJoinEvent && (
-                    <Button
-                      content="Unirme"
-                      cta
-                      action={() => authenticate("meet")}
-                    />
-                  )}
-                  <Button
-                    content="Ver en Google Calendar"
-                    cta={false}
-                    action={() => window.open(event.eventURL)}
-                  />
-                </div>
-              </div>
-            </EventData>
-          ) : (
-            <EventDataEdit>
-              <Title>Editar evento: {eventDataModal.title}</Title>
-              <div className="input-container">
+      <Modal
+        title={eventDataModal?.title}
+        open={eventDataModal !== null}
+        onCancel={() => {
+          setEventDataModal(null)
+        }}
+        footer={[
+          userData?.type === "admin" && !openEditModal && (
+            <Button
+              onClick={() => {
+                setOpenEditModal(true)
+                setEventDataEdited(eventDataModal as EventDataInterface)
+              }}
+              icon={<EditOutlined />}
+            />
+          ),
+          userData?.type === "admin" && !openEditModal && (
+            <Button danger icon={<DeleteOutlined />} onClick={showConfirm} />
+          ),
+          canJoinEvent && !openEditModal && (
+            <Button
+              type="primary"
+              onClick={() => authenticate(gapi, () => getMeetURL())}
+            >
+              Unirme
+            </Button>
+          ),
+          !openEditModal && (
+            <Button
+              onClick={() => window.open(event.eventURL)}
+              type={!canJoinEvent ? "primary" : "default"}
+            >
+              Ver en Google Calendar
+            </Button>
+          ),
+          openEditModal && (
+            <>
+              <Button
+                onClick={() => {
+                  setOpenEditModal(false)
+                  setRequiredError(false)
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                // loading={loading}
+                onClick={() => {
+                  if (
+                    eventDataEdited.title === "" ||
+                    eventDataEdited.description === "" ||
+                    eventDataEdited.date === "" ||
+                    eventDataEdited.hour === ""
+                  ) {
+                    setRequiredError(true)
+                    console.log("aca")
+                  } else {
+                    authenticate(gapi, () => editEventFunction())
+                  }
+                }}
+                type="primary"
+                disabled={!allowClick}
+              >
+                Guardar cambios
+              </Button>
+            </>
+          ),
+        ]}
+      >
+        {!openEditModal ? (
+          <EventData>
+            <span>
+              {eventDataModal?.date.replaceAll("-", "/")}
+              <BsDot />
+              {eventDataModal?.hour} hs
+            </span>
+            <p className="description">{eventDataModal?.description}</p>
+          </EventData>
+        ) : (
+          <EventDataEdit>
+            <div className="input-container">
+              {requiredError && (
+                <p className="required">* Completa los campos requeridos</p>
+              )}
+              <div className="horizontal">
                 <Input
-                  label="Titulo"
+                  placeholder="Titulo"
+                  status={
+                    requiredError && eventDataEdited.title === "" ? "error" : ""
+                  }
+                  value={eventDataEdited.title}
                   required
                   type="text"
                   width={400}
-                  value={eventDataEdited?.title}
                   onChange={e => {
                     setEventDataEdited({
                       ...eventDataEdited,
@@ -337,72 +338,74 @@ function EventSelected({
                     })
                   }}
                 />
-                <Input
-                  label="Descripcion"
-                  required
-                  type="textarea"
-                  width={380}
-                  value={eventDataEdited?.description}
-                  onChange={e => {
+              </div>
+              <div className="horizontal">
+                <TextArea
+                  rows={2}
+                  placeholder="Descripcion"
+                  value={eventDataEdited.description}
+                  status={
+                    requiredError && eventDataEdited.description === ""
+                      ? "error"
+                      : ""
+                  }
+                  onChange={e =>
                     setEventDataEdited({
                       ...eventDataEdited,
                       description: e.target.value,
                     })
+                  }
+                />
+              </div>
+              <div className="horizontal">
+                <DatePicker
+                  placeholder="Fecha"
+                  defaultValue={dayjs(
+                    `${eventDataEdited.date.replaceAll("-", "/")}`,
+                    dateFormat,
+                  )}
+                  status={
+                    requiredError && eventDataEdited.date === "" ? "error" : ""
+                  }
+                  style={{ width: "200px" }}
+                  format={dateFormat}
+                  onChange={(e: any) => {
+                    if (e !== null) {
+                      const day = e.$D > 9 ? e.$D : `0${e.$D}`
+                      const month = e.$M + 1 > 9 ? e.$M + 1 : `0${e.$M + 1}`
+
+                      setEventDataEdited({
+                        ...eventDataEdited,
+                        date: `${day}/${month}/${e.$y}`,
+                      })
+                    }
                   }}
                 />
-                <div className="horizontal">
-                  <Input
-                    label="Fecha"
-                    required
-                    type="text"
-                    placeholder="dd/mm/aaaa"
-                    width={200}
-                    value={eventDataEdited.date}
-                    max={10}
-                    onChange={e => {
-                      if (e.target.value.length <= 12) {
-                        setEventDataEdited({
-                          ...eventDataEdited,
-                          date: e.target.value,
-                        })
-                      }
-                    }}
-                  />
-                  <Input
-                    label="Horario"
-                    required
-                    type="text"
-                    placeholder="hh:mm (24 horas)"
-                    width={200}
-                    value={eventDataEdited.hour}
-                    onChange={e => {
-                      if (e.target.value.length <= 5) {
-                        setEventDataEdited({
-                          ...eventDataEdited,
-                          hour: e.target.value,
-                        })
-                      }
-                    }}
-                  />
-                </div>
+                <TimePicker
+                  defaultValue={dayjs(eventDataEdited.hour, "HH:mm")}
+                  status={
+                    requiredError && eventDataEdited.hour === "" ? "error" : ""
+                  }
+                  style={{ width: "200px" }}
+                  placeholder="Horario"
+                  format={timeFormat}
+                  onChange={(e: any) => {
+                    if (e !== null) {
+                      const hour = e.$H > 9 ? e.$H : `0${e.$H}`
+                      const minute = e.$m > 9 ? e.$m : `0${e.$m}`
+                      setEventDataEdited({
+                        ...eventDataEdited,
+                        hour: `${hour}:${minute}`,
+                      })
+                    }
+                  }}
+                />
               </div>
-              <ButtonContainer>
-                <Button
-                  content="Cancelar"
-                  cta={false}
-                  action={() => setOpenEditModal(false)}
-                />
-                <Button
-                  content="Guardar Cambios"
-                  disabled={!allowClick}
-                  cta
-                  action={() => authenticate("edit")}
-                />
-              </ButtonContainer>
-            </EventDataEdit>
-          )}
-        </Modal>
-      )}
+            </div>
+          </EventDataEdit>
+        )}
+      </Modal>
+
       <AdvisoryEvent
         onClick={() => {
           setEventDataModal(event)
