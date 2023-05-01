@@ -41,8 +41,6 @@ function EventSelected({
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const gapi = typeof window !== "undefined" && window.gapi
-  // const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
-  // const SCOPES = "https://www.googleapis.com/auth/calendar"
 
   const { confirm } = Modal
 
@@ -293,7 +291,6 @@ function EventSelected({
                     eventDataEdited.hour === ""
                   ) {
                     setRequiredError(true)
-                    console.log("aca")
                   } else {
                     authenticate(gapi, () => editEventFunction())
                   }

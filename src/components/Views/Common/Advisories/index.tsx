@@ -5,7 +5,6 @@ import { AdvisoryInterface } from "interfaces/content/Advisories"
 import { AdvisoriesContext } from "contexts/Advisories"
 import { getAdvisories } from "services/advisories/advisories.service"
 import { getEventsByMonth } from "services/advisories/events.service"
-import { FaCalendarWeek } from "react-icons/fa"
 import formatDateToCompare, {
   stringToDate,
 } from "helpers/dates/formatDateToCompare"
@@ -26,7 +25,6 @@ import {
   DateInfo,
   CalendarInfo,
   NavigateButtons,
-  ScheduleAdvisory,
   CalendarDisplay,
   DateView,
   Days,
@@ -58,10 +56,6 @@ function AdvisoriesView() {
 
   const [currentMonth, setCurrentMonth] = useState<number>(today.getMonth() + 1)
   const [currentYear, setCurrentYear] = useState<number>(today.getFullYear())
-
-  const [requestAdvisoryModal, setRequestAdvisoryModal] = useState<boolean>(
-    false,
-  )
 
   const [updateList, setUpdateList] = useState<number>(0)
 
@@ -186,10 +180,9 @@ function AdvisoriesView() {
             </DateInfo>
 
             {userData?.type === "client" ? (
-              <ScheduleAdvisory onClick={() => setRequestAdvisoryModal(true)}>
-                <FaCalendarWeek />
-                Solicitar asesoria
-              </ScheduleAdvisory>
+              <RequestAdvisory
+                updateList={() => setUpdateList(updateList + 1)}
+              />
             ) : (
               <div className="admin-buttons">
                 <CreateEvent updateList={() => setUpdateList(updateList + 1)} />
@@ -240,14 +233,14 @@ function AdvisoriesView() {
           </CalendarDisplay>
         </Calendar>
 
-        {requestAdvisoryModal && (
+        {/* {requestAdvisoryModal && (
           <RequestAdvisory
             close={() => {
               setRequestAdvisoryModal(false)
               setUpdateList(updateList + 1)
             }}
           />
-        )}
+        )} */}
       </Container>
     </>
   )

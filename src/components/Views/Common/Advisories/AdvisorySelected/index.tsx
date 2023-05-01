@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 import { AdvisoriesContext } from "contexts/Advisories"
-import { GrFormClose } from "react-icons/gr"
-import { BsCalendar3 } from "react-icons/bs"
+import { CalendarOutlined } from "@ant-design/icons"
 import {
   getAdvisoryData,
   changeAdvisoryStatus,
@@ -12,12 +11,10 @@ import InternalServerError from "@components/Views/Common/Error/InternalServerEr
 import authenticate from "helpers/google/authenticate"
 import createEventFunction from "helpers/google/createEvent"
 import getMeetURL from "helpers/google/getMeetURL"
-import Modal from "components/UI/Modal"
-import ModalStatus from "components/UI/ModalStatus"
-import Button from "components/UI/Button"
+import { Modal, Button } from "antd"
 import { AdvisoryInterface } from "interfaces/content/Advisories"
 import { AdvisoryEvent } from "../styles"
-import { ModalContent, Title } from "./styles"
+import { ModalContent } from "./styles"
 
 function AdvisorySelected({
   event,
@@ -39,7 +36,20 @@ function AdvisorySelected({
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
   const [canJoinEvent, setCanJoinEvent] = useState<boolean>(false)
-  const [modalSuccess, setModalSuccess] = useState<boolean>(false)
+
+  const success = () => {
+    Modal.success({
+      content: "Accion realizada con exito",
+      onOk() {
+        setOpenModalEvent(false)
+        if (router.query.id !== undefined) {
+          delete router.query.id
+          router.push(router)
+        }
+        updateList()
+      },
+    })
+  }
 
   const getByURL = async () => {
     const getAdvisoriesCall = await getAdvisoryData(
@@ -109,8 +119,11 @@ function AdvisorySelected({
       advisoryData,
     )
 
-    setModalSuccess(changeAdvisoryStatusCall.status === 201)
-    setServerError(changeAdvisoryStatusCall.status !== 201)
+    if (changeAdvisoryStatusCall.status === 201) {
+      success()
+    } else {
+      setServerError(true)
+    }
   }
 
   useEffect(() => {
@@ -148,98 +161,72 @@ function AdvisorySelected({
         visible={serverErrorModal}
         changeVisibility={() => setServerErrorModal(false)}
       />
-      {openModalEvent && (
-        <Modal>
-          <ModalContent>
-            {modalSuccess && (
-              <ModalStatus
-                title="Excelente!"
-                description="La asesoria se ha modificado exitosamente"
-                status="success"
-                selfClose
-                selfCloseAction={() => {
-                  setModalSuccess(false)
-                  setOpenModalEvent(false)
-                  if (router.query.id !== undefined) {
-                    delete router.query.id
-                    router.push(router)
-                  }
-                  updateList()
-                }}
-              />
-            )}
-            <div className="modal-head">
-              <Title>
-                Asesoria con: <span>{eventData.clientName}</span>
-              </Title>
-              <button
-                type="button"
-                onClick={() => {
-                  setOpenModalEvent(false)
-                  if (router.query.id !== undefined) {
-                    delete router.query.id
-                    router.push(router)
-                  }
-                }}
-              >
-                <GrFormClose />
-              </button>
-            </div>
-            <span className="date-data">
-              <BsCalendar3 />
-              {eventData.date.replaceAll("-", "/")} - {eventData.hour} hs
-            </span>
-            <p>
-              <b>Descripcion:</b> {eventData.brief}
-            </p>
-            {eventData.status === "pending" && (
-              <div className="button-container">
+      <Modal
+        title={`Asesoria con: ${eventData.clientName}`}
+        open={openModalEvent}
+        onCancel={() => {
+          setOpenModalEvent(false)
+          if (router.query.id !== undefined) {
+            delete router.query.id
+            router.push(router)
+          }
+        }}
+        footer={[
+          eventData.status === "pending" && (
+            <>
+              <Button onClick={() => changeStatus("cancel")}>
+                Cancelar Asesoria
+              </Button>
+              {userData?.type === "admin" && (
                 <Button
-                  content="Cancelar Asesoria"
-                  cta={false}
-                  action={() => changeStatus("cancel")}
-                />
-                {userData?.type === "admin" && (
-                  <Button
-                    content="Confirmar Asesoria"
-                    cta
-                    disabled={!allowClick}
-                    action={() =>
-                      authenticate(gapi, () => changeStatus("confirm"))
-                    }
-                  />
-                )}
-              </div>
-            )}
-            {eventData.status === "confirmed" && (
-              <div className="button-container">
+                  type="primary"
+                  disabled={!allowClick}
+                  onClick={() =>
+                    authenticate(gapi, () => changeStatus("confirm"))
+                  }
+                >
+                  Confirmar Asesoria
+                </Button>
+              )}
+            </>
+          ),
+          eventData.status === "confirmed" && (
+            <>
+              <Button onClick={() => changeStatus("cancel")}>
+                Cancelar Asesoria
+              </Button>
+              {canJoinEvent ? (
                 <Button
-                  content="Cancelar Asesoria"
-                  cta={false}
-                  action={() => changeStatus("cancel")}
-                />
-                {canJoinEvent ? (
-                  <Button
-                    content="Unirme"
-                    cta
-                    action={() =>
-                      authenticate(gapi, () =>
-                        getMeetURL(eventData.eventURL, gapi),
-                      )
-                    }
-                  />
-                ) : (
-                  <Button
-                    content="Ver en google calendar"
-                    cta
-                    action={() => window.open(event.eventURL)}
-                  />
-                )}
-              </div>
-            )}
-          </ModalContent>
-        </Modal>
-      )}
+                  type="primary"
+                  onClick={() =>
+                    authenticate(gapi, () =>
+                      getMeetURL(eventData.eventURL, gapi),
+                    )
+                  }
+                >
+                  Unirme
+                </Button>
+              ) : (
+                <Button
+                  type="primary"
+                  onClick={() => window.open(event.eventURL)}
+                >
+                  Ver en google calendar
+                </Button>
+              )}
+            </>
+          ),
+        ]}
+      >
+        <ModalContent>
+          <span className="date-data">
+            <CalendarOutlined />
+            {eventData.date.replaceAll("-", "/")} - {eventData.hour} hs
+          </span>
+          <p>Descripcion: {eventData.brief}</p>
+        </ModalContent>
+      </Modal>
+
       <AdvisoryEvent
         type="button"
         eventType="advisory"

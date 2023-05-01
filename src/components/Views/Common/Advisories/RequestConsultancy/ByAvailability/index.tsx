@@ -9,14 +9,16 @@ import {
   AdvisoryInterface,
   AdvisoryAvailavilityInterface,
 } from "interfaces/content/Advisories"
-import ModalStatus from "components/UI/ModalStatus"
-import InputSelect from "components/UI/InputSelect"
-import Input from "components/UI/Input"
-import Button from "components/UI/Button"
+import dayjs from "dayjs"
+import customParseFormat from "dayjs/plugin/customParseFormat"
+import { Input, Select, Button, Modal, DatePicker } from "antd"
+
 import { listHours, keysOfDays } from "const/dates"
 import { NoAvailability } from "../styles"
 
 type AdminType = { id: number; userName: string; email: string }
+
+dayjs.extend(customParseFormat)
 
 function SearchByAvailability({
   adminList,
@@ -29,22 +31,35 @@ function SearchByAvailability({
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
+  const dateFormat = "DD/MM/YYYY"
+  const { TextArea } = Input
+
+  const success = () => {
+    Modal.success({
+      title: "Excelente!",
+      content: "Tu solicitud se ha enviado con exito",
+      onOk() {
+        close()
+      },
+    })
+  }
+
   const [searchValues, setSearchValues] = useState<{
     date: string
     hour: { id: number; value: string }
   }>({
     date: "",
-    hour: listHours[0],
+    hour: { id: 0, value: "" },
   })
   const [disableRequestButton, setDisableRequestButton] = useState<boolean>(
     true,
   )
 
-  const [success, setSuccess] = useState<boolean>(false)
-
   const [canRequest, setCanRequest] = useState<boolean>(false)
 
   const [requiredFiledsError, setRequiredFiledsError] = useState<boolean>(false)
+  const [loadingReq, setLoadingReq] = useState<boolean>(false)
+  const [loadingSearch, setLoadingSearch] = useState<boolean>(false)
 
   const [brief, setBrief] = useState<string>("")
 
@@ -63,6 +78,7 @@ function SearchByAvailability({
   }>()
 
   const searchAvailabilityByTime = async () => {
+    setLoadingSearch(true)
     let adminsAvailableForAdvisory = adminList
     setCanRequest(true)
 
@@ -106,6 +122,7 @@ function SearchByAvailability({
           adminsAvailableForAdvisory = list
         }
       }
+      setLoadingSearch(false)
     } else {
       setServerError(true)
     }
@@ -162,14 +179,6 @@ function SearchByAvailability({
       setAdminsAvailable(finalListOfAdmins)
 
       setNoResults(finalListOfAdmins.length === 0)
-      setAdminSelected(
-        finalListOfAdmins.length
-          ? {
-              id: finalListOfAdmins[0].id,
-              value: finalListOfAdmins[0].userName,
-            }
-          : undefined,
-      )
     } else {
       setServerError(true)
     }
@@ -185,6 +194,7 @@ function SearchByAvailability({
   }
 
   const requestAdvisoryCall = async () => {
+    setLoadingReq(true)
     const requestAdvisoryData: AdvisoryInterface = {
       adminId: adminSelected?.id as number,
       clientId: userData.id as number,
@@ -197,50 +207,71 @@ function SearchByAvailability({
     }
 
     const requestAdvisoryReq = await requestAdvisory(requestAdvisoryData)
-    setSuccess(requestAdvisoryReq.status === 201)
-    setServerError(requestAdvisoryReq.status !== 201)
+    if (requestAdvisoryReq.status === 201) {
+      setLoadingReq(false)
+
+      success()
+    } else {
+      setServerError(true)
+    }
   }
 
   return (
     <>
-      {success && (
-        <ModalStatus
-          title="Excelente!"
-          description="La solicitud ha sido enviada con exito, en estos dias recibiras una respuesta."
-          status="success"
-          selfClose
-          selfCloseAction={() => {
-            setSuccess(false)
-            close()
-          }}
-        />
-      )}
-
       {requiredFiledsError && (
-        <p className="req-fields">*Completa los campos requeridos</p>
+        <p style={{ color: "#c12929" }} className="req-fields">
+          *Completa los campos requeridos
+        </p>
       )}
-      <div className="sub-container">
-        <Input
-          label="Fecha"
-          placeholder="dd/mm/aaaa"
-          width={185}
-          required
-          type="text"
-          onChange={e => {
-            setSearchValues({ ...searchValues, date: e.target.value })
-            setDisableRequestButton(true)
-            setCanRequest(false)
-            setAdminsAvailable([])
-            setNoResults(false)
+      <div
+        className="sub-container"
+        style={{
+          paddingTop: "15px",
+          display: "flex",
+          gap: "10px",
+        }}
+      >
+        <DatePicker
+          placeholder="Fecha"
+          defaultValue={dayjs("01/01/2023", dateFormat)}
+          status={
+            requiredFiledsError && searchValues.date === "" ? "error" : ""
+          }
+          style={{ width: "250px" }}
+          format={dateFormat}
+          onChange={(e: any) => {
+            if (e !== null) {
+              const day = e.$D > 9 ? e.$D : `0${e.$D}`
+              const month = e.$M + 1 > 9 ? e.$M + 1 : `0${e.$M + 1}`
+
+              setSearchValues({
+                ...searchValues,
+                date: `${day}/${month}/${e.$y}`,
+              })
+              setDisableRequestButton(true)
+              setCanRequest(false)
+              setAdminsAvailable([])
+              setNoResults(false)
+            }
           }}
         />
 
-        <InputSelect
-          label="Seleccionar horario"
-          required
-          width={180}
-          onClick={e => {
-            setSearchValues({ ...searchValues, hour: e })
+        <Select
+          placeholder="Horario"
+          style={{ width: "90px" }}
+          status={
+            requiredFiledsError && searchValues.hour.value === "" ? "error" : ""
+          }
+          defaultValue={searchValues?.hour.value}
+          onChange={(e: string) => {
+            const filterHours = listHours.filter(hour => hour.value === e)
+            setSearchValues({
+              ...searchValues,
+              hour: {
+                id: filterHours[0].id,
+                value: e,
+              },
+            })
             setDisableRequestButton(true)
             setCanRequest(false)
             setAdminsAvailable([])
@@ -249,41 +280,49 @@ function SearchByAvailability({
           options={listHours}
         />
       </div>
-      <Input
-        label="Breve descripcion de la asesoria"
-        width={360}
-        required
-        type="textarea"
-        onChange={e => {
-          setBrief(e.target.value)
-        }}
-      />
 
-      {adminsAvailable.length ? (
-        <InputSelect
-          label="Seleccionar asesor"
-          required
-          width={380}
-          options={cleanOptions()}
-          onClick={(e: { id: number; value: string }) => {
-            setAdminSelected(e)
-          }}
+      <div style={{ paddingTop: "15px" }}>
+        <TextArea
+          rows={2}
+          placeholder="Breve descripcion de la asesoria"
+          value={brief}
+          style={{ width: 350 }}
+          status={requiredFiledsError && brief === "" ? "error" : ""}
+          onChange={e => setBrief(e.target.value)}
         />
-      ) : (
-        <></>
-      )}
+      </div>
+      <div style={{ paddingTop: "15px" }}>
+        {adminsAvailable.length ? (
+          <Select
+            placeholder="Seleccionar asesor"
+            style={{ width: "350px" }}
+            status={
+              requiredFiledsError && adminSelected === undefined ? "error" : ""
+            }
+            onChange={(e: string) => {
+              const options = cleanOptions()
+              const filterAdmins = options.filter(admin => admin.value === e)
+              setAdminSelected(filterAdmins[0])
+            }}
+            options={cleanOptions()}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
+
       {noResults && (
         <NoAvailability>
           No hay disponibilidad
           <span>Intenta con otra fecha u horario</span>
         </NoAvailability>
       )}
-      {disableRequestButton && (
-        <div className="req-button">
+      <div className="req-button" style={{ paddingTop: "15px" }}>
+        {disableRequestButton && (
           <Button
-            content="Consulta asesores disponibles"
-            cta
-            action={() => {
+            loading={loadingSearch}
+            type="primary"
+            onClick={() => {
               if (searchValues.date.split("/").length === 3) {
                 searchAvailabilityByTime()
                 setDisableRequestButton(false)
@@ -292,22 +331,31 @@ function SearchByAvailability({
                 setRequiredFiledsError(true)
               }
             }}
-          />
-        </div>
-      )}
-      {canRequest && !noResults && (
-        <Button
-          content="Solicitar asesoria"
-          cta
-          action={() => {
-            if (brief !== "") {
-              requestAdvisoryCall()
-            } else {
-              setRequiredFiledsError(true)
-            }
-          }}
-        />
-      )}
+          >
+            Consulta asesores disponibles
+          </Button>
+        )}
+        {canRequest && !noResults && (
+          <Button
+            loading={loadingReq}
+            type="primary"
+            onClick={() => {
+              if (
+                brief !== "" &&
+                searchValues.date !== "" &&
+                searchValues.hour.value !== "" &&
+                adminSelected !== undefined
+              ) {
+                requestAdvisoryCall()
+              } else {
+                setRequiredFiledsError(true)
+              }
+            }}
+          >
+            Solicitar asesoria
+          </Button>
+        )}
+      </div>
     </>
   )
 }
