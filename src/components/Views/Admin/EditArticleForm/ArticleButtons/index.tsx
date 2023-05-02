@@ -1,9 +1,7 @@
-/* eslint-disable no-console */
 import React, { useState, useContext } from "react"
 import { ArticlesContext } from "contexts/Articles"
 import texts from "strings/articles.json"
-import ModalStatus from "components/UI/ModalStatus"
-import Button from "components/UI/Button"
+import { Button, Modal } from "antd"
 import getFiles from "helpers/media/getFiles"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { dateFormated } from "helpers/dates/getToday"
@@ -30,14 +28,23 @@ function ArticleButtons({
   } = useContext(ArticlesContext)
 
   const [warningMessage, setWarningMessage] = useState<string>("")
-  const [editedArticle, setEditedArticle] = useState<boolean>(false)
   const [serverError, setServerError] = useState<boolean>(false)
+
+  const success = () => {
+    Modal.success({
+      title: "Excelente",
+      content: " El artículo se ha editado correctamente.",
+      onOk() {
+        updateList()
+      },
+    })
+  }
 
   const canPreview =
     articleEdited.title !== "" &&
     articleEdited.description !== "" &&
     articleEdited.subtitle !== "" &&
-    articleEdited.regionFilters.length &&
+    articleEdited.regionFilters.length > 0 &&
     articleEdited.article !== "" &&
     articleEdited.author !== "" &&
     portrait !== null
@@ -63,7 +70,7 @@ function ArticleButtons({
   }
 
   const publishArticle = async () => {
-    let success: boolean = false
+    let successAction: boolean = false
 
     if (portrait !== null) {
       const userData = JSON.parse(localStorage.getItem("userData") as string)
@@ -91,7 +98,7 @@ function ArticleButtons({
       }
 
       const editArticleCall = await editArticle(data)
-      success = editArticleCall.status === 201
+      successAction = editArticleCall.status === 201
 
       for (let i = 0; i < newAttachmentsForServer.length; i += 1) {
         const fileData = saveFile(i)
@@ -104,14 +111,17 @@ function ArticleButtons({
 
           // eslint-disable-next-line no-await-in-loop
           const postFile: any = await sendFile(formData)
-          success = postFile.status === 200
+          successAction = postFile.status === 200
           setServerError(postFile.status !== 200)
         }
       }
     }
 
-    setEditedArticle(success)
-    setServerError(!success)
+    if (successAction) {
+      success()
+    } else {
+      setServerError(false)
+    }
   }
 
   return (
@@ -120,31 +130,13 @@ function ArticleButtons({
         visible={serverError}
         changeVisibility={() => setServerError(false)}
       />
-      {editedArticle && (
-        <ModalStatus
-          title={texts.newArticleForm.success.title}
-          description={texts.newArticleForm.success.description}
-          status="success"
-          selfClose
-          selfCloseAction={updateList}
-        />
-      )}
+
       {warningMessage !== "" && (
         <WarningMessage>{warningMessage}</WarningMessage>
       )}
+      <Button onClick={closeForm}>{texts.newArticleForm.discard}</Button>
       <Button
-        content={texts.newArticleForm.discard}
-        cta={false}
-        action={closeForm}
-      />
-      <Button
-        content={
-          !previsualizeEdit
-            ? `${texts.newArticleForm.visualize}`
-            : `${texts.newArticleForm.edit}`
-        }
-        cta={false}
-        action={() => {
+        onClick={() => {
           if (canPreview) {
             setPrevisualizeEdit(!previsualizeEdit)
             setWarningMessage("")
@@ -152,11 +144,14 @@ function ArticleButtons({
             setWarningMessage(texts.newArticleForm.requiredMessage)
           }
         }}
-      />
+      >
+        {!previsualizeEdit
+          ? `${texts.newArticleForm.visualize}`
+          : `${texts.newArticleForm.edit}`}
+      </Button>
       <Button
-        content={texts.newArticleForm.publish}
-        cta
-        action={() => {
+        type="primary"
+        onClick={() => {
           if (canPreview) {
             publishArticle()
             setWarningMessage("")
@@ -164,7 +159,9 @@ function ArticleButtons({
             setWarningMessage(texts.newArticleForm.requiredMessage)
           }
         }}
-      />
+      >
+        {texts.newArticleForm.publish}
+      </Button>
     </ActionButtons>
   )
 }

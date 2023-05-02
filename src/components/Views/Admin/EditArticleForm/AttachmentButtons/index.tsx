@@ -7,15 +7,18 @@ import React, {
 } from "react"
 import { ArticlesContext } from "contexts/Articles"
 import texts from "strings/articles.json"
-import { AiOutlinePaperClip, AiOutlineEye } from "react-icons/ai"
-import { BsFillPlayFill } from "react-icons/bs"
 import { AttachmentInterface, ExtensionType } from "interfaces/content/Article"
 import getPortraitName from "helpers/media/getPortraitName"
-import Tooltip from "components/UI/Tooltip"
-import Icon from "components/UI/Assets/Icon"
+import { Button, Tooltip } from "antd"
+import {
+  PaperClipOutlined,
+  FileImageOutlined,
+  CaretRightOutlined,
+  EyeOutlined,
+} from "@ant-design/icons"
 import ModalAttachedFiles from "./ModalAttachedFiles"
 import ModalVideos from "./ModalVideos"
-import { ActionButtons, IconButton } from "../../CreateArticleForm/styles"
+import { ActionButtons } from "../../CreateArticleForm/styles"
 
 function AttachmentButton() {
   const {
@@ -102,7 +105,10 @@ function AttachmentButton() {
   return (
     <ActionButtons>
       <Tooltip title={texts.newArticleForm.attachFile}>
-        <IconButton onClick={() => handleClick("file")}>
+        <Button
+          onClick={() => handleClick("file")}
+          icon={<PaperClipOutlined />}
+        >
           <input
             ref={hiddenFileInput}
             style={{ display: "none" }}
@@ -111,11 +117,14 @@ function AttachmentButton() {
             onChange={e => handleFileChange(e, "file")}
             accept=".pdf"
           />
-          <AiOutlinePaperClip />
-        </IconButton>
+        </Button>
       </Tooltip>
+
       <Tooltip title={texts.newArticleForm.attachImage}>
-        <IconButton onClick={() => handleClick("image")}>
+        <Button
+          onClick={() => handleClick("image")}
+          icon={<FileImageOutlined />}
+        >
           <input
             ref={hiddenImageInput}
             style={{ display: "none" }}
@@ -124,19 +133,20 @@ function AttachmentButton() {
             onChange={e => handleFileChange(e, "image")}
             accept="image/png, image/jpeg, image/jpg"
           />
-          <Icon icon="IconImage" />
-        </IconButton>
+        </Button>
       </Tooltip>
+
       <Tooltip title={texts.newArticleForm.attachVideo}>
-        <IconButton onClick={() => setAddVideoURL(true)}>
-          <BsFillPlayFill />
-        </IconButton>
+        <Button onClick={() => setAddVideoURL(true)}>
+          <CaretRightOutlined />
+        </Button>
       </Tooltip>
+
       {newAttachmentsForDataBase.length ? (
         <Tooltip title={texts.newArticleForm.seeAttachments}>
-          <IconButton onClick={() => setShowAttachedFiles(true)}>
-            <AiOutlineEye />
-          </IconButton>
+          <Button onClick={() => setShowAttachedFiles(true)}>
+            <EyeOutlined />
+          </Button>
         </Tooltip>
       ) : (
         <></>

@@ -245,9 +245,8 @@ function ArticleBody(props: Props) {
                 {typeof queries !== "undefined" && userData.type === "admin" && (
                   <Buttons>
                     <Tooltip title="Editar">
-                      <button
-                        type="button"
-                        className="edit"
+                      <Button
+                        type="primary"
                         onClick={() => {
                           setArticleSelected(data)
                           setModalEdit(true)
@@ -255,9 +254,8 @@ function ArticleBody(props: Props) {
                           router.query.edition = "true"
                           router.push(router)
                         }}
-                      >
-                        <EditOutlined />
-                      </button>
+                        icon={<EditOutlined />}
+                      />
                     </Tooltip>
                     <Tooltip title="Eliminar">
                       <Button
