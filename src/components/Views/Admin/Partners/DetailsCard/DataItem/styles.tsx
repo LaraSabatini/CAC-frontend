@@ -10,8 +10,7 @@ const Item = styled.div`
     margin: 0;
     font-family: ${theme.fonts.extra};
     font-weight: ${theme.fontWeights.regular};
-    font-size: ${theme.fontSizes.s};
-    line-height: 21px;
+    font-size: ${theme.fontSizes.xs};
   }
 
   .value {

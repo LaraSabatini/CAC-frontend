@@ -1,24 +1,45 @@
 import React, { useContext } from "react"
 import { ClientsContext } from "contexts/Clients"
+import { PaymentContext } from "contexts/Payment"
 import capitalizeFirstLetter from "helpers/formatting/capitalizeFirstLetter"
 import identificationTypes from "const/identificationTypes"
 import texts from "strings/payment.json"
 import regionOptions from "const/regions"
-import Input from "components/UI/Input"
-import InputSelect from "components/UI/InputSelect"
+import { Input, Select, Tooltip, DatePicker } from "antd"
+import dayjs from "dayjs"
+import customParseFormat from "dayjs/plugin/customParseFormat"
+
 import { HorizontalGroup, InputContainer } from "../styles"
 
+dayjs.extend(customParseFormat)
+
 function Inputs() {
+  const dateFormat = "DD/MM/YYYY"
+
   const { newClient, setNewClient } = useContext(ClientsContext)
+  const { formError } = useContext(PaymentContext)
+
+  const validateError = (key: string) => {
+    return formError !== "" && newClient[key as keyof typeof newClient] === ""
+      ? "error"
+      : ""
+  }
+
+  const amountOfBuildings = [
+    { id: 222, value: "1 a 5" },
+    { id: 223, value: "5 a 10" },
+    { id: 224, value: "10 a 20" },
+    { id: 225, value: "+ de 20" },
+  ]
 
   return (
     <InputContainer>
       <HorizontalGroup>
         <Input
-          width={230}
-          label={texts.form.name}
+          placeholder="Nombre*"
           required
-          type="text"
+          status={validateError("name")}
+          style={{ width: 215 }}
           onChange={e => {
             const name = capitalizeFirstLetter(e.target.value)
             setNewClient({
@@ -28,10 +49,9 @@ function Inputs() {
           }}
         />
         <Input
-          width={230}
-          label={texts.form.surname}
-          required
-          type="text"
+          placeholder="Apellido*"
+          status={validateError("lastName")}
+          style={{ width: 215 }}
           onChange={e => {
             const lastName = capitalizeFirstLetter(e.target.value)
             setNewClient({
@@ -42,23 +62,23 @@ function Inputs() {
         />
       </HorizontalGroup>
       <HorizontalGroup>
-        <InputSelect
-          label={texts.form.identificationType}
-          width={230}
-          options={identificationTypes}
-          required
-          onClick={(e: { id: number; value: string }) => {
+        <Select
+          defaultValue={identificationTypes[0].value}
+          placeholder={texts.form.identificationType}
+          style={{ width: 215 }}
+          status={validateError("identificationType")}
+          onChange={e =>
             setNewClient({
               ...newClient,
-              identificationType: e.value,
+              identificationType: e,
             })
-          }}
+          }
+          options={identificationTypes}
         />
         <Input
-          width={230}
-          label={texts.form.identificationNumber}
-          required
-          type="text"
+          placeholder={texts.form.identificationNumber}
+          style={{ width: 215 }}
+          status={validateError("identificationNumber")}
           onChange={e =>
             setNewClient({
               ...newClient,
@@ -69,66 +89,117 @@ function Inputs() {
       </HorizontalGroup>
       <HorizontalGroup>
         <Input
-          width={230}
-          label={texts.form.email}
-          required
-          type="email"
-          onChange={e => {
+          placeholder={texts.form.email}
+          style={{ width: 215 }}
+          status={validateError("email")}
+          onChange={e =>
             setNewClient({
               ...newClient,
               email: e.target.value,
             })
-          }}
+          }
         />
-        <Input
-          width={100}
-          label={texts.form.areaCode}
-          required
-          type="number"
-          onChange={e => {
-            setNewClient({
-              ...newClient,
-              phoneAreaCode: e.target.value,
-            })
-          }}
-        />
-        <Input
-          width={150}
-          label={texts.form.phone}
-          required
-          type="number"
-          onChange={e => {
-            setNewClient({
-              ...newClient,
-              phoneNumber: e.target.value,
-            })
-          }}
-        />
+
+        <div className="sub">
+          <Tooltip
+            trigger={["focus"]}
+            title={texts.form.areaCode}
+            placement="topLeft"
+            overlayClassName="numeric-input"
+          >
+            <Input
+              placeholder={texts.form.areaCode}
+              style={{ width: 60 }}
+              status={validateError("phoneAreaCode")}
+              onChange={e => {
+                setNewClient({
+                  ...newClient,
+                  phoneAreaCode: e.target.value,
+                })
+              }}
+            />
+          </Tooltip>
+          <Input
+            placeholder={texts.form.phone}
+            style={{ width: 140 }}
+            status={validateError("phoneNumber")}
+            onChange={e =>
+              setNewClient({
+                ...newClient,
+                phoneNumber: e.target.value,
+              })
+            }
+          />
+        </div>
       </HorizontalGroup>
       <HorizontalGroup>
-        <InputSelect
-          label="Region"
-          width={230}
-          options={regionOptions}
-          required
-          onClick={(e: { id: number; value: string }) => {
+        <Select
+          placeholder="Región"
+          defaultValue={regionOptions[0].value}
+          style={{ width: 215 }}
+          status={validateError("region")}
+          onChange={e => {
             setNewClient({
               ...newClient,
-              region: e.id,
+              region: e,
             })
           }}
+          options={regionOptions}
         />
         <Input
-          width={230}
-          label="Matricula"
-          required
-          type="text"
-          onChange={e => {
+          placeholder="Matrícula"
+          style={{ width: 215 }}
+          onChange={e =>
             setNewClient({
               ...newClient,
               realEstateRegistration: e.target.value,
             })
+          }
+        />
+      </HorizontalGroup>
+      <HorizontalGroup>
+        <DatePicker
+          placeholder="Fecha de nacimiento"
+          style={{ width: 215 }}
+          format={dateFormat}
+          onChange={(e: any) => {
+            if (e !== null) {
+              const day = e.$D > 9 ? e.$D : `0${e.$D}`
+              const month = e.$M + 1 > 9 ? e.$M + 1 : `0${e.$M + 1}`
+
+              setNewClient({
+                ...newClient,
+                birthdate: `${day}-${month}-${e.$y}`,
+              })
+            }
           }}
+        />
+        <DatePicker
+          placeholder="Inicio de actividad"
+          style={{ width: 215 }}
+          format={dateFormat}
+          onChange={(e: any) => {
+            if (e !== null) {
+              const day = e.$D > 9 ? e.$D : `0${e.$D}`
+              const month = e.$M + 1 > 9 ? e.$M + 1 : `0${e.$M + 1}`
+
+              setNewClient({
+                ...newClient,
+                activityStartDate: `${day}-${month}-${e.$y}`,
+              })
+            }
+          }}
+        />
+        <Select
+          placeholder="Cantidad actual de edificios"
+          style={{ width: 215 }}
+          onChange={e =>
+            setNewClient({
+              ...newClient,
+              amountOfBuildings: e,
+            })
+          }
+          options={amountOfBuildings}
         />
       </HorizontalGroup>
     </InputContainer>

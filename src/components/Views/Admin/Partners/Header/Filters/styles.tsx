@@ -3,13 +3,14 @@ import theme from "theme/index"
 
 const FilterContainer = styled.div`
   position: absolute;
-  background-color: #d6dfed;
+  background-color: #fffffff5;
+
   box-shadow: 0px 3px 6px #00000029; /* Not in the theme */
 
   right: 0;
   top: 125%;
   z-index: 100;
-  width: 210px;
+  width: 250px;
   padding: 10px;
   border-radius: 5px;
   font-family: ${theme.fonts.extra};
@@ -62,7 +63,8 @@ const FilterList = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  align-items: center;
+  gap: 20px;
   padding: 0 10px;
 `
 

@@ -25,7 +25,7 @@ function ContactSupportView() {
 
       const requestUnblockCall = await requestUnblock(
         {
-          recipients: ["sabatinilara@gmail.com"],
+          recipients: ["sabatinilara@gmail.com"], // CAMBIAR POR MAIL DEL ADMINISTRADOR
           name: "Administrador",
           clientName: clientName.replace("20%", " "),
           unblockURL: `${process.env.NEXT_PUBLIC_FRONT_URL}/contactSupport/unblock?id=${router.query.id}`,
@@ -63,7 +63,7 @@ function ContactSupportView() {
           </ButtonContainer>
         </>
       ) : (
-        <h1>Excelente! el email se envio correctamente</h1>
+        <h1>¡Excelente! El email se envió correctamente</h1>
       )}
     </Container>
   )

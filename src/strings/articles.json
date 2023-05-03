@@ -2,14 +2,14 @@
     "newArticleForm": {
         "title": "Nueva publicación",
         "labels": {
-            "title": "Titulo",
-            "titlePlaceholder": "Titulo de la publicación",
-            "subtitle": "Subtitulo",
-            "subtitlePlaceholder": "Subtitulo de la publicación",
+            "title": "Título",
+            "titlePlaceholder": "Título de la publicación",
+            "subtitle": "Subtítulo",
+            "subtitlePlaceholder": "Subtítulo de la publicación",
             "filters": "Filtros",
-            "region": "Region",
-            "theme": "Tematica",
-            "description": "Descripcion",
+            "region": "Región",
+            "theme": "Temática",
+            "description": "Descripción",
             "descriptionPlaceholder": "Resumen de la publicación",
             "fullArticle": "Texto completo",
             "fullArticlePlaceholder": "Texto de la publicación",
@@ -24,23 +24,23 @@
         "edit": "Editar",
         "publish": "Publicar",
         "card": "Carta",
-        "article": "Articulo",
+        "article": "Artículo",
         "deleteFile": "Borrar archivo",
         "attachedFiles": "Archivos adjuntos",
-        "requiredMessage": "Completa todos los campos obligatorios y agregar una portada.",
+        "requiredMessage": "Completa todos los campos obligatorios y agrega una portada.",
         "success": {
             "title": "Excelente",
-            "description": "El articulo se ha creado correctamente."
+            "description": "El artículo se ha creado correctamente."
         }
     },
     "author": "Publicado por",
     "deleteArticle": {
         "success": {
             "title": "Excelente",
-            "description": "El articulo se ha borrado con exito."
+            "description": "El artículo se ha borrado con exito."
         },
-        "title":"Estas seguro de que deseas eliminar el articulo",
-        "span": "Se elminaran todos los registros del mismo",
+        "title":"¿Estás seguro de que deseas eliminar el artículo?",
+        "span": "Se eliminarán todos los registros del mismo",
         "cancel": "Cancelar",
         "confirm": "Confirmar"
     }

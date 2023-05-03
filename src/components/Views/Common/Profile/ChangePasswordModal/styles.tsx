@@ -37,13 +37,11 @@ const ButtonContainer = styled.div`
   padding-top: 15px;
 `
 
-const Error = styled.p`
+const ErrorMessage = styled.p`
   font-family: ${theme.fonts.content};
   color: ${theme.colors.red};
-  /* text-align: center; */
   margin: 0;
-  padding-top: 20px;
   font-size: ${theme.fontSizes.xs};
 `
 
-export { ModalContainer, InputContainer, ButtonContainer, Error }
+export { ModalContainer, InputContainer, ButtonContainer, ErrorMessage }

@@ -4,6 +4,6 @@ export interface TrainingsInterface {
   title: string
   author: string
   description: string
-  theme: number[]
-  region: number[]
+  theme: number[] | string
+  region: number[] | string
 }

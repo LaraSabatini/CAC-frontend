@@ -25,6 +25,7 @@ const CommentList = styled.div`
   gap: 10px;
   height: 300px;
   overflow: auto;
+  background-color: #fffffff5;
 `
 
 const Comment = styled.div`
@@ -59,24 +60,10 @@ const Comment = styled.div`
   }
 `
 
-const AddCommentButton = styled.button`
+const AddCommentButton = styled.div`
   position: absolute;
   bottom: 10px;
   right: 0;
-  cursor: pointer;
-
-  background-color: ${theme.colors.blue};
-  color: ${theme.colors.white};
-  font-family: ${theme.fonts.extra};
-  font-size: 14px;
-  padding: 10px 15px;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-
-  display: flex;
-  align-items: center;
-  gap: 10px;
 `
 
 export { CommentContainer, Title, CommentList, Comment, AddCommentButton }

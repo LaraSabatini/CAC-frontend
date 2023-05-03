@@ -2,11 +2,14 @@ import React, { useContext, useEffect, useState } from "react"
 import { getProfileData } from "services/auth/getProfileData.service"
 import { ClientsContext } from "contexts/Clients"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
-import regions from "const/regions"
+import { Button, Modal, Select, Space } from "antd"
+import {
+  sendAccountBlockedEmailNotification,
+  sendAccountUnblockedEmailNotification,
+} from "services/auth/blockedNotificationEmail.service"
+import blockAccount from "services/auth/blockAccount.service"
 import DataItem from "./DataItem"
-import ModalBlockUnblock from "../ModalBlockUnblock"
-
-import { Card, Title, ActionButton } from "./styles"
+import { Card, Title } from "./styles"
 
 function DetailsCard() {
   const { clientSelected, plans, profileData, setProfileData } = useContext(
@@ -15,6 +18,9 @@ function DetailsCard() {
 
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [serverError, setServerError] = useState<boolean>(false)
+  const [required, setRequired] = useState<boolean>(false)
+
+  const [loading, setLoading] = useState<boolean>(false)
 
   const getData = async () => {
     if (clientSelected !== null) {
@@ -29,9 +35,80 @@ function DetailsCard() {
 
   useEffect(() => {
     getData()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientSelected])
+
+  const success = () => {
+    Modal.success({
+      content: "Acción realizada con éxito",
+      onOk() {
+        setOpenModal(false)
+      },
+    })
+  }
+
+  const motives = [
+    { id: 1, value: "Incumplimiento de las normas de uso" },
+    { id: 2, value: "Otro" },
+  ]
+
+  const [motive, setMotive] = useState<string>()
+
+  const blockAction = async () => {
+    if (motive === undefined && profileData.accountBlocked === 0) {
+      setRequired(true)
+    } else if (profileData.accountBlocked === 0 && motive !== undefined) {
+      setLoading(true)
+      const blockAccountCall = await blockAccount(
+        profileData.id as number,
+        "block",
+      )
+
+      if (blockAccountCall.status === 201) {
+        const blockAccountEmail = await sendAccountBlockedEmailNotification(
+          {
+            recipients: [profileData.email],
+            name: profileData.name,
+            motive,
+          },
+          profileData.id as number,
+          `${profileData.name}%20${profileData.lastName}`,
+        )
+
+        if (blockAccountEmail.status === 201) {
+          setLoading(false)
+          success()
+        }
+
+        setServerError(blockAccountEmail.status !== 201)
+      } else {
+        setServerError(true)
+      }
+    } else if (profileData.accountBlocked === 1) {
+      setLoading(true)
+      const blockAccountCall = await blockAccount(
+        profileData.id as number,
+        "unblock",
+      )
+
+      if (blockAccountCall.status === 201) {
+        const unblockAccountEmail = await sendAccountUnblockedEmailNotification(
+          {
+            recipients: [profileData.email],
+            name: profileData.name,
+          },
+        )
+
+        if (unblockAccountEmail.status === 201) {
+          setLoading(false)
+          success()
+        }
+        setServerError(unblockAccountEmail.status !== 201)
+      } else {
+        setServerError(true)
+      }
+    }
+  }
 
   return (
     <Card>
@@ -46,20 +123,14 @@ function DetailsCard() {
             value="Nombre"
             content={`${profileData.name} ${profileData.lastName}`}
           />
-          <DataItem
-            value="Region"
-            content={
-              regions?.filter(region => profileData.region === region.id)[0]
-                ?.value
-            }
-          />
+          <DataItem value="Región" content={profileData.region} />
           <DataItem value="Mail" content={profileData.email} />
           <DataItem
-            value="Matricula"
+            value="Matrícula"
             content={profileData.realEstateRegistration}
           />
           <DataItem
-            value="Telefono"
+            value="Teléfono"
             content={`${profileData.phoneAreaCode} ${profileData.phoneNumber}`}
           />
           <DataItem
@@ -95,18 +166,52 @@ function DetailsCard() {
         </div>
       )}
       {profileData !== undefined && (
-        <ActionButton
-          action={profileData.accountBlocked === 1 ? "unblock" : "block"}
+        <Button
+          type="primary"
+          danger={profileData.accountBlocked !== 1}
           onClick={() => setOpenModal(true)}
         >
           {profileData.accountBlocked === 1 ? "Desbloquear" : "Bloquear"}
-        </ActionButton>
+        </Button>
       )}
-      {openModal && (
-        <ModalBlockUnblock
-          cancel={() => setOpenModal(false)}
-          action={profileData?.accountBlocked === 1 ? "unblock" : "block"}
-        />
+
+      {profileData !== undefined && (
+        <Modal
+          title={
+            profileData.accountBlocked === 1
+              ? `¿Estás seguro de que deseas desbloquear a ${profileData.name} ${profileData.lastName}?`
+              : `¿Estás seguro de que deseas bloquear a ${profileData.name} ${profileData.lastName}?`
+          }
+          open={openModal}
+          onOk={blockAction}
+          onCancel={() => {
+            setOpenModal(false)
+          }}
+          okText={profileData.accountBlocked === 0 ? "Bloquear" : "Desbloquear"}
+          cancelText="Cancelar"
+          confirmLoading={loading}
+        >
+          <p>
+            Al bloquearlo/desbloquearlo le llegará un mail al usuario
+            notificándolo de esta acción.
+          </p>
+          {profileData.accountBlocked === 0 ? (
+            <Space style={{ paddingTop: "15px" }}>
+              <Select
+                placeholder="Motivo de bloqueo"
+                style={{ width: 300 }}
+                onChange={value => {
+                  setMotive(value)
+                  setRequired(false)
+                }}
+                options={motives}
+                status={required ? "error" : ""}
+              />
+            </Space>
+          ) : (
+            <></>
+          )}
+        </Modal>
       )}
     </Card>
   )

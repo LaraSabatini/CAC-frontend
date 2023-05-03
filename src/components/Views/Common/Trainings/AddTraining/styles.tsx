@@ -2,9 +2,7 @@ import styled from "styled-components"
 import theme from "theme"
 
 const Container = styled.div`
-  background-color: ${theme.colors.white};
   width: 475px;
-  /* height: 375px; */
   border-radius: 18px;
   padding: 25px;
 
@@ -16,23 +14,22 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: column;
+`
 
+const InputContainer = styled.div`
   .required-error {
     margin: 0;
     color: ${theme.colors.red};
     font-family: ${theme.fonts.extra};
     font-weight: ${theme.fontWeights.medium};
     font-size: 12px;
-    padding-top: 10px;
+    padding-bottom: 10px;
   }
-`
-
-const InputContainer = styled.div`
-  padding-top: 20px;
 
   .sub-container {
     display: flex;
     gap: 20px;
+    padding-bottom: 20px;
   }
 `
 

@@ -1,10 +1,8 @@
 import React, { useState, useContext } from "react"
 import { ArticlesContext } from "contexts/Articles"
-import { BiMessageSquareAdd } from "react-icons/bi"
-import texts from "strings/header.json"
-import Tooltip from "components/UI/Tooltip"
+import { FolderAddOutlined } from "@ant-design/icons"
 import CreateArticleForm from "../CreateArticleForm"
-import AddButton from "./styles"
+import { Option } from "../../Common/Header/styles"
 
 function CreateArticleButton() {
   const { discardNewArticle } = useContext(ArticlesContext)
@@ -20,11 +18,11 @@ function CreateArticleButton() {
           }}
         />
       )}
-      <Tooltip title={texts.createArticle} placement="bottom-end">
-        <AddButton onClick={() => setOpenForm(true)}>
-          <BiMessageSquareAdd />
-        </AddButton>
-      </Tooltip>
+
+      <Option onClick={() => setOpenForm(true)}>
+        <FolderAddOutlined />
+        Crear artículo
+      </Option>
     </>
   )
 }

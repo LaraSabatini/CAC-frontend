@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react"
-import Button from "components/UI/Button"
+import { Button } from "antd"
 import texts from "strings/articles.json"
 import { ArticlesContext } from "contexts/Articles"
 import { ContentType } from "interfaces/content/Article"
@@ -50,30 +50,31 @@ function PrevisualizeArticle() {
 
     const filesToPreviewArray: DataPrevisualizerInterface[] = []
 
-    for (let i = 0; i < imagesAndFiles.length; i += 1) {
-      // eslint-disable-next-line no-await-in-loop
+    // eslint-disable-next-line no-restricted-syntax
+    for (const imageOfFile of imagesAndFiles) {
+      //  eslint-disable-next-line no-await-in-loop
       const findFile: any = await getFile(
-        imagesAndFiles[i].name,
-        imagesAndFiles[i].extension,
+        imageOfFile.name,
+        imageOfFile.extension,
       )
 
       if (findFile.data !== undefined) {
-        filesInDB.push(imagesAndFiles[i])
+        filesInDB.push(imageOfFile)
       } else {
-        newFiles.push(imagesAndFiles[i])
+        newFiles.push(imageOfFile)
       }
     }
 
-    for (let i = 0; i < filesInDB.length; i += 1) {
-      const URL = getFiles(filesInDB[i].name, filesInDB[i].extension)
+    filesInDB.forEach(fileInDB => {
+      const URL = getFiles(fileInDB.name, fileInDB.extension)
 
       filesToPreviewArray.push({
         uri: URL,
-        name: filesInDB[i].name,
-        extension: filesInDB[i].extension,
-        type: filesInDB[i].type,
+        name: fileInDB.name,
+        extension: fileInDB.extension,
+        type: fileInDB.type,
       })
-    }
+    })
 
     for (let i = 0; i < newFiles.length; i += 1) {
       filesToPreviewArray.push({
@@ -99,6 +100,7 @@ function PrevisualizeArticle() {
     )
 
     const docsArray: any = []
+
     for (let i = 0; i < newAttachmentsForServer.length; i += 1) {
       docsArray.push({ uri: URL.createObjectURL(newAttachmentsForServer[i]) })
     }
@@ -121,20 +123,24 @@ function PrevisualizeArticle() {
     <Container>
       <ButtonContainer>
         <Button
-          content={texts.newArticleForm.card}
-          cta={contentToShow === "card"}
-          action={() => setContentToShow("card")}
-        />
+          type={contentToShow === "card" ? "primary" : "default"}
+          onClick={() => setContentToShow("card")}
+        >
+          {texts.newArticleForm.card}
+        </Button>
         <Button
-          content={texts.newArticleForm.article}
-          cta={contentToShow === "content"}
-          action={() => setContentToShow("content")}
-        />
+          type={contentToShow === "content" ? "primary" : "default"}
+          onClick={() => setContentToShow("content")}
+        >
+          {texts.newArticleForm.article}
+        </Button>
+
         <Button
-          content={texts.newArticleForm.attachedFiles}
-          cta={contentToShow === "attachments"}
-          action={() => setContentToShow("attachments")}
-        />
+          type={contentToShow === "attachments" ? "primary" : "default"}
+          onClick={() => setContentToShow("attachments")}
+        >
+          {texts.newArticleForm.attachedFiles}
+        </Button>
       </ButtonContainer>
       <Content>
         {contentToShow === "card" && (

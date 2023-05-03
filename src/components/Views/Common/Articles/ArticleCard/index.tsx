@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 import { useRouter } from "next/router"
 import texts from "strings/dashboard.json"
-import Tooltip from "components/UI/Tooltip"
 import { ImLocation } from "react-icons/im"
 import { BsDot, BsBookmark, BsFillBookmarkFill } from "react-icons/bs"
 import { FaCalendarMinus, FaEye } from "react-icons/fa"
 import routes from "routes"
+import { Tooltip } from "antd"
 import ArticleInterface from "interfaces/content/Article"
 import regionFilters from "const/regions"
 import { dateFormated } from "helpers/dates/getToday"
@@ -68,8 +68,7 @@ function ArticleView({
         <ArticleDescription>{article.description}</ArticleDescription>
         <ButtonContainer>
           <Tooltip
-            title={`Articulo guardado por ${amountOfSavedTimes} usuario/s`}
-            placement="top-start"
+            title={`Artículo guardado por ${amountOfSavedTimes} usuario/s`}
           >
             <div className="saved-times">
               <BsFillBookmarkFill />{" "}
@@ -86,7 +85,7 @@ function ArticleView({
                 }
               }}
             >
-              <Tooltip title={texts.readArticle} placement="top-end">
+              <Tooltip title={texts.readArticle}>
                 <FaEye />
               </Tooltip>
             </OpenButton>
@@ -105,7 +104,6 @@ function ArticleView({
                 >
                   <Tooltip
                     title={!saved ? texts.saveArticle : texts.removeArticle}
-                    placement="top-end"
                   >
                     {saved ? <BsFillBookmarkFill /> : <BsBookmark />}
                   </Tooltip>

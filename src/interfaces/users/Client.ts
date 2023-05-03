@@ -11,12 +11,15 @@ interface ClientInterface extends UserInterface {
   subscription: number | null
   dateCreated: string
   plan: number | null
-  region: number
+  region: string
   paymentDate: string | null
   paymentExpireDate: string | null
   mpId: string
   savedArticles: number[] | string
   realEstateRegistration: string
+  activityStartDate: string
+  amountOfBuildings: string
+  birthdate: string
 }
 
 export default ClientInterface

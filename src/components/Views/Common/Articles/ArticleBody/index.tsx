@@ -1,22 +1,32 @@
 import React, { useEffect, useState, useContext } from "react"
 import { useRouter } from "next/router"
 import { ArticlesContext } from "contexts/Articles"
-import { getArticleById } from "services/articles/articles.service"
+import {
+  getArticleById,
+  deleteArticle,
+} from "services/articles/articles.service"
 import ArticleInterface, {
   CreatedByInterface,
 } from "interfaces/content/Article"
-import { TbPencil } from "react-icons/tb"
+// import { TbPencil } from "react-icons/tb"
+import { Modal, Button, Tooltip } from "antd"
+
+import {
+  EditOutlined,
+  DeleteOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons"
 import { ImLocation } from "react-icons/im"
-import { FaRegTrashAlt, FaCalendarMinus } from "react-icons/fa"
+import { FaCalendarMinus } from "react-icons/fa"
 import { BsDot } from "react-icons/bs"
 import regionFilters from "const/regions"
 import texts from "strings/articles.json"
-import Tooltip from "components/UI/Tooltip"
+// import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import MediaViewer from "components/UI/MediaViewer"
 import { dateFormated } from "helpers/dates/getToday"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
-import DeleteArticleModal from "./DeleteArticleModal"
+// import DeleteArticleModal from "./DeleteArticleModal"
 import EditArticleForm from "../../../Admin/EditArticleForm"
 import RelatedArticles from "./RelatedArticles"
 import {
@@ -52,6 +62,8 @@ type Props = CommonProps & ConditionalProps
 function ArticleBody(props: Props) {
   const { article, showImageVisualizer, queries } = props
 
+  const { confirm } = Modal
+
   const { setArticleSelected, discardArticleEdition } = useContext(
     ArticlesContext,
   )
@@ -68,7 +80,6 @@ function ArticleBody(props: Props) {
 
   const [articleParagraphs, setArticleParagraphs] = useState<string[]>([])
 
-  const [modalDelete, setModalDelete] = useState<boolean>(false)
   const [modalEdit, setModalEdit] = useState<boolean>(false)
 
   const [changesHistory, setChangesHistory] = useState<
@@ -122,6 +133,39 @@ function ArticleBody(props: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.articleId, refresh])
 
+  const success = () => {
+    Modal.success({
+      content: "Acción realizada con éxito",
+      onOk() {
+        router.replace("/dashboard")
+      },
+    })
+  }
+
+  const deleteArticleAction = async () => {
+    const deleteArticleReq = await deleteArticle(
+      parseInt(router.query.articleId as string, 10),
+    )
+
+    if (deleteArticleReq.status === 200) {
+      success()
+    } else {
+      setServerErrorModal(true)
+    }
+  }
+
+  const showDelete = () => {
+    confirm({
+      title: "¿Estás seguro de que deseas eliminar el artículo?",
+      icon: <ExclamationCircleFilled />,
+      onOk() {
+        deleteArticleAction()
+      },
+      okText: "Eliminar",
+      cancelText: "Cancelar",
+    })
+  }
+
   return (
     <div>
       <Container inModal={inModal}>
@@ -131,9 +175,9 @@ function ArticleBody(props: Props) {
         />
         {data !== undefined && (
           <LeftContainer>
-            {modalDelete && (
+            {/* {modalDelete && (
               <DeleteArticleModal cancel={() => setModalDelete(false)} />
-            )}
+            )} */}
             {modalEdit && (
               <EditArticleForm
                 closeForm={() => {
@@ -200,9 +244,8 @@ function ArticleBody(props: Props) {
                 {typeof queries !== "undefined" && userData.type === "admin" && (
                   <Buttons>
                     <Tooltip title="Editar">
-                      <button
-                        type="button"
-                        className="edit"
+                      <Button
+                        type="primary"
                         onClick={() => {
                           setArticleSelected(data)
                           setModalEdit(true)
@@ -210,18 +253,16 @@ function ArticleBody(props: Props) {
                           router.query.edition = "true"
                           router.push(router)
                         }}
-                      >
-                        <TbPencil />
-                      </button>
+                        icon={<EditOutlined />}
+                      />
                     </Tooltip>
                     <Tooltip title="Eliminar">
-                      <button
-                        type="button"
-                        className="delete"
-                        onClick={() => setModalDelete(true)}
-                      >
-                        <FaRegTrashAlt />
-                      </button>
+                      <Button
+                        danger
+                        type="primary"
+                        onClick={showDelete}
+                        icon={<DeleteOutlined />}
+                      />
                     </Tooltip>
                   </Buttons>
                 )}

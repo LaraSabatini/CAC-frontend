@@ -1,18 +1,14 @@
 import React, { useState, useContext } from "react"
 import { ProfileContext } from "contexts/Profile"
 import ClientInterface from "interfaces/users/Client"
-import {
-  AiOutlineUser,
-  AiOutlineMail,
-  AiOutlinePhone,
-  AiOutlineCalendar,
-} from "react-icons/ai"
+import { AiOutlineUser, AiOutlineMail, AiOutlinePhone } from "react-icons/ai"
+import { CalendarOutlined, BuildOutlined } from "@ant-design/icons"
 import regions from "const/regions"
 import { HiIdentification } from "react-icons/hi"
 import { TfiLocationPin } from "react-icons/tfi"
 import { BiPencil } from "react-icons/bi"
 import texts from "strings/profile.json"
-import Tooltip from "components/UI/Tooltip"
+import { Tooltip } from "antd"
 import EditPersonalInfo from "./EditPersonalInfo"
 import DataSet from "./DataSet"
 import { Title } from "../styles"
@@ -54,6 +50,11 @@ function PersonalInfo() {
             value={data?.email}
           />
           <DataSet
+            icon={<CalendarOutlined />}
+            title="Fecha de nacimiento:"
+            value={data?.birthdate?.replaceAll("-", "/")}
+          />
+          <DataSet
             icon={<AiOutlinePhone />}
             title={[
               `${texts.personalData.phoneAreaCode}`,
@@ -61,31 +62,37 @@ function PersonalInfo() {
             ]}
             value={[`${data?.phoneAreaCode}`, `${data?.phoneNumber}`]}
           />
-          <DataSet
-            icon={<AiOutlineCalendar />}
-            title={texts.personalData.creationDate}
-            value={data?.dateCreated}
-          />
+
           {regions !== undefined && data !== undefined && (
             <DataSet
               icon={<TfiLocationPin />}
               title="Región:"
-              value={
-                regions.filter(region => region.id === data?.region)[0]?.value
-              }
+              value={data.region}
             />
           )}
           <DataSet
             icon={<HiIdentification />}
-            title="Matricula:"
+            title="Matrícula:"
             value={data?.realEstateRegistration}
+          />
+          <DataSet
+            icon={<CalendarOutlined />}
+            title="Fecha de inicio de actividad:"
+            value={data?.activityStartDate?.replaceAll("-", "/")}
+          />
+          <DataSet
+            icon={<BuildOutlined />}
+            title="Cantidad de edificios:"
+            value={data?.amountOfBuildings}
+          />
+          <DataSet
+            icon={<CalendarOutlined />}
+            title={texts.personalData.creationDate}
+            value={data?.dateCreated?.replaceAll("-", "/")}
           />
         </Data>
       ) : (
-        <EditPersonalInfo
-          regions={regions}
-          cancelChanges={() => setActiveEdition(false)}
-        />
+        <EditPersonalInfo cancelChanges={() => setActiveEdition(false)} />
       )}
     </PersonalDataCard>
   )

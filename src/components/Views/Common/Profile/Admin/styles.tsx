@@ -4,7 +4,7 @@ import theme from "theme/index"
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   gap: 20px;
 
   width: fit-content;
@@ -13,6 +13,49 @@ const Container = styled.div`
 
   @media (max-width: 626px) {
     padding-top: 50px;
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+`
+
+const DataCard = styled.div`
+  background-color: white;
+  width: 320px;
+  padding: 25px 30px;
+  border: 1px solid rgba(70, 106, 149, 0.138);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
+
+  p {
+    font-family: ${theme.fonts.extra};
+    margin: 0;
+    display: flex;
+    gap: 10px;
+    color: ${theme.colors.blue};
+    font-size: 14px;
+
+    b {
+      font-weight: ${theme.fontWeights.medium};
+    }
+  }
+
+  .head {
+    /* padding-bottom: 20px; */
+    align-self: flex-end;
+  }
+
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 `
 
@@ -55,4 +98,12 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
 `
 
-export { Container, PermitsCard, PermitTitle, Permit, Option, ButtonContainer }
+export {
+  Container,
+  PermitsCard,
+  PermitTitle,
+  Permit,
+  Option,
+  ButtonContainer,
+  DataCard,
+}

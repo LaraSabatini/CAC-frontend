@@ -15,11 +15,11 @@ import { dateFormated } from "helpers/dates/getToday"
 import texts from "strings/payment.json"
 import Modal from "components/UI/Modal"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
-import Button from "components/UI/Button"
+import { Button } from "antd"
 import ModalStatus from "components/UI/ModalStatus"
 import MercadoPagoForm from "@components/Views/Clients/Payment/MercadoPagoButton"
 import Inputs from "./Inputs"
-import { FormContainer, Title, ButtonContainer, Error } from "./styles"
+import { FormContainer, Title, ButtonContainer, ErrorMessage } from "./styles"
 
 interface ClientDataFormInterface {
   closeModal: (arg?: any) => void
@@ -28,11 +28,14 @@ interface ClientDataFormInterface {
 function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   const router = useRouter()
 
-  const { payment, preferenceId } = useContext(PaymentContext)
+  const { payment, preferenceId, formError, setFormError } = useContext(
+    PaymentContext,
+  )
   const { newClient } = useContext(ClientsContext)
 
+  const [loading, setLoading] = useState<boolean>(false)
+
   const [renderMPButton, setRenderMPButton] = useState<boolean>(false)
-  const [formError, setFormError] = useState<string>("")
   const [duplicatedUser, setDuplicatedUser] = useState<boolean>(false)
   const [loginModal, setLoginModal] = useState<boolean>(false)
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
@@ -42,6 +45,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
   }
 
   const validateInputs = async () => {
+    setLoading(true)
     const validate = frontValidation(
       newClient.name,
       newClient.lastName,
@@ -49,7 +53,6 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
       newClient.phoneAreaCode,
       newClient.phoneNumber,
       newClient.identificationNumber,
-      newClient.realEstateRegistration,
     )
 
     if (validate) {
@@ -66,18 +69,23 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
         checkIfItsAvailable(validateIdentificationNumberReq)
       ) {
         setRenderMPButton(true)
+        setLoading(false)
       } else if (
         validateEmailReq.status === 500 ||
         validateIdentificationNumberReq.status === 500
       ) {
         setServerErrorModal(true)
+        setLoading(false)
       } else {
+        setLoading(false)
+
         // *** Error: ya existe un usuario con ese email o DNI
         setFormError(texts.form.duplicatedError)
         setDuplicatedUser(true)
         setLoginModal(true)
       }
     } else {
+      setLoading(false)
       setFormError(texts.form.requiredError)
     }
   }
@@ -144,14 +152,31 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
           />
         )}
         <Title>{texts.form.title}</Title>
-        {formError !== "" && <Error>{formError}</Error>}
+        {formError !== "" && <ErrorMessage>{formError}</ErrorMessage>}
         <Inputs />
 
         <ButtonContainer>
-          <Button content={texts.form.cancel} cta={false} action={closeModal} />
-          {!renderMPButton ? (
-            <Button content={texts.form.next} cta action={validateInputs} />
-          ) : (
+          <Button
+            size="large"
+            onClick={() => {
+              closeModal()
+              setFormError("")
+            }}
+          >
+            {texts.form.cancel}
+          </Button>
+          {!renderMPButton && (
+            <Button
+              loading={loading}
+              type="primary"
+              size="large"
+              onClick={validateInputs}
+            >
+              {texts.form.next}
+            </Button>
+          )}
+
+          {renderMPButton && !loading && (
             <MercadoPagoForm
               label={texts.actions.pay}
               item={[

@@ -1,14 +1,16 @@
 import styled from "styled-components"
 import theme from "theme/index"
-import { FlexColumnDiv, TitleStyles } from "theme/styles"
+import { TitleStyles } from "theme/styles"
 
 const Container = styled.div`
-  ${FlexColumnDiv}
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 20px;
   width: 90%;
-  height: 80vh;
   margin: 0 auto;
-  gap: 15%;
-  padding-top: 9%;
+  padding-top: 8.3%;
+  position: relative;
 
   @media (max-width: ${theme.screenSize.tablet.height}) {
     padding-top: 3%;
@@ -16,24 +18,44 @@ const Container = styled.div`
   }
 `
 
+const LogoContainer = styled.div`
+  width: 70px;
+  height: 70px;
+
+  svg {
+    width: 70px;
+    height: 70px;
+  }
+`
+
 const Title = styled.h1`
   ${TitleStyles}
-  font-size: ${theme.fontSizes.xl};
-  font-weight: 800;
+  color: #ebf1fa;
+  font-size: 30px;
+
+  font-weight: 700;
   margin: 0;
-  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `
 
 const SubTitle = styled.span`
-  font-family: ${theme.fonts.content};
+  font-family: ${theme.fonts.extra};
   font-weight: 400;
-  font-size: ${theme.fontSizes.m};
-  color: ${theme.colors.blue_dark};
+  font-size: 16px;
+  color: ${theme.colors.blue};
+  color: #ebf1fa;
 `
 
 const CardsContainer = styled.div`
+  margin-top: 50px;
   display: flex;
-  gap: 1.6%;
+  /* border: 1px solid red; */
+  height: 290px;
+  align-items: center;
+  /* gap: 1.6%; */
+  justify-content: space-between;
   @media (max-width: ${theme.screenSize.tablet.height}) {
     flex-wrap: wrap;
     gap: 30px;
@@ -44,4 +66,4 @@ const CardsContainer = styled.div`
   }
 `
 
-export { Container, Title, CardsContainer, SubTitle }
+export { Container, Title, CardsContainer, SubTitle, LogoContainer }

@@ -5,9 +5,16 @@ import texts from "strings/pricing.json"
 import PricingInterface from "interfaces/content/Pricing"
 import defaultPaymet from "const/defaultValuesForPaymentContext"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
+import LogoWhite from "components/UI/Assets/Icon/Icons/LogoWhite"
 import PricingCard from "./PricingCard"
 import ClientDataForm from "../Payment/ClientDataForm"
-import { Container, Title, CardsContainer, SubTitle } from "./styles"
+import {
+  Container,
+  Title,
+  CardsContainer,
+  SubTitle,
+  LogoContainer,
+} from "./styles"
 
 function PricingView() {
   const { setPayment, payment, pricingList, setPricingList } = useContext(
@@ -49,9 +56,15 @@ function PricingView() {
         changeVisibility={() => setServerErrorModal(false)}
       />
       <div>
-        <Title>{texts.title}</Title>
-        <SubTitle>{texts.description}</SubTitle>
+        <Title>
+          <LogoContainer>
+            <LogoWhite />
+          </LogoContainer>
+          {texts.title}
+          <SubTitle>{texts.description}</SubTitle>
+        </Title>
       </div>
+
       <CardsContainer>
         {pricingList.length > 0 &&
           pricingList.map((pricingPlan: PricingInterface) => (

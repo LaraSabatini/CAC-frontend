@@ -15,7 +15,7 @@
     },
     "userError": {
         "title": "¡UPS!",
-        "description": "Ocurrio un error al crear el usuario."
+        "description": "Ocurrió un error al crear el usuario."
     },
     "pageNotFound": {
         "title": "¡UPS!",
@@ -25,7 +25,7 @@
     "accountBlocked": {
         "title":"Cuenta bloqueada",
         "span": "Has superado el límite de intentos de inicio de sesión o has eliminado tu cuenta.",
-        "description": "Hemos bloqueado tu cuenta. Te enviaremos un mail con instrucciones para recuperar tu cuenta."
+        "description": "Hemos bloqueado tu cuenta. Te enviaremos un mail con instrucciones para recuperarla."
     },
     "robotDetected": {
         "title": "¡UPS!",

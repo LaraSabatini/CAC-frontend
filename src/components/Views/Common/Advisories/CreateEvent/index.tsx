@@ -5,33 +5,28 @@ import { AdvisoriesContext } from "contexts/Advisories"
 import { createEvent } from "services/advisories/events.service"
 import { getClientEmails } from "services/clients/clientActions.service"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
-import Modal from "components/UI/Modal"
-import ModalStatus from "components/UI/ModalStatus"
-import Input from "components/UI/Input"
-import Button from "components/UI/Button"
 import { v4 as uuid } from "uuid"
-import { Container, Title, ButtonContainer } from "./styles"
+import dayjs from "dayjs"
+import customParseFormat from "dayjs/plugin/customParseFormat"
+import { CalendarOutlined } from "@ant-design/icons"
+import { Modal, Input, DatePicker, TimePicker } from "antd"
+import { Container } from "./styles"
+import { ScheduleAdvisory } from "../styles"
 
+dayjs.extend(customParseFormat)
 declare global {
   interface Window {
     gapi: any
   }
 }
 
-function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
+function CreateEvent({ updateList }: { updateList: (arg?: any) => void }) {
   const { setServerError } = useContext(AdvisoriesContext)
 
-  const [allowClick, setAllowClick] = useState<boolean>(false)
-  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
-
-  const userData = JSON.parse(localStorage.getItem("userData") as string)
-
-  const gapi = typeof window !== "undefined" && window.gapi
-  const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
-  const SCOPES = "https://www.googleapis.com/auth/calendar"
+  const [createEventModal, setCreateEventModal] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const [requiredError, setRequiredError] = useState<boolean>(false)
-  const [modalSuccess, setModalSuccess] = useState<boolean>(false)
   const [newEvent, setNewEvent] = useState<PublicEventsInterface>({
     title: "",
     description: "",
@@ -42,6 +37,45 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
     attendant: [],
     createdBy: 0,
   })
+
+  const cleanStates = () => {
+    setNewEvent({
+      title: "",
+      description: "",
+      date: "",
+      hour: "",
+      month: 0,
+      eventURL: "",
+      attendant: [],
+      createdBy: 0,
+    })
+    setRequiredError(false)
+    setLoading(false)
+  }
+
+  const dateFormat = "DD/MM/YYYY"
+  const { TextArea } = Input
+  const timeFormat = "HH:mm"
+
+  const success = () => {
+    Modal.success({
+      content: "El evento se ha creado con éxito",
+      onOk() {
+        setCreateEventModal(false)
+        cleanStates()
+        updateList()
+      },
+    })
+  }
+
+  const [allowClick, setAllowClick] = useState<boolean>(false)
+  const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
+
+  const userData = JSON.parse(localStorage.getItem("userData") as string)
+
+  const gapi = typeof window !== "undefined" && window.gapi
+  const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+  const SCOPES = "https://www.googleapis.com/auth/calendar"
 
   const createEventFunction = async () => {
     // CREAR EVENTO EN BDD
@@ -98,8 +132,12 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
           month: parseInt(splitDate[1], 10),
           eventURL: event.htmlLink,
         })
-        setModalSuccess(createEventCall.status === 201)
-        setServerError(createEventCall.status !== 201)
+        if (createEventCall.status === 201) {
+          setLoading(false)
+          success()
+        } else {
+          setServerError(true)
+        }
       })
     } else {
       setServerErrorModal(true)
@@ -115,6 +153,7 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
     ) {
       setRequiredError(true)
     } else {
+      setLoading(true)
       const openSignInPopup = () => {
         gapi.auth2.authorize(
           {
@@ -163,86 +202,99 @@ function CreateEvent({ closeModal }: { closeModal: (arg?: any) => void }) {
   }, [gapi])
 
   return (
-    <Modal>
-      <Container>
+    <>
+      <ScheduleAdvisory onClick={() => setCreateEventModal(true)}>
+        <CalendarOutlined />
+        Crear evento público
+      </ScheduleAdvisory>
+      <Modal
+        title="Crear evento público"
+        open={createEventModal}
+        onOk={handleClientLoad}
+        onCancel={() => {
+          setCreateEventModal(false)
+          cleanStates()
+        }}
+        okText="Crear"
+        cancelText="Cancelar"
+        confirmLoading={loading}
+        okButtonProps={{ disabled: !allowClick }}
+      >
         <InternalServerError
           visible={serverErrorModal}
           changeVisibility={() => setServerErrorModal(false)}
         />
-        {modalSuccess && (
-          <ModalStatus
-            title="Excelente!"
-            description="El evento se ha creado exitosamente"
-            status="success"
-            selfClose
-            selfCloseAction={closeModal}
-          />
-        )}
-
-        <Title>Crear evento publico</Title>
-        {requiredError && (
-          <p className="required">* Completa los campos requeridos</p>
-        )}
-        <div className="input-container">
-          <Input
-            label="Titulo"
-            required
-            type="text"
-            width={400}
-            onChange={e => {
-              setNewEvent({ ...newEvent, title: e.target.value })
-            }}
-          />
-          <Input
-            label="Descripcion"
-            required
-            type="textarea"
-            width={380}
-            onChange={e => {
-              setNewEvent({ ...newEvent, description: e.target.value })
-            }}
-          />
-          <div className="horizontal">
+        <Container>
+          {requiredError && (
+            <p className="required">* Completa los campos requeridos</p>
+          )}
+          <div className="input-container">
             <Input
-              label="Fecha"
+              placeholder="Título"
+              status={requiredError && newEvent.title === "" ? "error" : ""}
+              value={newEvent.title}
               required
               type="text"
-              placeholder="dd/mm/aaaa"
-              width={200}
-              value={newEvent.date}
-              max={10}
+              width={400}
               onChange={e => {
-                if (e.target.value.length <= 12) {
-                  setNewEvent({ ...newEvent, date: e.target.value })
+                setNewEvent({ ...newEvent, title: e.target.value })
+              }}
+            />
+          </div>
+          <div className="input-container">
+            <TextArea
+              rows={2}
+              placeholder="Descripción"
+              value={newEvent.description}
+              status={
+                requiredError && newEvent.description === "" ? "error" : ""
+              }
+              onChange={e =>
+                setNewEvent({ ...newEvent, description: e.target.value })
+              }
+            />
+          </div>
+          <div className="input-container">
+            <DatePicker
+              placeholder="Fecha"
+              defaultValue={dayjs("01/01/2023", dateFormat)}
+              status={requiredError && newEvent.date === "" ? "error" : ""}
+              style={{ width: "200px" }}
+              format={dateFormat}
+              onChange={(e: any) => {
+                if (e !== null) {
+                  const day = e.$D > 9 ? e.$D : `0${e.$D}`
+                  const month = e.$M + 1 > 9 ? e.$M + 1 : `0${e.$M + 1}`
+
+                  setNewEvent({
+                    ...newEvent,
+                    date: `${day}/${month}/${e.$y}`,
+                  })
                 }
               }}
             />
-            <Input
-              label="Horario"
-              required
-              type="text"
-              placeholder="hh:mm (24 horas)"
-              width={200}
-              value={newEvent.hour}
-              onChange={e => {
-                if (e.target.value.length <= 5) {
-                  setNewEvent({ ...newEvent, hour: e.target.value })
+
+            <TimePicker
+              defaultValue={dayjs("00:00", "HH:mm")}
+              status={requiredError && newEvent.hour === "" ? "error" : ""}
+              style={{ width: "200px" }}
+              placeholder="Horario"
+              format={timeFormat}
+              onChange={(e: any) => {
+                if (e !== null) {
+                  const hour = e.$H > 9 ? e.$H : `0${e.$H}`
+                  const minute = e.$m > 9 ? e.$m : `0${e.$m}`
+                  setNewEvent({
+                    ...newEvent,
+                    hour: `${hour}:${minute}`,
+                  })
                 }
               }}
             />
           </div>
-        </div>
-        <ButtonContainer>
-          <Button content="Cancelar" cta={false} action={closeModal} />
-          <Button
-            content="Crear"
-            disabled={!allowClick}
-            cta
-            action={handleClientLoad}
-          />
-        </ButtonContainer>
-      </Container>
-    </Modal>
+        </Container>
+      </Modal>
+    </>
   )
 }
 

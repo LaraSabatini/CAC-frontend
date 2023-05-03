@@ -46,13 +46,14 @@ const ProfilePic = styled.div`
 const ProfileOptions = styled.div`
   z-index: 100;
   position: absolute;
-  top: 110%;
-  background-color: ${theme.colors.white};
+  top: 125%;
+  background-color: #fffffff5;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 8px;
   right: 0;
-  width: 120px;
+  /* width: 120px; */
   display: flex;
+  /* flex-direction: column; */
   align-items: center;
   justify-content: space-between;
   gap: 5px;
@@ -133,7 +134,62 @@ const ButtonContainer = styled.div`
   display: flex;
   gap: 15px;
   align-items: center;
+  padding-right: 10px;
+  position: relative;
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: fit-content;
+    height: fit-content;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    outline: none;
+
+    .line {
+      border-radius: 2px;
+      width: 20px;
+      height: 2px;
+      background-color: ${theme.colors.blue};
+    }
+  }
 `
+
+const Menu = styled.div`
+  position: absolute;
+  width: 240px;
+  /* height: 275px; */
+  height: fit-content;
+  border-radius: 18px;
+  padding: 25px;
+  background-color: #ffffffe8;
+  right: 0;
+  top: 25px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`
+
+const Option = styled.div`
+  font-family: ${theme.fonts.extra};
+  color: ${theme.colors.blue};
+  font-size: 15px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+`
+
+const FilterContainer = styled.div``
 
 export {
   Container,
@@ -147,4 +203,7 @@ export {
   SVGButton,
   FiltersButton,
   ButtonContainer,
+  Menu,
+  Option,
+  FilterContainer,
 }

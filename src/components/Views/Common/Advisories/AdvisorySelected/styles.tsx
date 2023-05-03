@@ -2,10 +2,6 @@ import styled from "styled-components"
 import theme from "theme"
 
 const ModalContent = styled.div`
-  background-color: ${theme.colors.white};
-  width: 400px;
-  border-radius: 18px;
-  padding: 25px;
   display: flex;
   flex-direction: column;
 

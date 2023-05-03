@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components"
 import theme from "theme/index"
-import { Button } from "components/UI/sharedStyles"
 
 const Container = styled.div<{ inModal: boolean }>`
   margin: 0 auto;
@@ -89,6 +88,7 @@ const ArticleParagraph = styled.p`
 const ArticleContent = styled.div`
   display: flex;
   flex-direction: column;
+  height: fit-content;
 `
 
 const AuthorContainer = styled.div`
@@ -134,35 +134,6 @@ const RightSubcolumn = styled.div`
 const Buttons = styled.div`
   display: flex;
   gap: 20px;
-
-  svg {
-    color: ${theme.colors.white};
-  }
-
-  button {
-    ${Button}
-    width: 35px;
-    height: 35px;
-    border-radius: 4px;
-  }
-
-  .edit {
-    background-color: ${theme.colors.blue};
-
-    svg {
-      width: 20px;
-      height: 20px;
-    }
-  }
-
-  .delete {
-    background-color: ${theme.colors.red};
-
-    svg {
-      width: 15px;
-      height: 15px;
-    }
-  }
 `
 
 const Description = styled.p`

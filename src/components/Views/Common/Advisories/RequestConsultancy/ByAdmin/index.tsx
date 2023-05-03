@@ -1,12 +1,9 @@
 import React, { useState, useContext } from "react"
-import InputSelect from "components/UI/InputSelect"
 import { listHours, keysOfDays, keysOfDaysSpa } from "const/dates"
 import { AdvisoriesContext } from "contexts/Advisories"
-import Button from "components/UI/Button"
-import Input from "components/UI/Input"
 import getNextSevenDates from "helpers/dates/getNextSixDays"
 import { AdvisoryInterface } from "interfaces/content/Advisories"
-import ModalStatus from "components/UI/ModalStatus"
+import { Input, Select, Button, Modal } from "antd"
 import {
   getAvailability,
   getAdvisoriesByMonthAndAdmin,
@@ -23,12 +20,14 @@ function SearchByAdmin({
   const { setServerError } = useContext(AdvisoriesContext)
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
+  const { TextArea } = Input
 
   const [disableRequestButton, setDisableRequestButton] = useState<boolean>(
     true,
   )
+  const [loadingReq, setLoadingReq] = useState<boolean>(false)
+  const [loadingSearch, setLoadingSearch] = useState<boolean>(false)
   const [canRequest, setCanRequest] = useState<boolean>(false)
-  const [success, setSuccess] = useState<boolean>(false)
 
   const [adminSelected, setAdminSelected] = useState<{
     id: number
@@ -62,6 +61,7 @@ function SearchByAdmin({
 
   const searchAvailabilityAdmin = async () => {
     setCanRequest(true)
+    setLoadingSearch(true)
     if (adminSelected !== undefined) {
       const today = new Date()
       const days: string[] = getNextSevenDates(today)
@@ -203,7 +203,6 @@ function SearchByAdmin({
         )
 
         setAvailableDaysList(otherList)
-        setDaySelected(otherList[0])
 
         const newList: { id: number; value: string }[] = []
 
@@ -212,15 +211,26 @@ function SearchByAdmin({
           newList.push(listHours.filter(item => item.id === hour)[0]),
         )
         setAvailableHoursList(newList)
-        setHourSelected(newList[0])
+        setLoadingSearch(false)
       } else {
         setServerError(true)
       }
     }
   }
 
+  const success = () => {
+    Modal.success({
+      title: "¡Excelente!",
+      content: "Tu solicitud se ha enviado con éxito",
+      onOk() {
+        close()
+      },
+    })
+  }
+
   const requestAdvisoryCall = async () => {
     if (daySelected !== undefined && hourSelected !== undefined) {
+      setLoadingReq(true)
       const date: string[] = daySelected.value.split("-")
 
       const requestAdvisoryData: AdvisoryInterface = {
@@ -235,51 +245,68 @@ function SearchByAdmin({
       }
 
       const requestAdvisoryReq = await requestAdvisory(requestAdvisoryData)
-      setSuccess(requestAdvisoryReq.status === 201)
-      setServerError(requestAdvisoryReq.status !== 201)
+      if (requestAdvisoryReq.status === 201) {
+        setLoadingReq(false)
+        success()
+      } else {
+        setServerError(true)
+      }
     }
   }
 
   return (
     <div>
       {requiredFiledsError && (
-        <p className="req-fields">*Completa los campos requeridos</p>
+        <p style={{ color: "#c12929" }} className="req-fields">
+          *Completa los campos requeridos
+        </p>
       )}
 
-      {success && (
-        <ModalStatus
-          title="Excelente!"
-          description="La solicitud ha sido enviada con exito, en estos dias recibiras una respuesta."
-          status="success"
-          selfClose
-          selfCloseAction={() => {
-            setSuccess(false)
-            close()
+      <div style={{ paddingTop: "15px" }}>
+        <Select
+          placeholder="Seleccionar asesor"
+          defaultValue={adminSelected.value}
+          style={{ width: 350 }}
+          onChange={value => {
+            setDisableRequestButton(true)
+            const filterAdmins = adminListForSelect.filter(
+              admin => admin.value === value,
+            )
+            setAdminSelected(filterAdmins[0])
+            setAvailableDays(undefined)
+            setAvailableDaysList(undefined)
           }}
+          options={adminListForSelect}
         />
-      )}
-      <InputSelect
-        label="Seleccionar asesor"
-        required
-        width={380}
-        onClick={e => {
-          setDisableRequestButton(true)
-          setAdminSelected(e)
-          setAvailableDays(undefined)
-          setAvailableDaysList(undefined)
-        }}
-        options={adminListForSelect}
-      />
+      </div>
 
       {availableDays !== undefined && availableDaysList !== undefined && (
         <div>
-          <div className="sub-container">
-            <InputSelect
-              label="Seleccionar dia"
-              required
-              width={210}
-              onClick={e => {
-                setDaySelected(e)
+          <div
+            className="sub-container"
+            style={{
+              paddingTop: "15px",
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <Select
+              placeholder="Seleccionar dia"
+              style={{ width: 240 }}
+              status={
+                requiredFiledsError && daySelected === undefined ? "error" : ""
+              }
+              onChange={value => {
+                const filterDays = availableDaysList.filter(
+                  day => day.value === value,
+                )
+
+                const e = filterDays[0]
+
+                setDaySelected({
+                  id: e.id,
+                  value: e.value.split("- ")[1],
+                })
 
                 const { hours } = availableDays.filter(
                   day => day.id === e.id,
@@ -292,7 +319,6 @@ function SearchByAdmin({
                     newList.push(listHours.filter(item => item.id === hour)[0]),
                   )
                   setAvailableHoursList(newList)
-                  setHourSelected(newList[0])
                 } else {
                   setAvailableHoursList([])
                 }
@@ -300,51 +326,72 @@ function SearchByAdmin({
               options={availableDaysList}
             />
             {availableHoursList?.length && (
-              <InputSelect
-                label="Seleccionar horario"
-                required
-                width={155}
-                onClick={e => setHourSelected(e)}
+              <Select
+                placeholder="Horario"
+                status={
+                  requiredFiledsError && hourSelected === undefined
+                    ? "error"
+                    : ""
+                }
+                style={{ width: 100 }}
+                onChange={value => {
+                  const filterHours = availableHoursList.filter(
+                    hour => hour.value === value,
+                  )
+                  setHourSelected({
+                    id: filterHours[0].id,
+                    value,
+                  })
+                }}
                 options={availableHoursList}
               />
             )}
           </div>
-          <Input
-            label="Breve descripcion de la asesoria"
-            width={360}
-            required
-            type="textarea"
-            onChange={e => {
-              setBrief(e.target.value)
-            }}
-          />
+          <div style={{ paddingTop: "15px" }}>
+            <TextArea
+              rows={2}
+              placeholder="Breve descripción de la asesoría"
+              value={brief}
+              style={{ width: 350 }}
+              status={requiredFiledsError && brief === "" ? "error" : ""}
+              onChange={e => setBrief(e.target.value)}
+            />
+          </div>
         </div>
       )}
-      {disableRequestButton && (
-        <div className="req-button">
+      <div className="req-button" style={{ paddingTop: "15px" }}>
+        {disableRequestButton && (
           <Button
-            content="Consulta disponibilidad"
-            cta
-            action={() => {
+            loading={loadingSearch}
+            type="primary"
+            onClick={() => {
               setDisableRequestButton(false)
               searchAvailabilityAdmin()
             }}
-          />
-        </div>
-      )}
-      {canRequest && (
-        <Button
-          content="Solicitar asesoria"
-          cta
-          action={() => {
-            if (brief !== "") {
-              requestAdvisoryCall()
-            } else {
-              setRequiredFiledsError(true)
-            }
-          }}
-        />
-      )}
+          >
+            Consultar disponibilidad
+          </Button>
+        )}
+        {canRequest && (
+          <Button
+            loading={loadingReq}
+            type="primary"
+            onClick={() => {
+              if (
+                brief !== "" &&
+                daySelected !== undefined &&
+                hourSelected !== undefined
+              ) {
+                requestAdvisoryCall()
+              } else {
+                setRequiredFiledsError(true)
+              }
+            }}
+          >
+            Solicitar asesoría
+          </Button>
+        )}
+      </div>
     </div>
   )
 }

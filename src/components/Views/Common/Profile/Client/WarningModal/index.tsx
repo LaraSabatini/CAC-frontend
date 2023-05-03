@@ -6,29 +6,22 @@ import blockAccount from "services/auth/blockAccount.service"
 import { createFeedback } from "services/feedback/feedback.service"
 import texts from "strings/profile.json"
 import deletionOptions from "const/deleteProfileOptions"
-import Modal from "components/UI/Modal"
-import Icon from "components/UI/Assets/Icon"
-import Button from "components/UI/Button"
+import { Button, Modal, Radio, Space, Input } from "antd"
+import type { RadioChangeEvent } from "antd"
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons"
+
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
-import Input from "components/UI/Input"
-import {
-  ModalContainer,
-  IconContainer,
-  ButtonContainer,
-  InputContainer,
-  Error,
-  FeedbackForm,
-  RadioButton,
-} from "./styles"
+import { InputContainer, ErrorMessage, FeedbackForm } from "./styles"
 
-interface WarningModalInterface {
-  cancel: (arg?: any) => void
-}
-
-function WarningModal({ cancel }: WarningModalInterface) {
+function WarningModal() {
   const router = useRouter()
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
+
+  const [deleteProfileWarning, setDeleteProfileWarning] = useState<boolean>(
+    false,
+  )
+  const [loading, setLoading] = useState<boolean>(false)
 
   const [formStep, setFormStep] = useState<1 | 2>(1)
 
@@ -51,6 +44,7 @@ function WarningModal({ cancel }: WarningModalInterface) {
   const deleteProfile = async () => {
     if (formData.password !== "" && formData.confirmPassword !== "") {
       setFormError("")
+      setLoading(true)
 
       if (formData.password === formData.confirmPassword) {
         const loginReq = await login("client", {
@@ -87,103 +81,108 @@ function WarningModal({ cancel }: WarningModalInterface) {
         }
       }
       setFormError(`${texts.changePassword.matchingError}`)
+      setLoading(false)
     }
     setFormError(`${texts.changePassword.requiredError}`)
+    setLoading(false)
+  }
+
+  const onChange = (e: RadioChangeEvent) => {
+    const filterOption = deletionOptions.filter(
+      option => option.id === e.target.value,
+    )
+    setDeleteOptionSelected({
+      id: e.target.value,
+      value: filterOption[0].value,
+    })
   }
 
   return (
-    <Modal>
-      <ModalContainer>
-        <InternalServerError
-          visible={serverErrorModal}
-          changeVisibility={() => setServerErrorModal(false)}
-        />
+    <>
+      <Button danger onClick={() => setDeleteProfileWarning(true)}>
+        {texts.deleteProfile.title}
+      </Button>
+      <InternalServerError
+        visible={serverErrorModal}
+        changeVisibility={() => setServerErrorModal(false)}
+      />
+
+      <Modal
+        title={texts.deleteProfile.titleQuestion}
+        open={deleteProfileWarning}
+        width={400}
+        onOk={() => {
+          if (formStep === 1) {
+            setFormStep(2)
+          } else {
+            deleteProfile()
+          }
+        }}
+        onCancel={() => {
+          if (formStep === 1) {
+            setDeleteProfileWarning(false)
+          } else {
+            setFormStep(1)
+          }
+        }}
+        okText={
+          formStep === 1
+            ? texts.deleteProfile.continue
+            : texts.changePassword.confirm
+        }
+        cancelText={
+          formStep === 1
+            ? texts.changePassword.cancel
+            : texts.deleteProfile.goBack
+        }
+        confirmLoading={loading}
+      >
         {formStep === 1 ? (
           <>
-            <h3>{texts.deleteProfile.titleQuestion}</h3>
             <span>{texts.deleteProfile.deleteDescription}</span>
             <FeedbackForm>
-              {deletionOptions.map(option => (
-                <RadioButton key={option.id}>
-                  <input
-                    type="radio"
-                    value={option.value}
-                    onChange={() => setDeleteOptionSelected(option)}
-                    checked={deleteOptionSelected.id === option.id}
-                  />
-                  <label htmlFor={option.value}>{option.value}</label>
-                </RadioButton>
-              ))}
+              <Radio.Group onChange={onChange} value={deleteOptionSelected.id}>
+                <Space direction="vertical">
+                  <Radio value={1}>No la necesito mas</Radio>
+                  <Radio value={2}>Es muy caro</Radio>
+                  <Radio value={3}>Voy a cambiar de servicio</Radio>
+                  <Radio value={4}>Otro</Radio>
+                </Space>
+              </Radio.Group>
             </FeedbackForm>
           </>
         ) : (
-          <>
-            <IconContainer>
-              <Icon icon="Alert" color="#fff" width="45" height="45" />
-            </IconContainer>
-            <h3>{texts.deleteProfile.confirm}</h3>
-            <InputContainer>
-              {formError !== "" && <Error>{formError}</Error>}
-
-              <Input
-                label={texts.changePassword.password}
-                width={320}
-                required
-                type="password"
-                backError={formError !== ""}
-                onChange={e =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-              />
-              <Input
-                label={texts.changePassword.confirmPassword}
-                width={320}
-                required
-                type="password"
-                backError={formError !== ""}
-                onChange={e =>
-                  setFormData({ ...formData, confirmPassword: e.target.value })
-                }
-                keyDown={deleteProfile}
-              />
-            </InputContainer>
-          </>
+          <InputContainer>
+            {formError !== "" && <ErrorMessage>{formError}</ErrorMessage>}
+            <Input.Password
+              placeholder={texts.changePassword.password}
+              width={320}
+              iconRender={visible =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
+              required
+              status={formError !== "" ? "error" : ""}
+              onChange={e =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+            />
+            <Input.Password
+              placeholder={texts.changePassword.confirmPassword}
+              width={320}
+              required
+              iconRender={visible =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
+              status={formError !== "" ? "error" : ""}
+              onChange={e =>
+                setFormData({ ...formData, confirmPassword: e.target.value })
+              }
+              onPressEnter={deleteProfile}
+            />
+          </InputContainer>
         )}
-
-        <ButtonContainer>
-          <Button
-            content={
-              formStep === 1
-                ? texts.changePassword.cancel
-                : texts.deleteProfile.goBack
-            }
-            cta={false}
-            action={() => {
-              if (formStep === 1) {
-                cancel()
-              } else {
-                setFormStep(1)
-              }
-            }}
-          />
-          <Button
-            content={
-              formStep === 1
-                ? texts.deleteProfile.continue
-                : texts.changePassword.confirm
-            }
-            cta
-            action={() => {
-              if (formStep === 1) {
-                setFormStep(2)
-              } else {
-                deleteProfile()
-              }
-            }}
-          />
-        </ButtonContainer>
-      </ModalContainer>
-    </Modal>
+      </Modal>
+    </>
   )
 }
 

@@ -13,7 +13,7 @@ const changePassword = async (
     body,
     axiosHeader,
   )
-  return res
+  return res.data
 }
 
 export default changePassword

@@ -18,6 +18,7 @@ function PartnersView() {
     clientSelected,
     setPlans,
     setClientSelected,
+    triggerListUpdate,
   } = useContext(ClientsContext)
   const [serverError, setServerError] = useState<boolean>(false)
 
@@ -56,7 +57,7 @@ function PartnersView() {
   useEffect(() => {
     getDataForTable()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage])
+  }, [currentPage, triggerListUpdate])
 
   return (
     <>

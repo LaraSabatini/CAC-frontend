@@ -18,9 +18,9 @@
     },
     "deleteProfile": {
         "title": "Eliminar perfil",
-        "titleQuestion": "¿Por que quieres eliminar tu cuenta?",
-        "deleteDescription": "Se bloqueara tu cuenta y podras recuperarla dentro de un periodo de un mes. Luego se eliminara permanentemente.",
-        "confirm": "¿Estas seguro de que deseas eliminar tu cuenta?",
+        "titleQuestion": "¿Por qué quieres eliminar tu cuenta?",
+        "deleteDescription": "Se bloqueará tu cuenta y podrás recuperarla dentro de un periodo de un mes. Luego se eliminara permanentemente.",
+        "confirm": "¿Estás seguro de que deseas eliminar tu cuenta?",
         "continue": "Continuar",
         "goBack": "Volver"
     },

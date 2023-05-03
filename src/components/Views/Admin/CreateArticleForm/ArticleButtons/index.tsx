@@ -4,9 +4,8 @@ import { uploadFile } from "services/articles/fileManagement.service"
 import { createArticle } from "services/articles/articles.service"
 import texts from "strings/articles.json"
 import { dateFormated } from "helpers/dates/getToday"
-import ModalStatus from "components/UI/ModalStatus"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
-import Button from "components/UI/Button"
+import { Button, Modal } from "antd"
 import getFiles from "helpers/media/getFiles"
 import { ActionButtons, WarningMessage } from "../styles"
 
@@ -31,14 +30,24 @@ function ArticleButtons({
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const [warningMessage, setWarningMessage] = useState<string>("")
-  const [createdArticle, setCreatedArticle] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [serverError, setServerError] = useState<boolean>(false)
+
+  const success = () => {
+    Modal.success({
+      title: "Excelente",
+      content: `${texts.newArticleForm.success.description}`,
+      onOk() {
+        updateList()
+      },
+    })
+  }
 
   const canPreview =
     newArticle.title !== "" &&
     newArticle.description !== "" &&
     newArticle.subtitle !== "" &&
-    newArticle.regionFilters.length &&
+    newArticle.regionFilters.length > 0 &&
     newArticle.article !== "" &&
     newArticle.author !== "" &&
     imageSelectedForPortrait !== null
@@ -65,7 +74,8 @@ function ArticleButtons({
 
   const publishArticle = async () => {
     if (canPreview) {
-      let success: boolean = false
+      setLoading(true)
+      let successStatus: boolean = false
       const data = {
         ...newArticle,
         createdBy: JSON.stringify({ id: userData.id, email: userData.user }),
@@ -85,7 +95,7 @@ function ArticleButtons({
         ]),
       }
       const createArticleReq = await createArticle(data)
-      success = createArticleReq.status === 201
+      successStatus = createArticleReq.status === 201
       for (let i = 0; i < attachmentsForServer.length; i += 1) {
         const fileData = saveFile(i)
         const formData = new FormData()
@@ -94,12 +104,16 @@ function ArticleButtons({
           formData.append("fileName", fileData.name)
           // eslint-disable-next-line no-await-in-loop
           const postFile: any = await sendFile(formData)
-          success = postFile.status === 200
+          successStatus = postFile.status === 200
           setServerError(postFile.status !== 200)
         }
       }
-      setCreatedArticle(success)
-      setServerError(!success)
+      if (successStatus) {
+        success()
+        setLoading(false)
+      } else {
+        setServerError(true)
+      }
     }
   }
 
@@ -109,31 +123,15 @@ function ArticleButtons({
         visible={serverError}
         changeVisibility={() => setServerError(false)}
       />
-      {createdArticle && (
-        <ModalStatus
-          title={texts.newArticleForm.success.title}
-          description={texts.newArticleForm.success.description}
-          status="success"
-          selfClose
-          selfCloseAction={updateList}
-        />
-      )}
+
       {warningMessage !== "" && (
         <WarningMessage>{warningMessage}</WarningMessage>
       )}
+
+      <Button onClick={closeForm}>{texts.newArticleForm.discard}</Button>
+
       <Button
-        content={texts.newArticleForm.discard}
-        cta={false}
-        action={closeForm}
-      />
-      <Button
-        content={
-          !previsualize
-            ? `${texts.newArticleForm.visualize}`
-            : `${texts.newArticleForm.edit}`
-        }
-        cta={false}
-        action={() => {
+        onClick={() => {
           if (canPreview) {
             setPrevisualize(!previsualize)
             setWarningMessage("")
@@ -141,11 +139,16 @@ function ArticleButtons({
             setWarningMessage(texts.newArticleForm.requiredMessage)
           }
         }}
-      />
+      >
+        {!previsualize
+          ? `${texts.newArticleForm.visualize}`
+          : `${texts.newArticleForm.edit}`}
+      </Button>
+
       <Button
-        content={texts.newArticleForm.publish}
-        cta
-        action={() => {
+        type="primary"
+        loading={loading}
+        onClick={() => {
           if (canPreview) {
             publishArticle()
             setWarningMessage("")
@@ -153,7 +156,9 @@ function ArticleButtons({
             setWarningMessage(texts.newArticleForm.requiredMessage)
           }
         }}
-      />
+      >
+        {texts.newArticleForm.publish}
+      </Button>
     </ActionButtons>
   )
 }

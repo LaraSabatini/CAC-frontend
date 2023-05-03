@@ -7,22 +7,23 @@ const Card = styled.div`
   width: 35%;
   height: fit-content;
   padding: 23px 35px;
+  background-color: #fffffff5;
 
   .personal-data {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
     padding-bottom: 40px;
   }
 `
 
 const Title = styled.h3`
   margin: 0;
-  padding-bottom: 29px;
+  padding-bottom: 20px;
   font-family: ${theme.fonts.titles};
   font-style: normal;
   font-weight: ${theme.fontWeights.semiBold};
-  font-size: 22px;
+  font-size: 20px;
   line-height: 28px;
 
   color: ${theme.colors.blue_dark};

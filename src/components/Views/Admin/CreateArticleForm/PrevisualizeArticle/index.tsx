@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react"
-import Button from "components/UI/Button"
+import { Button } from "antd"
 import texts from "strings/articles.json"
 import { ArticlesContext } from "contexts/Articles"
 import {
@@ -54,9 +54,10 @@ function PrevisualizeArticle() {
     )
 
     const docsArray: any = []
-    for (let i = 0; i < attachmentsForServer.length; i += 1) {
-      docsArray.push({ uri: URL.createObjectURL(attachmentsForServer[i]) })
-    }
+
+    attachmentsForServer.forEach(attachment =>
+      docsArray.push({ uri: URL.createObjectURL(attachment) }),
+    )
     setDocs(docsArray)
 
     if (findImage.length) {
@@ -76,20 +77,24 @@ function PrevisualizeArticle() {
     <Container>
       <ButtonContainer>
         <Button
-          content={texts.newArticleForm.card}
-          cta={contentToShow === "card"}
-          action={() => setContentToShow("card")}
-        />
+          type={contentToShow === "card" ? "primary" : "default"}
+          onClick={() => setContentToShow("card")}
+        >
+          {texts.newArticleForm.card}
+        </Button>
         <Button
-          content={texts.newArticleForm.article}
-          cta={contentToShow === "content"}
-          action={() => setContentToShow("content")}
-        />
+          type={contentToShow === "content" ? "primary" : "default"}
+          onClick={() => setContentToShow("content")}
+        >
+          {texts.newArticleForm.article}
+        </Button>
+
         <Button
-          content={texts.newArticleForm.attachedFiles}
-          cta={contentToShow === "attachments"}
-          action={() => setContentToShow("attachments")}
-        />
+          type={contentToShow === "attachments" ? "primary" : "default"}
+          onClick={() => setContentToShow("attachments")}
+        >
+          {texts.newArticleForm.attachedFiles}
+        </Button>
       </ButtonContainer>
       <Content>
         {contentToShow === "card" && (
@@ -104,13 +109,11 @@ function PrevisualizeArticle() {
         )}
         {contentToShow === "attachments" && (
           <Previewer>
-            {attachmentsForServer.length > 0 && (
-              <PreviewContent>
-                {attachmentsForServer.length && (
-                  <MediaViewer uri={defineFileNamesForVisualizer()} />
-                )}
-              </PreviewContent>
-            )}
+            <PreviewContent>
+              {attachmentsForServer.length > 0 && (
+                <MediaViewer uri={defineFileNamesForVisualizer()} />
+              )}
+            </PreviewContent>
           </Previewer>
         )}
       </Content>

@@ -1,15 +1,18 @@
 import React, { useContext, useEffect, useState } from "react"
-import { AiFillSave } from "react-icons/ai"
-import { BsFillTrashFill, BsChevronDown, BsChevronUp } from "react-icons/bs"
 import { ClientsContext } from "contexts/Clients"
 import { getPlansForFilters } from "services/pricing/getPlans.service"
 import { FilterInterface } from "interfaces/contexts/DashboardContextInterface"
 import { filterClients } from "services/clients/clientActions.service"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
-import Checkbox from "components/UI/Checkbox"
 import Tooltip from "components/UI/Tooltip"
 import Scroll from "components/UI/Scroll"
 import regionFilters from "const/regions"
+import { Button, Checkbox } from "antd"
+import {
+  DeleteOutlined,
+  CaretDownOutlined,
+  CaretUpOutlined,
+} from "@ant-design/icons"
 import {
   FilterContainer,
   FilterSelector,
@@ -23,7 +26,9 @@ import {
 } from "./styles"
 
 function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
-  const { setClients } = useContext(ClientsContext)
+  const { setClients, triggerListUpdate, setTriggerListUpdate } = useContext(
+    ClientsContext,
+  )
 
   const [regionFilterOpen, setRegionFilterOpen] = useState<boolean>(false)
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
@@ -115,8 +120,8 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
       <FilterList>
         <FilterSelector>
           <OpenFilters onClick={() => setRegionFilterOpen(!regionFilterOpen)}>
-            <Title>Region</Title>
-            {!regionFilterOpen ? <BsChevronDown /> : <BsChevronUp />}
+            <Title>Región</Title>
+            {!regionFilterOpen ? <CaretDownOutlined /> : <CaretUpOutlined />}
           </OpenFilters>
           <SelectionContainer>
             {regionFilterOpen && (
@@ -124,14 +129,13 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
                 {regionFilters.map(filter => (
                   <Filter key={filter.id}>
                     <Checkbox
-                      idParam={filter.value}
-                      ownState
                       onChange={() => {
                         selectFilter(filter.id, "region")
                       }}
                       checked={regionFiltersSelected.indexOf(filter.id) !== -1}
-                    />
-                    {filter.value}
+                    >
+                      {filter.value}
+                    </Checkbox>
                   </Filter>
                 ))}
               </Scroll>
@@ -142,20 +146,21 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
         <FilterSelector>
           <OpenFilters onClick={() => setPlanFilterOpen(!planFilterOpen)}>
             <Title>Plan</Title>
-            {!planFilterOpen ? <BsChevronDown /> : <BsChevronUp />}
+            {!planFilterOpen ? <CaretDownOutlined /> : <CaretUpOutlined />}
           </OpenFilters>
           <SelectionContainer>
             {planFilterOpen && (
-              <Scroll height={100}>
+              <Scroll height={150}>
                 {planFilters.map(filter => (
                   <Filter key={filter.id}>
                     <Checkbox
-                      idParam={filter.value}
-                      ownState
-                      onChange={() => selectFilter(filter.id, "plan")}
+                      onChange={() => {
+                        selectFilter(filter.id, "plan")
+                      }}
                       checked={planFiltersSelected.indexOf(filter.id) !== -1}
-                    />
-                    {filter.value}
+                    >
+                      {filter.value}
+                    </Checkbox>
                   </Filter>
                 ))}
               </Scroll>
@@ -169,17 +174,17 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
               closeTab()
               setRegionFiltersSelected([])
               setPlanFiltersSelected([])
+              setTriggerListUpdate(triggerListUpdate + 1)
             }}
           >
             <Tooltip title="Limpiar" placement="top-end">
-              <BsFillTrashFill />
+              <DeleteOutlined />
             </Tooltip>
           </IconButton>
-          <IconButton type="button" onClick={searchPartners}>
-            <Tooltip title="Aplicar" placement="top-end">
-              <AiFillSave />
-            </Tooltip>
-          </IconButton>
+
+          <Button onClick={searchPartners} size="small" type="primary">
+            Aplicar
+          </Button>
         </ButtonContainer>
       </FilterList>
     </FilterContainer>

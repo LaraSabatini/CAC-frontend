@@ -2,15 +2,14 @@ import styled from "styled-components"
 import theme from "theme"
 
 const Container = styled.div`
-  background-color: ${theme.colors.white};
-  width: 400px;
-  border-radius: 18px;
-  padding: 25px;
   display: flex;
   flex-direction: column;
 
   .input-container {
     padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .horizontal {

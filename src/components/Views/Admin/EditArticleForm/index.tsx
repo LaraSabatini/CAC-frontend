@@ -1,12 +1,10 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import texts from "strings/articles.json"
-import { DashboardContext } from "contexts/Dashboard"
 import { ArticlesContext } from "contexts/Articles"
 import Modal from "components/UI/Modal"
 import regionFilters from "const/regions"
-import Input from "components/UI/Input"
-import ComboBoxSelect from "components/UI/ComboBoxSelect"
-import { OptionsInterface } from "interfaces/content/Article"
+import { Input, Select } from "antd"
+import { filterList } from "const/filters"
 import ArticleButtons from "./ArticleButtons"
 import AttachmentButton from "./AttachmentButtons"
 import PrevisualizeArticle from "./PrevisualizeArticle"
@@ -24,8 +22,6 @@ interface EditArticleFormInterface {
 }
 
 function EditArticleForm({ closeForm }: EditArticleFormInterface) {
-  const { themeFilters } = useContext(DashboardContext)
-
   const {
     previsualizeEdit,
     setPrevisualizeEdit,
@@ -36,19 +32,32 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
     setNewAttachmentsForDataBase,
   } = useContext(ArticlesContext)
 
-  const getActiveOptions = (
-    idsSelected: number[],
-    filters: { id: number; value: string }[],
-  ): { id: number; value: string }[] => {
-    const activeOptions = []
+  const [regionsSelected, setRegionsSelected] = useState<string[]>([])
+  const [themesSelected, setThemesSelected] = useState<string[]>([])
 
-    for (let i = 0; i < filters.length; i += 1) {
-      if (idsSelected.includes(filters[i].id)) {
-        activeOptions.push(filters[i])
+  const { TextArea } = Input
+
+  const setDefaultValuesForSelect = (themes: number[], regions: number[]) => {
+    const regionsArray: string[] = []
+
+    regions.forEach(value => {
+      const filterRegions = regionFilters.filter(item => item.id === value)
+      if (filterRegions.length > 0) {
+        regionsArray.push(filterRegions[0].value)
       }
-    }
+    })
 
-    return activeOptions
+    const themesArray: string[] = []
+
+    themes.forEach(value => {
+      const filterThemes = filterList.filter(item => item.id === value)
+      if (filterThemes.length > 0) {
+        themesArray.push(filterThemes[0].value)
+      }
+    })
+
+    setRegionsSelected(regionsArray)
+    setThemesSelected(themesArray)
   }
 
   useEffect(() => {
@@ -66,6 +75,10 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
       setNewAttachmentsForDataBase(
         JSON.parse(articleSelected.attachments as string),
       )
+      setDefaultValuesForSelect(
+        JSON.parse(articleSelected.themeFilters as string),
+        JSON.parse(articleSelected.regionFilters as string),
+      )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [articleSelected])
@@ -73,133 +86,120 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
   return (
     <Modal>
       <Container>
-        {!previsualizeEdit ? (
+        {!previsualizeEdit &&
+        themesSelected.length > 0 &&
+        regionsSelected.length > 0 ? (
           <>
-            <Title>{texts.newArticleForm.title}</Title>
+            <Title>Editar publicación</Title>
             <InputContainer>
               <HorizontalGroup>
                 <Input
-                  label={texts.newArticleForm.labels.title}
-                  required
-                  type="text"
                   placeholder={texts.newArticleForm.labels.titlePlaceholder}
-                  width={500}
-                  value={articleEdited.title}
-                  onChange={e =>
+                  required
+                  onChange={e => {
                     setArticleEdited({
                       ...articleEdited,
                       title: e.target.value,
                     })
-                  }
-                  max={70}
+                  }}
+                  value={articleEdited.title}
+                  maxLength={70}
                 />
                 <Input
-                  label={texts.newArticleForm.labels.subtitle}
-                  required
-                  type="text"
                   placeholder={texts.newArticleForm.labels.subtitlePlaceholder}
-                  width={500}
+                  required
                   value={articleEdited.subtitle}
-                  max={100}
-                  onChange={e =>
+                  onChange={e => {
                     setArticleEdited({
                       ...articleEdited,
                       subtitle: e.target.value,
                     })
-                  }
-                />
-              </HorizontalGroup>
-              <FiltersTitle>{texts.newArticleForm.labels.filters}</FiltersTitle>
-              <HorizontalGroup>
-                <ComboBoxSelect
-                  placeholder={
-                    !articleEdited.regionFilters.length
-                      ? `${texts.newArticleForm.labels.region}`
-                      : ""
-                  }
-                  optionsList="single"
-                  width={480}
-                  options={regionFilters}
-                  activeOptions={getActiveOptions(
-                    articleEdited.regionFilters as number[],
-                    regionFilters,
-                  )}
-                  onChange={(e: OptionsInterface[] | undefined) => {
-                    if (e !== undefined) {
-                      const filters: number[] = []
-                      e.map(filter => filters.push(filter.id))
-                      setArticleEdited({
-                        ...articleEdited,
-                        regionFilters: filters,
-                      })
-                    }
                   }}
-                />
-                <ComboBoxSelect
-                  placeholder={
-                    !articleEdited.themeFilters.length
-                      ? `${texts.newArticleForm.labels.theme}`
-                      : ""
-                  }
-                  optionsList="single"
-                  width={475}
-                  options={themeFilters}
-                  activeOptions={getActiveOptions(
-                    articleEdited.themeFilters as number[],
-                    themeFilters,
-                  )}
-                  onChange={(e: OptionsInterface[] | undefined) => {
-                    if (e !== undefined) {
-                      const filters: number[] = []
-                      e.map(filter => filters.push(filter.id))
-                      setArticleEdited({
-                        ...articleEdited,
-                        themeFilters: filters,
-                      })
-                    }
-                  }}
+                  maxLength={70}
                 />
               </HorizontalGroup>
               <HorizontalGroup>
                 <Input
-                  value={articleEdited.description}
-                  label={texts.newArticleForm.labels.description}
+                  placeholder="Autor*"
                   required
-                  type="text"
-                  placeholder={
-                    texts.newArticleForm.labels.descriptionPlaceholder
-                  }
-                  width={700}
-                  max={150}
+                  value={articleEdited.author}
+                  style={{ width: 475 }}
+                  onChange={e => {
+                    setArticleEdited({
+                      ...articleEdited,
+                      author: e.target.value,
+                    })
+                  }}
+                  maxLength={70}
+                />
+              </HorizontalGroup>
+              <FiltersTitle>{texts.newArticleForm.labels.filters}</FiltersTitle>
+              <HorizontalGroup>
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{ width: 475 }}
+                  placeholder="Región"
+                  defaultValue={regionsSelected}
+                  onChange={value => {
+                    setRegionsSelected(value)
+                    const ids: number[] = []
+                    value.forEach(item => {
+                      const filterItem = regionFilters.filter(
+                        region => region.value === item,
+                      )
+                      if (filterItem.length > 0) {
+                        ids.push(filterItem[0].id)
+                      }
+                    })
+                    setArticleEdited({
+                      ...articleEdited,
+                      regionFilters: ids,
+                    })
+                  }}
+                  options={regionFilters}
+                />
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{ width: 475 }}
+                  placeholder="Temática"
+                  defaultValue={themesSelected}
+                  onChange={value => {
+                    setThemesSelected(value)
+                    const ids: number[] = []
+                    value.forEach(item => {
+                      const filterItem = filterList.filter(
+                        region => region.value === item,
+                      )
+                      if (filterItem.length > 0) {
+                        ids.push(filterItem[0].id)
+                      }
+                    })
+                    setArticleEdited({
+                      ...articleEdited,
+                      themeFilters: ids,
+                    })
+                  }}
+                  options={filterList}
+                />
+              </HorizontalGroup>
+              <HorizontalGroup>
+                <TextArea
+                  value={articleEdited.description}
+                  rows={2}
+                  placeholder={texts.newArticleForm.labels.description}
                   onChange={e =>
                     setArticleEdited({
                       ...articleEdited,
                       description: e.target.value,
                     })
                   }
-                />
-                <Input
-                  value={articleEdited.author}
-                  label={texts.newArticleForm.labels.author}
-                  required
-                  type="text"
-                  placeholder={texts.newArticleForm.labels.author}
-                  width={300}
-                  max={100}
-                  onChange={e =>
-                    setArticleEdited({
-                      ...articleEdited,
-                      author: e.target.value,
-                    })
-                  }
+                  maxLength={190}
                 />
               </HorizontalGroup>
-              <Input
-                label={texts.newArticleForm.labels.fullArticle}
-                required
-                type="textarea"
-                width={995}
-                height={280}
+              <TextArea
+                rows={12}
                 placeholder={texts.newArticleForm.labels.fullArticlePlaceholder}
                 onChange={e =>
                   setArticleEdited({
@@ -207,8 +207,9 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
                     article: e.target.value,
                   })
                 }
+                required
                 value={articleEdited.article}
-                keyDown={() => {
+                onPressEnter={() => {
                   setArticleEdited({
                     ...articleEdited,
                     article: `${articleEdited.article}\n`,

@@ -51,7 +51,7 @@ const InputContainer = styled.div`
   gap: 30px;
 `
 
-const Error = styled.p`
+const ErrorMessage = styled.p`
   font-family: ${theme.fonts.content};
   color: ${theme.colors.red};
   text-align: center;
@@ -81,7 +81,7 @@ export {
   IconContainer,
   ButtonContainer,
   InputContainer,
-  Error,
+  ErrorMessage,
   FeedbackForm,
   RadioButton,
 }

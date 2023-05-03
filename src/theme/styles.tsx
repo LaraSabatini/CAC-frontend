@@ -4,9 +4,17 @@ import theme from "./index"
 const GlobalStyle = createGlobalStyle`
   body {
           margin: 0px;
-          /* background-color:  ${theme.colors.light_grey}; */
-          background-color:  #d6dfed;
+          background-color:  #ebf1fa;
           padding-bottom: 50px;
+
+          /* Hide scrollbar for Chrome, Safari and Opera */
+          ::-webkit-scrollbar {
+            display: none;
+          }
+
+          /* Hide scrollbar for IE, Edge and Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
 `
 

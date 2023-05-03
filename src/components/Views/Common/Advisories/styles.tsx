@@ -12,7 +12,7 @@ const Calendar = styled.div`
   width: 96%;
   padding: 10px 25px;
   border-radius: 18px;
-  background-color: ${theme.colors.white};
+  background-color: white;
 
   display: flex;
   flex-direction: column;
@@ -94,7 +94,12 @@ const ScheduleAdvisory = styled.button`
 const CalendarDisplay = styled.div`
   /* height: 600px; */
   height: fit-content;
-  width: 1246px;
+  justify-content: center;
+  align-items: center;
+
+  /* border: 1px solid red; */
+  /* width: 1246px; */
+  width: 100%;
 
   display: flex;
   flex-wrap: wrap;
@@ -136,6 +141,7 @@ const DateView = styled.div<{ past?: boolean }>`
 
 const Days = styled.div`
   display: flex;
+  justify-content: center;
   padding-top: 15px;
   font-family: ${theme.fonts.extra};
   font-size: 15px;

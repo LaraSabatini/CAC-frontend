@@ -1,7 +1,6 @@
 import React, { useContext } from "react"
 import { ClientsContext } from "contexts/Clients"
 import Pagination from "components/UI/Pagination"
-import regions from "const/regions"
 import {
   TableContainer,
   TableStyled,
@@ -53,7 +52,7 @@ function Table() {
           <p className="id-tag">N° de socio</p>
           <p className="plan-tag">Plan</p>
           <p className="identification-tag">Documento</p>
-          <p className="region-tag">Region</p>
+          <p className="region-tag">Región</p>
           <p className="partner-tag">Socio desde</p>
         </TableHead>
         <TableContent>
@@ -74,12 +73,7 @@ function Table() {
                 <p className="identification-tag">
                   {client.identificationNumber}
                 </p>
-                <p className="region-tag">
-                  {
-                    regions?.filter(region => client.region === region.id)[0]
-                      ?.value
-                  }
-                </p>
+                <p className="region-tag">{client.region}</p>
                 <p className="partner-tag">
                   {client.dateCreated.replace(/-/g, "/")}
                 </p>
