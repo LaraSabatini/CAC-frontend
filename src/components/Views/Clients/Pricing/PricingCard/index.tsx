@@ -26,7 +26,7 @@ function PricingCard({
         <b>{texts.detail}</b> ${numberWithCommas(price / time)} ARS
       </Detail>
       <Description>{description}</Description>
-      <Button type="primary" size="large" onClick={selectPlan}>
+      <Button type="primary" onClick={selectPlan}>
         {texts.subscribe}
       </Button>
     </Card>

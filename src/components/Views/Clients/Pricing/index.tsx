@@ -5,7 +5,7 @@ import texts from "strings/pricing.json"
 import PricingInterface from "interfaces/content/Pricing"
 import defaultPaymet from "const/defaultValuesForPaymentContext"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
-import Logo from "components/UI/Assets/Icon/Icons/Logo"
+import LogoWhite from "components/UI/Assets/Icon/Icons/LogoWhite"
 import PricingCard from "./PricingCard"
 import ClientDataForm from "../Payment/ClientDataForm"
 import {
@@ -13,7 +13,7 @@ import {
   Title,
   CardsContainer,
   SubTitle,
-  // Miscelaneous,
+  LogoContainer,
 } from "./styles"
 
 function PricingView() {
@@ -55,26 +55,16 @@ function PricingView() {
         visible={serverErrorModal}
         changeVisibility={() => setServerErrorModal(false)}
       />
-
       <div>
         <Title>
-          <Logo />
+          <LogoContainer>
+            <LogoWhite />
+          </LogoContainer>
           {texts.title}
+          <SubTitle>{texts.description}</SubTitle>
         </Title>
-        <SubTitle>{texts.description}</SubTitle>
       </div>
 
-      {/* <Miscelaneous>
-        <div className="line">
-          <div className="blue" />
-          <div className="green" />
-          <div className="light-green" />
-        </div>
-        <div className="squares">
-          <div className="square-1" />
-          <div className="square-2" />
-        </div>
-      </Miscelaneous> */}
       <CardsContainer>
         {pricingList.length > 0 &&
           pricingList.map((pricingPlan: PricingInterface) => (
