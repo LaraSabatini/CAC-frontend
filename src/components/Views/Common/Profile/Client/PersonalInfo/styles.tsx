@@ -3,10 +3,13 @@ import theme from "theme/index"
 import { Button } from "components/UI/sharedStyles"
 
 const PersonalDataCard = styled.div`
-  background-color: ${theme.colors.white};
+  background-color: white;
   width: 380px;
   padding: 25px 30px;
-  border-radius: 10px;
+  border: 1px solid rgba(70, 106, 149, 0.138);
+  border-radius: 18px;
+
+  box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
 
   @media (max-width: ${theme.screenSize.mobile}) {
     width: 260px;

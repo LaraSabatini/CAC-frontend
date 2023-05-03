@@ -5,7 +5,6 @@ const frontValidation = (
   phoneAreaCode: string,
   phoneNumber: string,
   identificationNumber: string,
-  realEstateRegistration: string,
 ): boolean => {
   if (
     name === "" ||
@@ -13,8 +12,7 @@ const frontValidation = (
     email === "" ||
     phoneAreaCode === "" ||
     phoneNumber === "" ||
-    identificationNumber === "" ||
-    realEstateRegistration === ""
+    identificationNumber === ""
   ) {
     return false
   }

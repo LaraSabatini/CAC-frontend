@@ -23,6 +23,9 @@ const defaultClient: ClientInterface = {
   mpId: "",
   savedArticles: [],
   realEstateRegistration: "",
+  activityStartDate: "",
+  amountOfBuildings: "",
+  birthdate: "",
 }
 
 export default defaultClient

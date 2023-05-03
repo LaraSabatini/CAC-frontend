@@ -5,10 +5,17 @@ import capitalizeFirstLetter from "helpers/formatting/capitalizeFirstLetter"
 import identificationTypes from "const/identificationTypes"
 import texts from "strings/payment.json"
 import regionOptions from "const/regions"
-import { Input, Select, Tooltip } from "antd"
+import { Input, Select, Tooltip, DatePicker } from "antd"
+import dayjs from "dayjs"
+import customParseFormat from "dayjs/plugin/customParseFormat"
+
 import { HorizontalGroup, InputContainer } from "../styles"
 
+dayjs.extend(customParseFormat)
+
 function Inputs() {
+  const dateFormat = "DD/MM/YYYY"
+
   const { newClient, setNewClient } = useContext(ClientsContext)
   const { formError } = useContext(PaymentContext)
 
@@ -17,6 +24,13 @@ function Inputs() {
       ? "error"
       : ""
   }
+
+  const amountOfBuildings = [
+    { id: 222, value: "1 a 5" },
+    { id: 223, value: "5 a 10" },
+    { id: 224, value: "10 a 20" },
+    { id: 225, value: "+ de 20" },
+  ]
 
   return (
     <InputContainer>
@@ -134,7 +148,6 @@ function Inputs() {
         />
         <Input
           placeholder="Matrícula"
-          status={validateError("realEstateRegistration")}
           style={{ width: 215 }}
           onChange={e =>
             setNewClient({
@@ -142,6 +155,51 @@ function Inputs() {
               realEstateRegistration: e.target.value,
             })
           }
+        />
+      </HorizontalGroup>
+      <HorizontalGroup>
+        <DatePicker
+          placeholder="Fecha de nacimiento"
+          style={{ width: 215 }}
+          format={dateFormat}
+          onChange={(e: any) => {
+            if (e !== null) {
+              const day = e.$D > 9 ? e.$D : `0${e.$D}`
+              const month = e.$M + 1 > 9 ? e.$M + 1 : `0${e.$M + 1}`
+
+              setNewClient({
+                ...newClient,
+                birthdate: `${day}-${month}-${e.$y}`,
+              })
+            }
+          }}
+        />
+        <DatePicker
+          placeholder="Inicio de actividad"
+          style={{ width: 215 }}
+          format={dateFormat}
+          onChange={(e: any) => {
+            if (e !== null) {
+              const day = e.$D > 9 ? e.$D : `0${e.$D}`
+              const month = e.$M + 1 > 9 ? e.$M + 1 : `0${e.$M + 1}`
+
+              setNewClient({
+                ...newClient,
+                activityStartDate: `${day}-${month}-${e.$y}`,
+              })
+            }
+          }}
+        />
+        <Select
+          placeholder="Cantidad actual de edificios"
+          style={{ width: 215 }}
+          onChange={e =>
+            setNewClient({
+              ...newClient,
+              amountOfBuildings: e,
+            })
+          }
+          options={amountOfBuildings}
         />
       </HorizontalGroup>
     </InputContainer>

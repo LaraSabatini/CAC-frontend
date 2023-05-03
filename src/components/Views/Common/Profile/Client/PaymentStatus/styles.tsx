@@ -2,9 +2,12 @@ import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const Card = styled.div`
-  background-color: ${theme.colors.white};
+  background-color: white;
   padding: 20px 25px;
+  border: 1px solid rgba(70, 106, 149, 0.138);
   border-radius: 10px;
+
+  box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
   gap: 20px;
   display: flex;
   flex-direction: column;

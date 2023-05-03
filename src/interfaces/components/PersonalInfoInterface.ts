@@ -8,6 +8,9 @@ export interface DataInterface {
   email: string
   region: string
   realEstateRegistration: string
+  activityStartDate: string
+  amountOfBuildings: string
+  birthdate: string
 }
 
 export interface EditPersonalInfoInterface {

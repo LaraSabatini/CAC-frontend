@@ -17,6 +17,9 @@ interface ClientInterface extends UserInterface {
   mpId: string
   savedArticles: number[] | string
   realEstateRegistration: string
+  activityStartDate: string
+  amountOfBuildings: string
+  birthdate: string
 }
 
 export default ClientInterface

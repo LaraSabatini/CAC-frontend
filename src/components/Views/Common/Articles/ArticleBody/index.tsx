@@ -80,7 +80,6 @@ function ArticleBody(props: Props) {
 
   const [articleParagraphs, setArticleParagraphs] = useState<string[]>([])
 
-  // const [modalDelete, setModalDelete] = useState<boolean>(false)
   const [modalEdit, setModalEdit] = useState<boolean>(false)
 
   const [changesHistory, setChangesHistory] = useState<

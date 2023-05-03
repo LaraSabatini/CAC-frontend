@@ -88,6 +88,7 @@ const ArticleParagraph = styled.p`
 const ArticleContent = styled.div`
   display: flex;
   flex-direction: column;
+  height: fit-content;
 `
 
 const AuthorContainer = styled.div`

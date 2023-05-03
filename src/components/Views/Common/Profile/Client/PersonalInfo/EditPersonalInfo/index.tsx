@@ -16,20 +16,25 @@ import profileTexts from "strings/profile.json"
 import ClientInterface from "interfaces/users/Client"
 import frontValidation from "helpers/forms/validateFrontRegistration"
 import identificationTypes from "const/identificationTypes"
-import Input from "components/UI/Input"
-import InputSelect from "components/UI/InputSelect"
-import Button from "components/UI/Button"
-import { Form, HorizontalGroup, ButtonContainer, Error } from "./styles"
+import regions from "const/regions"
+import amountOfBuildings from "const/amountOfBuildings"
+import { Input, Select, DatePicker, Button } from "antd"
+import dayjs from "dayjs"
+import customParseFormat from "dayjs/plugin/customParseFormat"
+import { Form, HorizontalGroup, ButtonContainer, Error, Label } from "./styles"
 
-function EditPersonalInfo({
-  cancelChanges,
-  regions,
-}: EditPersonalInfoInterface) {
+dayjs.extend(customParseFormat)
+
+function EditPersonalInfo({ cancelChanges }: EditPersonalInfoInterface) {
   const userData = JSON.parse(localStorage.getItem("userData") as string)
+  const dateFormat = "DD/MM/YYYY"
 
   const { profileData, triggerUpdate, setTriggerUpdate } = useContext(
     ProfileContext,
   )
+
+  const [loading, setLoading] = useState<boolean>(false)
+
   const [serverError, setServerError] = useState<boolean>(false)
 
   const data = profileData as ClientInterface
@@ -44,6 +49,9 @@ function EditPersonalInfo({
     email: `${data.email}`,
     region: data.region,
     realEstateRegistration: data.realEstateRegistration,
+    amountOfBuildings: data.amountOfBuildings,
+    activityStartDate: data.activityStartDate,
+    birthdate: data.birthdate,
   })
   const [formError, setFormError] = useState<string>("")
 
@@ -55,11 +63,11 @@ function EditPersonalInfo({
       newData.phoneAreaCode,
       newData.phoneNumber,
       newData.identificationNumber,
-      newData.realEstateRegistration,
     )
 
     if (validate) {
       setFormError("")
+      setLoading(true)
 
       let emailValidation: boolean = true
       let identificationNumberValidation: boolean = true
@@ -108,6 +116,7 @@ function EditPersonalInfo({
     } else {
       setFormError(texts.form.requiredError)
     }
+    setLoading(false)
   }
 
   return (
@@ -117,11 +126,11 @@ function EditPersonalInfo({
         visible={serverError}
         changeVisibility={() => setServerError(false)}
       />
+      <Label>Nombre y Apellido</Label>
       <HorizontalGroup>
         <Input
-          width={200}
           value={newData.name}
-          label={texts.form.name}
+          placeholder={texts.form.name}
           required
           type="text"
           onChange={e =>
@@ -132,9 +141,8 @@ function EditPersonalInfo({
           }
         />
         <Input
-          width={200}
           value={newData.lastName}
-          label={texts.form.surname}
+          placeholder={texts.form.surname}
           required
           type="text"
           onChange={e =>
@@ -145,96 +153,160 @@ function EditPersonalInfo({
           }
         />
       </HorizontalGroup>
+      <Label>Tipo y nº de documento</Label>
       <HorizontalGroup>
-        <InputSelect
-          width={200}
-          label={texts.form.identificationType}
-          options={identificationTypes}
-          required
-          onClick={(e: { id: number; value: string }) => {
+        <Select
+          defaultValue={identificationTypes[0]}
+          placeholder={texts.form.identificationType}
+          style={{ width: 200 }}
+          onChange={(e: { id: number; value: string }) => {
             setNewData({
               ...newData,
               identificationType: e.value,
             })
           }}
+          options={identificationTypes}
         />
         <Input
-          width={200}
-          label={texts.form.identificationNumber}
+          style={{ width: 200 }}
+          placeholder={texts.form.identificationNumber}
           required
-          type="number"
           value={newData.identificationNumber}
           onChange={e =>
             setNewData({ ...newData, identificationNumber: e.target.value })
           }
         />
       </HorizontalGroup>
+      <Label>{texts.form.phone}</Label>
       <HorizontalGroup>
         <Input
-          width={100}
-          label={texts.form.areaCode}
+          style={{ width: 100 }}
+          placeholder={texts.form.areaCode}
           required
-          type="number"
           value={newData.phoneAreaCode}
           onChange={e =>
             setNewData({ ...newData, phoneAreaCode: e.target.value })
           }
         />
         <Input
-          width={200}
-          label={texts.form.phone}
+          style={{ width: 200 }}
+          placeholder={texts.form.phone}
           required
-          type="number"
           value={newData.phoneNumber}
           onChange={e =>
             setNewData({ ...newData, phoneNumber: e.target.value })
           }
         />
       </HorizontalGroup>
-      <Input
-        label={texts.form.email}
-        width={270}
-        required
-        type="email"
-        value={newData.email}
-        onChange={e => setNewData({ ...newData, email: e.target.value })}
-      />
-      <InputSelect
-        width={270}
-        label="Región"
-        options={regions as { id: number; value: string }[]}
-        required
-        onClick={(e: { id: number; value: string }) => {
-          setNewData({
-            ...newData,
-            region: e.value,
-          })
-        }}
-      />
-      <Input
-        width={200}
-        value={newData.realEstateRegistration}
-        label="Matrícula"
-        required
-        type="text"
-        onChange={e =>
-          setNewData({
-            ...newData,
-            realEstateRegistration: e.target.value,
-          })
-        }
-      />
+      <Label>Email</Label>
+      <HorizontalGroup>
+        <Input
+          placeholder={texts.form.email}
+          required
+          value={newData.email}
+          onChange={e => setNewData({ ...newData, email: e.target.value })}
+        />
+      </HorizontalGroup>
+
+      <Label>Región y Cantidad de edificios</Label>
+      <HorizontalGroup>
+        <Select
+          defaultValue={
+            regions.filter(region => region.value === newData.region)[0]
+          }
+          placeholder={texts.form.identificationType}
+          style={{ width: 200 }}
+          onChange={(e: { id: number; value: string }) => {
+            setNewData({
+              ...newData,
+              region: e.value,
+            })
+          }}
+          options={regions}
+        />
+        <Select
+          defaultValue={
+            amountOfBuildings.filter(
+              amount => amount.value === newData.amountOfBuildings,
+            )[0]
+          }
+          placeholder="Cantidad de edificios"
+          style={{ width: 200 }}
+          onChange={(e: { id: number; value: string }) => {
+            setNewData({
+              ...newData,
+              amountOfBuildings: e.value,
+            })
+          }}
+          options={amountOfBuildings}
+        />
+      </HorizontalGroup>
+      <Label>Fecha de nacimiento e inicio de actividad</Label>
+      <HorizontalGroup>
+        <DatePicker
+          placeholder="Fecha de nacimiento"
+          defaultValue={dayjs(
+            `${newData.birthdate.replaceAll("-", "/")}`,
+            dateFormat,
+          )}
+          style={{ width: 215 }}
+          format={dateFormat}
+          onChange={(e: any) => {
+            if (e !== null) {
+              const day = e.$D > 9 ? e.$D : `0${e.$D}`
+              const month = e.$M + 1 > 9 ? e.$M + 1 : `0${e.$M + 1}`
+
+              setNewData({
+                ...newData,
+                birthdate: `${day}-${month}-${e.$y}`,
+              })
+            }
+          }}
+        />
+        <DatePicker
+          placeholder="Inicio de actividad"
+          defaultValue={dayjs(
+            `${newData.activityStartDate.replaceAll("-", "/")}`,
+            dateFormat,
+          )}
+          style={{ width: 215 }}
+          format={dateFormat}
+          onChange={(e: any) => {
+            if (e !== null) {
+              const day = e.$D > 9 ? e.$D : `0${e.$D}`
+              const month = e.$M + 1 > 9 ? e.$M + 1 : `0${e.$M + 1}`
+
+              setNewData({
+                ...newData,
+                activityStartDate: `${day}-${month}-${e.$y}`,
+              })
+            }
+          }}
+        />
+      </HorizontalGroup>
+
+      <Label>Nº de matrícula</Label>
+      <HorizontalGroup>
+        <Input
+          value={newData.realEstateRegistration}
+          placeholder="Matrícula"
+          required
+          type="text"
+          onChange={e =>
+            setNewData({
+              ...newData,
+              realEstateRegistration: e.target.value,
+            })
+          }
+        />
+      </HorizontalGroup>
       <ButtonContainer>
-        <Button
-          content={profileTexts.changePassword.cancel}
-          cta={false}
-          action={cancelChanges}
-        />
-        <Button
-          content={profileTexts.personalData.save}
-          cta
-          action={saveChanges}
-        />
+        <Button onClick={cancelChanges}>
+          {profileTexts.changePassword.cancel}
+        </Button>
+        <Button loading={loading} type="primary" onClick={saveChanges}>
+          {profileTexts.personalData.save}
+        </Button>
       </ButtonContainer>
     </Form>
   )

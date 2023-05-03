@@ -6,34 +6,26 @@ import { ProfileContext } from "contexts/Profile"
 import changePassword from "services/auth/changePassword.service"
 import errorTexts from "strings/errors.json"
 import texts from "strings/profile.json"
-import Modal from "components/UI/Modal"
-import ModalStatus from "components/UI/ModalStatus"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
-import Input from "components/UI/Input"
-import Button from "components/UI/Button"
-import {
-  ModalContainer,
-  InputContainer,
-  ButtonContainer,
-  Error,
-} from "./styles"
+import { Button, Modal, Input } from "antd"
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons"
+import { InputContainer, ErrorMessage } from "./styles"
 
 interface ChangePasswordModalInterface {
-  cancel: (arg?: any) => void
   cantCancel: boolean
 }
 
-function ChangePasswordModal({
-  cancel,
-  cantCancel,
-}: ChangePasswordModalInterface) {
+function ChangePasswordModal({ cantCancel }: ChangePasswordModalInterface) {
   const router = useRouter()
 
   const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const { setTriggerUpdate, triggerUpdate } = useContext(ProfileContext)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const { loginError, setLoginError, accountBlocked } = useContext(LoginContext)
+
+  const [changePasswordView, setChangePasswordView] = useState<boolean>(false)
 
   const [formData, setFormData] = useState<{
     password: string
@@ -45,12 +37,22 @@ function ChangePasswordModal({
     confirmNewPassword: "",
   })
   const [formError, setFormError] = useState<string>("")
-  const [changePasswordSuccess, setChangePasswordSuccess] = useState<boolean>(
-    false,
-  )
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
 
+  const success = () => {
+    Modal.success({
+      title: `${texts.changePassword.success.title}`,
+      content: `${texts.changePassword.success.description}`,
+      onOk() {
+        setTriggerUpdate(triggerUpdate + 1)
+        router.replace(routes.profile.name)
+        setChangePasswordView(false)
+      },
+    })
+  }
+
   const tryChangePassword = async () => {
+    setLoading(true)
     // *** Cambiar contraseña
     const changePasswordReq = await changePassword(
       userData.type,
@@ -63,13 +65,11 @@ function ChangePasswordModal({
     )
 
     if (changePasswordReq.status === 201) {
-      setChangePasswordSuccess(true)
-
       const newUserData = {
         ...userData,
         firstLogin: false,
       }
-
+      success()
       localStorage.setItem("userData", JSON.stringify(newUserData))
     } else if (changePasswordReq.status === 401) {
       setFormError(`${texts.changePassword.wrongPassword}`)
@@ -78,12 +78,12 @@ function ChangePasswordModal({
     if (changePasswordReq.status === 500) {
       setServerErrorModal(true)
     }
+    setLoading(false)
   }
 
   const validateChange = async (e: any) => {
     e?.preventDefault()
 
-    // *** Validar campos requeridos
     if (
       formData.password === "" ||
       formData.newPassword === "" ||
@@ -108,81 +108,81 @@ function ChangePasswordModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountBlocked])
 
+  useEffect(() => {
+    if (router.query.change_password === "true") {
+      setChangePasswordView(true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router])
+
   return (
-    <Modal>
-      <ModalContainer>
-        <InternalServerError
-          visible={serverErrorModal}
-          changeVisibility={() => setServerErrorModal(false)}
-        />
-        <h3>{texts.changePassword.title}</h3>
-        {formError !== "" && <Error>{formError}</Error>}
+    <>
+      <Button type="primary" onClick={() => setChangePasswordView(true)}>
+        {texts.changePassword.title}
+      </Button>
+      <InternalServerError
+        visible={serverErrorModal}
+        changeVisibility={() => setServerErrorModal(false)}
+      />
+      <Modal
+        title="Cambiar contraseña"
+        open={changePasswordView}
+        width={400}
+        onOk={validateChange}
+        onCancel={() => {
+          if (!cantCancel) {
+            setChangePasswordView(false)
+          }
+        }}
+        okText={texts.changePassword.confirm}
+        cancelText="Cancelar"
+        confirmLoading={loading}
+        cancelButtonProps={{
+          disabled: cantCancel,
+        }}
+      >
+        {formError !== "" && <ErrorMessage>{formError}</ErrorMessage>}
         <InputContainer>
-          <Input
-            label={texts.changePassword.password}
+          <Input.Password
+            placeholder={texts.changePassword.password}
             width={320}
+            iconRender={visible =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
             required
-            type="password"
-            backError={formError !== "" || loginError}
+            status={formError !== "" || loginError ? "error" : ""}
             onChange={e =>
               setFormData({ ...formData, password: e.target.value })
             }
           />
-          <Input
-            label={texts.changePassword.newPassword}
+          <Input.Password
+            placeholder={texts.changePassword.newPassword}
             width={320}
+            iconRender={visible =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
             required
-            backError={formError !== "" || loginError}
-            type="password"
+            status={formError !== "" || loginError ? "error" : ""}
             onChange={e =>
               setFormData({ ...formData, newPassword: e.target.value })
             }
           />
-          <Input
-            label={texts.changePassword.confirmPassword}
+          <Input.Password
+            placeholder={texts.changePassword.confirmPassword}
             width={320}
+            iconRender={visible =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
             required
-            type="password"
-            backError={formError !== "" || loginError}
-            keyDown={validateChange}
+            status={formError !== "" || loginError ? "error" : ""}
+            onPressEnter={validateChange}
             onChange={e =>
               setFormData({ ...formData, confirmNewPassword: e.target.value })
             }
           />
         </InputContainer>
-
-        <ButtonContainer>
-          {cantCancel ? (
-            <></>
-          ) : (
-            <Button
-              content={texts.changePassword.cancel}
-              cta={false}
-              action={cancel}
-            />
-          )}
-          <Button
-            content={texts.changePassword.confirm}
-            cta
-            action={validateChange}
-          />
-        </ButtonContainer>
-        {changePasswordSuccess && (
-          <ModalStatus
-            title={texts.changePassword.success.title}
-            description={texts.changePassword.success.description}
-            status="success"
-            selfClose
-            selfCloseAction={() => {
-              setTriggerUpdate(triggerUpdate + 1)
-              setChangePasswordSuccess(false)
-              cancel()
-              router.replace(routes.profile.name)
-            }}
-          />
-        )}
-      </ModalContainer>
-    </Modal>
+      </Modal>
+    </>
   )
 }
 
