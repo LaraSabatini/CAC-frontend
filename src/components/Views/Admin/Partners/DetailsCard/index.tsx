@@ -12,9 +12,13 @@ import DataItem from "./DataItem"
 import { Card, Title } from "./styles"
 
 function DetailsCard() {
-  const { clientSelected, plans, profileData, setProfileData } = useContext(
-    ClientsContext,
-  )
+  const {
+    clientSelected,
+    plans,
+    profileData,
+    setProfileData,
+    setClientSelected,
+  } = useContext(ClientsContext)
 
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [serverError, setServerError] = useState<boolean>(false)
@@ -42,6 +46,7 @@ function DetailsCard() {
     Modal.success({
       content: "Acción realizada con éxito",
       onOk() {
+        setClientSelected(null)
         setOpenModal(false)
       },
     })
@@ -138,6 +143,14 @@ function DetailsCard() {
             content={profileData.identificationNumber}
           />
           <DataItem
+            value="Fecha de nacimiento"
+            content={
+              profileData.birthdate !== null
+                ? profileData.birthdate.replace(/-/g, "/")
+                : ""
+            }
+          />
+          <DataItem
             value="Miembro desde"
             content={profileData.dateCreated.replace(/-/g, "/")}
           />
@@ -145,6 +158,22 @@ function DetailsCard() {
             value="Plan actual"
             content={
               plans?.filter(plan => profileData.plan === plan.id)[0]?.name
+            }
+          />
+          <DataItem
+            value="Cantidad de edificios"
+            content={
+              profileData.amountOfBuildings !== null
+                ? profileData.amountOfBuildings
+                : ""
+            }
+          />
+          <DataItem
+            value="Fecha de inicio de actividad"
+            content={
+              profileData.activityStartDate !== null
+                ? profileData.activityStartDate.replace(/-/g, "/")
+                : ""
             }
           />
           <DataItem

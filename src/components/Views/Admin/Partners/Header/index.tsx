@@ -14,7 +14,7 @@ import {
   UsergroupAddOutlined,
   CalendarOutlined,
   LogoutOutlined,
-  FilterFilled,
+  VideoCameraOutlined,
 } from "@ant-design/icons"
 import {
   Container,
@@ -24,7 +24,6 @@ import {
   GoHomeButton,
   ProfileContainer,
   SearchDiv,
-  FiltersButton,
   ButtonContainer,
   Menu,
   Option,
@@ -86,14 +85,9 @@ function Header() {
           {(router.asPath === "/dashboard" ||
             router.asPath === "/partners") && (
             <>
-              <FiltersButton
-                type="button"
-                onClick={() => setOpenFilters(!openFilters)}
-              >
-                <Tooltip title="Filtrar" placement="right">
-                  <FilterFilled />
-                </Tooltip>
-              </FiltersButton>
+              <Button onClick={() => setOpenFilters(!openFilters)}>
+                Filtrar
+              </Button>
 
               {openFilters && (
                 <Filters closeTab={() => setOpenFilters(false)} />
@@ -122,6 +116,10 @@ function Header() {
                 Socios
               </Option>
               <CreateArticleButton />
+              <Option onClick={() => router.replace("/trainings")}>
+                <VideoCameraOutlined />
+                Capacitaciones
+              </Option>
               <Option onClick={() => router.replace("/advisories")}>
                 <CalendarOutlined />
                 Asesorías y eventos

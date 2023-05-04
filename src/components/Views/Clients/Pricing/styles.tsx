@@ -30,7 +30,7 @@ const LogoContainer = styled.div`
 
 const Title = styled.h1`
   ${TitleStyles}
-  color: #ebf1fa;
+  color: white;
   font-size: 30px;
 
   font-weight: 700;
@@ -45,16 +45,14 @@ const SubTitle = styled.span`
   font-weight: 400;
   font-size: 16px;
   color: ${theme.colors.blue};
-  color: #ebf1fa;
+  color: white;
 `
 
 const CardsContainer = styled.div`
   margin-top: 50px;
   display: flex;
-  /* border: 1px solid red; */
   height: 290px;
   align-items: center;
-  /* gap: 1.6%; */
   justify-content: space-between;
   @media (max-width: ${theme.screenSize.tablet.height}) {
     flex-wrap: wrap;

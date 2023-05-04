@@ -7,6 +7,7 @@ import {
   UsergroupAddOutlined,
   CalendarOutlined,
   LogoutOutlined,
+  VideoCameraOutlined,
 } from "@ant-design/icons"
 import { Input, Button, Modal } from "antd"
 import { useRouter } from "next/router"
@@ -165,6 +166,7 @@ function Header() {
                     onClick={() => {
                       setOpenActionsMenu(false)
                       setSavedArticlesSelected(!savedArticlesSelected)
+                      setOpenActionsMenu(false)
                       if (!savedArticlesSelected) {
                         getMyArticles()
                       } else {
@@ -200,7 +202,7 @@ function Header() {
                   </Option>
                   <CreateArticleButton />
                   <Option onClick={() => router.replace("/trainings")}>
-                    <VideoCameraFilled />
+                    <VideoCameraOutlined />
                     Capacitaciones
                   </Option>
                   <Option onClick={() => router.replace("/advisories")}>

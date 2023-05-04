@@ -20,7 +20,7 @@ function Pricing() {
     <PaymentProvider>
       <div
         style={{
-          backgroundImage: `url(https://camarafederal.com.ar/software/imgs/Pantalla%20login-04.png)`,
+          backgroundImage: `url(https://camarafederal.com.ar/software/imgs/Pantalla%20login-04%20%281%29.png)`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           height: "100vh",

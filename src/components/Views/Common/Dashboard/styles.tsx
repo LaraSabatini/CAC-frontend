@@ -52,6 +52,7 @@ const EmptyPage = styled.h2`
   color: ${theme.colors.blue};
   text-align: center;
   padding-top: 20px;
+  width: 100%;
 `
 
 const ButtonContainer = styled.div`

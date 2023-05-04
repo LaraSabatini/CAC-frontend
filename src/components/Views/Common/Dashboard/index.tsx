@@ -153,7 +153,7 @@ function DashboardView() {
       )}
       {articleId === undefined ? (
         <ArticlesContainer>
-          {articles.length &&
+          {articles.length ? (
             articles.map(article => (
               <ArticleView
                 key={article.id}
@@ -167,7 +167,10 @@ function DashboardView() {
                 }}
                 savedTimes={article.saved}
               />
-            ))}
+            ))
+          ) : (
+            <></>
+          )}
           {!articles.length && !loading ? (
             <EmptyPage>No hay artículos para mostrar</EmptyPage>
           ) : (

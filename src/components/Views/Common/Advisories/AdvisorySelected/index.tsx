@@ -30,6 +30,8 @@ function AdvisorySelected({
   const gapi = typeof window !== "undefined" && window.gapi
 
   const [openModalEvent, setOpenModalEvent] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
+
   const [eventData, setEventData] = useState<AdvisoryInterface>(event)
   const [allowClick, setAllowClick] = useState<boolean>(false)
 
@@ -42,6 +44,7 @@ function AdvisorySelected({
       content: "Acción realizada con éxito",
       onOk() {
         setOpenModalEvent(false)
+        setLoading(false)
         if (router.query.id !== undefined) {
           delete router.query.id
           router.push(router)
@@ -72,6 +75,7 @@ function AdvisorySelected({
 
   const changeStatus = async (action: "cancel" | "confirm") => {
     let eventURL = ""
+    setLoading(true)
     if (action === "confirm") {
       const clientEmail = await getClientEmail(eventData.clientId)
 
@@ -95,6 +99,7 @@ function AdvisorySelected({
           eventData.date.replaceAll("-", "/"),
           eventData.hour,
         )
+        setLoading(false)
       } else {
         setServerError(true)
       }
@@ -146,7 +151,7 @@ function AdvisorySelected({
       today.getMonth() + 1 > 9
         ? today.getMonth() + 1
         : `0${today.getMonth() + 1}`
-    const day = today.getDate()
+    const day = today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`
     const year = today.getFullYear()
 
     if (openModalEvent && eventData.date === `${day}-${month}-${year}`) {
@@ -174,7 +179,7 @@ function AdvisorySelected({
         footer={[
           eventData.status === "pending" && (
             <>
-              <Button onClick={() => changeStatus("cancel")}>
+              <Button loading={loading} onClick={() => changeStatus("cancel")}>
                 Cancelar Asesoría
               </Button>
               {userData?.type === "admin" && (

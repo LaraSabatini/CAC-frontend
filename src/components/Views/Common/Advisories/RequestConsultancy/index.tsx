@@ -80,10 +80,19 @@ function RequestAdvisory({ updateList }: { updateList: (arg?: any) => void }) {
           options={options}
         />
         {searchBy === 14983 ? (
-          <SearchByAvailability close={updateList} adminList={adminList} />
+          <SearchByAvailability
+            close={() => {
+              updateList()
+              setRequestAdvisoryModal(false)
+            }}
+            adminList={adminList}
+          />
         ) : (
           <SearchByAdmin
-            close={updateList}
+            close={() => {
+              updateList()
+              setRequestAdvisoryModal(false)
+            }}
             adminListForSelect={adminListForSelect}
           />
         )}

@@ -157,7 +157,6 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
 
         <ButtonContainer>
           <Button
-            size="large"
             onClick={() => {
               closeModal()
               setFormError("")
@@ -166,12 +165,7 @@ function ClientDataForm({ closeModal }: ClientDataFormInterface) {
             {texts.form.cancel}
           </Button>
           {!renderMPButton && (
-            <Button
-              loading={loading}
-              type="primary"
-              size="large"
-              onClick={validateInputs}
-            >
+            <Button loading={loading} type="primary" onClick={validateInputs}>
               {texts.form.next}
             </Button>
           )}

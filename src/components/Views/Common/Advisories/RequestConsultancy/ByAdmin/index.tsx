@@ -4,6 +4,7 @@ import { AdvisoriesContext } from "contexts/Advisories"
 import getNextSevenDates from "helpers/dates/getNextSixDays"
 import { AdvisoryInterface } from "interfaces/content/Advisories"
 import { Input, Select, Button, Modal } from "antd"
+
 import {
   getAvailability,
   getAdvisoriesByMonthAndAdmin,
@@ -232,13 +233,12 @@ function SearchByAdmin({
     if (daySelected !== undefined && hourSelected !== undefined) {
       setLoadingReq(true)
       const date: string[] = daySelected.value.split("-")
-
       const requestAdvisoryData: AdvisoryInterface = {
         adminId: adminSelected?.id as number,
         clientId: userData.id as number,
-        date: date[1].trim().replaceAll("/", "-"),
+        date: date[0].replaceAll("/", "-"),
         hour: hourSelected.value,
-        month: parseInt(date[1].trim().split("/")[1], 10),
+        month: parseInt(date[0].split("/")[1], 10),
         brief,
         eventURL: "",
         status: "pending",

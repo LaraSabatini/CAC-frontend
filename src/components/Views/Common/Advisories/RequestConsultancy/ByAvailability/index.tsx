@@ -11,6 +11,7 @@ import {
 } from "interfaces/content/Advisories"
 import dayjs from "dayjs"
 import customParseFormat from "dayjs/plugin/customParseFormat"
+import { dateFormated } from "helpers/dates/getToday"
 import { Input, Select, Button, Modal, DatePicker } from "antd"
 
 import { listHours, keysOfDays } from "const/dates"
@@ -34,23 +35,41 @@ function SearchByAvailability({
   const dateFormat = "DD/MM/YYYY"
   const { TextArea } = Input
 
+  const [searchValues, setSearchValues] = useState<{
+    date: string
+    hour: { id: number; value: string }
+  }>({
+    date: `${dateFormated.replaceAll("-", "/")}`,
+    hour: { id: 0, value: "" },
+  })
+
+  const [brief, setBrief] = useState<string>("")
+  const [adminsAvailable, setAdminsAvailable] = useState<
+    {
+      id: number
+      userName: string
+      email: string
+    }[]
+  >([])
+
+  const [adminSelected, setAdminSelected] = useState<{
+    id: number
+    value: string
+  }>()
+
   const success = () => {
     Modal.success({
       title: "¡Excelente!",
       content: "Tu solicitud se ha enviado con éxito",
       onOk() {
         close()
+        setBrief("")
+        setAdminsAvailable([])
+        setAdminSelected(undefined)
       },
     })
   }
 
-  const [searchValues, setSearchValues] = useState<{
-    date: string
-    hour: { id: number; value: string }
-  }>({
-    date: "",
-    hour: { id: 0, value: "" },
-  })
   const [disableRequestButton, setDisableRequestButton] = useState<boolean>(
     true,
   )
@@ -61,21 +80,7 @@ function SearchByAvailability({
   const [loadingReq, setLoadingReq] = useState<boolean>(false)
   const [loadingSearch, setLoadingSearch] = useState<boolean>(false)
 
-  const [brief, setBrief] = useState<string>("")
-
-  const [adminsAvailable, setAdminsAvailable] = useState<
-    {
-      id: number
-      userName: string
-      email: string
-    }[]
-  >([])
   const [noResults, setNoResults] = useState<boolean>(false)
-
-  const [adminSelected, setAdminSelected] = useState<{
-    id: number
-    value: string
-  }>()
 
   const searchAvailabilityByTime = async () => {
     setLoadingSearch(true)
@@ -233,7 +238,10 @@ function SearchByAvailability({
       >
         <DatePicker
           placeholder="Fecha"
-          defaultValue={dayjs("01/01/2023", dateFormat)}
+          defaultValue={dayjs(
+            `${dateFormated.replaceAll("-", "/")}`,
+            dateFormat,
+          )}
           status={
             requiredFiledsError && searchValues.date === "" ? "error" : ""
           }

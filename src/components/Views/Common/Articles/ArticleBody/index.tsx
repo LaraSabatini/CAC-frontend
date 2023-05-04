@@ -8,7 +8,6 @@ import {
 import ArticleInterface, {
   CreatedByInterface,
 } from "interfaces/content/Article"
-// import { TbPencil } from "react-icons/tb"
 import { Modal, Button, Tooltip } from "antd"
 
 import {
@@ -21,12 +20,10 @@ import { FaCalendarMinus } from "react-icons/fa"
 import { BsDot } from "react-icons/bs"
 import regionFilters from "const/regions"
 import texts from "strings/articles.json"
-// import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import MediaViewer from "components/UI/MediaViewer"
 import { dateFormated } from "helpers/dates/getToday"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
-// import DeleteArticleModal from "./DeleteArticleModal"
 import EditArticleForm from "../../../Admin/EditArticleForm"
 import RelatedArticles from "./RelatedArticles"
 import {
@@ -137,7 +134,9 @@ function ArticleBody(props: Props) {
     Modal.success({
       content: "Acción realizada con éxito",
       onOk() {
-        router.replace("/dashboard")
+        router.replace("/dashboard").then(() => {
+          router.reload()
+        })
       },
     })
   }
@@ -175,13 +174,11 @@ function ArticleBody(props: Props) {
         />
         {data !== undefined && (
           <LeftContainer>
-            {/* {modalDelete && (
-              <DeleteArticleModal cancel={() => setModalDelete(false)} />
-            )} */}
             {modalEdit && (
               <EditArticleForm
                 closeForm={() => {
                   setModalEdit(false)
+                  setInModal(false)
                   discardArticleEdition()
                   delete router.query.edition
                   router.push(router)

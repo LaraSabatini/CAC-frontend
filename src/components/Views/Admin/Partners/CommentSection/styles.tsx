@@ -62,8 +62,8 @@ const Comment = styled.div`
 
 const AddCommentButton = styled.div`
   position: absolute;
-  bottom: 10px;
-  right: 0;
+  top: 15px;
+  left: 120px;
 `
 
 export { CommentContainer, Title, CommentList, Comment, AddCommentButton }

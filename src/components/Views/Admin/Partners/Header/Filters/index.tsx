@@ -26,9 +26,12 @@ import {
 } from "./styles"
 
 function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
-  const { setClients, triggerListUpdate, setTriggerListUpdate } = useContext(
-    ClientsContext,
-  )
+  const {
+    setClients,
+    triggerListUpdate,
+    setTriggerListUpdate,
+    setClientSelected,
+  } = useContext(ClientsContext)
 
   const [regionFilterOpen, setRegionFilterOpen] = useState<boolean>(false)
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
@@ -74,6 +77,7 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
 
   const searchPartners = async () => {
     closeTab()
+    setClientSelected(null)
     if (regionFiltersSelected.length || planFiltersSelected.length) {
       const filterClientsCall = await filterClients({
         regionIds: regionFiltersSelected,

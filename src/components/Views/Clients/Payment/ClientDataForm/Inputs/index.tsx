@@ -135,7 +135,7 @@ function Inputs() {
       <HorizontalGroup>
         <Select
           placeholder="Región"
-          defaultValue={regionOptions[0].value}
+          defaultValue={regionOptions[1].value}
           style={{ width: 215 }}
           status={validateError("region")}
           onChange={e => {
