@@ -9,7 +9,7 @@ import {
   LogoutOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons"
-import { Input, Button, Modal } from "antd"
+import { Input, Button, Modal, Tooltip } from "antd"
 import { useRouter } from "next/router"
 import routes from "routes"
 import {
@@ -22,7 +22,6 @@ import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import texts from "strings/profile.json"
 import Icon from "components/UI/Assets/Icon"
-import Tooltip from "components/UI/Tooltip"
 import Logo from "components/UI/Assets/Icon/Icons/Logo"
 import Filters from "./Filters"
 import {
@@ -127,12 +126,12 @@ function Header() {
               placeholder="Buscar artículo..."
               onSearch={onSearch}
               allowClear
-              style={{ width: 300 }}
+              className="search"
             />
 
             {(router.asPath === "/dashboard" ||
               router.asPath === "/partners") && (
-              <>
+              <div>
                 <Button onClick={() => setOpenFilters(!openFilters)}>
                   Filtrar
                 </Button>
@@ -140,14 +139,14 @@ function Header() {
                 {openFilters && (
                   <Filters closeTab={() => setOpenFilters(false)} />
                 )}
-              </>
+              </div>
             )}
           </SearchDiv>
         )}
       </SearchContainer>
       <ProfileContainer>
         <ButtonContainer>
-          <Tooltip title="Menú" placement="left">
+          <Tooltip title="Menú">
             <button
               type="button"
               className="menu"

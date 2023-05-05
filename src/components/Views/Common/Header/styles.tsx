@@ -10,12 +10,41 @@ const Container = styled.div`
   border-bottom: 1px solid rgba(70, 106, 149, 0.235);
 
   padding: 0 10px 15px 10px;
+
+  @media (max-width: 630px) {
+    align-items: flex-start;
+  }
 `
 
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;
+
+  .search {
+    width: 300px;
+  }
+
+  @media (max-width: 630px) {
+    width: 50%;
+    flex-wrap: wrap;
+
+    .search {
+      width: 355px;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .search {
+      width: 330px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .search {
+      width: 300px;
+    }
+  }
 `
 
 const ProfileContainer = styled.div`
@@ -40,7 +69,6 @@ const ProfileOptions = styled.div`
   padding: 20px;
   border-radius: 8px;
   right: 0;
-  /* width: 120px; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -88,6 +116,11 @@ const SearchDiv = styled.div`
   align-items: center;
   position: relative;
   gap: 15px;
+  flex-wrap: wrap;
+
+  @media (max-width: 630px) {
+    justify-content: flex-end;
+  }
 `
 
 const SVGButton = styled.button`
@@ -155,6 +188,12 @@ const Menu = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
+
+  @media (max-width: 360px) {
+    top: 45px;
+    right: -70px;
+    width: 275px;
+  }
 `
 
 const Option = styled.div`
