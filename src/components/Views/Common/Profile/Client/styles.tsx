@@ -6,9 +6,9 @@ const Container = styled.div`
   margin: 0 auto;
   padding-top: 20px;
 
-  @media (max-width: 626px) {
+  /* @media (max-width: 626px) {
     padding-top: 50px;
-  }
+  } */
 `
 
 const FirstRowData = styled.div`
@@ -17,9 +17,9 @@ const FirstRowData = styled.div`
   flex-wrap: wrap;
   gap: 20px;
 
-  @media (max-width: 626px) {
+  /* @media (max-width: 626px) {
     padding-left: 20px;
-  }
+  } */
 `
 
 const Title = styled.h4`

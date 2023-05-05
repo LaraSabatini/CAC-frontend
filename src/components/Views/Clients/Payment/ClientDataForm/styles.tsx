@@ -9,10 +9,6 @@ const FormContainer = styled.div`
   padding: 25px 25px;
   display: flex;
   flex-direction: column;
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    width: 90%;
-  }
 `
 
 const Title = styled.h3`
@@ -20,10 +16,6 @@ const Title = styled.h3`
   margin: 0;
   font-size: ${theme.fontSizes.m};
   font-weight: ${theme.fontWeights.medium};
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    font-size: ${theme.fontSizes.s};
-  }
 `
 
 const HorizontalGroup = styled.div`

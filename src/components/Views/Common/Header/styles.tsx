@@ -10,23 +10,12 @@ const Container = styled.div`
   border-bottom: 1px solid rgba(70, 106, 149, 0.235);
 
   padding: 0 10px 15px 10px;
-
-  @media (max-width: ${theme.screenSize.transition_mobile}) {
-    align-items: flex-start;
-    border-bottom: none;
-    padding: 0;
-    margin: 15px 20px;
-  }
 `
 
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;
-
-  @media (max-width: ${theme.screenSize.transition_mobile}) {
-    flex-wrap: wrap;
-  }
 `
 
 const ProfileContainer = styled.div`
@@ -53,7 +42,6 @@ const ProfileOptions = styled.div`
   right: 0;
   /* width: 120px; */
   display: flex;
-  /* flex-direction: column; */
   align-items: center;
   justify-content: space-between;
   gap: 5px;
@@ -100,9 +88,6 @@ const SearchDiv = styled.div`
   align-items: center;
   position: relative;
   gap: 15px;
-  @media (max-width: ${theme.screenSize.transition_mobile}) {
-    margin-top: 10px;
-  }
 `
 
 const SVGButton = styled.button`
@@ -160,7 +145,6 @@ const ButtonContainer = styled.div`
 const Menu = styled.div`
   position: absolute;
   width: 240px;
-  /* height: 275px; */
   height: fit-content;
   border-radius: 18px;
   padding: 25px;

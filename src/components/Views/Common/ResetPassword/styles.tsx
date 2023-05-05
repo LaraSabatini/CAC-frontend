@@ -19,10 +19,6 @@ const Form = styled.div`
 
   transition: 0.3s;
 
-  @media (max-width: ${theme.screenSize.mobile}) {
-    width: 260px;
-  }
-
   .buttons {
     margin-top: 30px;
     display: flex;

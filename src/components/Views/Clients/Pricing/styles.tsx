@@ -11,11 +11,6 @@ const Container = styled.div`
   margin: 0 auto;
   padding-top: 8.3%;
   position: relative;
-
-  @media (max-width: ${theme.screenSize.tablet.height}) {
-    padding-top: 3%;
-    gap: 5%;
-  }
 `
 
 const LogoContainer = styled.div`

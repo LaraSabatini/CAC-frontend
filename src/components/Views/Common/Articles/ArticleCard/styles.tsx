@@ -31,7 +31,7 @@ const CardInfo = styled.div`
 
   height: 90%;
 
-  @media (max-width: 1450px) {
+  /* @media (max-width: 1450px) {
     width: 49%;
     justify-content: space-between;
 
@@ -40,28 +40,6 @@ const CardInfo = styled.div`
       display: flex;
       flex-direction: column;
       gap: 10px;
-    }
-  }
-
-  /* @media (max-width: 1300px) {
-    width: 96%;
-    align-items: flex-start;
-    justify-content: space-evenly;
-    padding-left: 4%;
-    padding-bottom: 2%;
-    height: 45%;
-
-    .articleHeader {
-      padding-top: 10px;
-    }
-  } */
-
-  /* @media (max-width: ${theme.screenSize.mobile}) {
-    width: 90%;
-    height: 52.5%;
-
-    .articleHeader {
-      padding-top: 10px;
     }
   } */
 `
@@ -79,30 +57,6 @@ const CardImageContainer = styled.div`
   img {
     height: 100%;
   }
-
-  /* @media (max-width: 1450px) {
-    width: 42%;
-  }
-
-  @media (max-width: 1300px) {
-    width: 100%;
-    height: 55%;
-    border-radius: 18px 18px 0px 0px;
-    align-items: center;
-
-    img {
-      width: 100%;
-      height: max-content;
-    }
-  }
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    height: 47.5%;
-
-    img {
-      height: 100%;
-    }
-  } */
 `
 
 const ArticleTitle = styled.h3`
@@ -115,26 +69,9 @@ const ArticleTitle = styled.h3`
 
   color: ${theme.colors.blue_dark};
 
-  @media (max-width: 1450px) {
+  /* @media (max-width: 1450px) {
     font-size: 20px;
     line-height: 28px;
-  }
-
-  /* 
-  @media (max-width: 1450px) {
-    width: 320px;
-    font-size: ${theme.fontSizes.m};
-    line-height: 30px;
-  }
-
-  @media (max-width: 1300px) {
-    width: 100%;
-    height: fit-content;
-  }
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    font-size: 18px;
-    line-height: 25px;
   } */
 `
 
@@ -165,19 +102,8 @@ const ArticleDescription = styled.p`
 
   color: ${theme.colors.blue_dark};
 
-  @media (max-width: 1450px) {
+  /* @media (max-width: 1450px) {
     height: 105px;
-  }
-  /*
-  @media (max-width: 1300px) {
-    width: 95%;
-    height: fit-content;
-  }
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    font-size: 15px;
-    line-height: 20px;
-    width: 100%;
   } */
 `
 
@@ -198,22 +124,6 @@ const OpenButton = styled.button`
   position: relative;
 
   color: ${theme.colors.blue};
-
-  /*  
-  @media (max-width: ${theme.screenSize.tablet.width}) {
-    padding-top: 20px;
-  }
-
-  @media (max-width: 1300px) {
-    margin-left: 0;
-    align-self: flex-end;
-    margin-right: 5%;
-    padding-top: 15px;
-  }
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    font-size: ${theme.fontSizes.xs};
-  }  */
 `
 
 const ButtonContainer = styled.div`

@@ -11,9 +11,9 @@ const Container = styled.div`
   margin: 0 auto;
   padding-top: 100px;
 
-  @media (max-width: 626px) {
+  /* @media (max-width: 626px) {
     padding-top: 50px;
-  }
+  } */
 
   .buttons {
     display: flex;
@@ -64,10 +64,6 @@ const PermitsCard = styled.div`
   width: 280px;
   padding: 25px 30px;
   border-radius: 10px;
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    width: 260px;
-  }
 `
 
 const PermitTitle = styled.p`

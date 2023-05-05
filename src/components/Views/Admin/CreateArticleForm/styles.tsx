@@ -46,9 +46,9 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   width: 100%;
 
-  @media (max-width: 1360px) {
+  /* @media (max-width: 1360px) {
     width: 800px;
-  }
+  } */
 `
 
 const ActionButtons = styled.div`

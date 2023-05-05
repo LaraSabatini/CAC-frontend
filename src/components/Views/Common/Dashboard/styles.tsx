@@ -12,9 +12,9 @@ const ArticlesContainer = styled.div`
   gap: 50px;
   padding-bottom: 50px;
 
-  @media (max-width: 1450px) {
+  /* @media (max-width: 1450px) {
     gap: 20px;
-  }
+  } */
 `
 
 const FullArticle = styled.div`

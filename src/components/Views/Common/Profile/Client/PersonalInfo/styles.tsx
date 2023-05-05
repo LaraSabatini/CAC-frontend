@@ -10,10 +10,6 @@ const PersonalDataCard = styled.div`
   border-radius: 18px;
 
   box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    width: 260px;
-  }
 `
 
 const CardHeader = styled.div`

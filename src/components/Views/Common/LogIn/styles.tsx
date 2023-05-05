@@ -18,10 +18,6 @@ const Container = styled.div`
   box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
 
   transition: 0.3s;
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    width: 260px;
-  }
 `
 
 const Title = styled.h4`
