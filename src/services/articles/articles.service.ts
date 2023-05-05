@@ -10,6 +10,11 @@ const getArticles = async (page: number) => {
   return res.data
 }
 
+const getDrafts = async () => {
+  const res = await axios.get(`${apiURL}/drafts`, axiosHeader)
+  return res.data
+}
+
 const getArticleById = async (id: number) => {
   const res = await axios.get(`${apiURL}/id=${id}`, axiosHeader)
   return res.data
@@ -73,4 +78,5 @@ export {
   filterArticles,
   searchArticles,
   editSavedTimes,
+  getDrafts,
 }

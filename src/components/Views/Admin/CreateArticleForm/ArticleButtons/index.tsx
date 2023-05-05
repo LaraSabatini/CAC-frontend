@@ -4,6 +4,7 @@ import { uploadFile } from "services/articles/fileManagement.service"
 import { createArticle } from "services/articles/articles.service"
 import texts from "strings/articles.json"
 import { dateFormated } from "helpers/dates/getToday"
+import ArticleInterface from "interfaces/content/Article"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { Button, Modal } from "antd"
 import getFiles from "helpers/media/getFiles"
@@ -72,48 +73,52 @@ function ArticleButtons({
     }
   }
 
-  const publishArticle = async () => {
-    if (canPreview) {
-      setLoading(true)
-      let successStatus: boolean = false
-      const data = {
-        ...newArticle,
-        createdBy: JSON.stringify({ id: userData.id, email: userData.user }),
-        portrait: getFiles(
-          imageSelectedForPortrait.split(".")[0],
-          imageSelectedForPortrait.split(".")[1],
-        ),
-        attachments: JSON.stringify(attachmentsForDataBase),
-        regionFilters: JSON.stringify(newArticle.regionFilters),
-        themeFilters: JSON.stringify(newArticle.themeFilters),
-        changesHistory: JSON.stringify([
-          {
-            date: dateFormated,
-            changedBy: { id: userData.id, email: userData.user },
-            action: "CREATED",
-          },
-        ]),
+  const publishArticle = async (type: "draft" | "publish") => {
+    const portrait =
+      imageSelectedForPortrait !== null
+        ? getFiles(
+            imageSelectedForPortrait.split(".")[0],
+            imageSelectedForPortrait.split(".")[1],
+          )
+        : ""
+
+    setLoading(true)
+    let successStatus: boolean = false
+    const data: ArticleInterface = {
+      ...newArticle,
+      createdBy: JSON.stringify({ id: userData.id, email: userData.user }),
+      portrait,
+      attachments: JSON.stringify(attachmentsForDataBase),
+      regionFilters: JSON.stringify(newArticle.regionFilters),
+      themeFilters: JSON.stringify(newArticle.themeFilters),
+      changesHistory: JSON.stringify([
+        {
+          date: dateFormated,
+          changedBy: { id: userData.id, email: userData.user },
+          action: "CREATED",
+        },
+      ]),
+      draft: type === "draft" ? 1 : 0,
+    }
+    const createArticleReq = await createArticle(data)
+    successStatus = createArticleReq.status === 201
+    for (let i = 0; i < attachmentsForServer.length; i += 1) {
+      const fileData = saveFile(i)
+      const formData = new FormData()
+      if (fileData !== undefined) {
+        formData.append("file", fileData.file)
+        formData.append("fileName", fileData.name)
+        // eslint-disable-next-line no-await-in-loop
+        const postFile: any = await sendFile(formData)
+        successStatus = postFile.status === 200
+        setServerError(postFile.status !== 200)
       }
-      const createArticleReq = await createArticle(data)
-      successStatus = createArticleReq.status === 201
-      for (let i = 0; i < attachmentsForServer.length; i += 1) {
-        const fileData = saveFile(i)
-        const formData = new FormData()
-        if (fileData !== undefined) {
-          formData.append("file", fileData.file)
-          formData.append("fileName", fileData.name)
-          // eslint-disable-next-line no-await-in-loop
-          const postFile: any = await sendFile(formData)
-          successStatus = postFile.status === 200
-          setServerError(postFile.status !== 200)
-        }
-      }
-      if (successStatus) {
-        success()
-        setLoading(false)
-      } else {
-        setServerError(true)
-      }
+    }
+    if (successStatus) {
+      success()
+      setLoading(false)
+    } else {
+      setServerError(true)
     }
   }
 
@@ -146,11 +151,19 @@ function ArticleButtons({
       </Button>
 
       <Button
+        onClick={() => {
+          publishArticle("draft")
+        }}
+      >
+        Guardar como borrador
+      </Button>
+
+      <Button
         type="primary"
         loading={loading}
         onClick={() => {
           if (canPreview) {
-            publishArticle()
+            publishArticle("publish")
             setWarningMessage("")
           } else {
             setWarningMessage(texts.newArticleForm.requiredMessage)

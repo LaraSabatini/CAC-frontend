@@ -14,6 +14,7 @@ const defaultArticle: ArticleInterface = {
   attachments: [],
   author: "",
   saved: 0,
+  draft: 1,
 }
 
 export default defaultArticle

@@ -89,6 +89,10 @@ const CardPlaceholder = styled.div`
   }
 `
 
+const AdminButton = styled.div`
+  margin-left: 25px;
+`
+
 export {
   ArticlesContainer,
   FullArticle,
@@ -96,4 +100,5 @@ export {
   EmptyPage,
   ButtonContainer,
   CardPlaceholder,
+  AdminButton,
 }

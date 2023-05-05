@@ -5,12 +5,16 @@ import {
   editSavedArticles,
 } from "services/clients/clientActions.service"
 import { BsChevronRight } from "react-icons/bs"
-import { getArticles, editSavedTimes } from "services/articles/articles.service"
+import {
+  getArticles,
+  editSavedTimes,
+  getDrafts,
+} from "services/articles/articles.service"
 import { DashboardContext } from "contexts/Dashboard"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { getFilters } from "services/articles/filters.service"
 import Header from "@components/Views/Common/Header"
-import Button from "components/UI/Button"
+import { Button } from "antd"
 import removeDuplicates from "helpers/formatting/removeDuplicates"
 import {
   FullArticle,
@@ -19,6 +23,7 @@ import {
   EmptyPage,
   ButtonContainer,
   CardPlaceholder,
+  AdminButton,
 } from "./styles"
 import ArticleView from "../Articles/ArticleCard"
 import ArticleBody from "../Articles/ArticleBody"
@@ -41,6 +46,8 @@ function DashboardView() {
 
   const [loading, setLoading] = useState<boolean>(false)
 
+  const [drafts, setDrafts] = useState<boolean>(false)
+
   const [savedArticles, setSavedArticles] = useState<number[]>([])
   const [updateList, setUpdateList] = useState<number>(0)
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -61,7 +68,10 @@ function DashboardView() {
       setLoading(false)
 
       if (articles.length > 0) {
-        const newList = removeDuplicates(articles.concat(getArticlesReq.data))
+        const filterDrafts = articles.filter(article => article.draft !== 1)
+        const newList = removeDuplicates(
+          filterDrafts.concat(getArticlesReq.data),
+        )
 
         setArticles(newList)
       } else {
@@ -72,10 +82,24 @@ function DashboardView() {
     }
   }
 
+  const getArticleDrafts = async () => {
+    const req = await getDrafts()
+    setArticles(req.data)
+  }
+
   useEffect(() => {
-    getFiltersData()
+    if (drafts) {
+      getArticleDrafts()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [triggerArticleListUpdate, currentPage])
+  }, [triggerArticleListUpdate, drafts])
+
+  useEffect(() => {
+    if (!drafts) {
+      getFiltersData()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triggerArticleListUpdate, currentPage, drafts])
 
   const updateSavedArticlesList = async (list: number[]) => {
     const update = await editSavedArticles(userData.id, JSON.stringify(list))
@@ -151,6 +175,15 @@ function DashboardView() {
           <CardPlaceholder />
         </ArticlesContainer>
       )}
+      {userData.type !== "client" ? (
+        <AdminButton>
+          <Button onClick={() => setDrafts(!drafts)}>
+            {!drafts ? "Ver artículos borradores" : "Ver artículos publicados"}
+          </Button>
+        </AdminButton>
+      ) : (
+        <></>
+      )}
       {articleId === undefined ? (
         <ArticlesContainer>
           {articles.length ? (
@@ -192,12 +225,13 @@ function DashboardView() {
       {articleId === undefined && articles.length >= 25 && (
         <ButtonContainer>
           <Button
-            content="Cargar mas artículos"
-            cta
-            action={() => {
+            type="primary"
+            onClick={() => {
               setCurrentPage(currentPage + 1)
             }}
-          />
+          >
+            Cargar mas artículos
+          </Button>
         </ButtonContainer>
       )}
     </>

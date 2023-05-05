@@ -3,6 +3,7 @@ import { ArticlesContext } from "contexts/Articles"
 import texts from "strings/articles.json"
 import { Button, Modal } from "antd"
 import getFiles from "helpers/media/getFiles"
+import ArticleInterface from "interfaces/content/Article"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { dateFormated } from "helpers/dates/getToday"
 import { editArticle } from "services/articles/articles.service"
@@ -69,13 +70,13 @@ function ArticleButtons({
     }
   }
 
-  const publishArticle = async () => {
+  const publishArticle = async (type: "draft" | "publish") => {
     let successAction: boolean = false
 
     if (portrait !== null) {
       const userData = JSON.parse(localStorage.getItem("userData") as string)
 
-      const data = {
+      const data: ArticleInterface = {
         ...articleEdited,
         portrait: portrait?.includes("http")
           ? portrait
@@ -95,6 +96,7 @@ function ArticleButtons({
             action: "MODIFIED",
           },
         ]),
+        draft: type === "draft" ? 1 : 0,
       }
 
       const editArticleCall = await editArticle(data)
@@ -150,10 +152,17 @@ function ArticleButtons({
           : `${texts.newArticleForm.edit}`}
       </Button>
       <Button
+        onClick={() => {
+          publishArticle("draft")
+        }}
+      >
+        Guardar como borrador
+      </Button>
+      <Button
         type="primary"
         onClick={() => {
           if (canPreview) {
-            publishArticle()
+            publishArticle("publish")
             setWarningMessage("")
           } else {
             setWarningMessage(texts.newArticleForm.requiredMessage)
