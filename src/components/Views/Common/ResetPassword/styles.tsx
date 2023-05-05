@@ -39,6 +39,10 @@ const Form = styled.div`
       gap: 3px;
     }
   }
+
+  @media (max-width: 414px) {
+    width: 250px;
+  }
 `
 
 const Title = styled.h4`
