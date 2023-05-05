@@ -187,20 +187,22 @@ function DashboardView() {
       {articleId === undefined ? (
         <ArticlesContainer>
           {articles.length ? (
-            articles.map(article => (
-              <ArticleView
-                key={article.id}
-                region={JSON.parse(article.regionFilters as string)[0]}
-                article={article}
-                saved={savedArticles.includes(article.id)}
-                toggleSave={() => {
-                  if (userData.type === "client") {
-                    toggleSave(article.id, article.saved)
-                  }
-                }}
-                savedTimes={article.saved}
-              />
-            ))
+            articles
+              .filter(article => article !== undefined)
+              .map(article => (
+                <ArticleView
+                  key={article.id}
+                  region={JSON.parse(article.regionFilters as string)[0]}
+                  article={article}
+                  saved={savedArticles.includes(article.id)}
+                  toggleSave={() => {
+                    if (userData.type === "client") {
+                      toggleSave(article.id, article.saved)
+                    }
+                  }}
+                  savedTimes={article.saved}
+                />
+              ))
           ) : (
             <></>
           )}
