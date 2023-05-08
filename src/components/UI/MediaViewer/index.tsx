@@ -6,10 +6,6 @@ import { AttachmentInterface } from "interfaces/content/Article"
 import DataPrevisualizerInterface from "interfaces/components/DataPrevisualizerInterface"
 import { Container, Title, Content, Navigation, Indicator, Dot } from "./styles"
 
-// SIZE RATIO:
-//  width: 820px;
-//  height: 513px;
-
 type MediaViewerType =
   | {
       urls?: AttachmentInterface[]

@@ -23,6 +23,14 @@ const Container = styled.div<{ inModal: boolean }>`
       height: 500px;
       overflow: auto;
     `}
+
+  @media (max-width: 1030px) {
+    width: 100%;
+  }
+
+  @media (max-width: 414px) {
+    margin-left: 5px;
+  }
 `
 
 const LeftContainer = styled.div``
@@ -37,6 +45,11 @@ const ArticleTitle = styled.h3`
   line-height: 33px;
 
   color: ${theme.colors.blue_dark};
+
+  @media (max-width: 414px) {
+    font-size: 20px;
+    line-height: 20px;
+  }
 `
 
 const ArticleRegion = styled.div`
@@ -67,6 +80,11 @@ const Subtitle = styled.span`
   margin: 10px 0 0 0;
   width: 90%;
   display: block;
+
+  @media (max-width: 414px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
 `
 
 const ArticleContainer = styled.div`
@@ -89,6 +107,13 @@ const ArticleContent = styled.div`
   display: flex;
   flex-direction: column;
   height: fit-content;
+
+  @media (max-width: 414px) {
+    width: 90%;
+    padding: 0 15px;
+    align-items: center;
+    justify-content: center;
+  }
 `
 
 const AuthorContainer = styled.div`
@@ -112,17 +137,44 @@ const AuthorContainer = styled.div`
       color: ${theme.colors.blue};
     }
   }
+
+  @media (max-width: 414px) {
+    margin-left: 10px;
+  }
 `
 
 const RigthContainer = styled.div`
   width: 1170px;
-
-  height: 863px;
+  height: fit-content;
 
   align-self: center;
   padding-top: 20px;
   display: flex;
   margin-left: -40px;
+
+  @media (max-width: 1030px) {
+    margin-left: 0px;
+    width: 870px;
+  }
+
+  @media (max-width: 770px) {
+    margin-left: 0px;
+    width: 740px;
+  }
+
+  @media (max-width: 414px) {
+    flex-wrap: wrap;
+    width: 400px;
+    height: fit-content;
+  }
+
+  @media (max-width: 390px) {
+    width: 370px;
+  }
+
+  @media (max-width: 360px) {
+    width: 340px;
+  }
 `
 
 const RightSubcolumn = styled.div`

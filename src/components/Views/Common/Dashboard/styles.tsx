@@ -53,6 +53,14 @@ const Chip = styled.div`
     color: ${theme.colors.blue};
     font-weight: 200;
   }
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 414px) {
+    margin-left: 10px;
+  }
 `
 
 const EmptyPage = styled.h2`
