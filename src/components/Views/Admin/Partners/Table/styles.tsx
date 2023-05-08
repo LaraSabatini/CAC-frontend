@@ -6,6 +6,14 @@ const TableContainer = styled.div`
   flex-direction: column;
   gap: 12px;
   align-items: flex-end;
+
+  @media (max-width: 1030px) {
+    width: 875px;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 
 const TableStyled = styled.div`
@@ -14,6 +22,10 @@ const TableStyled = styled.div`
   width: 100%;
   height: 400px;
   background-color: #fffffff5;
+
+  @media (max-width: 414px) {
+    overflow-x: auto;
+  }
 
   .name-tag {
     width: 170px;
@@ -45,6 +57,8 @@ const TableHead = styled.div`
   border-bottom: 1px solid rgba(21, 54, 84, 0.6);
   display: flex;
 
+  width: fit-content;
+
   p {
     margin: 0;
     font-family: "IBM Plex Sans";
@@ -59,6 +73,8 @@ const TableHead = styled.div`
 const TableContent = styled.div`
   height: 350px;
   overflow: auto;
+
+  width: fit-content;
 `
 
 const Client = styled.div<{ selected: boolean }>`

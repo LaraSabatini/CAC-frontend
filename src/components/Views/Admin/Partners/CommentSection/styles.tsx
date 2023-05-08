@@ -26,6 +26,10 @@ const CommentList = styled.div`
   height: 300px;
   overflow: auto;
   background-color: #fffffff5;
+
+  @media (max-width: 414px) {
+    width: 87%;
+  }
 `
 
 const Comment = styled.div`

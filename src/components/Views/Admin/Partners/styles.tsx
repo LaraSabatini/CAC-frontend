@@ -7,6 +7,10 @@ const Container = styled.div`
   margin: 0 auto;
   width: 96vw;
   padding-top: 15px;
+
+  @media (max-width: 1030px) {
+    flex-wrap: wrap;
+  }
 `
 
 export default Container

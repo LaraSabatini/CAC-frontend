@@ -15,6 +15,23 @@ const Card = styled.div`
     gap: 5px;
     padding-bottom: 40px;
   }
+
+  @media (max-width: 768px) {
+    width: 50%;
+  }
+
+  @media (max-width: 414px) {
+    width: 90%;
+  }
+`
+
+const ModalStyled = styled.div`
+  .select {
+    width: 475px;
+    @media (max-width: 414px) {
+      width: 200px;
+    }
+  }
 `
 
 const Title = styled.h3`
@@ -52,4 +69,4 @@ const ActionButton = styled.button<{ action: "block" | "unblock" }>`
         `}
 `
 
-export { Card, Title, ActionButton }
+export { Card, Title, ActionButton, ModalStyled }
