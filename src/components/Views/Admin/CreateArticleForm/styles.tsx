@@ -6,10 +6,9 @@ const Container = styled.div`
   background-color: #f2f8ff;
   width: 70vw;
   max-width: 995px;
-  max-height: 670px;
-  height: 85vh;
   border-radius: 18px;
   padding: 40px 50px;
+  height: fit-content;
 `
 
 const Title = styled.h2`
@@ -21,7 +20,10 @@ const InputContainer = styled.div`
   padding-top: 43px;
   display: flex;
   flex-direction: column;
-  padding-bottom: 70px;
+  padding-bottom: 30px;
+  .autor {
+    margin-top: 20px;
+  }
 `
 
 const HorizontalGroup = styled.div`
@@ -29,6 +31,12 @@ const HorizontalGroup = styled.div`
   gap: 40px;
 
   padding-bottom: 15px;
+
+  @media (max-width: 450px) {
+    flex-direction: column;
+    padding-bottom: 0px;
+    gap: 10px;
+  }
 `
 
 const FiltersTitle = styled.p`
@@ -45,16 +53,18 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  flex-wrap: wrap;
 
-  /* @media (max-width: 1360px) {
-    width: 800px;
-  } */
+  @media (max-width: 768px) {
+    gap: 20px;
+  }
 `
 
 const ActionButtons = styled.div`
   display: flex;
   gap: 10px;
   position: relative;
+  flex-wrap: wrap;
 `
 
 const IconButton = styled.button`
