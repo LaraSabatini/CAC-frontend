@@ -106,8 +106,11 @@ function ArticleButtons({
       const fileData = saveFile(i)
       const formData = new FormData()
       if (fileData !== undefined) {
+        const name = `${fileData.name.split(".")[0]}.${
+          fileData.name.split(".")[1]
+        }`
         formData.append("file", fileData.file)
-        formData.append("fileName", fileData.name)
+        formData.append("fileName", name)
         // eslint-disable-next-line no-await-in-loop
         const postFile: any = await sendFile(formData)
         successStatus = postFile.status === 200

@@ -72,7 +72,6 @@ function ArticleButtons({
 
   const publishArticle = async (type: "draft" | "publish") => {
     let successAction: boolean = false
-
     if (portrait !== null) {
       const userData = JSON.parse(localStorage.getItem("userData") as string)
 
@@ -108,10 +107,13 @@ function ArticleButtons({
         const formData = new FormData()
 
         if (fileData !== undefined) {
+          const name = `${fileData.name.split(".")[0]}.${
+            fileData.name.split(".")[1]
+          }`
           formData.append("file", fileData.file)
-          formData.append("fileName", fileData.name)
+          formData.append("fileName", name)
 
-          // eslint-disable-next-line no-await-in-loop
+          //  eslint-disable-next-line no-await-in-loop
           const postFile: any = await sendFile(formData)
           successAction = postFile.status === 200
           setServerError(postFile.status !== 200)
