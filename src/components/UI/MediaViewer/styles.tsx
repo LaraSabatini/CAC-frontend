@@ -64,6 +64,11 @@ const Navigation = styled.div`
       height: 15px;
     }
   }
+
+  @media (max-width: 390px) {
+    width: 105%;
+    left: -10px;
+  }
 `
 
 const Indicator = styled.div`
@@ -100,7 +105,7 @@ const Content = styled.div`
 
   img {
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     border-radius: 10px;
   }
 

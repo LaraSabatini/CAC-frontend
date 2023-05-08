@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import theme from "theme/index"
 
 export const Overlay = styled.div`
   position: fixed;
@@ -17,8 +16,4 @@ export const ModalCard = styled.div`
   left: 50%;
   transform: translate(-50%, -14%);
   z-index: 100;
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    left: 47%;
-  }
 `

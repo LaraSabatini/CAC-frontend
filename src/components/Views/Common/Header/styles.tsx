@@ -11,11 +11,8 @@ const Container = styled.div`
 
   padding: 0 10px 15px 10px;
 
-  @media (max-width: ${theme.screenSize.transition_mobile}) {
+  @media (max-width: 630px) {
     align-items: flex-start;
-    border-bottom: none;
-    padding: 0;
-    margin: 15px 20px;
   }
 `
 
@@ -24,8 +21,29 @@ const SearchContainer = styled.div`
   align-items: center;
   gap: 15px;
 
-  @media (max-width: ${theme.screenSize.transition_mobile}) {
+  .search {
+    width: 300px;
+  }
+
+  @media (max-width: 630px) {
+    width: 50%;
     flex-wrap: wrap;
+
+    .search {
+      width: 355px;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .search {
+      width: 330px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .search {
+      width: 300px;
+    }
   }
 `
 
@@ -51,9 +69,7 @@ const ProfileOptions = styled.div`
   padding: 20px;
   border-radius: 8px;
   right: 0;
-  /* width: 120px; */
   display: flex;
-  /* flex-direction: column; */
   align-items: center;
   justify-content: space-between;
   gap: 5px;
@@ -100,8 +116,10 @@ const SearchDiv = styled.div`
   align-items: center;
   position: relative;
   gap: 15px;
-  @media (max-width: ${theme.screenSize.transition_mobile}) {
-    margin-top: 10px;
+  flex-wrap: wrap;
+
+  @media (max-width: 630px) {
+    justify-content: flex-end;
   }
 `
 
@@ -160,7 +178,6 @@ const ButtonContainer = styled.div`
 const Menu = styled.div`
   position: absolute;
   width: 240px;
-  /* height: 275px; */
   height: fit-content;
   border-radius: 18px;
   padding: 25px;
@@ -171,6 +188,12 @@ const Menu = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
+
+  @media (max-width: 360px) {
+    top: 45px;
+    right: -70px;
+    width: 275px;
+  }
 `
 
 const Option = styled.div`

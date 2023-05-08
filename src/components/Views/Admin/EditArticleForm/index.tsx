@@ -121,9 +121,10 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
               <HorizontalGroup>
                 <Input
                   placeholder="Autor*"
+                  className="autor"
                   required
                   value={articleEdited.author}
-                  style={{ width: 475 }}
+                  style={{ width: "100%" }}
                   onChange={e => {
                     setArticleEdited({
                       ...articleEdited,
@@ -138,7 +139,7 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
                 <Select
                   mode="multiple"
                   allowClear
-                  style={{ width: 475 }}
+                  style={{ width: "100%" }}
                   placeholder="Región"
                   defaultValue={regionsSelected}
                   onChange={value => {
@@ -162,7 +163,7 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
                 <Select
                   mode="multiple"
                   allowClear
-                  style={{ width: 475 }}
+                  style={{ width: "100%" }}
                   placeholder="Temática"
                   defaultValue={themesSelected}
                   onChange={value => {
@@ -186,6 +187,7 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
               </HorizontalGroup>
               <HorizontalGroup>
                 <TextArea
+                  className="autor"
                   value={articleEdited.description}
                   rows={2}
                   placeholder={texts.newArticleForm.labels.description}
@@ -199,6 +201,7 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
                 />
               </HorizontalGroup>
               <TextArea
+                className="autor"
                 rows={12}
                 placeholder={texts.newArticleForm.labels.fullArticlePlaceholder}
                 onChange={e =>

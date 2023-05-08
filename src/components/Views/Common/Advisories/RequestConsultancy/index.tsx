@@ -70,7 +70,7 @@ function RequestAdvisory({ updateList }: { updateList: (arg?: any) => void }) {
       >
         <Select
           defaultValue="Buscar por disponibilidad"
-          style={{ width: 350 }}
+          style={{ width: "100%" }}
           onChange={value => {
             const filterOption = options.filter(
               option => option.value === value,

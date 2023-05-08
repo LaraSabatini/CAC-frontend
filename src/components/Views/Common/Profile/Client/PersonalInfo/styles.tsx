@@ -11,8 +11,13 @@ const PersonalDataCard = styled.div`
 
   box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
 
-  @media (max-width: ${theme.screenSize.mobile}) {
-    width: 260px;
+  @media (max-width: 414px) {
+    width: 320px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 380px) {
+    width: 290px;
   }
 `
 

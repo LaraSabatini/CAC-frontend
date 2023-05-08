@@ -19,10 +19,6 @@ const Form = styled.div`
 
   transition: 0.3s;
 
-  @media (max-width: ${theme.screenSize.mobile}) {
-    width: 260px;
-  }
-
   .buttons {
     margin-top: 30px;
     display: flex;
@@ -42,6 +38,10 @@ const Form = styled.div`
       justify-content: center;
       gap: 3px;
     }
+  }
+
+  @media (max-width: 414px) {
+    width: 250px;
   }
 `
 

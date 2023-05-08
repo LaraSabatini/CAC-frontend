@@ -111,6 +111,10 @@ const Player = styled.div`
   iframe {
     border-radius: 18px;
   }
+
+  @media (max-width: 414px) {
+    height: 400px;
+  }
 `
 
 const IconButton = styled.button`

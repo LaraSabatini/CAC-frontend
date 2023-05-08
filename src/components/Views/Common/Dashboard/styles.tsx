@@ -9,10 +9,18 @@ const ArticlesContainer = styled.div`
   justify-content: space-between;
   display: flex;
   flex-wrap: wrap;
-  gap: 50px;
   padding-bottom: 50px;
+  gap: 10px;
 
-  @media (max-width: 1450px) {
+  @media (max-width: 1366px) {
+    gap: 10px;
+  }
+
+  @media (max-width: 1274px) {
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
     gap: 20px;
   }
 `
@@ -44,6 +52,14 @@ const Chip = styled.div`
   svg {
     color: ${theme.colors.blue};
     font-weight: 200;
+  }
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 414px) {
+    margin-left: 10px;
   }
 `
 

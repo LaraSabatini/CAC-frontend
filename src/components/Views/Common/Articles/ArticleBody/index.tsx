@@ -9,7 +9,6 @@ import ArticleInterface, {
   CreatedByInterface,
 } from "interfaces/content/Article"
 import { Modal, Button, Tooltip } from "antd"
-
 import {
   EditOutlined,
   DeleteOutlined,
@@ -186,6 +185,7 @@ function ArticleBody(props: Props) {
                 }}
               />
             )}
+
             <div className="articleHeader">
               <ArticleRegion>
                 <p>

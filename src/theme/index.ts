@@ -49,14 +49,29 @@ export default {
     light: 300,
   },
   screenSize: {
-    desktop_big: "1920px",
-    desktop_medium: "1366px",
+    desktopBig: {
+      width: "1920px",
+      height: "1080px",
+    },
+    desktop: {
+      width: "1366px",
+      height: "768px",
+    },
     tablet: {
       width: "768px",
       height: "1024px",
     },
-    transition: "950px",
-    transition_mobile: "560px",
-    mobile: "414px",
+    mobile: {
+      width: "360px",
+      height: "800px",
+    },
+    mobile2: {
+      width: "390px",
+      height: "844px",
+    },
+    mobile3: {
+      width: "414px",
+      height: "896px",
+    },
   },
 }

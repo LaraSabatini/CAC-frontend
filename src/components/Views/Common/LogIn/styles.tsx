@@ -19,8 +19,8 @@ const Container = styled.div`
 
   transition: 0.3s;
 
-  @media (max-width: ${theme.screenSize.mobile}) {
-    width: 260px;
+  @media (max-width: 414px) {
+    width: 250px;
   }
 `
 

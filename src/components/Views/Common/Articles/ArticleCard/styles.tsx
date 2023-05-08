@@ -21,49 +21,54 @@ const ArticleCard = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  width: 600px;
+  width: 550px;
   height: 320px;
+
+  @media (max-width: 1366px) {
+    width: 45%;
+  }
+
+  @media (max-width: 1274px) {
+    width: 70%;
+  }
+  @media (max-width: 1024px) {
+    height: 400px;
+  }
+
+  @media (max-width: 768px) {
+    height: 540px;
+    width: 80%;
+    flex-direction: column-reverse;
+    padding: 0px 0px 15px 0px;
+    gap: 15px;
+  }
+
+  @media (max-width: 414px) {
+    width: 90%;
+    height: 450px;
+  }
 `
 
 const CardInfo = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
   height: 90%;
+  width: 50%;
 
-  @media (max-width: 1450px) {
-    width: 49%;
-    justify-content: space-between;
-
-    .articleHeader {
-      height: 112px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+  @media (max-width: 1024px) {
+    width: 40%;
   }
 
-  /* @media (max-width: 1300px) {
-    width: 96%;
-    align-items: flex-start;
-    justify-content: space-evenly;
-    padding-left: 4%;
-    padding-bottom: 2%;
+  @media (max-width: 768px) {
     height: 45%;
-
-    .articleHeader {
-      padding-top: 10px;
-    }
-  } */
-
-  /* @media (max-width: ${theme.screenSize.mobile}) {
     width: 90%;
-    height: 52.5%;
+  }
 
-    .articleHeader {
-      padding-top: 10px;
-    }
-  } */
+  @media (max-width: 414px) {
+    width: 92%;
+  }
 `
 
 const CardImageContainer = styled.div`
@@ -80,62 +85,36 @@ const CardImageContainer = styled.div`
     height: 100%;
   }
 
-  /* @media (max-width: 1450px) {
-    width: 42%;
+  @media (max-width: 1024px) {
+    width: 55%;
   }
 
-  @media (max-width: 1300px) {
+  @media (max-width: 768px) {
+    border-radius: 18px 18px 0px 0;
     width: 100%;
-    height: 55%;
-    border-radius: 18px 18px 0px 0px;
-    align-items: center;
 
     img {
       width: 100%;
-      height: max-content;
     }
   }
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    height: 47.5%;
-
-    img {
-      height: 100%;
-    }
-  } */
 `
 
 const ArticleTitle = styled.h3`
   margin: 0;
-
+  font-size: 20px;
   font-family: ${theme.fonts.titles};
   font-weight: ${theme.fontWeights.semiBold};
-  font-size: ${theme.fontSizes.ml};
-  line-height: 33px;
 
   color: ${theme.colors.blue_dark};
 
-  @media (max-width: 1450px) {
-    font-size: 20px;
-    line-height: 28px;
-  }
-
-  /* 
-  @media (max-width: 1450px) {
-    width: 320px;
-    font-size: ${theme.fontSizes.m};
+  @media (max-width: 1024px) {
     line-height: 30px;
   }
 
-  @media (max-width: 1300px) {
-    width: 100%;
-    height: fit-content;
+  @media (max-width: 414px) {
+    font-size: 16px;
+    line-height: 20px;
   }
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    font-size: 18px;
-    line-height: 25px;
-  } */
 `
 
 const ArticleRegion = styled.span`
@@ -152,6 +131,13 @@ const ArticleRegion = styled.span`
   gap: 5px;
 
   color: #466995;
+
+  padding-bottom: 5px;
+
+  @media (max-width: 414px) {
+    font-size: 14px;
+    padding-bottom: 10px;
+  }
 `
 
 const ArticleDescription = styled.p`
@@ -165,20 +151,10 @@ const ArticleDescription = styled.p`
 
   color: ${theme.colors.blue_dark};
 
-  @media (max-width: 1450px) {
-    height: 105px;
+  @media (max-width: 414px) {
+    font-size: 14px;
+    padding: 10px 0;
   }
-  /*
-  @media (max-width: 1300px) {
-    width: 95%;
-    height: fit-content;
-  }
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    font-size: 15px;
-    line-height: 20px;
-    width: 100%;
-  } */
 `
 
 const OpenButton = styled.button`
@@ -198,22 +174,6 @@ const OpenButton = styled.button`
   position: relative;
 
   color: ${theme.colors.blue};
-
-  /*  
-  @media (max-width: ${theme.screenSize.tablet.width}) {
-    padding-top: 20px;
-  }
-
-  @media (max-width: 1300px) {
-    margin-left: 0;
-    align-self: flex-end;
-    margin-right: 5%;
-    padding-top: 15px;
-  }
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    font-size: ${theme.fontSizes.xs};
-  }  */
 `
 
 const ButtonContainer = styled.div`

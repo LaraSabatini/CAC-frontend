@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { createTraining } from "services/trainings/trainingActions.service"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { Button, Modal, Input, Select } from "antd"
+import { PlusOutlined } from "@ant-design/icons"
 import { TrainingsInterface } from "interfaces/trainings/Trainings"
 import { filterList } from "const/filters"
 import { CreateTraining } from "../styles"
@@ -81,7 +82,8 @@ function AddTraining({ updateList }: { updateList: (arg?: any) => void }) {
       {userData?.type === "admin" && (
         <CreateTraining>
           <Button type="primary" onClick={() => setOpenModal(true)}>
-            Crear capacitación
+            <PlusOutlined />
+            Crear
           </Button>
         </CreateTraining>
       )}

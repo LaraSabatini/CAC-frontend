@@ -203,7 +203,12 @@ function CreateEvent({ updateList }: { updateList: (arg?: any) => void }) {
 
   return (
     <>
-      <ScheduleAdvisory onClick={() => setCreateEventModal(true)}>
+      <ScheduleAdvisory
+        onClick={() => {
+          console.log("aaa")
+          setCreateEventModal(true)
+        }}
+      >
         <CalendarOutlined />
         Crear evento público
       </ScheduleAdvisory>

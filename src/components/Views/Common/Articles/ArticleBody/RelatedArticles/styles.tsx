@@ -19,6 +19,12 @@ const Carousel = styled.div`
   display: flex;
   gap: 30px;
   align-items: center;
+  justify-content: center;
+
+  @media (max-width: 1030px) {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
 `
 
 export { Container, Carousel, Title }

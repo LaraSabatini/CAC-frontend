@@ -15,11 +15,6 @@ const ModalContainer = styled.div`
     margin: 0;
     padding-left: 15px;
   }
-
-  @media (max-width: ${theme.screenSize.mobile}) {
-    margin-left: 20px;
-    width: 280px;
-  }
 `
 
 const InputContainer = styled.div`

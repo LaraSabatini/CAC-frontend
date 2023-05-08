@@ -97,6 +97,7 @@ function Availability() {
         adminId: userData?.id,
         availability: JSON.stringify(availabilityList),
       })
+
       if (createAvailabilityCall.status === 201) {
         success()
         setLoading(false)
@@ -139,11 +140,11 @@ function Availability() {
         confirmLoading={loading}
       >
         {days.map(day => (
-          <div style={{ paddingBottom: "15px" }}>
+          <div style={{ paddingBottom: "15px" }} key={day.id}>
             <Select
               mode="multiple"
               allowClear
-              style={{ width: 475 }}
+              style={{ width: "100%" }}
               placeholder={day.name}
               defaultValue={getDefaultValues(day.value)}
               onChange={value => {

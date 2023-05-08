@@ -6,6 +6,26 @@ const Container = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 1920px) {
+    width: 1400px;
+  }
+
+  @media (max-width: 1366px) {
+    width: 1300px;
+  }
+
+  @media (max-width: 1024px) {
+    width: 1000px;
+  }
+
+  @media (max-width: 768px) {
+    width: 700px;
+  }
+
+  @media (max-width: 414px) {
+    width: 350px;
+  }
 `
 
 const Calendar = styled.div`
@@ -16,6 +36,15 @@ const Calendar = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 1024px) {
+    width: 95%;
+  }
+
+  @media (max-width: 414px) {
+    width: 90%;
+    padding: 10px 17px;
+  }
 `
 
 const DateInfo = styled.div`
@@ -52,6 +81,15 @@ const CalendarInfo = styled.div`
     display: flex;
     align-items: center;
     cursor: pointer;
+
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 414px) {
+    flex-wrap: wrap;
+    .admin-buttons {
+      gap: 10px;
+    }
   }
 `
 
@@ -92,13 +130,10 @@ const ScheduleAdvisory = styled.button`
 `
 
 const CalendarDisplay = styled.div`
-  /* height: 600px; */
   height: fit-content;
   justify-content: center;
   align-items: center;
 
-  /* border: 1px solid red; */
-  /* width: 1246px; */
   width: 100%;
 
   display: flex;
@@ -137,6 +172,19 @@ const DateView = styled.div<{ past?: boolean }>`
       background-color: #466a9519;
       cursor: not-allowed;
     `}
+
+  @media (max-width: 1024px) {
+    width: 120px;
+  }
+
+  @media (max-width: 768px) {
+    width: 90px;
+  }
+
+  @media (max-width: 414px) {
+    width: 40px;
+    height: 90px;
+  }
 `
 
 const Days = styled.div`
@@ -152,6 +200,32 @@ const Days = styled.div`
     text-align: center;
     border: 1px solid transparent;
     margin: 0;
+
+    @media (max-width: 1920px) {
+    }
+  }
+
+  @media (max-width: 1024px) {
+    p {
+      width: 120px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    p {
+      width: 90px;
+    }
+  }
+
+  @media (max-width: 414px) {
+    p {
+      width: 40px;
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 414px) {
+    margin-top: 70px;
   }
 `
 
@@ -214,7 +288,6 @@ const EventData = styled.div`
   background-color: white;
 
   width: 400px;
-  /* height: 200px; */
   border-radius: 18px;
   padding: 25px;
 
@@ -232,7 +305,6 @@ const EventData = styled.div`
   .buttons {
     display: flex;
     align-items: center;
-    /* align-self: flex-end; */
     justify-content: space-between;
     padding-top: 15px;
   }
@@ -245,7 +317,6 @@ const EventData = styled.div`
     button {
       background-color: ${theme.colors.blue};
       border: none;
-      /* padding: 10px; */
 
       display: flex;
       align-items: center;
@@ -270,8 +341,6 @@ const EventData = styled.div`
     svg {
       width: 20px;
       height: 20px;
-      /* fill: ${theme.colors.blue};
-      stroke: white; */
     }
   }
 

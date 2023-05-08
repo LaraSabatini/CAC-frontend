@@ -4,12 +4,12 @@ import { AdvisoriesContext } from "contexts/Advisories"
 import getNextSevenDates from "helpers/dates/getNextSixDays"
 import { AdvisoryInterface } from "interfaces/content/Advisories"
 import { Input, Select, Button, Modal } from "antd"
-
 import {
   getAvailability,
   getAdvisoriesByMonthAndAdmin,
   requestAdvisory,
 } from "services/advisories/advisories.service"
+import { NoAvailability } from "../styles"
 
 function SearchByAdmin({
   adminListForSelect,
@@ -34,6 +34,7 @@ function SearchByAdmin({
     id: number
     value: string
   }>(adminListForSelect[0])
+  const [noResults, setNoResults] = useState<boolean>(false)
 
   const [requiredFiledsError, setRequiredFiledsError] = useState<boolean>(false)
 
@@ -121,9 +122,9 @@ function SearchByAdmin({
                     advisory.date === day.day.replaceAll("/", "-"),
                 )
 
-                for (let i = 0; i < filterAgenda.length; i += 1) {
-                  daysToRemoveAvailability.push(filterAgenda[i])
-                }
+                filterAgenda.forEach((agenda: AdvisoryInterface) => {
+                  daysToRemoveAvailability.push(agenda)
+                })
               },
             )
 
@@ -133,10 +134,9 @@ function SearchByAdmin({
                 hours: number[]
               }[] = []
 
-              for (let i = 0; i < daysToRemoveAvailability.length; i += 1) {
+              daysToRemoveAvailability.forEach(dayToRemove => {
                 const filterArray = dayAndHourIdentifiers.filter(
-                  dayAndHour =>
-                    dayAndHour.day === daysToRemoveAvailability[i].date,
+                  dayAndHour => dayAndHour.day === dayToRemove.date,
                 )
 
                 if (filterArray.length) {
@@ -145,29 +145,26 @@ function SearchByAdmin({
                   )
 
                   dayAndHourIdentifiers[index].hours.push(
-                    listHours.filter(
-                      hour => hour.value === daysToRemoveAvailability[i].hour,
-                    )[0].id,
+                    listHours.filter(hour => hour.value === dayToRemove.hour)[0]
+                      .id,
                   )
                 } else {
                   dayAndHourIdentifiers.push({
-                    day: daysToRemoveAvailability[i].date,
+                    day: dayToRemove.date,
                     hours: [
                       listHours.filter(
-                        hour => hour.value === daysToRemoveAvailability[i].hour,
+                        hour => hour.value === dayToRemove.hour,
                       )[0].id,
                     ],
                   })
                 }
-              }
+              })
 
               const indexOfDatesToEdit: number[] = []
 
-              for (let i = 0; i < dayAndHourIdentifiers.length; i += 1) {
+              dayAndHourIdentifiers.forEach(dayAndHour => {
                 const filterLeaveOnlyDaysWithHours = leaveOnlyDaysWithHours.filter(
-                  day =>
-                    day.day.replaceAll("/", "-") ===
-                    dayAndHourIdentifiers[i].day,
+                  day => day.day.replaceAll("/", "-") === dayAndHour.day,
                 )
 
                 const indexOfDate = leaveOnlyDaysWithHours.findIndex(
@@ -175,17 +172,13 @@ function SearchByAdmin({
                 )
                 indexOfDatesToEdit.push(indexOfDate)
 
-                for (
-                  let a = 0;
-                  a < dayAndHourIdentifiers[i].hours.length;
-                  a += 1
-                ) {
+                dayAndHour.hours.forEach(hour => {
                   const indexOfId = filterLeaveOnlyDaysWithHours[0].hours.findIndex(
-                    hola => hola === dayAndHourIdentifiers[i].hours[a],
+                    item => item === hour,
                   )
                   filterLeaveOnlyDaysWithHours[0].hours.splice(indexOfId, 1)
-                }
-              }
+                })
+              })
             }
           }
         } else {
@@ -207,12 +200,17 @@ function SearchByAdmin({
 
         const newList: { id: number; value: string }[] = []
 
-        const { hours } = leaveOnlyDaysWithHours[0]
-        hours.forEach(hour =>
-          newList.push(listHours.filter(item => item.id === hour)[0]),
-        )
-        setAvailableHoursList(newList)
-        setLoadingSearch(false)
+        if (leaveOnlyDaysWithHours[0]?.hours !== undefined) {
+          leaveOnlyDaysWithHours[0]?.hours.forEach(hour =>
+            newList.push(listHours.filter(item => item.id === hour)[0]),
+          )
+          setAvailableHoursList(newList)
+          setLoadingSearch(false)
+          setNoResults(false)
+        } else {
+          setNoResults(true)
+          setLoadingSearch(false)
+        }
       } else {
         setServerError(true)
       }
@@ -279,86 +277,98 @@ function SearchByAdmin({
           options={adminListForSelect}
         />
       </div>
+      {noResults && (
+        <NoAvailability>
+          No hay disponibilidad
+          <span>Intenta con otra fecha u horario</span>
+        </NoAvailability>
+      )}
 
-      {availableDays !== undefined && availableDaysList !== undefined && (
-        <div>
-          <div
-            className="sub-container"
-            style={{
-              paddingTop: "15px",
-              display: "flex",
-              gap: "10px",
-            }}
-          >
-            <Select
-              placeholder="Seleccionar dia"
-              style={{ width: 240 }}
-              status={
-                requiredFiledsError && daySelected === undefined ? "error" : ""
-              }
-              onChange={value => {
-                const filterDays = availableDaysList.filter(
-                  day => day.value === value,
-                )
-
-                const e = filterDays[0]
-
-                setDaySelected({
-                  id: e.id,
-                  value: e.value.split("- ")[1],
-                })
-
-                const { hours } = availableDays.filter(
-                  day => day.id === e.id,
-                )[0]
-
-                if (hours.length) {
-                  const newList: { id: number; value: string }[] = []
-
-                  hours.forEach(hour =>
-                    newList.push(listHours.filter(item => item.id === hour)[0]),
-                  )
-                  setAvailableHoursList(newList)
-                } else {
-                  setAvailableHoursList([])
-                }
+      {availableDays !== undefined &&
+        availableDaysList !== undefined &&
+        !noResults && (
+          <div>
+            <div
+              className="sub-container"
+              style={{
+                paddingTop: "15px",
+                display: "flex",
+                gap: "10px",
               }}
-              options={availableDaysList}
-            />
-            {availableHoursList?.length && (
+            >
               <Select
-                placeholder="Horario"
+                placeholder="Seleccionar dia"
+                style={{ width: 240 }}
                 status={
-                  requiredFiledsError && hourSelected === undefined
+                  requiredFiledsError && daySelected === undefined
                     ? "error"
                     : ""
                 }
-                style={{ width: 100 }}
                 onChange={value => {
-                  const filterHours = availableHoursList.filter(
-                    hour => hour.value === value,
+                  const filterDays = availableDaysList.filter(
+                    day => day.value === value,
                   )
-                  setHourSelected({
-                    id: filterHours[0].id,
-                    value,
+
+                  const e = filterDays[0]
+
+                  setDaySelected({
+                    id: e.id,
+                    value: e.value.split("- ")[1],
                   })
+
+                  const { hours } = availableDays.filter(
+                    day => day.id === e.id,
+                  )[0]
+
+                  if (hours.length) {
+                    const newList: { id: number; value: string }[] = []
+
+                    hours.forEach(hour =>
+                      newList.push(
+                        listHours.filter(item => item.id === hour)[0],
+                      ),
+                    )
+                    setAvailableHoursList(newList)
+                  } else {
+                    setAvailableHoursList([])
+                  }
                 }}
-                options={availableHoursList}
+                options={availableDaysList}
               />
-            )}
+              {availableHoursList?.length && (
+                <Select
+                  placeholder="Horario"
+                  status={
+                    requiredFiledsError && hourSelected === undefined
+                      ? "error"
+                      : ""
+                  }
+                  style={{ width: 100 }}
+                  onChange={value => {
+                    const filterHours = availableHoursList.filter(
+                      hour => hour.value === value,
+                    )
+                    setHourSelected({
+                      id: filterHours[0].id,
+                      value,
+                    })
+                  }}
+                  options={availableHoursList}
+                />
+              )}
+            </div>
+            <div style={{ paddingTop: "15px" }}>
+              <TextArea
+                rows={2}
+                placeholder="Breve descripción de la asesoría"
+                value={brief}
+                style={{ width: 350 }}
+                status={requiredFiledsError && brief === "" ? "error" : ""}
+                onChange={e => setBrief(e.target.value)}
+              />
+            </div>
           </div>
-          <div style={{ paddingTop: "15px" }}>
-            <TextArea
-              rows={2}
-              placeholder="Breve descripción de la asesoría"
-              value={brief}
-              style={{ width: 350 }}
-              status={requiredFiledsError && brief === "" ? "error" : ""}
-              onChange={e => setBrief(e.target.value)}
-            />
-          </div>
-        </div>
-      )}
+        )}
       <div className="req-button" style={{ paddingTop: "15px" }}>
         {disableRequestButton && (
           <Button

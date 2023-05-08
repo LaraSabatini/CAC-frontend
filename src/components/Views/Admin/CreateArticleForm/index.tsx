@@ -65,10 +65,11 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
               </HorizontalGroup>
               <HorizontalGroup>
                 <Input
+                  className="autor"
                   placeholder="Autor*"
                   required
                   value={newArticle.author}
-                  style={{ width: 475 }}
+                  style={{ width: "100%" }}
                   onChange={e => {
                     setNewArticle({ ...newArticle, author: e.target.value })
                   }}
@@ -80,7 +81,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                 <Select
                   mode="multiple"
                   allowClear
-                  style={{ width: 475 }}
+                  style={{ width: "100%" }}
                   placeholder="Región"
                   defaultValue={regionsSelected}
                   onChange={value => {
@@ -104,7 +105,8 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                 <Select
                   mode="multiple"
                   allowClear
-                  style={{ width: 475 }}
+                  // style={{ width: 475 }}
+                  style={{ width: "100%" }}
                   placeholder="Temática"
                   defaultValue={themesSelected}
                   onChange={value => {
@@ -128,6 +130,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
               </HorizontalGroup>
               <HorizontalGroup>
                 <TextArea
+                  className="autor"
                   value={newArticle.description}
                   rows={2}
                   placeholder={texts.newArticleForm.labels.description}
@@ -141,6 +144,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                 />
               </HorizontalGroup>
               <TextArea
+                className="autor"
                 rows={12}
                 placeholder={texts.newArticleForm.labels.fullArticlePlaceholder}
                 onChange={e =>

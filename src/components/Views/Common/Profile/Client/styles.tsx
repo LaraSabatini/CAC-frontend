@@ -5,10 +5,6 @@ const Container = styled.div`
   width: fit-content;
   margin: 0 auto;
   padding-top: 20px;
-
-  @media (max-width: 626px) {
-    padding-top: 50px;
-  }
 `
 
 const FirstRowData = styled.div`
@@ -17,8 +13,11 @@ const FirstRowData = styled.div`
   flex-wrap: wrap;
   gap: 20px;
 
-  @media (max-width: 626px) {
-    padding-left: 20px;
+  @media (max-width: 414px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 `
 

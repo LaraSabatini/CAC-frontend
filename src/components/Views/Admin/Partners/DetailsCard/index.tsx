@@ -9,7 +9,7 @@ import {
 } from "services/auth/blockedNotificationEmail.service"
 import blockAccount from "services/auth/blockAccount.service"
 import DataItem from "./DataItem"
-import { Card, Title } from "./styles"
+import { Card, Title, ModalStyled } from "./styles"
 
 function DetailsCard() {
   const {
@@ -220,26 +220,28 @@ function DetailsCard() {
           cancelText="Cancelar"
           confirmLoading={loading}
         >
-          <p>
-            Al bloquearlo/desbloquearlo le llegará un mail al usuario
-            notificándolo de esta acción.
-          </p>
-          {profileData.accountBlocked === 0 ? (
-            <Space style={{ paddingTop: "15px" }}>
-              <Select
-                placeholder="Motivo de bloqueo"
-                style={{ width: 300 }}
-                onChange={value => {
-                  setMotive(value)
-                  setRequired(false)
-                }}
-                options={motives}
-                status={required ? "error" : ""}
-              />
-            </Space>
-          ) : (
-            <></>
-          )}
+          <ModalStyled>
+            <p>
+              Al bloquearlo/desbloquearlo le llegará un mail al usuario
+              notificándolo de esta acción.
+            </p>
+            {profileData.accountBlocked === 0 ? (
+              <Space style={{ paddingTop: "15px" }}>
+                <Select
+                  placeholder="Motivo de bloqueo"
+                  className="select"
+                  onChange={value => {
+                    setMotive(value)
+                    setRequired(false)
+                  }}
+                  options={motives}
+                  status={required ? "error" : ""}
+                />
+              </Space>
+            ) : (
+              <></>
+            )}
+          </ModalStyled>
         </Modal>
       )}
     </Card>

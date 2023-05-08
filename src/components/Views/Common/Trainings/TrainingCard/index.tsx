@@ -14,7 +14,6 @@ import { Modal, Button, Input, Select } from "antd"
 import { TrainingsInterface } from "interfaces/trainings/Trainings"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { filterList } from "const/filters"
-
 import { Card, WatchButton, Player } from "./styles"
 import { InputContainer } from "../AddTraining/styles"
 
