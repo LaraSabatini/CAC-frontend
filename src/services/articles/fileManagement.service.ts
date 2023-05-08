@@ -14,7 +14,7 @@ const uploadFile = async (formData: any) => {
 const getFile = async (fileName: string, fileExtension: string) => {
   try {
     const res = await axios.get(
-      `${apiURL}/file_name=${fileName}&file_extension=${fileExtension}`,
+      `http://camarafederal.com.ar/software/api/files/${fileName}.${fileExtension}`,
     )
     return res
   } catch (ex) {
