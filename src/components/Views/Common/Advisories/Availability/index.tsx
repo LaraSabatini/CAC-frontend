@@ -97,6 +97,7 @@ function Availability() {
         adminId: userData?.id,
         availability: JSON.stringify(availabilityList),
       })
+
       if (createAvailabilityCall.status === 201) {
         success()
         setLoading(false)

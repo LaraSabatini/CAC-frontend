@@ -69,7 +69,7 @@ const createAvailability = async (body: {
   availability: string
 }) => {
   const res = await defaultPost(`${apiURL}/availability`, body)
-  return res.data
+  return res
 }
 
 const getAvailability = async (id: number) => {
