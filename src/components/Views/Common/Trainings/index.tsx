@@ -105,6 +105,7 @@ function TrainingsView() {
         <FilterContainer>
           {filterList.map(theme => (
             <Filter
+              key={theme.id}
               onClick={() => manageFilters(theme)}
               selected={
                 filtersSelected.length > 0 &&

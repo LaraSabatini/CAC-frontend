@@ -105,7 +105,7 @@ function AdvisoriesView() {
     const eventList: EventDataInterface[] = []
 
     if (event.length) {
-      event.map(ev =>
+      event.forEach(ev =>
         eventList.push({
           id: ev.id as number,
           hour: ev.hour,

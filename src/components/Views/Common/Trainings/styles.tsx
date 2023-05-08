@@ -7,8 +7,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  overflow: auto;
-
   h3 {
     margin: 0;
     font-family: ${theme.fonts.titles};
@@ -70,16 +68,61 @@ const CardPlaceholder = styled.div`
 `
 
 const FilterContainer = styled.div`
-  /* border: 1px solid red; */
   display: flex;
   align-items: center;
   gap: 20px;
   width: 100%;
-  justify-content: center;
+  justify-content: flex-start;
   height: 50px;
 
   svg {
     width: 10px;
+  }
+
+  @media (max-width: 1366px) {
+    width: 1280px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+
+    ::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px #466995;
+      border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: ${theme.colors.blue};
+      border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: ${theme.colors.blue};
+    }
+  }
+
+  @media (max-width: 1030px) {
+    width: 950px;
+  }
+
+  @media (max-width: 768px) {
+    width: 730px;
+  }
+
+  @media (max-width: 414px) {
+    width: 380px;
+  }
+  @media (max-width: 390px) {
+    width: 360px;
+  }
+
+  @media (max-width: 360px) {
+    width: 340px;
   }
 `
 const Filter = styled.button<{ selected: boolean }>`
@@ -90,14 +133,15 @@ const Filter = styled.button<{ selected: boolean }>`
   color: ${theme.colors.blue_dark};
   padding: 5px 10px;
   border-radius: 5px;
-
+  width: fit-content;
+  white-space: nowrap;
   ${props =>
     props.selected &&
     css`
       background-color: #466a95c7;
       border: 1px solid ${theme.colors.blue};
       color: ${theme.colors.white};
-    `}
+    `};
 `
 
 const EmptyResults = styled.div`
