@@ -13,19 +13,19 @@ const GlobalStyle = createGlobalStyle`
 
             background-repeat: no-repeat;
             background-position: center;
-            height: 100vh;
+            /* height: 100vh; */
+            
             background-size: cover;
             overflow: hidden; 
           }
           
           /* Hide scrollbar for Chrome, Safari and Opera */
-          ::-webkit-scrollbar {
+          /* ::-webkit-scrollbar {
             display: none;
-          }
+          } */
 
           /* Hide scrollbar for IE, Edge and Firefox */
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+           
         }
 `
 

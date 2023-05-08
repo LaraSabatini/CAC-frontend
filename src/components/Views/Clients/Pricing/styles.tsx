@@ -5,7 +5,8 @@ import { TitleStyles } from "theme/styles"
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  /* overflow: hidden; */
+  border: 1px solid red;
   gap: 20px;
   width: 90%;
   margin: 0 auto;
