@@ -11,9 +11,9 @@ const Container = styled.div`
   margin: 0 auto;
   padding-top: 100px;
 
-  /* @media (max-width: 626px) {
-    padding-top: 50px;
-  } */
+  @media (max-width: 414px) {
+    padding-top: 30px;
+  }
 
   .buttons {
     display: flex;
@@ -31,6 +31,14 @@ const DataCard = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 414px) {
+    width: 320px;
+  }
+
+  @media (max-width: 390px) {
+    width: 290px;
+  }
 
   box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
 
