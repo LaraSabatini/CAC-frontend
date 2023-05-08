@@ -7,6 +7,17 @@ const GlobalStyle = createGlobalStyle`
           background-color:  #ebf1fa;
           padding-bottom: 50px;
 
+          .background-pricing {
+
+            background-image: url('https://camarafederal.com.ar/software/imgs/Pantalla%20login-04%20%281%29.png');
+
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
+            background-size: cover;
+            overflow: hidden; 
+          }
+          
           /* Hide scrollbar for Chrome, Safari and Opera */
           ::-webkit-scrollbar {
             display: none;

@@ -11,6 +11,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding-top: 8.3%;
   position: relative;
+
+  @media (max-width: 1366px) {
+    padding-top: 11%;
+  }
 `
 
 const LogoContainer = styled.div`
@@ -44,18 +48,16 @@ const SubTitle = styled.span`
 `
 
 const CardsContainer = styled.div`
-  margin-top: 50px;
+  margin-top: 120px;
   display: flex;
-  height: 290px;
+  height: fit-content;
   align-items: center;
-  justify-content: space-between;
-  @media (max-width: ${theme.screenSize.tablet.height}) {
-    flex-wrap: wrap;
-    gap: 30px;
-  }
+  justify-content: center;
+  gap: 45px;
 
-  @media (max-width: ${theme.screenSize.mobile}) {
-    gap: 10px;
+  @media (max-width: 1024px) {
+    flex-wrap: wrap;
+    margin-top: 40px;
   }
 `
 
