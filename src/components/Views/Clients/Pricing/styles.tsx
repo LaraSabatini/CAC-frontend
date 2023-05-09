@@ -6,7 +6,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   /* overflow: hidden; */
-  border: 1px solid red;
+  /* border: 1px solid red; */
   gap: 20px;
   width: 90%;
   margin: 0 auto;

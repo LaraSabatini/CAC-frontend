@@ -9,20 +9,24 @@ const GlobalStyle = createGlobalStyle`
 
           .background-pricing {
 
-            background-image: url('https://camarafederal.com.ar/software/imgs/Pantalla%20login-04%20%281%29.png');
+            background-image: url('https://camarafederal.com.ar/software/imgs/Pantalla%20pricing-06.png');
 
+            @media (max-width: 1024px) {
+              background-image: url('https://camarafederal.com.ar/software/imgs/Pantalla%20pricing-08.png');
+              
+            }
             background-repeat: no-repeat;
             background-position: center;
-            /* height: 100vh; */
+            height: 100vh;
             
             background-size: cover;
-            overflow: hidden; 
+            /* overflow: hidden;  */
           }
           
           /* Hide scrollbar for Chrome, Safari and Opera */
-          /* ::-webkit-scrollbar {
+          ::-webkit-scrollbar {
             display: none;
-          } */
+          }
 
           /* Hide scrollbar for IE, Edge and Firefox */
            
