@@ -5,9 +5,13 @@ const Container = styled.div`
   width: 30vw;
   height: fit-content;
   margin: 200px auto;
-  border-radius: 10px;
   padding: 20px 25px;
-  background-color: ${theme.colors.white};
+  background-color: #f2f8ff;
+
+  border: 1px solid rgba(70, 106, 149, 0.138);
+  border-radius: 18px;
+
+  box-shadow: 0px 8px 24px rgba(70, 105, 149, 0.1);
   display: flex;
   flex-direction: column;
 `

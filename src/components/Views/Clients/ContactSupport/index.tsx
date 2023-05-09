@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import { useRouter } from "next/router"
-import InputSelect from "components/UI/InputSelect"
 import requestUnblock from "services/support/contactSupport.service"
-import { Button } from "antd"
+import { Button, Select } from "antd"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { Container, Title, ButtonContainer } from "./styles"
 
@@ -25,7 +24,7 @@ function ContactSupportView() {
 
       const requestUnblockCall = await requestUnblock(
         {
-          recipients: ["cadaccomision@gmail.com"], // CAMBIAR POR MAIL DEL ADMINISTRADOR
+          recipients: ["cadaccomision@gmail.com"],
           name: "Administrador",
           clientName: clientName.replace("20%", " "),
           unblockURL: `${process.env.NEXT_PUBLIC_FRONT_URL}/contactSupport/unblock?id=${router.query.id}`,
@@ -49,14 +48,19 @@ function ContactSupportView() {
       {!sentEmail ? (
         <>
           <Title>Contactar soporte</Title>
-          <InputSelect
-            label="Solicitud"
-            width={440}
-            options={supportOptions}
-            required
-            onClick={(e: { id: number; value: string }) => {
-              setRequestType(e)
+
+          <Select
+            placeholder="Selecciona una opcion"
+            onChange={value => {
+              const findId = supportOptions.filter(
+                option => option.value === value,
+              )
+              setRequestType({
+                id: findId[0].id,
+                value,
+              })
             }}
+            options={supportOptions}
           />
           <ButtonContainer>
             <Button type="primary" onClick={sendRequest}>
