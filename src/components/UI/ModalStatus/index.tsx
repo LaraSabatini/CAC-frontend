@@ -1,6 +1,6 @@
 import React from "react"
 import ModalStatusInterface from "interfaces/components/ModalStatusInterface"
-import Button from "components/UI/Button"
+import { Button } from "antd"
 import Modal from "components/UI/Modal"
 import Icon from "components/UI/Assets/Icon"
 import {
@@ -53,14 +53,14 @@ function ModalStatus({
         <Description>{description}</Description>
         <ButtonContainer>
           {secondaryButton && (
-            <Button
-              cta={false}
-              content={secondaryButton.content}
-              action={secondaryButton.action}
-            />
+            <Button onClick={secondaryButton.action}>
+              {secondaryButton.content}
+            </Button>
           )}
           {ctaButton && (
-            <Button cta content={ctaButton.content} action={ctaButton.action} />
+            <Button type="primary" onClick={ctaButton.action}>
+              {ctaButton.content}
+            </Button>
           )}
         </ButtonContainer>
       </ModalContainer>

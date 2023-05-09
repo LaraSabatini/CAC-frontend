@@ -8,7 +8,7 @@ import texts from "strings/articles.json"
 import Modal from "components/UI/Modal"
 import ModalStatus from "components/UI/ModalStatus"
 import Icon from "components/UI/Assets/Icon"
-import Button from "components/UI/Button"
+import { Button } from "antd"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import Input from "components/UI/Input"
 import {
@@ -129,16 +129,10 @@ function DeleteArticleModal({ cancel }: WarningModalInterface) {
         </InputContainer>
 
         <ButtonContainer>
-          <Button
-            content={texts.deleteArticle.cancel}
-            cta={false}
-            action={() => cancel()}
-          />
-          <Button
-            content={texts.deleteArticle.confirm}
-            cta
-            action={() => deleteArticleAction()}
-          />
+          <Button onClick={() => cancel()}>{texts.deleteArticle.cancel}</Button>
+          <Button type="primary" onClick={() => deleteArticleAction()}>
+            {texts.deleteArticle.confirm}
+          </Button>
         </ButtonContainer>
       </ModalContainer>
     </Modal>

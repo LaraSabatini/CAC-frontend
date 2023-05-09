@@ -18,7 +18,6 @@ function CreateArticleButton() {
           }}
         />
       )}
-
       <Option
         onClick={() => {
           setOpenForm(true)

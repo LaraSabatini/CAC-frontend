@@ -1,12 +1,11 @@
 import React, { useContext, useState } from "react"
 import { filterArticles } from "services/articles/articles.service"
 import { DashboardContext } from "contexts/Dashboard"
-import Tooltip from "components/UI/Tooltip"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import Scroll from "components/UI/Scroll"
 import regionFilters from "const/regions"
 import filterValues from "const/filters"
-import { Checkbox, Button } from "antd"
+import { Checkbox, Button, Tooltip } from "antd"
 import {
   DeleteOutlined,
   CaretDownOutlined,
@@ -182,7 +181,7 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
               setTriggerArticleListUpdate(triggerArticleListUpdate + 1)
             }}
           >
-            <Tooltip title="Limpiar" placement="top-end">
+            <Tooltip title="Limpiar">
               <DeleteOutlined />
             </Tooltip>
           </IconButton>

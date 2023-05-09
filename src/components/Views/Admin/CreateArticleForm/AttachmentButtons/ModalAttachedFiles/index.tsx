@@ -3,7 +3,7 @@ import { ArticlesContext } from "contexts/Articles"
 import { MdOutlineClose } from "react-icons/md"
 import texts from "strings/articles.json"
 import Modal from "components/UI/Modal"
-import Tooltip from "components/UI/Tooltip"
+import { Tooltip } from "antd"
 import {
   AttachmentsList,
   Title,

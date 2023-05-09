@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useRouter } from "next/router"
 import InputSelect from "components/UI/InputSelect"
 import requestUnblock from "services/support/contactSupport.service"
-import Button from "components/UI/Button"
+import { Button } from "antd"
 import InternalServerError from "components/Views/Common/Error/InternalServerError"
 import { Container, Title, ButtonContainer } from "./styles"
 
@@ -25,7 +25,7 @@ function ContactSupportView() {
 
       const requestUnblockCall = await requestUnblock(
         {
-          recipients: ["sabatinilara@gmail.com"], // CAMBIAR POR MAIL DEL ADMINISTRADOR
+          recipients: ["cadaccomision@gmail.com"], // CAMBIAR POR MAIL DEL ADMINISTRADOR
           name: "Administrador",
           clientName: clientName.replace("20%", " "),
           unblockURL: `${process.env.NEXT_PUBLIC_FRONT_URL}/contactSupport/unblock?id=${router.query.id}`,
@@ -59,7 +59,9 @@ function ContactSupportView() {
             }}
           />
           <ButtonContainer>
-            <Button content="Enviar solicitud" cta action={sendRequest} />
+            <Button type="primary" onClick={sendRequest}>
+              Enviar solicitud
+            </Button>
           </ButtonContainer>
         </>
       ) : (

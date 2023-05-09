@@ -3,7 +3,7 @@ import blockAccount from "services/auth/blockAccount.service"
 import { sendAccountUnblockedEmailNotification } from "services/auth/blockedNotificationEmail.service"
 import { getProfileData } from "services/auth/getProfileData.service"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
-import Button from "components/UI/Button"
+import { Button } from "antd"
 import { useRouter } from "next/router"
 import PageContainer from "./styles"
 
@@ -48,7 +48,9 @@ function Unblock() {
       {!success ? (
         <>
           <h1>Solicitud de desbloqueo:</h1>
-          <Button content="Desbloquear usuario" cta action={unblockUser} />
+          <Button type="primary" onClick={unblockUser}>
+            Desbloquear usuario
+          </Button>
         </>
       ) : (
         <h1>
