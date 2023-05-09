@@ -4,7 +4,6 @@ import theme from "theme"
 const Card = styled.div`
   border: 1px solid ${theme.colors.blue_alpha};
   width: 180px;
-  /* height: 200px; */
   padding: 15px;
   border-radius: 10px;
 

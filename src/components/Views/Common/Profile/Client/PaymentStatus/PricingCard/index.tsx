@@ -2,7 +2,7 @@ import React from "react"
 import texts from "strings/pricing.json"
 import PricingInterface from "interfaces/content/Pricing"
 import numberWithCommas from "helpers/formatting/formatPrice"
-import Button from "components/UI/Button"
+import { Button } from "antd"
 import Card from "./styles"
 
 interface PricingCardInterface extends PricingInterface {
@@ -25,7 +25,9 @@ function PricingCard({
       </p>
       <p className="description">{description}</p>
 
-      <Button content="Seleccionar" cta action={selectPlan} />
+      <Button type="primary" onClick={selectPlan}>
+        Seleccionar
+      </Button>
     </Card>
   )
 }

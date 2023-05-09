@@ -9,18 +9,11 @@ import PricingInterface from "interfaces/content/Pricing"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import MercadoPagoForm from "@components/Views/Clients/Payment/MercadoPagoButton"
 import defaultPaymet from "const/defaultValuesForPaymentContext"
-import Modal from "components/UI/Modal"
-import Button from "components/UI/Button"
+import { Button, Modal } from "antd"
 import PricingCard from "../PricingCard"
-import {
-  ModalContainer,
-  ButtonContainer,
-  CardContainer,
-  Title,
-  UpdatePaymentButton,
-} from "./styles"
+import { ButtonContainer, CardContainer } from "./styles"
 
-function PlanModal({ close }: { close: (arg?: any) => void }) {
+function PlanModal() {
   const { setPayment, payment, pricingList, setPricingList } = useContext(
     PaymentContext,
   )
@@ -29,6 +22,8 @@ function PlanModal({ close }: { close: (arg?: any) => void }) {
   const client = profileData as ClientInterface
 
   const [serverErrorModal, setServerErrorModal] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
+
   const [renderMPButton, setRenderMPButton] = useState<boolean>(false)
 
   const selectPlan = (pricingPlan: PricingInterface) => {
@@ -67,14 +62,78 @@ function PlanModal({ close }: { close: (arg?: any) => void }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const [showPlans, setShowPlans] = useState<boolean>(false)
+
   return (
-    <Modal>
-      <InternalServerError
-        visible={serverErrorModal}
-        changeVisibility={() => setServerErrorModal(false)}
-      />
-      <ModalContainer>
-        <Title>Selecciona tu plan</Title>
+    <>
+      <Button type="primary" onClick={() => setShowPlans(true)}>
+        Actualizar pago
+      </Button>
+      <Modal
+        open={showPlans}
+        title="Selecciona tu plan"
+        width="fit-content"
+        cancelText="Cancelar"
+        onCancel={() => {
+          setPayment(defaultPaymet)
+          setShowPlans(false)
+        }}
+        footer={[
+          <Button
+            onClick={() => {
+              setPayment(defaultPaymet)
+              setShowPlans(false)
+            }}
+          >
+            Cancelar
+          </Button>,
+
+          !renderMPButton ? (
+            <>
+              {payment.item.id !== "" && (
+                <Button
+                  type="primary"
+                  loading={loading}
+                  onClick={() => {
+                    setLoading(true)
+                    setTimeout(() => {
+                      setRenderMPButton(true)
+                      setLoading(false)
+                    }, 1000)
+                  }}
+                >
+                  Validar datos
+                </Button>
+              )}
+            </>
+          ) : (
+            <ButtonContainer>
+              <MercadoPagoForm
+                label={texts.paymentData.updatePayment}
+                item={[
+                  {
+                    id: payment.item.id,
+                    title: payment.item.title,
+                    quantity: 1,
+                    unit_price: payment.item.unit_price,
+                  },
+                ]}
+                payer={{
+                  name: client.name,
+                  surname: client.lastName,
+                  email: client.email,
+                }}
+                type="update"
+                redirectPreferenceError={`${routes.profile.name}?${routes.profile.queries.updatePaymentFailure}`}
+              />
+            </ButtonContainer>
+          ),
+        ]}
+      >
+        <InternalServerError
+          visible={serverErrorModal}
+          changeVisibility={() => setServerErrorModal(false)}
+        />
         <CardContainer>
           {pricingList.length > 0 &&
             pricingList.map((pricingPlan: PricingInterface) => (
@@ -89,46 +148,8 @@ function PlanModal({ close }: { close: (arg?: any) => void }) {
               />
             ))}
         </CardContainer>
-        <ButtonContainer>
-          <Button
-            content="Cancelar"
-            cta={false}
-            action={() => {
-              close()
-              setPayment(defaultPaymet)
-            }}
-          />
-          {!renderMPButton ? (
-            <>
-              {payment.item.id !== "" && (
-                <UpdatePaymentButton onClick={() => setRenderMPButton(true)}>
-                  Validar datos
-                </UpdatePaymentButton>
-              )}
-            </>
-          ) : (
-            <MercadoPagoForm
-              label={texts.paymentData.updatePayment}
-              item={[
-                {
-                  id: payment.item.id,
-                  title: payment.item.title,
-                  quantity: 1,
-                  unit_price: payment.item.unit_price,
-                },
-              ]}
-              payer={{
-                name: client.name,
-                surname: client.lastName,
-                email: client.email,
-              }}
-              type="update"
-              redirectPreferenceError={`${routes.profile.name}?${routes.profile.queries.updatePaymentFailure}`}
-            />
-          )}
-        </ButtonContainer>
-      </ModalContainer>
-    </Modal>
+      </Modal>
+    </>
   )
 }
 

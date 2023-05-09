@@ -7,7 +7,7 @@ const authenticate = (gapi: any, action: (arg?: any) => void) => {
       {
         client_id: CLIENT_ID,
         scope: SCOPES,
-        plugin_name: "camara-federal-consorcio",
+        plugin_name: "camara-federal-consorcio", // CFdAs
       },
       (res: any) => {
         if (res) {

@@ -4,8 +4,7 @@ import { TitleStyles } from "theme/styles"
 
 const ModalContainer = styled.div`
   background-color: ${theme.colors.white};
-  width: 65vw;
-  height: 50vh;
+  height: fit-content;
   padding: 20px 30px;
   border-radius: 10px;
   display: flex;
@@ -14,14 +13,21 @@ const ModalContainer = styled.div`
 `
 
 const CardContainer = styled.div`
-  /* border: 1px solid green; */
   display: flex;
   justify-content: space-between;
+  gap: 15px;
+
+  align-items: center;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 600px;
+  }
 `
 
 const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+  margin-top: 5px;
 `
 
 const Title = styled.h5`
