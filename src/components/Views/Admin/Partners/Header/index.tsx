@@ -7,9 +7,9 @@ import CreateArticleButton from "components/Views/Admin/CreateArticleButton"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
 import texts from "strings/profile.json"
 import Icon from "components/UI/Assets/Icon"
-import Tooltip from "components/UI/Tooltip"
+import { Tooltip, Input, Button, Modal } from "antd"
 import Logo from "components/UI/Assets/Icon/Icons/Logo"
-import { Input, Button, Modal } from "antd"
+
 import {
   UsergroupAddOutlined,
   CalendarOutlined,
@@ -98,7 +98,7 @@ function Header() {
       </SearchContainer>
       <ProfileContainer>
         <ButtonContainer>
-          <Tooltip title="Menú" placement="left">
+          <Tooltip title="Menú">
             <button
               type="button"
               className="menu"

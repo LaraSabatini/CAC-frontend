@@ -67,24 +67,6 @@ const ActionButtons = styled.div`
   flex-wrap: wrap;
 `
 
-const IconButton = styled.button`
-  background-color: transparent;
-  border: 1px solid #466995;
-  border-radius: 4px;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  svg {
-    width: 20px;
-    height: 20px;
-    color: ${theme.colors.blue};
-  }
-`
-
 const WarningMessage = styled.p`
   margin: 0;
   font-family: ${theme.fonts.content};
@@ -104,6 +86,5 @@ export {
   FiltersTitle,
   ButtonContainer,
   ActionButtons,
-  IconButton,
   WarningMessage,
 }

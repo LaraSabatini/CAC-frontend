@@ -4,10 +4,10 @@ import { getPlansForFilters } from "services/pricing/getPlans.service"
 import { FilterInterface } from "interfaces/contexts/DashboardContextInterface"
 import { filterClients } from "services/clients/clientActions.service"
 import InternalServerError from "@components/Views/Common/Error/InternalServerError"
-import Tooltip from "components/UI/Tooltip"
+import { Tooltip, Button, Checkbox } from "antd"
 import Scroll from "components/UI/Scroll"
 import regionFilters from "const/regions"
-import { Button, Checkbox } from "antd"
+
 import {
   DeleteOutlined,
   CaretDownOutlined,
@@ -181,7 +181,7 @@ function Filters({ closeTab }: { closeTab: (arg?: any) => void }) {
               setTriggerListUpdate(triggerListUpdate + 1)
             }}
           >
-            <Tooltip title="Limpiar" placement="top-end">
+            <Tooltip title="Limpiar">
               <DeleteOutlined />
             </Tooltip>
           </IconButton>

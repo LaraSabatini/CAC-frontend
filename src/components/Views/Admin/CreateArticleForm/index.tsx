@@ -105,7 +105,6 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
                 <Select
                   mode="multiple"
                   allowClear
-                  // style={{ width: 475 }}
                   style={{ width: "100%" }}
                   placeholder="Temática"
                   defaultValue={themesSelected}

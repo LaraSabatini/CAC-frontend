@@ -6,7 +6,7 @@ import { AttachmentInterface } from "interfaces/content/Article"
 import getFiles from "helpers/media/getFiles"
 import texts from "strings/articles.json"
 import Modal from "components/UI/Modal"
-import Tooltip from "components/UI/Tooltip"
+import { Tooltip } from "antd"
 import axios from "axios"
 import {
   AttachmentsList,

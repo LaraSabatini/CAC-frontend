@@ -4,7 +4,7 @@ import { MdOutlineClose, MdAddCircleOutline } from "react-icons/md"
 import texts from "strings/articles.json"
 import getVideoURL from "helpers/media/getVideoURL"
 import Modal from "components/UI/Modal"
-import Tooltip from "components/UI/Tooltip"
+import { Tooltip } from "antd"
 import Input from "components/UI/Input"
 import {
   Title,
