@@ -7,7 +7,7 @@ const Container = styled.div`
   width: 70vw;
   max-width: 995px;
   border-radius: 18px;
-  padding: 40px 50px;
+  padding: 30px;
   height: fit-content;
 `
 
@@ -22,7 +22,7 @@ const InputContainer = styled.div`
   flex-direction: column;
   padding-bottom: 30px;
   .autor {
-    margin-top: 20px;
+    margin-top: 10px;
   }
 `
 
