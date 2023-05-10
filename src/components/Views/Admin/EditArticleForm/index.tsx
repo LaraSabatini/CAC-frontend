@@ -202,7 +202,7 @@ function EditArticleForm({ closeForm }: EditArticleFormInterface) {
               </HorizontalGroup>
               <TextArea
                 className="autor"
-                rows={12}
+                rows={8}
                 placeholder={texts.newArticleForm.labels.fullArticlePlaceholder}
                 onChange={e =>
                   setArticleEdited({

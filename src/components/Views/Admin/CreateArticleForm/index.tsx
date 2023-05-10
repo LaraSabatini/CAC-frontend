@@ -144,7 +144,7 @@ function CreateArticleForm({ closeForm }: CreateArticleFormInterface) {
               </HorizontalGroup>
               <TextArea
                 className="autor"
-                rows={12}
+                rows={8}
                 placeholder={texts.newArticleForm.labels.fullArticlePlaceholder}
                 onChange={e =>
                   setNewArticle({ ...newArticle, article: e.target.value })
