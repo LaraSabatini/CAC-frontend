@@ -20,6 +20,13 @@ const Container = styled.div`
     align-items: center;
     gap: 15px;
   }
+
+  .button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
 `
 
 const DataCard = styled.div`
@@ -102,6 +109,68 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
 `
 
+const ProfilePicContainer = styled.div<{ bg: string }>`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+  background-image: url(${props => props.bg});
+  background-size: cover;
+  background-position: center;
+
+  &:hover {
+    background-image: linear-gradient(
+        to bottom,
+        rgba(245, 246, 252, 0.52),
+        #466a9586
+      ),
+      url(${props => props.bg});
+  }
+`
+
+const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* align-items: flex-end; */
+  gap: 20px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+
+  .buttons {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .photo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    border-radius: 10px;
+    background-color: ${theme.colors.light_grey};
+
+    p {
+      margin: 0;
+      padding: 10px 15px;
+      color: ${theme.colors.blue};
+      font-weight: ${theme.fontWeights.medium};
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+    }
+  }
+`
+
 export {
   Container,
   PermitsCard,
@@ -110,4 +179,6 @@ export {
   Option,
   ButtonContainer,
   DataCard,
+  ProfilePicContainer,
+  ModalContent,
 }

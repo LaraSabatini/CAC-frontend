@@ -13,4 +13,5 @@ export interface AccessPermitsInterface {
 export interface AdminInterface extends UserInterface {
   userName: string
   accessPermits: AccessPermitsInterface
+  profilePic: string
 }
