@@ -195,6 +195,16 @@ const Description = styled.p`
   color: ${theme.colors.blue_dark};
 `
 
+const ProfilePicContainer = styled.div<{ bg: string }>`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+  background-image: url(${props => props.bg});
+  background-size: cover;
+  background-position: center;
+`
+
 export {
   Container,
   LeftContainer,
@@ -209,4 +219,5 @@ export {
   Buttons,
   ArticleContent,
   Description,
+  ProfilePicContainer,
 }
