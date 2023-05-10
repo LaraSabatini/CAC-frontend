@@ -17,4 +17,9 @@ const getProfilePic = async (id: number) => {
   return res.data
 }
 
+export const removeProfilePic = async (id: number) => {
+  const res = await axios.put(`${apiURL}/profile-pic/id=${id}`, axiosHeader)
+  return res.data
+}
+
 export { uploadPic, getProfilePic }
