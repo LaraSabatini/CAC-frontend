@@ -87,6 +87,7 @@ function AdminProfile() {
           user: userData?.user,
         }
         localStorage.setItem("userData", JSON.stringify(newUserData))
+        router.reload()
       },
     })
   }
@@ -153,7 +154,7 @@ function AdminProfile() {
       <Modal
         title="Editar foto de perfil"
         open={openModal}
-        width={300}
+        width={350}
         onOk={changeProfile}
         onCancel={() => {
           setOpenModal(false)

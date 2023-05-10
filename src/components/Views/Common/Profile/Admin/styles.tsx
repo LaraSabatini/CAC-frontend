@@ -148,7 +148,7 @@ const ModalContent = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 250px;
+    width: 300px;
     border-radius: 10px;
     background-color: ${theme.colors.light_grey};
 
