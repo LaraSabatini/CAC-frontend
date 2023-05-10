@@ -7,12 +7,9 @@
     "npm": "please-use-yarn"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "test": "jest --watch",
-    "start": "next start",
-    "lint": "next lint",
-    "export": "next export"
+    "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
