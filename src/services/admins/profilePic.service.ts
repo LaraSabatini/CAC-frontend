@@ -12,8 +12,11 @@ const uploadPic = async (formData: any, id: number) => {
   }
 }
 
-const getProfilePic = async (id: number) => {
-  const res = await axios.get(`${apiURL}/profile-pic/id=${id}`, axiosHeader)
+const getProfilePic = async (id: number, name: string) => {
+  const res = await axios.get(
+    `${apiURL}/profile-pic/id=${id}&name=${name}`,
+    axiosHeader,
+  )
   return res.data
 }
 

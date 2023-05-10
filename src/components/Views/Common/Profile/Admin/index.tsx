@@ -75,7 +75,7 @@ function AdminProfile() {
       content: "Acción realizada con éxito",
       async onOk() {
         setOpenModal(false)
-        const updatePic = await getProfilePic(userData?.id)
+        const updatePic = await getProfilePic(userData?.id, "")
 
         const newUserData = {
           id: userData?.id,
