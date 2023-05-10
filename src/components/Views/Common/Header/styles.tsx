@@ -214,6 +214,16 @@ const Option = styled.div`
 
 const FilterContainer = styled.div``
 
+const ProfilePicContainer = styled.div<{ bg: string }>`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+  background-image: url(${props => props.bg});
+  background-size: cover;
+  background-position: center;
+`
+
 export {
   Container,
   SearchContainer,
@@ -229,4 +239,5 @@ export {
   Menu,
   Option,
   FilterContainer,
+  ProfilePicContainer,
 }
