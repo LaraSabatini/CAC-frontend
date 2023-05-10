@@ -70,12 +70,14 @@ function AdminProfile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // console.log(newData.userName)
+
   const success = () => {
     Modal.success({
       content: "Acción realizada con éxito",
       async onOk() {
         setOpenModal(false)
-        const updatePic = await getProfilePic(userData?.id, "")
+        const updatePic = await getProfilePic(userData?.id, newData.userName)
 
         const newUserData = {
           id: userData?.id,
