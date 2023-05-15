@@ -5,6 +5,7 @@ import {
   getArticleById,
   deleteArticle,
 } from "services/articles/articles.service"
+import { getProfilePic } from "services/admins/profilePic.service"
 import ArticleInterface, {
   CreatedByInterface,
 } from "interfaces/content/Article"
@@ -36,6 +37,7 @@ import {
   AuthorContainer,
   RigthContainer,
   Buttons,
+  ProfilePicContainer,
   ArticleContent,
 } from "./styles"
 
@@ -57,6 +59,8 @@ type Props = CommonProps & ConditionalProps
 
 function ArticleBody(props: Props) {
   const { article, showImageVisualizer, queries } = props
+
+  const [profilePic, setProfilePic] = useState<string>("")
 
   const { confirm } = Modal
 
@@ -86,9 +90,18 @@ function ArticleBody(props: Props) {
     }[]
   >()
 
+  const urlify = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g
+    return text.replace(urlRegex, url => {
+      return `<a href="${url}">${url}</a>`
+    })
+  }
+
   const cleanArticle = (fullArticle: string) => {
     const text = fullArticle.split("\n")
-    setArticleParagraphs(text)
+    const list: string[] = []
+    text.forEach(txt => list.push(`<p>${urlify(txt)}</p>`))
+    setArticleParagraphs(list)
   }
 
   const getArticleData = async () => {
@@ -102,6 +115,18 @@ function ArticleBody(props: Props) {
       setChangesHistory(
         JSON.parse(getArticleByIdReq.data[0].changesHistory as string),
       )
+
+      const getAdminPic = await getProfilePic(
+        0,
+        getArticleByIdReq.data[0].author,
+      )
+
+      if (
+        getAdminPic.data.length > 0 &&
+        getAdminPic.data[0].profilePic !== ""
+      ) {
+        setProfilePic(getAdminPic.data[0].profilePic)
+      }
     } else {
       setServerErrorModal(true)
     }
@@ -233,7 +258,11 @@ function ArticleBody(props: Props) {
                 </RigthContainer>
               )}
               <AuthorContainer>
-                <Icon icon="Profile" />
+                {profilePic !== "" ? (
+                  <ProfilePicContainer bg={profilePic} />
+                ) : (
+                  <Icon icon="Profile" />
+                )}
                 <p>
                   <span>{texts.author}</span>
                   {data.author}
@@ -268,9 +297,10 @@ function ArticleBody(props: Props) {
             <ArticleContainer>
               <ArticleContent>
                 {articleParagraphs.map((paragraph: string) => (
-                  <ArticleParagraph key={Math.floor(Math.random() * 1000)}>
-                    {paragraph}
-                  </ArticleParagraph>
+                  <ArticleParagraph
+                    key={Math.floor(Math.random() * 1000)}
+                    dangerouslySetInnerHTML={{ __html: paragraph }}
+                  />
                 ))}
               </ArticleContent>
             </ArticleContainer>

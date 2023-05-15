@@ -101,6 +101,10 @@ const ArticleParagraph = styled.p`
   margin: 0;
   padding-bottom: 5px;
   text-align: justify;
+
+  p {
+    margin: 0;
+  }
 `
 
 const ArticleContent = styled.div`
@@ -195,6 +199,16 @@ const Description = styled.p`
   color: ${theme.colors.blue_dark};
 `
 
+const ProfilePicContainer = styled.div<{ bg: string }>`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+  background-image: url(${props => props.bg});
+  background-size: cover;
+  background-position: center;
+`
+
 export {
   Container,
   LeftContainer,
@@ -209,4 +223,5 @@ export {
   Buttons,
   ArticleContent,
   Description,
+  ProfilePicContainer,
 }

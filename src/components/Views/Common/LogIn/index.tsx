@@ -82,7 +82,10 @@ function LoginView() {
         type: userQuery.split("=")[1],
         firstLogin: loginReq.firstLogin === 1,
         paymentExpireDate: "",
+        profilePic:
+          loginReq.profilePic !== undefined ? loginReq.profilePic : "",
       }
+
       localStorage.setItem("userData", JSON.stringify(userData))
 
       router.replace(routes.dashboard.name)

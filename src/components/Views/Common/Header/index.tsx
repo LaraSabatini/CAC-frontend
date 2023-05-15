@@ -35,6 +35,7 @@ import {
   ButtonContainer,
   Menu,
   Option,
+  ProfilePicContainer,
 } from "./styles"
 
 const { Search } = Input
@@ -215,7 +216,18 @@ function Header() {
         </ButtonContainer>
 
         <ProfilePic onClick={() => setOpenProfileMenu(!openProfileMenu)}>
-          <Icon icon="Profile" />
+          {userData?.type === "admin" ? (
+            <>
+              {userData?.profilePic !== "" ? (
+                <ProfilePicContainer bg={userData?.profilePic} />
+              ) : (
+                <Icon icon="Profile" />
+              )}
+            </>
+          ) : (
+            <Icon icon="Profile" />
+          )}
+
           {openProfileMenu && (
             <ProfileOptions>
               <Button

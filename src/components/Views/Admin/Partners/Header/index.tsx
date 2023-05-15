@@ -27,6 +27,7 @@ import {
   ButtonContainer,
   Menu,
   Option,
+  ProfilePicContainer,
 } from "components/Views/Common/Header/styles"
 import Filters from "./Filters"
 
@@ -34,6 +35,7 @@ const { Search } = Input
 
 function Header() {
   const router = useRouter()
+  const userData = JSON.parse(localStorage.getItem("userData") as string)
 
   const { setClients, triggerListUpdate, setTriggerListUpdate } = useContext(
     ClientsContext,
@@ -129,7 +131,11 @@ function Header() {
         </ButtonContainer>
 
         <ProfilePic onClick={() => setOpenProfileMenu(!openProfileMenu)}>
-          <Icon icon="Profile" />
+          {userData?.profilePic !== "" ? (
+            <ProfilePicContainer bg={userData?.profilePic} />
+          ) : (
+            <Icon icon="Profile" />
+          )}
           {openProfileMenu && (
             <ProfileOptions>
               <Button
