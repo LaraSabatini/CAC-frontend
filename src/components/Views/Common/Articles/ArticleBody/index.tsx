@@ -90,9 +90,18 @@ function ArticleBody(props: Props) {
     }[]
   >()
 
+  const urlify = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g
+    return text.replace(urlRegex, url => {
+      return `<a href="${url}">${url}</a>`
+    })
+  }
+
   const cleanArticle = (fullArticle: string) => {
     const text = fullArticle.split("\n")
-    setArticleParagraphs(text)
+    const list: string[] = []
+    text.forEach(txt => list.push(`<p>${urlify(txt)}</p>`))
+    setArticleParagraphs(list)
   }
 
   const getArticleData = async () => {
@@ -288,9 +297,10 @@ function ArticleBody(props: Props) {
             <ArticleContainer>
               <ArticleContent>
                 {articleParagraphs.map((paragraph: string) => (
-                  <ArticleParagraph key={Math.floor(Math.random() * 1000)}>
-                    {paragraph}
-                  </ArticleParagraph>
+                  <ArticleParagraph
+                    key={Math.floor(Math.random() * 1000)}
+                    dangerouslySetInnerHTML={{ __html: paragraph }}
+                  />
                 ))}
               </ArticleContent>
             </ArticleContainer>

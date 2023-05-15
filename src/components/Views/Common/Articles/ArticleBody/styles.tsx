@@ -101,6 +101,10 @@ const ArticleParagraph = styled.p`
   margin: 0;
   padding-bottom: 5px;
   text-align: justify;
+
+  p {
+    margin: 0;
+  }
 `
 
 const ArticleContent = styled.div`
