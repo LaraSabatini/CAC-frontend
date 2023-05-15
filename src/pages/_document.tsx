@@ -24,7 +24,7 @@ export default class MyDocument extends Document {
           />
           <link
             rel="icon"
-            href="https://camarafederal.com.ar/software/imgs/logo-mail.png"
+            href="https://camarafederal.com.ar/plataforma/imgs/logo-mail.png"
           />
           <title>Cámara Federal de Administradores</title>
         </Head>

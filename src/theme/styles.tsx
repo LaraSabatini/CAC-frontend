@@ -8,21 +8,21 @@ const GlobalStyle = createGlobalStyle`
           padding-bottom: 50px;
 
           .background-pricing {
-            background-image: url('https://camarafederal.com.ar/software/imgs/Pantalla%20pricing-06.png');
+            background-image: url('https://camarafederal.com.ar/plataforma/imgs/Pantalla%20pricing-06.png');
             height: 100vh;
             @media (max-width: 1024px) {
-              background-image: url('https://camarafederal.com.ar/software/imgs/pricing%20-%20tablet%20horizontal.png');
+              background-image: url('https://camarafederal.com.ar/plataforma/imgs/pricing%20-%20tablet%20horizontal.png');
               background-position: top;
             }
 
             @media (max-width: 768px) {
-              background-image: url('https://camarafederal.com.ar/software/imgs/pricing%20-%20tablet%20vertical.png');
+              background-image: url('https://camarafederal.com.ar/plataforma/imgs/pricing%20-%20tablet%20vertical.png');
               background-position: top;
               height: 100vh;
             }
 
             @media (max-width: 414px) {
-              background-image: url('https://camarafederal.com.ar/software/imgs/pricing%20-%20mobile%203.png');
+              background-image: url('https://camarafederal.com.ar/plataforma/imgs/pricing%20-%20mobile%203.png');
               background-position: top;
               height: 200vh;
             }
