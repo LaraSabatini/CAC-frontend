@@ -15,6 +15,17 @@ const defaultClient: ClientInterface = {
   subscription: 1,
   dateCreated: "",
   loginAttempts: 0,
+  firstLogin: 1,
+  plan: 1,
+  region: "Buenos Aires",
+  paymentDate: "",
+  paymentExpireDate: "",
+  mpId: "",
+  savedArticles: [],
+  realEstateRegistration: "",
+  activityStartDate: "",
+  amountOfBuildings: "",
+  birthdate: "",
 }
 
 export default defaultClient

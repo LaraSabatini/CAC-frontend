@@ -7,23 +7,25 @@ const ScrollView = styled.div<{ height: number; horizontal?: boolean }>`
   padding: 0;
   margin: 1;
   width: auto;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
+
   ${({ horizontal }) =>
     horizontal &&
     css`
-      overflow-x: auto;
+      overflow-x: hidden;
     `}
   padding-right: 20px;
   ::-webkit-scrollbar {
     height: 6px;
     width: 6px;
-    background-color: ${theme.colors.light_grey};
+    background-color: ${theme.colors.blue_alpha};
     border-radius: 7px;
   }
   ::-webkit-scrollbar-thumb {
     height: 5px;
     background-clip: padding-box;
-    background-color: ${theme.colors.orange_light};
+    background-color: ${theme.colors.blue};
     border-radius: 7px;
     -webkit-border-radius: 7px;
   }

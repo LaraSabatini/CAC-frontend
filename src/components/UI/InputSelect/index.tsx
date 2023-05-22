@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import Icon from "components/UI/Assets/Icon"
 import { ErrorMessage, Label, InputContainer } from "components/UI/sharedStyles"
 import InputSelectInterface from "interfaces/components/InputSelectInterface"
+import Scroll from "components/UI/Scroll"
 import {
   Select,
   Option,
@@ -33,29 +34,31 @@ function InputSelect({
       </Label>
       <Select width={width} error={error}>
         <Input>
-          {optionSelected.value}
+          <p className="value">{optionSelected?.value}</p>
           <IconContainer onClick={() => setOpenSelect(!openSelect)}>
             <Icon icon="SingleArrow" />
           </IconContainer>
         </Input>
         {openSelect && (
           <OptionsContainer width={width}>
-            {options.map((option: { id: number; value: string }) => (
-              <Option
-                key={option.id}
-                onClick={() => {
-                  setOpenSelect(false)
-                  setOptionSelected(option)
-                  if (onClick !== undefined) {
-                    onClick(option)
-                  }
-                }}
-                data-title={option.value}
-                data-id={option.id}
-              >
-                {option.value}
-              </Option>
-            ))}
+            <Scroll height={150}>
+              {options.map((option: { id: number; value: string }) => (
+                <Option
+                  key={option.id}
+                  onClick={() => {
+                    setOpenSelect(false)
+                    setOptionSelected(option)
+                    if (onClick !== undefined) {
+                      onClick(option)
+                    }
+                  }}
+                  data-title={option.value}
+                  data-id={option.id}
+                >
+                  {option.value}
+                </Option>
+              ))}
+            </Scroll>
           </OptionsContainer>
         )}
       </Select>

@@ -8,5 +8,7 @@ interface PaymentContextInterface {
   setPricingList(pricingList: PricingInterface[]): void
   preferenceId: string
   setPreferenceId: (preferenceId: string) => void
+  formError: string
+  setFormError: (formError: string) => void
 }
 export default PaymentContextInterface

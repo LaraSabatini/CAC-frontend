@@ -1,5 +1,5 @@
 import defaultPost from "services/defaultPost"
-import AdminInterface from "interfaces/users/Admin"
+import { AdminInterface } from "interfaces/users/Admin"
 import ClientInterface from "interfaces/users/Client"
 import { UserType } from "interfaces/users/General"
 import apiURL from "./route"

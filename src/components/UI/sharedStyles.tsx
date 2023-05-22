@@ -6,6 +6,7 @@ const Button = () => css`
   background: transparent;
   display: flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
   outline: none;
 `

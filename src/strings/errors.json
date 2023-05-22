@@ -15,7 +15,7 @@
     },
     "userError": {
         "title": "¡UPS!",
-        "description": "Ocurrio un error al crear el usuario."
+        "description": "Ocurrió un error al crear el usuario."
     },
     "pageNotFound": {
         "title": "¡UPS!",
@@ -24,16 +24,16 @@
     },
     "accountBlocked": {
         "title":"Cuenta bloqueada",
-        "span": "Has superado el limite de intentos de inicio de sesion o has eliminado tu cuenta.",
-        "description": "Hemos bloqueado tu cuenta. Te enviaremos un mail con instrucciones para recuperar tu cuenta."
+        "span": "Has superado el límite de intentos de inicio de sesión o has eliminado tu cuenta.",
+        "description": "Hemos bloqueado tu cuenta. Te enviaremos un mail con instrucciones para recuperarla."
     },
     "robotDetected": {
         "title": "¡UPS!",
-        "span": "Hemos detectado actividad sospechosa en tu inicio de sesion",
-        "descripcion": "Por favor intentalo mas tarde o comunicate con un administrador."
+        "span": "Hemos detectado actividad sospechosa en tu inicio de sesión.",
+        "description": "Por favor inténtalo más tarde o comunícate con un administrador."
     },
     "internalServerError": {
         "title": "¡UPS! - 500",
-        "description": "Ocurrio un error en nuestro servidor, por favor intentalo nuevamente mas tarde."
+        "description": "Ocurrió un error en nuestro servidor, por favor inténtalo nuevamente más tarde."
     }
 }

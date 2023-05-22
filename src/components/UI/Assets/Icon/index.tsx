@@ -4,6 +4,7 @@ import CheckModal from "./Icons/CheckModal"
 import Close from "./Icons/Close"
 import Error from "./Icons/Error"
 import IconNotFound from "./Icons/IconNotFound"
+import IconImage from "./Icons/Image"
 import MenuOff from "./Icons/MenuOff"
 import Notice from "./Icons/Notice"
 import PasswordHidden from "./Icons/PasswordHidden"
@@ -27,6 +28,8 @@ const Icon = ({ icon, width, height, color }: IconComponentInterface) => {
         return <Close width={width} height={height} color={color} />
       case "Error":
         return <Error width={width} height={height} color={color} />
+      case "IconImage":
+        return <IconImage width={width} height={height} color={color} />
       case "MenuOff":
         return <MenuOff width={width} height={height} color={color} />
       case "Notice":

@@ -2,21 +2,28 @@
     "title": "Perfil",
     "logout": "Cerrar sesión",
     "changePassword": {
-        "title": "Cambiar contraseña:",
+        "title": "Cambiar contraseña",
         "matchingError": "* Las contraseñas no coinciden",
         "requiredError": "* Completa los campos requeridos",
-        "wrongPassword": "La contraseña ingresada es incorrecta",
+        "wrongPassword": "* La contraseña ingresada es incorrecta",
         "password": "Contraseña",
         "newPassword": "Nueva contraseña",
         "confirmPassword": "Confirmar contraseña",
         "cancel":"Cancelar",
         "confirm": "Confirmar",
         "success": {
-            "title": "Excelente!",
-            "description": "La constraseña ha sido modificada con exito"
+            "title": "¡Excelente!",
+            "description": "La constraseña ha sido modificada con éxito."
         }
     },
-    "deleteProfile": "Eliminar perfil",
+    "deleteProfile": {
+        "title": "Eliminar perfil",
+        "titleQuestion": "¿Por qué quieres eliminar tu cuenta?",
+        "deleteDescription": "Se bloqueará tu cuenta y podrás recuperarla dentro de un periodo de un mes. Luego se eliminara permanentemente.",
+        "confirm": "¿Estás seguro de que deseas eliminar tu cuenta?",
+        "continue": "Continuar",
+        "goBack": "Volver"
+    },
     "logoutModal": {
         "title": "¿Estás seguro de que deseas cerrar sesión?",
         "cancel": "Cancelar"

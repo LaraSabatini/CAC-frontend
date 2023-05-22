@@ -8,8 +8,18 @@ interface ClientInterface extends UserInterface {
   phoneAreaCode: string
   phoneNumber: string
   preferences: string
-  subscription: number
+  subscription: number | null
   dateCreated: string
+  plan: number | null
+  region: string
+  paymentDate: string | null
+  paymentExpireDate: string | null
+  mpId: string
+  savedArticles: number[] | string
+  realEstateRegistration: string
+  activityStartDate: string
+  amountOfBuildings: string
+  birthdate: string
 }
 
 export default ClientInterface

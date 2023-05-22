@@ -17,7 +17,7 @@
         "duplicatedError": "* Ya existe un usuario registrado con el DNI o email ingresados",
         "loginModal": {
             "title": "Usuario duplicado",
-            "mainButton": "Iniciar sesion",
+            "mainButton": "Iniciar sesión",
             "secondaryButton": "Cancelar"
         }
     },

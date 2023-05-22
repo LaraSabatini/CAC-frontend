@@ -1,0 +1,47 @@
+{
+    "newArticleForm": {
+        "title": "Nueva publicación",
+        "labels": {
+            "title": "Título",
+            "titlePlaceholder": "Título de la publicación",
+            "subtitle": "Subtítulo",
+            "subtitlePlaceholder": "Subtítulo de la publicación",
+            "filters": "Filtros",
+            "region": "Región",
+            "theme": "Temática",
+            "description": "Descripción",
+            "descriptionPlaceholder": "Resumen de la publicación",
+            "fullArticle": "Texto completo",
+            "fullArticlePlaceholder": "Texto de la publicación",
+            "author": "Autor"
+        },
+        "attachFile": "Adjuntar archivo",
+        "attachImage": "Adjuntar imagen",
+        "attachVideo": "Adjuntar video",
+        "seeAttachments": "Ver archivos adjuntos",
+        "discard": "Descartar",
+        "visualize": "Previsualizar",
+        "edit": "Editar",
+        "publish": "Publicar",
+        "card": "Carta",
+        "article": "Artículo",
+        "deleteFile": "Borrar archivo",
+        "attachedFiles": "Archivos adjuntos",
+        "requiredMessage": "Completa todos los campos obligatorios y agrega una portada.",
+        "success": {
+            "title": "Excelente",
+            "description": "El artículo se ha creado correctamente."
+        }
+    },
+    "author": "Publicado por",
+    "deleteArticle": {
+        "success": {
+            "title": "Excelente",
+            "description": "El artículo se ha borrado con exito."
+        },
+        "title":"¿Estás seguro de que deseas eliminar el artículo?",
+        "span": "Se eliminarán todos los registros del mismo",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar"
+    }
+}

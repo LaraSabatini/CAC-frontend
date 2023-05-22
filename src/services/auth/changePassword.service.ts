@@ -6,9 +6,10 @@ import apiURL from "./route"
 const changePassword = async (
   type: UserType,
   body: ChangePasswordInterface,
+  encrypted: boolean,
 ) => {
   const res = await axios.put(
-    `${apiURL}/${type}/change-password`,
+    `${apiURL}/${type}/change-password&encrypted=${encrypted}`,
     body,
     axiosHeader,
   )

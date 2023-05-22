@@ -6,6 +6,16 @@ const Input = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  .value {
+    font-family: ${theme.fonts.extra};
+    font-size: ${theme.fontSizes.xs};
+    line-height: 18px;
+
+    color: ${theme.colors.blue};
+
+    margin: 0;
+  }
 `
 
 const IconContainer = styled.button`
@@ -44,6 +54,8 @@ const OptionsContainer = styled.div<{ width?: number }>`
   width: ${({ width }) => (width as number) - 25 || 200}px !important;
   z-index: 100;
   background-color: #f2f8ff;
+  /* overflow: auto;
+  height: 200px; */
 `
 
 const ErrorMessage = styled.span<{ width?: number }>`

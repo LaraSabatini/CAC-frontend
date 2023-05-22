@@ -1,6 +1,7 @@
 import React from "react"
 import texts from "strings/errors.json"
-import GenericError from "components/Views/Error/GenericError"
+import routes from "routes"
+import GenericError from "@components/Views/Common/Error/GenericError"
 import { useRouter } from "next/router"
 
 function ErrorPage() {
@@ -11,7 +12,7 @@ function ErrorPage() {
       title={texts.pageNotFound.title}
       description={texts.pageNotFound.description}
       span={texts.pageNotFound.span}
-      actionButton={() => router.push("/pricing")}
+      actionButton={() => router.replace(routes.pricing.name)}
       type="preference"
     />
   )
