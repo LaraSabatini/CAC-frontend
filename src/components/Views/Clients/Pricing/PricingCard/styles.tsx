@@ -25,8 +25,7 @@ const Card = styled.div`
 
   padding: 25px 30px;
   width: 230px;
-  height: 230px;
-  gap: 20px;
+  gap: 15px;
 `
 
 const Title = styled.h3`

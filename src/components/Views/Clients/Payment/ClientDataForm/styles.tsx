@@ -4,11 +4,12 @@ import { TitleStyles } from "theme/styles"
 
 const FormContainer = styled.div`
   background-color: #f5f9ff;
-  width: 450px;
+  max-width: 450px;
   border-radius: 15px;
   padding: 25px 25px;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
 `
 
 const Title = styled.h3`
