@@ -5,8 +5,6 @@ import { TitleStyles } from "theme/styles"
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  /* overflow: hidden; */
-  /* border: 1px solid red; */
   gap: 20px;
   width: 90%;
   margin: 0 auto;
@@ -88,12 +86,12 @@ const SubTitle = styled.span`
 `
 
 const CardsContainer = styled.div`
-  margin-top: 120px;
+  margin-top: 100px;
   display: flex;
   height: fit-content;
   align-items: center;
   justify-content: center;
-  gap: 45px;
+  gap: 40px;
 
   @media (max-width: 1024px) {
     flex-wrap: wrap;
@@ -107,9 +105,6 @@ const CardsContainer = styled.div`
 
   @media (max-width: 414px) {
     justify-content: flex-start;
-
-    /* margin-top: 40px;
-    gap: 30px; */
   }
 `
 
