@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from "react"
 import { useRouter } from "next/router"
 import texts from "strings/dashboard.json"
@@ -50,7 +52,16 @@ function ArticleView({
   return (
     <ArticleCard>
       <CardInfo>
-        <div className="articleHeader">
+        <div
+          className="articleHeader"
+          onClick={() => {
+            if (!URLBlocked) {
+              router.replace(
+                `${routes.dashboard.name}?${routes.dashboard.queries.article}${article.id}&title=${article.title}`,
+              )
+            }
+          }}
+        >
           <ArticleRegion>
             <ImLocation />
             {regionFilters.filter(item => item.id === region)[0]?.value}
@@ -65,7 +76,17 @@ function ArticleView({
           </ArticleRegion>
           <ArticleTitle>{article.title}</ArticleTitle>
         </div>
-        <ArticleDescription>{article.description}</ArticleDescription>
+        <ArticleDescription
+          onClick={() => {
+            if (!URLBlocked) {
+              router.replace(
+                `${routes.dashboard.name}?${routes.dashboard.queries.article}${article.id}&title=${article.title}`,
+              )
+            }
+          }}
+        >
+          {article.description}
+        </ArticleDescription>
         <ButtonContainer>
           <Tooltip
             title={`Artículo guardado por ${amountOfSavedTimes} usuario/s`}

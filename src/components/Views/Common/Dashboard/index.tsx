@@ -175,7 +175,7 @@ function DashboardView() {
           <CardPlaceholder />
         </ArticlesContainer>
       )}
-      {userData.type !== "client" ? (
+      {userData.type !== "client" && router.query.articleId === undefined ? (
         <AdminButton>
           <Button onClick={() => setDrafts(!drafts)}>
             {!drafts ? "Ver artículos borradores" : "Ver artículos publicados"}

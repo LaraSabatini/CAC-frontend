@@ -72,54 +72,59 @@ function ArticleButtons({
 
   const publishArticle = async (type: "draft" | "publish") => {
     let successAction: boolean = false
+    // if (portrait !== null) {
+    let uploadPortrait = ""
     if (portrait !== null) {
-      const userData = JSON.parse(localStorage.getItem("userData") as string)
+      uploadPortrait = portrait?.includes("http")
+        ? portrait
+        : getFiles(portrait.split(".")[0], portrait.split(".")[1])
+    }
 
-      const data: ArticleInterface = {
-        ...articleEdited,
-        portrait: portrait?.includes("http")
-          ? portrait
-          : getFiles(portrait.split(".")[0], portrait.split(".")[1]),
-        attachments: JSON.stringify(newAttachmentsForDataBase),
-        regionFilters: JSON.stringify(articleEdited.regionFilters),
-        themeFilters: JSON.stringify(articleEdited.themeFilters),
-        createdBy: JSON.stringify(articleEdited.createdBy),
-        changesHistory: JSON.stringify([
-          ...articleEdited.changesHistory,
-          {
-            date: dateFormated,
-            changedBy: {
-              id: userData.id,
-              email: userData.email,
-            },
-            action: "MODIFIED",
+    const userData = JSON.parse(localStorage.getItem("userData") as string)
+
+    const data: ArticleInterface = {
+      ...articleEdited,
+      portrait: uploadPortrait,
+      attachments: JSON.stringify(newAttachmentsForDataBase),
+      regionFilters: JSON.stringify(articleEdited.regionFilters),
+      themeFilters: JSON.stringify(articleEdited.themeFilters),
+      createdBy: JSON.stringify(articleEdited.createdBy),
+      changesHistory: JSON.stringify([
+        ...articleEdited.changesHistory,
+        {
+          date: dateFormated,
+          changedBy: {
+            id: userData.id,
+            email: userData.email,
           },
-        ]),
-        draft: type === "draft" ? 1 : 0,
-      }
+          action: "MODIFIED",
+        },
+      ]),
+      draft: type === "draft" ? 1 : 0,
+    }
 
-      const editArticleCall = await editArticle(data)
-      successAction = editArticleCall.status === 201
+    const editArticleCall = await editArticle(data)
+    successAction = editArticleCall.status === 201
 
-      for (let i = 0; i < newAttachmentsForServer.length; i += 1) {
-        const fileData = saveFile(i)
+    for (let i = 0; i < newAttachmentsForServer.length; i += 1) {
+      const fileData = saveFile(i)
 
-        const formData = new FormData()
+      const formData = new FormData()
 
-        if (fileData !== undefined) {
-          const name = `${fileData.name.split(".")[0]}.${
-            fileData.name.split(".")[1]
-          }`
-          formData.append("file", fileData.file)
-          formData.append("fileName", name)
+      if (fileData !== undefined) {
+        const name = `${fileData.name.split(".")[0]}.${
+          fileData.name.split(".")[1]
+        }`
+        formData.append("file", fileData.file)
+        formData.append("fileName", name)
 
-          //  eslint-disable-next-line no-await-in-loop
-          const postFile: any = await sendFile(formData)
-          successAction = postFile.status === 200
-          setServerError(postFile.status !== 200)
-        }
+        //  eslint-disable-next-line no-await-in-loop
+        const postFile: any = await sendFile(formData)
+        successAction = postFile.status === 200
+        setServerError(postFile.status !== 200)
       }
     }
+    // }
 
     if (successAction) {
       success()
